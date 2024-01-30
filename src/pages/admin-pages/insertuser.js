@@ -2,7 +2,7 @@
 const InsertUser = () => {
   return (
     <div>
-      <h1>InsertUser</h1>
+      <h1>Hello</h1>
     </div>
   );
 };
