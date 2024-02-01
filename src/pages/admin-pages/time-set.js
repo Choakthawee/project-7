@@ -1,6 +1,15 @@
 //กำหนดเวลา (แอดมิน)
 import "./time-set.css";
+import "./text.css";
+import React, { useState } from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
+
+
 const TimeSet = () => {
+    const [selectedDate, setSelectedDate] = useState(null);
   return (
     <div className="background">
       <div>
@@ -47,7 +56,9 @@ const TimeSet = () => {
         <div
           style={{
             flex: 1,
+            flexDirection : "row",
             borderColor: "blue",
+            width : "100%",
             borderWidth: 10,
           }}
         >
@@ -67,9 +78,25 @@ const TimeSet = () => {
               Checked state
             </label>
           </div>
-          <p>mmmmmmm</p>
-          <p>mmmmmmm</p>
-          <p>mmmmmmm</p>
+          <div class="1E1E1E font-bold text-15 ">
+          วันที่เปิด*
+          </div>
+          <div className="relative max-w-sm">
+            <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+            </div>
+            
+            <DatePicker
+            showIcon
+            selected={selectedDate}
+            onChange={(date) => setSelectedDate(date)}
+            dateFormat="MM/dd/yyyy"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholderText="Select date"
+            />
+          </div>
+          <div class="1E1E1E font-bold text-15 justify-end">
+          เวลาที่เปิด*
+          </div>
           <p>mmmmmmm</p>
         </div>
       </div>
