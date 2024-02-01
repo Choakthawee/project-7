@@ -1,0 +1,58 @@
+.background {
+  display: flex;
+  flex: 1;
+  background-color: #cce3de;
+  overflow: hidden;
+  height: 100vh;
+}
+
+.text-header {
+  font-size: 30px;
+  color: #1b4242;
+  font-weight: bold;
+}
+.text {
+  font-size: 18px;
+}
+
+.textinsert {
+  font-size: 20px;
+}
+
+.textimport {
+  font-size: 25px;
+}
+
+.bigbox {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+}
+
+.box-1 {
+  display: flex;
+  flex: 1;
+  align-self: center;
+}
+.box-2 {
+  display: flex;
+  flex: 1;
+}
+.box-3 {
+  display: flex;
+  width: 60%;
+  height: 50%;
+  align-items: center;
+  margin-top: 10%;
+}
+.border-display {
+  display: flex;
+  height: 60%;
+  width: 5px;
+  margin-top: 20vh;
+  border-radius: 999px;
+}
+.box2-flex {
+  flex: 1;
+  margin-top: 10vh;
+}
