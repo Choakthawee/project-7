@@ -1,4 +1,4 @@
-.background {
+.backgroundinsert {
   display: flex;
   flex: 1;
   background-color: #cce3de;
@@ -11,7 +11,7 @@
   color: #1b4242;
   font-weight: bold;
 }
-.text {
+.text-inbox {
   font-size: 18px;
 }
 

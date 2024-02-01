@@ -7,7 +7,7 @@ import { faCircleArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { faArrowAltCircleDown } from "@fortawesome/free-solid-svg-icons";
 const InsertUser = () => {
   return (
-    <div className="background">
+    <div className="backgroundinsert">
       <div className="bigbox">
         <div className="box-1 m-1 items-center justify-center h-screen">
           <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
@@ -73,7 +73,7 @@ const InsertUser = () => {
                   justifyContent: "center",
                 }}
               >
-                <p className="m-0 text" style={{ marginRight: "10px" }}>
+                <p className="m-0 text-inbox" style={{ marginRight: "10px" }}>
                   ยืนยัน
                 </p>
                 <FontAwesomeIcon
@@ -133,7 +133,7 @@ const InsertUser = () => {
                     justifyContent: "center",
                   }}
                 >
-                  <p className="m-0 text" style={{ marginRight: "10px" }}>
+                  <p className="m-0 text-inbox" style={{ marginRight: "10px" }}>
                     ยืนยัน
                   </p>
                   <FontAwesomeIcon
