@@ -1,5 +1,9 @@
 //ข้อมูลผู้ใช้งาน (แอดมิน)
 import React, { useState } from "react";
+import { IoPersonAdd } from "react-icons/io5";
+import { MdDeleteForever } from "react-icons/md";
+import { Link } from "react-router-dom";
+
 
 const UserInfo = () => {
   const [testUser, setTestUser] = useState([
@@ -26,7 +30,7 @@ const UserInfo = () => {
   ]);
 
   return (
-    <div className="max-w-screen-xl mx-auto flex-col flex">
+    <div className="max-w-screen-xl mx-auto flex-col flex px-10">
       {/* หัวข้อ */}
       <div>
         <p className="text-4xl font-bold mb-4 h1text-shadow text-midgreen mt-20 flex-1">
@@ -58,8 +62,8 @@ const UserInfo = () => {
                 <td className="py-2 text-center font-light">{user.email}</td>
                 <td className="py-2 text-center font-light">{user.status}</td>
                 <td className="py-2 text-center font-light">
-                  <button className="bg-blue-500 text-white py-1 px-2 rounded-md font-light">
-                    แก้ไข
+                  <button className="py-1 px-2 rounded-md">
+                    <MdDeleteForever size={20} color="red" />
                   </button>
                 </td>
               </tr>
@@ -70,8 +74,13 @@ const UserInfo = () => {
       </div>
 
       {/* ปุ่ม */}
-      <div className="mt-14 button">
-        <button>เพิ่มผู้ใช้งาน</button>
+      <div className="mt-14 button flex justify-end">
+        <Link to="/insertuser">
+          <button className="shadow-md bg-midgreen rounded-2xl flex flex-row px-4 py-4">
+            <IoPersonAdd size={20} color="white" className="mr-2" />
+            <p className="text-white">เพิ่มผู้ใช้งาน</p>
+          </button>
+        </Link>
       </div>
       {/* ปุ่ม */}
     </div>
