@@ -1,11 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./insertuser.css";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileImport } from "@fortawesome/free-solid-svg-icons";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
 import { faCircleArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { faArrowAltCircleDown } from "@fortawesome/free-solid-svg-icons";
 const InsertUser = () => {
+  const fileInputRef = useRef(null);
+
+  const handleFileChange = (event) => {
+    const selectedFile = event.target.files[0];
+    if (selectedFile) {
+      console.log("Selected File:", selectedFile);
+      // Perform actions with the selected file, such as reading its content
+    }
+  };
+
+  const handleClick = () => {
+    // Trigger a click event on the hidden file input
+    fileInputRef.current.click();
+  };
+
   return (
     <div className="backgroundinsert">
       <div className="bigbox">
@@ -88,13 +104,14 @@ const InsertUser = () => {
         <div class="border-display items-center justify-center bg-gray-500"></div>
         <div className="box-2 ml-1 flex-col">
           <div className="flex justify-end">
-            <button
+            <Link
+              to="/UserInfo" // Replace "/other-page" with the actual path of the page you want to navigate to
               className="mt-10 mr-40 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex items-center"
-              type="button"
               style={{
                 backgroundColor: "#134e4a",
                 width: 130,
                 height: "fit-content",
+                textDecoration: "none",
               }}
             >
               <FontAwesomeIcon
@@ -102,27 +119,39 @@ const InsertUser = () => {
                 style={{ fontSize: "24px", marginRight: "5px" }}
               />
               ย้อนกลับ
-            </button>
+            </Link>
           </div>
           <div className="box-3 ml-20 mr-40 ">
             <div className=" bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 box2-flex">
               <div className="m-auto">
                 <h1 className="text-header ">เพิ่มผู้ใช้งานหลายคน</h1>
               </div>
-              <button
-                className="textimport mt-5 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex items-center"
-                type="button"
-                style={{
-                  backgroundColor: "#ffffff",
-                  width: 300,
-                  border: "3px dashed black",
-                }}
-              >
-                <FontAwesomeIcon icon={faFileImport} className="mr-2" />
-                <p className="m-0" style={{ marginLeft: "10px" }}>
-                  Import Excel File
-                </p>
-              </button>
+              <div>
+                <button
+                  className="textimport mt-5 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex items-center"
+                  type="button"
+                  style={{
+                    backgroundColor: "#ffffff",
+                    width: 300,
+                    border: "3px dashed black",
+                  }}
+                  onClick={handleClick}
+                >
+                  <FontAwesomeIcon icon={faFileImport} className="mr-2" />
+                  <p className="m-0" style={{ marginLeft: "10px" }}>
+                    Import Excel File
+                  </p>
+                </button>
+
+                {/* Hidden file input */}
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  style={{ display: "none" }}
+                  onChange={handleFileChange}
+                />
+              </div>
+
               <div className="m-auto mt-5">
                 <button
                   className="text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex items-center"
