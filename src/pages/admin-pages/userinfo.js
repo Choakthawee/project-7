@@ -29,7 +29,7 @@ const UserInfo = () => {
   ]);
 
   return (
-    <div className="max-w-screen-xl mx-auto flex-col flex">
+    <div className="max-w-screen-xl mx-auto flex-col flex px-10">
       {/* หัวข้อ */}
       <div>
         <p className="text-4xl font-bold mb-4 h1text-shadow text-midgreen mt-20 flex-1">
@@ -56,6 +56,7 @@ const UserInfo = () => {
                 key={index}
                 className={index % 2 === 0 ? "bg-gray-100" : "bg-white"}
               >
+<<<<<<< HEAD
                 <td className="py-2 font-light text-lg text-center">
                   {index + 1}
                 </td>
@@ -71,6 +72,15 @@ const UserInfo = () => {
                 <td className="py-2 font-light text-lg text-center">
                   <button className=" text-red-600 py-1 px-2 rounded-md font-light">
                     <RiDeleteBin5Fill size={20} />
+=======
+                <td className="py-2 text-center font-light">{index + 1}</td>
+                <td className="py-2 text-center font-light">{user.name}</td>
+                <td className="py-2 text-center font-light">{user.email}</td>
+                <td className="py-2 text-center font-light">{user.status}</td>
+                <td className="py-2 text-center font-light">
+                  <button className="py-1 px-2 rounded-md">
+                    <MdDeleteForever size={20} color="red" />
+>>>>>>> 40d558280e98809e1c9f42e8e7299f891398ef9b
                   </button>
                 </td>
               </tr>
@@ -91,6 +101,7 @@ const UserInfo = () => {
       {/* ลูกสร */}
 
       {/* ปุ่ม */}
+<<<<<<< HEAD
       <div className="mt-12 flex justify-end rounded-xl">
         <button className="bg-midgreen rounded-2xl px-4 py-4 flex flex-row shadow-xl">
           <HiUserAdd size={30} color="white" />
@@ -98,6 +109,15 @@ const UserInfo = () => {
             เพิ่มผู้ใช้งาน
           </p>
         </button>
+=======
+      <div className="mt-14 button flex justify-end">
+        <Link to="/insertuser">
+          <button className="shadow-md bg-midgreen rounded-2xl flex flex-row px-4 py-4">
+            <IoPersonAdd size={20} color="white" className="mr-2" />
+            <p className="text-white">เพิ่มผู้ใช้งาน</p>
+          </button>
+        </Link>
+>>>>>>> 40d558280e98809e1c9f42e8e7299f891398ef9b
       </div>
       {/* ปุ่ม */}
     </div>
