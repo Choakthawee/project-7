@@ -1,7 +1,5 @@
-import React, { useState } from "react";
-
 const InsertUser = () => {
-  return {};
+  return <div>Hello</div>;
 };
 
 export default InsertUser;

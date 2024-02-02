@@ -6,6 +6,7 @@
 :root {
   --mid-darkgreen: #0a6765;
   --dark-green: #1b4242;
+  --lignt-green: #84a98c;
 }
 
 body {
@@ -18,6 +19,10 @@ body {
 /*ตัวอย่างใช้สี*/
 .text-midgreen {
   color: var(--mid-darkgreen);
+}
+
+.bg-midgreen {
+  background-color: var(--mid-darkgreen);
 }
 
 .column-color1 {

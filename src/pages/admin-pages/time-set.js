@@ -1,9 +1,7 @@
 //กำหนดเวลา (แอดมิน)
+
 const TimeSet = () => {
-  return (
-    <div>
-      <h1>TimeSet</h1>
-    </div>
-  );
+  return <div>Hello</div>;
 };
+
 export default TimeSet;
