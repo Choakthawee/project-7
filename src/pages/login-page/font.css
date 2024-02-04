@@ -1,0 +1,32 @@
+.font-style {
+    position: absolute;
+    font-size: 90px;
+    font-weight: 700;
+    letter-spacing: 5px;
+    color: white;
+    margin-left: 260px;
+    margin-top: 20px;
+    z-index: 5;
+
+
+  }
+  .font-style2 {
+    position: absolute;
+    font-size: 90px;
+    font-weight: 700;
+    letter-spacing: 5px;
+    color: #0A6765;
+    margin-left: 266px;
+    margin-top: 15px;
+    z-index: 4;
+  }
+  .font-style3 {
+    position: absolute;
+    font-size: 90px;
+    font-weight: 700;
+    letter-spacing: 5px;
+    color: black;
+    margin-left: 272px;
+    margin-top: 10px;
+    z-index: 3;
+  }
