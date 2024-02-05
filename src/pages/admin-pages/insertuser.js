@@ -6,9 +6,42 @@ import { faFileImport } from "@fortawesome/free-solid-svg-icons";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
 import { faCircleArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { faArrowAltCircleDown } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
+import { apiurl } from "../../config";
 const InsertUser = () => {
   const fileInputRef = useRef(null);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState(""); // Initialize with an empty string or the default value you want
+  const InsertDatabase = async () => {
+    console.log({
+      email: email,
+      name: name,
+      role_id: status,
+    });
+    const responsedata = await axios.post(apiurl + "/api/user1", {
+      email: email,
+      name: name,
+      role_id: status,
+    });
+    const data = responsedata.data;
+    alert(data);
+  };
+  const handleNameChange = (e) => {
+    setName(e.target.value);
+  };
 
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handleStatusChange = (e) => {
+    if (e.target.value === "แอดมิน") {
+      setStatus(2);
+    } else if (e.target.value === "ฝ่ายการศึกษา") {
+      setStatus(3);
+    } else if (e.target.value === "อาจารย์") setStatus(1);
+  };
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     if (selectedFile) {
@@ -40,6 +73,8 @@ const InsertUser = () => {
                 type="text"
                 placeholder="กรุณากรอกชื่อ-นามสกุล"
                 style={{ width: 500 }}
+                value={name}
+                onChange={handleNameChange}
               />
             </div>
             <div className="mt-3">
@@ -52,6 +87,8 @@ const InsertUser = () => {
                 type="text"
                 placeholder="กรุณากรอก Email"
                 style={{ width: 500 }}
+                value={email}
+                onChange={handleEmailChange}
               />
             </div>
             <div className="mt-3">
@@ -62,6 +99,8 @@ const InsertUser = () => {
                 <select
                   className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                   style={{ width: 500 }}
+                  value={status}
+                  onChange={handleStatusChange}
                 >
                   <option>แอดมิน</option>
                   <option>ฝ่ายการศึกษา</option>
@@ -88,9 +127,10 @@ const InsertUser = () => {
                   width: 150,
                   justifyContent: "center",
                 }}
+                onClick={() => InsertDatabase()}
               >
                 <p className="m-0 text-inbox" style={{ marginRight: "10px" }}>
-                  ยืนยัน
+                  ยืนยันas
                 </p>
                 <FontAwesomeIcon
                   icon={faSave}
