@@ -63,6 +63,7 @@ const login = () => {
             margin: 0,
             marginTop: 170,
             backgroundImage: "url(https://www.src.ku.ac.th/th/tp/img/Logo.png)",
+            backgroundSize: "contain", // ให้รูปภาพย่อลง
             backgroundSize:"cover",
             backgroundPosition : "center",
             backgroundAttachment: "fixed",
