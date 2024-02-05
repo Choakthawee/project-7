@@ -145,7 +145,7 @@ const InsertUser = () => {
         <div className="box-2 ml-1 flex-col">
           <div className="flex justify-end">
             <Link
-              to="/UserInfo" // Replace "/other-page" with the actual path of the page you want to navigate to
+              to="/userinfo" // Replace "/other-page" with the actual path of the page you want to navigate to
               className="mt-10 mr-40 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex items-center"
               style={{
                 backgroundColor: "#134e4a",
