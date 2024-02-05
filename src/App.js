@@ -1,7 +1,7 @@
 // app.js
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Sidebar from "./side-navbar/admin-sidebar"; // Import Sidebar Component
+import Sidebar from "./side-navbar/admin-sidebar";
 
 import Login from "./pages/login-page/login";
 

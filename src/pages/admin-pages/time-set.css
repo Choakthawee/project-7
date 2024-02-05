@@ -1,6 +1,6 @@
-.background{
-    display: flex;
-    background-color: aqua;
-    overflow: hidden;
-    height: 100vh;
+.background {
+  display: flex;
+  background-color: aqua;
+  overflow: hidden;
+  height: 100vh;
 }
