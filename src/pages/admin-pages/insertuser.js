@@ -7,6 +7,7 @@ import { faSave } from "@fortawesome/free-solid-svg-icons";
 import { faCircleArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { faArrowAltCircleDown } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import Swal from "sweetalert2";
 import { apiurl } from "../../config";
 const InsertUser = () => {
   const fileInputRef = useRef(null);
@@ -15,21 +16,44 @@ const InsertUser = () => {
   const [status, setStatus] = useState(3); // Initialize with an empty string or the default value you want
   const [Sstatus, setSStatus] = useState(3);
   const InsertDatabase = async () => {
+    if (!name || !email || !status) {
+      Swal.fire({
+        title: "ผิดพลาด!",
+        text: "กรอกข้อมูลให้ครบ",
+        icon: "error",
+        confirmButtonColor: "#134e4a",
+      });
+
+      return;
+    }
+
     console.log({
       email: email,
       name: name,
-      role_id: Sstatus,
+      role_id: status,
     });
+
     try {
       const responsedata = await axios.post("http://localhost:4133/api/user1", {
         email: email,
         name: name,
-        role_id: Sstatus,
+        role_id: status,
       });
       const data = responsedata.data;
-      alert(data);
+
+      Swal.fire({
+        title: "กรอกข้อมูลสำเร็จ!",
+        text: data,
+        icon: "success",
+        confirmButtonColor: "#134e4a",
+      });
     } catch (error) {
-      alert(error.response.data);
+      Swal.fire({
+        title: "กรอกข้อมูลผิดพลาด!",
+        text: error.response.data,
+        icon: "error",
+        confirmButtonColor: "#134e4a",
+      });
     }
   };
   const handleNameChange = (e) => {
