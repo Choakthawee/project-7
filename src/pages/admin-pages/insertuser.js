@@ -13,8 +13,8 @@ const InsertUser = () => {
   const fileInputRef = useRef(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState(3); // Initialize with an empty string or the default value you want
-  const [Sstatus, setSStatus] = useState(3);
+  const [status, setStatus] = useState(2); // Initialize with an empty string or the default value you want
+  const [Sstatus, setSStatus] = useState(2);
   const InsertDatabase = async () => {
     if (!name || !email || !status) {
       Swal.fire({
@@ -27,17 +27,12 @@ const InsertUser = () => {
       return;
     }
 
-    console.log({
-      email: email,
-      name: name,
-      role_id: status,
-    });
-
     try {
+      console.log(Sstatus);
       const responsedata = await axios.post("http://localhost:4133/api/user1", {
         email: email,
         name: name,
-        role_id: status,
+        id: Sstatus,
       });
       const data = responsedata.data;
 

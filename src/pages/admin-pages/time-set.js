@@ -1,14 +1,29 @@
 //กำหนดเวลา (แอดมิน)
 import "./time-set.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
+import { apiurl } from "../../config";
 
 const TimeSet = () => {
   const [isChecked, setIsChecked] = useState(0);
   const [isRadioSelected, setIsRadioSelected] = useState(false);
 
+  useEffect(() => {
+    const getSystem = async () => {
+      try {
+        const responsedata = await axios.get(apiurl + "/api/admin/SystemGet");
+        console.log(responsedata.data);
+        const data = responsedata.data[0];
+
+        setIsChecked(data.status);
+      } catch (error) {
+        alert(error.response.data);
+      }
+    };
+    getSystem();
+  }, []);
   const handleCheckboxChange = (e) => {
     setIsChecked(e.target.checked);
     axios
