@@ -4,37 +4,38 @@
 
 /*สี*/
 :root {
-    --mid-darkgreen: #0a6765;
-    --dark-green: #1b4242;
+  --mid-darkgreen: #0a6765;
+  --dark-green: #1b4242;
+  --lignt-green: #84a98c;
 }
 
 body {
-    margin: 0;
-    font-family: "Kanit", sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  font-family: "Kanit", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /*ตัวอย่างใช้สี*/
 .text-midgreen {
-    color: var(--mid-darkgreen);
-}
-
-.column-color1 {
-    background-color: var(--dark-green);
+  color: var(--mid-darkgreen);
 }
 
 .bg-midgreen {
-    background-color: var(--mid-darkgreen);
+  background-color: var(--mid-darkgreen);
+}
+
+.column-color1 {
+  background-color: var(--dark-green);
 }
 /*ตัวอย่างใช้สี*/
 
 /* เงา */
 .h1text-shadow {
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 .ptext-shadow {
-    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
 }
 /* เงา */
