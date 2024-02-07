@@ -1,6 +1,25 @@
-.background{
-    display: flex;
-    background-color: aqua;
-    overflow: hidden;
-    height: 100vh;
+.background {
+  display: flex;
+  background-color: #cce3de;
+  overflow: hidden;
+  height: 100vh;
+}
+
+.text18 {
+  font-size: 18px;
+}
+
+/* For Webkit browsers (Chrome, Safari) */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 6px;
+  border: 3px solid #f1f1f1;
 }
