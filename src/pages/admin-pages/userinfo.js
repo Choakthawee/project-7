@@ -4,6 +4,7 @@ import { HiUserAdd } from "react-icons/hi";
 import { FaCircleLeft, FaCircleRight } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import swal from "sweetalert2";
 
 const UserInfo = () => {
   const [users, setUsers] = useState([]);
@@ -34,20 +35,44 @@ const UserInfo = () => {
   };
 
   const handleDeleteUser = (id) => {
-    axios.delete(`http://localhost:4133/api/admin/delete_user/${id}`)
-      .then(response => {
-        axios.get("http://localhost:4133/api/user")
+    const userToDelete = users.find(user => user.id === id);
+
+    swal.fire({
+      title: 'ยืนยันการลบผู้ใช้งาน',
+      text: `คุณแน่ใจหรือไม่ว่าต้องการลบผู้ใช้ ${userToDelete.email}`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'ยืนยัน',
+      cancelButtonText: 'ยกเลิก'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios.delete(`http://localhost:4133/api/admin/delete_user/${id}`)
           .then(response => {
-            setUsers(response.data.message);
+            swal.fire({
+              title: 'ลบผู้ใช้งานสำเร็จ',
+              text: 'ข้อมูลผู้ใช้งานได้ถูกลบออกแล้ว',
+              icon: 'success',
+              confirmButtonText: 'ตกลง'
+            }).then(() => {
+              axios.get("http://localhost:4133/api/user")
+                .then(response => {
+                  setUsers(response.data.message);
+                })
+                .catch(error => {
+                  console.error("Error fetching data: ", error);
+                });
+            });
           })
           .catch(error => {
-            console.error("Error fetching data: ", error);
+            console.error("Error deleting user: ", error);
           });
-      })
-      .catch(error => {
-        console.error("Error deleting user: ", error);
-      });
+      }
+    });
   };
+
+
 
   return (
     <div className="flex-col flex py-10 px-10 overflow-hidden bg-white flex-1" style={{ height: "100vh" }}>
