@@ -28,10 +28,11 @@ function App() {
   return (
     <Router>
       <div style={{ display: "flex" }}>
-        <Sidebar /> {/* แสดง Sidebar ทุกๆ หน้า */}
         <Routes>
           <Route path="/" element={<Login />} />
-
+        </Routes>
+        <Sidebar /> {/* แสดง Sidebar ทุกๆ หน้า */}
+        <Routes>
           {/* Admin Pages */}
           <Route path="/insertuser" element={<InsertUser />} />
           <Route path="/time-set" element={<TimeSet />} />
