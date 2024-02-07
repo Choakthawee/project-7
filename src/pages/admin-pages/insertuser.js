@@ -12,20 +12,25 @@ const InsertUser = () => {
   const fileInputRef = useRef(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState(""); // Initialize with an empty string or the default value you want
+  const [status, setStatus] = useState(3); // Initialize with an empty string or the default value you want
+  const [Sstatus, setSStatus] = useState(3);
   const InsertDatabase = async () => {
     console.log({
       email: email,
       name: name,
-      role_id: status,
+      role_id: Sstatus,
     });
-    const responsedata = await axios.post(apiurl + "/api/user1", {
-      email: email,
-      name: name,
-      role_id: status,
-    });
-    const data = responsedata.data;
-    alert(data);
+    try {
+      const responsedata = await axios.post("http://localhost:4133/api/user1", {
+        email: email,
+        name: name,
+        role_id: Sstatus,
+      });
+      const data = responsedata.data;
+      alert(data);
+    } catch (error) {
+      alert(error.response.data);
+    }
   };
   const handleNameChange = (e) => {
     setName(e.target.value);
@@ -36,11 +41,12 @@ const InsertUser = () => {
   };
 
   const handleStatusChange = (e) => {
+    setStatus(e.target.value);
     if (e.target.value === "แอดมิน") {
-      setStatus(2);
+      setSStatus(2);
     } else if (e.target.value === "ฝ่ายการศึกษา") {
-      setStatus(3);
-    } else if (e.target.value === "อาจารย์") setStatus(1);
+      setSStatus(3);
+    } else if (e.target.value === "อาจารย์") setSStatus(1);
   };
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
@@ -130,7 +136,7 @@ const InsertUser = () => {
                 onClick={() => InsertDatabase()}
               >
                 <p className="m-0 text-inbox" style={{ marginRight: "10px" }}>
-                  ยืนยันas
+                  ยืนยัน
                 </p>
                 <FontAwesomeIcon
                   icon={faSave}
@@ -145,7 +151,7 @@ const InsertUser = () => {
         <div className="box-2 ml-1 flex-col">
           <div className="flex justify-end">
             <Link
-              to="/userinfo" // Replace "/other-page" with the actual path of the page you want to navigate to
+              to="/userinfo"
               className="mt-10 mr-40 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex items-center"
               style={{
                 backgroundColor: "#134e4a",
@@ -156,7 +162,10 @@ const InsertUser = () => {
             >
               <FontAwesomeIcon
                 icon={faCircleArrowLeft}
-                style={{ fontSize: "24px", marginRight: "5px" }}
+                style={{
+                  fontSize: "24px",
+                  marginRight: "5px",
+                }}
               />
               ย้อนกลับ
             </Link>
