@@ -9,12 +9,16 @@ import { faArrowAltCircleDown } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { apiurl } from "../../config";
+import * as XLSX from 'xlsx'; // Import XLSX library
+
 const InsertUser = () => {
   const fileInputRef = useRef(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState(2); // Initialize with an empty string or the default value you want
+  const [status, setStatus] = useState(2);
   const [Sstatus, setSStatus] = useState(2);
+  const [fileData, setFileData] = useState([]); // State to hold data from the Excel file
+
   const InsertDatabase = async () => {
     if (!name || !email || !status) {
       Swal.fire({
@@ -23,13 +27,12 @@ const InsertUser = () => {
         icon: "error",
         confirmButtonColor: "#134e4a",
       });
-
       return;
     }
 
     try {
       console.log(Sstatus);
-      const responsedata = await axios.post("http://localhost:4133/api/user1", {
+      const responsedata = await axios.post(apiurl + "/api/user1", {
         email: email,
         name: name,
         id: Sstatus,
@@ -51,6 +54,7 @@ const InsertUser = () => {
       });
     }
   };
+
   const handleNameChange = (e) => {
     setName(e.target.value);
   };
@@ -67,16 +71,52 @@ const InsertUser = () => {
       setSStatus(3);
     } else if (e.target.value === "อาจารย์") setSStatus(1);
   };
+
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     if (selectedFile) {
       console.log("Selected File:", selectedFile);
-      // Perform actions with the selected file, such as reading its content
+      const fileReader = new FileReader();
+      fileReader.readAsArrayBuffer(selectedFile);
+      fileReader.onload = (e) => {
+        const bufferArray = e.target.result;
+        const wb = XLSX.read(bufferArray, { type: 'buffer' });
+        const ws = wb.Sheets[wb.SheetNames[0]];
+        const excelData = XLSX.utils.sheet_to_json(ws, { header: 1 });
+        setFileData(excelData);
+      };
     }
   };
 
+  const handleSaveToDatabase = () => {
+    fileData.forEach((row) => {
+      if (row.length === 3) { // ตรวจสอบว่าแถวนั้นมีข้อมูล 3 คอลัมน์หรือไม่
+        const [email, name, id] = row; // ดึงข้อมูล email, name, id จากแถวนั้น
+        axios.post(apiurl + "/api/user1", { email, name, id })
+          .then(response => {
+            console.log('Data saved successfully:', response.data);
+            Swal.fire({
+              title: "บันทึกข้อมูลสำเร็จ!",
+              text: "บันทึกข้อมูลลงฐานข้อมูลเรียบร้อยแล้ว",
+              icon: "success",
+              confirmButtonColor: "#134e4a",
+            });
+          })
+          .catch(error => {
+            console.error('Error saving data:', error);
+            Swal.fire({
+              title: "เกิดข้อผิดพลาด!",
+              text: "ไม่สามารถบันทึกข้อมูลได้ โปรดลองอีกครั้ง",
+              icon: "error",
+              confirmButtonColor: "#134e4a",
+            });
+          });
+      }
+    });
+  };
+
+
   const handleClick = () => {
-    // Trigger a click event on the hidden file input
     fileInputRef.current.click();
   };
 
@@ -166,7 +206,7 @@ const InsertUser = () => {
             </div>
           </div>
         </div>
-        <div class="border-display items-center justify-center bg-gray-500"></div>
+        <div className="border-display items-center justify-center bg-gray-500"></div>
         <div className="box-2 ml-1 flex-col">
           <div className="flex justify-end">
             <Link
@@ -229,6 +269,7 @@ const InsertUser = () => {
                     width: 150,
                     justifyContent: "center",
                   }}
+                  onClick={handleSaveToDatabase} // Call handleSaveToDatabase function when clicking Save button
                 >
                   <p className="m-0 text-inbox" style={{ marginRight: "10px" }}>
                     ยืนยัน
