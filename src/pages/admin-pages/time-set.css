@@ -1,5 +1,6 @@
 .background {
   display: flex;
+  flex: auto;
   background-color: #cce3de;
   overflow: hidden;
   height: 100vh;

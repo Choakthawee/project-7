@@ -3,16 +3,30 @@ import "./time-set.css";
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import axios from "axios";
 
 const TimeSet = () => {
-  const [isChecked, setIsChecked] = useState(true);
+  const [isChecked, setIsChecked] = useState(0);
+  const [isRadioSelected, setIsRadioSelected] = useState(false);
 
-  const handleCheckboxChange = () => {
-    setIsChecked(!isChecked);
+  const handleCheckboxChange = (e) => {
+    setIsChecked(e.target.checked);
+    axios
+      .post("http://localhost:4133/api/admin/System", {
+        systemstatus: e.target.checked ? 1 : 0,
+      })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error("Error sending data to the database:", error);
+      });
   };
 
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [startTime, setStartTime] = useState(null);
+  const [endTime, setEndTime] = useState(null);
 
   return (
     <div className="background">
@@ -54,7 +68,9 @@ const TimeSet = () => {
               value=""
               className="sr-only peer"
               checked={isChecked}
-              onChange={handleCheckboxChange}
+              onChange={(e) => {
+                handleCheckboxChange(e);
+              }}
             />
             <div
               className={`w-16 h-9 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-green-800 ${
@@ -75,7 +91,7 @@ const TimeSet = () => {
             // borderColor: "blue",
             // borderWidth: 10,
           }}
-          className="flex flex-col font-family mt-10 ml-10 font-bold text-xl size-30 "
+          className={`flex flex-col font-family mt-10 ml-10 font-bold text-xl size-30`}
         >
           <div class="flex items-center">
             <div class="flex items-center mb-4">
