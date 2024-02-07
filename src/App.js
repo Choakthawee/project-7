@@ -27,31 +27,38 @@ import SubOpen from "./pages/ed-pages/sub-open";
 function App() {
   return (
     <Router>
-      <div style={{ display: "flex" }}>
-        <Sidebar /> {/* แสดง Sidebar ทุกๆ หน้า */}
-        <Routes>
-          <Route path="/" element={<Login />} />
+      <Routes>
+        <Route path="/" element={<Login />} />
 
-          {/* Admin Pages */}
-          <Route path="/insertuser" element={<InsertUser />} />
-          <Route path="/time-set" element={<TimeSet />} />
-          <Route path="/userinfo" element={<UserInfo />} />
+        <Route
+          path="/*"
+          element={
+            <div style={{ display: "flex" }}>
+              <Sidebar /> {/* แสดง Sidebar ทุกๆ หน้า */}
+              <Routes>
+                {/* Admin Pages */}
+                <Route path="/insertuser" element={<InsertUser />} />
+                <Route path="/time-set" element={<TimeSet />} />
+                <Route path="/userinfo" element={<UserInfo />} />
 
-          {/* Teacher Pages */}
-          <Route path="/regcourse" element={<RegCourse />} />
-          <Route path="/regcourse_edit" element={<RegCourseEdit />} />
-          <Route path="/regresults_t" element={<RegResultT />} />
-          <Route path="/schedule" element={<Schedule />} />
-          <Route path="/schedule_edit" element={<ScheduleEdit />} />
+                {/* Teacher Pages */}
+                <Route path="/regcourse" element={<RegCourse />} />
+                <Route path="/regcourse_edit" element={<RegCourseEdit />} />
+                <Route path="/regresults_t" element={<RegResultT />} />
+                <Route path="/schedule" element={<Schedule />} />
+                <Route path="/schedule_edit" element={<ScheduleEdit />} />
 
-          {/* Education Pages */}
-          <Route path="/imcourse" element={<ImportCourse />} />
-          <Route path="/imsyl" element={<ImportSyl />} />
-          <Route path="/regresults_ed" element={<RegResultED />} />
-          <Route path="/regstatus" element={<RegStatus />} />
-          <Route path="/sub-open" element={<SubOpen />} />
-        </Routes>
-      </div>
+                {/* Education Pages */}
+                <Route path="/imcourse" element={<ImportCourse />} />
+                <Route path="/imsyl" element={<ImportSyl />} />
+                <Route path="/regresults_ed" element={<RegResultED />} />
+                <Route path="/regstatus" element={<RegStatus />} />
+                <Route path="/sub-open" element={<SubOpen />} />
+              </Routes>
+            </div>
+          }
+        />
+      </Routes>
     </Router>
   );
 }

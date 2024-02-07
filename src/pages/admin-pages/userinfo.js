@@ -60,6 +60,24 @@ const UserInfo = () => {
     },
   ]);
 
+  const usersPerPage = 7; // จำนวนผู้ใช้งานต่อหน้า
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalPages = Math.ceil(testUser.length / usersPerPage);
+
+  const startIndex = (currentPage - 1) * usersPerPage;
+  const endIndex = startIndex + usersPerPage;
+
+  const currentUsers = testUser.slice(startIndex, endIndex);
+
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
+
+  const handlePrevPage = () => {
+    setCurrentPage((prevPage) => prevPage - 1);
+  };
+
   return (
     <div
       className="flex-col flex py-10 px-10 overflow-hidden bg-white flex-1"
@@ -74,7 +92,7 @@ const UserInfo = () => {
       {/* หัวข้อ */}
 
       {/* table */}
-      <div className="flex flex-1 bg-slate-200 mt-10 rounded-lg overflow-x-auto">
+      <div className="flex flex-1 bg-slate-200 mt-10 rounded-lg overflow-x-auto shadow-xl">
         <table className="h-full w-full">
           <thead>
             <tr className="column-color1 text-white">
@@ -86,13 +104,15 @@ const UserInfo = () => {
             </tr>
           </thead>
           <tbody>
-            {testUser.map((user, index) => (
+            {currentUsers.map((user, index) => (
               <tr
-                key={index}
-                className={index % 2 === 0 ? "bg-gray-100" : "bg-white"}
+                key={startIndex + index}
+                className={
+                  (startIndex + index) % 2 === 0 ? "bg-gray-100" : "bg-white"
+                }
               >
                 <td className="py-2 font-light text-lg text-center">
-                  {index + 1}
+                  {startIndex + index + 1}
                 </td>
                 <td className="py-2 font-light text-lg text-center">
                   {user.name}
@@ -116,10 +136,13 @@ const UserInfo = () => {
 
       {/* ลูกสร */}
       <div className="flex flex-2 mt-10 justify-center">
-        <button>
+        <button onClick={handlePrevPage} disabled={currentPage === 1}>
           <FaCircleLeft size={21} color="#0a6765" className="mr-1" />
         </button>
-        <button>
+        <p className="text-lg font-semibold text-midgreen mx-4">
+          หน้า {currentPage} จาก {totalPages}
+        </p>
+        <button onClick={handleNextPage} disabled={currentPage === totalPages}>
           <FaCircleRight size={21} color="#0a6765" />
         </button>
       </div>
