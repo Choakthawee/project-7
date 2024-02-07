@@ -30,14 +30,14 @@ const InsertUser = () => {
     console.log({
       email: email,
       name: name,
-      role_id: status,
+      id: status,
     });
 
     try {
       const responsedata = await axios.post("http://localhost:4133/api/user1", {
         email: email,
         name: name,
-        role_id: status,
+        id: Sstatus,
       });
       const data = responsedata.data;
 

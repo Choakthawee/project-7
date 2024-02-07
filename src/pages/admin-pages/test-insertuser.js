@@ -26,7 +26,8 @@ function ImportExcel() {
     };
 
     const handleSaveToDatabase = () => {
-        axios.post('/api/user1', data)
+        console.log({ email: data[0][0], name: data[0][1], id: data[0][2] });
+        axios.post('http://localhost:4133/api/user1', { email: data[0][0], name: data[0][1], id: data[0][2] })
             .then(response => {
                 console.log('Data saved successfully:', response.data);
                 // หลังจากบันทึกข้อมูลสำเร็จ ทำสิ่งที่ต้องการที่นี่
