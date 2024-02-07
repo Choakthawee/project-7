@@ -19,9 +19,14 @@
     "react-icons": "^5.0.1",
     "react-router-dom": "^6.22.0",
     "react-scripts": "^5.0.1",
+<<<<<<< HEAD
     "sweetalert2": "^11.6.13",
     "web-vitals": "^2.1.4",
     "xlsx": "^0.18.5"
+=======
+    "sweetalert2": "^11.10.5",
+    "web-vitals": "^2.1.4"
+>>>>>>> ea3221efc3a61846f8e1a152f085de6db176180b
   },
   "scripts": {
     "start": "react-scripts start",
