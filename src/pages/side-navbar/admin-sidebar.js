@@ -1,9 +1,8 @@
 // Sidebar.js
-import React from "react";
-
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-
 import {
+  FaBars,
   FaUser,
   FaClock,
   FaInfo,
@@ -103,10 +102,44 @@ const Sidebar = () => {
   };
 
   const role = getRole();
+  const [isSidebarCollapsed, setSidebarCollapsed] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 600) {
+        setSidebarCollapsed(true);
+      } else {
+        setSidebarCollapsed(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
-    <div className="flex">
-      <div className="column-color1 p-12  max-[600px]:p-8 flex flex-1 ">
+    <div className={`flex ${isSidebarCollapsed ? "collapsed" : ""}`}>
+      <div
+        className="column-color1 p-12 max-[600px]:p-8 flex flex-1 flex-col"
+        style={{
+          width: isSidebarCollapsed ? "80px" : "auto",
+        }}
+      >
+        <div
+          className="sidebar-toggle items-center flex mb-10 justify-end" // ใช้ความคิดเห็นใน JSX และไม่ใส่ {}
+          onClick={() => setSidebarCollapsed(!isSidebarCollapsed)}
+        >
+          <span
+            className={`transform transition-all ${
+              isSidebarCollapsed ? "rotate-180 -mr-3" : ""
+            }`}
+          >
+            <FaBars size={24} color="white" />
+          </span>
+        </div>
         {role && (
           <nav style={{ width: "100%" }}>
             <ul>
@@ -116,12 +149,18 @@ const Sidebar = () => {
                     to={item.path}
                     className={` flex items-center text-2xl mb-10 w-full h-full max-[600px]:text-xl ${
                       pathname.includes(item.path)
-                        ? "text-black font-normal"
+                        ? "text-black font-semibold"
                         : "text-white font-normal"
                     }`}
                   >
-                    {item.icon && <span className="mr-2">{item.icon}</span>}
-                    {item.label}
+                    {item.icon && (
+                      <span
+                        className={`mr-2 ${isSidebarCollapsed ? "-ml-3" : ""}`}
+                      >
+                        {item.icon}
+                      </span>
+                    )}
+                    {isSidebarCollapsed ? null : item.label}
                   </Link>
                 </li>
               ))}
