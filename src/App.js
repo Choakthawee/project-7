@@ -23,6 +23,7 @@ import ImportSyl from "./pages/ed-pages/imsyl";
 import RegResultED from "./pages/ed-pages/regresults_ed";
 import RegStatus from "./pages/ed-pages/regstatus";
 import SubOpen from "./pages/ed-pages/sub-open";
+import Test01 from "./pages/admin-pages/test-insertuser";
 
 function App() {
   return (
@@ -36,6 +37,8 @@ function App() {
             <div style={{ display: "flex" }}>
               <Sidebar /> {/* แสดง Sidebar ทุกๆ หน้า */}
               <Routes>
+                <Route path="/test01" element={<Test01 />} />
+
                 {/* Admin Pages */}
                 <Route path="/insertuser" element={<InsertUser />} />
                 <Route path="/time-set" element={<TimeSet />} />
