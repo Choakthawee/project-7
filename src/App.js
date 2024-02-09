@@ -26,6 +26,7 @@ import SubOpen from "./pages/ed-pages/sub-open";
 import Test01 from "./pages/admin-pages/test-insertuser";
 
 function App() {
+  console.log(window.location.pathname);
   return (
     <Router>
       <Routes>
