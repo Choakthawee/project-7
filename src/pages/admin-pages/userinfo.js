@@ -123,11 +123,11 @@ const UserInfo = () => {
         </button>
       </div>
 
-      <div className="mt-12 flex justify-end rounded-xl flex-2 max-[320px]:justify-center">
+      <div className="mt-12 flex justify-end rounded-xl flex-2 max-[900px]:justify-center">
         <Link to="/insertuser">
           <button className="bg-midgreen rounded-2xl px-4 py-4 flex flex-row shadow-xl">
-            <HiUserAdd size={30} color="white" />
-            <p className="text-xl font-medium text-white rounded-2xl">
+            <HiUserAdd size={30} color="white" className="max-[600px]:size-5" />
+            <p className="text-xl font-medium text-white rounded-2xl max-[600px]:font-light max-[600px]:text-base">
               เพิ่มผู้ใช้งาน
             </p>
           </button>
