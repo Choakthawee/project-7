@@ -1,4 +1,5 @@
 //นำเข้ารายวิชา (ฝ่ายการศึกษา)
+//mdlsld,mslmcs;ld
 import "./course-set.css";
 import React, { useState } from "react";
 
