@@ -1,3 +1,5 @@
+/* styles.css */
+
 .backgroundinsert {
   display: flex;
   flex: 1;
@@ -11,6 +13,7 @@
   color: #1b4242;
   font-weight: bold;
 }
+
 .text-inbox {
   font-size: 18px;
 }
@@ -29,22 +32,20 @@
   flex-direction: row;
 }
 
-.box-1 {
-  display: flex;
-  flex: 1;
-  align-self: center;
-}
-.box-2 {
-  display: flex;
-  flex: 1;
-}
+.box-1,
+.box-2,
 .box-3 {
   display: flex;
+  flex: 1;
+}
+
+.box-3 {
   width: 60%;
   height: 50%;
-  align-items: center;
-  margin-top: 10%;
+  align-items: first baseline;
+  margin-top: 15%;
 }
+
 .border-display {
   display: flex;
   height: 60%;
@@ -52,7 +53,18 @@
   margin-top: 20vh;
   border-radius: 999px;
 }
+
 .box2-flex {
   flex: 1;
   margin-top: 10vh;
+}
+
+@media screen and (max-width: 768px) {
+  .bigbox {
+    flex-direction: column;
+  }
+
+  .box-3 {
+    width: 100%;
+  }
 }
