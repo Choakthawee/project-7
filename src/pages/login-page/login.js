@@ -48,7 +48,7 @@ const Login = () => {
             <img
               src="https://www.src.ku.ac.th/th/tp/img/Logo.png"
               alt="description_of_image"
-              className="w-full p-3"
+              className="w-full p-5 ml-48"
             />
           </div>
 
@@ -57,9 +57,7 @@ const Login = () => {
               <div className="flex w-full justify-center h-full items-center">
                 <div className="flex w-full justify-center z-40 -mt-6 md:-mt-28 mb-60 ">
                   <div className="font-style text-6xl md:text-8xl ">Login</div>
-                  <div className="font-style2 text-6xl  md:text-8xl ">
-                    Login
-                  </div>
+                  <div className="font-style2 text-6xl  md:text-8xl ">Login</div>
                   <div className="font-style3 text-6xl md:text-8xl">Login</div>
                 </div>
                 <div className="absolute w-3/4 h-1/4 min-h-36 md:w-1/4 min-w-32 md:h-1/6 md:min-h-48 bg-custom rounded-2xl z-20 flex items-center justify-center">
