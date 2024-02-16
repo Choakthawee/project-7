@@ -20,6 +20,8 @@ import {
 const Sidebar = () => {
   const location = useLocation();
   const { pathname } = location;
+  const userName = localStorage.getItem("name");
+  const userRole = localStorage.getItem("role");
 
   // Define sidebar items for each role
   const sidebarItems = {
@@ -73,7 +75,7 @@ const Sidebar = () => {
     ],
   };
 
-  // Determine the role based on the pathname
+
   const getRole = () => {
     if (
       pathname.includes("/insertuser") ||
@@ -104,6 +106,10 @@ const Sidebar = () => {
 
   const role = getRole();
   const [isSidebarCollapsed, setSidebarCollapsed] = useState(false);
+
+  const logout = () => {
+    localStorage.clear()
+  }
 
   useEffect(() => {
     const handleResize = () => {
@@ -144,8 +150,8 @@ const Sidebar = () => {
         <div className={`flex flex-2 flex-col justify-center items-center mb-3 transition-all ${isSidebarCollapsed ? "opacity-0" : ""
           }`}>
           <FaUser size={40} color="white" className="mb-5" />
-          <span className="text-xl text-white mb-5">สถานะ : </span>
-          <span className="text-xl text-white mb-5">ชื่อ : </span>
+          <span className="text-xl text-white mb-5">สถานะ : {userName}</span>
+          <span className="text-xl text-white mb-5">ชื่อ : {userRole}</span>
         </div>
 
         {role && (
@@ -155,7 +161,7 @@ const Sidebar = () => {
                 <li key={item.path} className="mb-2">
                   <Link
                     to={item.path}
-                    className={`transition-all flex flex-1 justify-center items-center text-2xl mb-2 max-[600px]:text-xl ${pathname.includes(item.path)
+                    className={`transition-all flex flex-1 justify-center items-center text-base mb-2 max-[600px]:text-base ${pathname.includes(item.path)
                       ? "text-white font-medium text-xl bg-gray-500 bg-opacity-20 rounded-md"
                       : "text-white font-medium text-xl hover:bg-gray-500 hover:bg-opacity-10 hover:text-gray-500 hover:rounded-md hover:font-semibold"
                       }`}
@@ -178,9 +184,11 @@ const Sidebar = () => {
         )}
 
         <div className={`flex justify-end transition-all mr-2 mb-2 align-bottom ${isSidebarCollapsed ? "justify-center -mr-2" : ""}`}>
-          <button>
-            <FaSignOutAlt size={30} className={`fill-red-600 ${isSidebarCollapsed ? "" : ""}`} />
-          </button>
+          <Link to="/login" onClick={logout}>
+            <button>
+              <FaSignOutAlt size={30} className={`fill-red-600 ${isSidebarCollapsed ? "" : ""}`} />
+            </button>
+          </Link>
         </div>
 
       </div >
