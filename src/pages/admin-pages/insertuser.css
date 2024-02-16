@@ -15,7 +15,22 @@
 }
 
 .text-inbox {
-  font-size: 18px;
+  font-size: 20px;
+  transition: font-size 0.3s, transform 0.3s;
+  position: relative;
+}
+
+.text-inbox:hover {
+  transform: translateY(-2px);
+}
+
+.import-file {
+  transition: font-size 0.5s, transform 0.5s;
+  position: relative;
+}
+
+.import-file:hover {
+  transform: translateY(-5px);
 }
 
 .textinsert {
@@ -36,6 +51,7 @@
 .box-2,
 .box-3 {
   display: flex;
+  position: relative;
   flex: 1;
 }
 

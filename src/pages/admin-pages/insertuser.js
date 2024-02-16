@@ -184,9 +184,9 @@ const InsertUser = () => {
                 />
               </div>
             </div>
-            <div className="m-auto mt-5">
+            <div className="m-auto mt-5 text-inbox">
               <button
-                className="text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex items-center"
+                className="text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex items-center text-inbox"
                 type="button"
                 style={{
                   backgroundColor: "#134e4a",
@@ -195,12 +195,12 @@ const InsertUser = () => {
                 }}
                 onClick={() => InsertDatabase()}
               >
-                <p className="m-0 text-inbox" style={{ marginRight: "10px" }}>
+                <p className="m-0 " style={{ marginRight: "10px" }}>
                   ยืนยัน
                 </p>
                 <FontAwesomeIcon
                   icon={faSave}
-                  className="mr-2"
+                  className="mr-2  "
                   style={{ fontSize: "24px" }}
                 />
               </button>
@@ -209,13 +209,13 @@ const InsertUser = () => {
         </div>
         <div className="border-display items-center justify-center bg-gray-500"></div>
         <div className="box-2 ml-1 flex-col">
-          <div className="flex justify-end">
+          <div className="flex justify-end text-inbox">
             <Link
               to="/userinfo"
-              className="mt-10 mr-40 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex items-center"
+              className="mt-10 mr-40 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex items-center "
               style={{
                 backgroundColor: "#134e4a",
-                width: 130,
+                width: 140,
                 height: "fit-content",
                 textDecoration: "none",
               }}
@@ -231,11 +231,11 @@ const InsertUser = () => {
             </Link>
           </div>
           <div className="box-3 ml-20 mr-40 ">
-            <div className=" bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 box2-flex">
+            <div className=" bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 box2-flex ">
               <div className="m-auto">
                 <h1 className="text-header ">เพิ่มผู้ใช้งานหลายคน</h1>
               </div>
-              <div>
+              <div className="import-file">
                 <button
                   className="textimport mt-5 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex items-center"
                   type="button"
@@ -247,12 +247,11 @@ const InsertUser = () => {
                   onClick={handleClick}
                 >
                   <FontAwesomeIcon icon={faFileImport} className="mr-2" />
-                  <p className="m-0" style={{ marginLeft: "10px" }}>
+                  <p className="m-0 " style={{ marginLeft: "10px" }}>
                     Import Excel File
                   </p>
                 </button>
 
-                {/* Hidden file input */}
                 <input
                   type="file"
                   ref={fileInputRef}
@@ -261,7 +260,7 @@ const InsertUser = () => {
                 />
               </div>
 
-              <div className="m-auto mt-5">
+              <div className="m-auto mt-5 text-inbox">
                 <button
                   className="text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex items-center"
                   type="button"
@@ -272,12 +271,12 @@ const InsertUser = () => {
                   }}
                   onClick={handleSaveToDatabase} // Call handleSaveToDatabase function when clicking Save button
                 >
-                  <p className="m-0 text-inbox" style={{ marginRight: "10px" }}>
+                  <p className="m-0 " style={{ marginRight: "10px" }}>
                     ยืนยัน
                   </p>
                   <FontAwesomeIcon
                     icon={faSave}
-                    className="mr-2"
+                    className="mr-2 "
                     style={{ fontSize: "24px" }}
                   />
                 </button>

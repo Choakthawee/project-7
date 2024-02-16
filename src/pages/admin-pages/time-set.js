@@ -1,6 +1,6 @@
 //กำหนดเวลา (แอดมิน)
 import "./time-set.css";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
@@ -19,6 +19,7 @@ const Time = () => {
       try {
         const responsedata = await axios.get(apiurl + "/api/admin/SystemGet");
         console.log(responsedata.data);
+        console.log("Kuy1");
         const data = responsedata.data[0];
         setStartDate(data.S_date);
         setEndDate(data.E_date);
@@ -26,7 +27,7 @@ const Time = () => {
         setEndTime(data.E_time);
         setIsChecked(new Date(data.status));
       } catch (error) {
-        alert(error.response.data);
+        alert(error.response.data.msgerror);
       }
     };
     getSystem();
