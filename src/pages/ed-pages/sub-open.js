@@ -1,6 +1,6 @@
 //รายวิชาที่เปิดสอน (ฝ่ายการศึกษา)
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { faArrowAltCircleDown } from "@fortawesome/free-solid-svg-icons";
@@ -8,38 +8,39 @@ import axios from "axios";
 import { apiurl } from "../../config";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
-import React, { useState } from "react";
 
 const SubOpen = () => {
   const [isSemOpen, setIsSemOpen] = useState(false);
   const [isYearOpen, setIsYearOpen] = useState(false);
   const [isSylOpen, setIsSylOpen] = useState(false);
   const [isTypeOpen, setIsTypeOpen] = useState(false);
+
   const userRole = localStorage.getItem("role");
   const navigate = useNavigate();
 
-  const showAlert = () => {
-    Swal.fire({
-      icon: 'error',
-      title: 'ข้อผิดพลาด',
-      text: 'คุณไม่มีสิทธิ์เข้าถึงหน้านี้',
-      confirmButtonColor: '#3085d6',
-      confirmButtonText: 'ตกลง'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        if (userRole === "admin") {
-          navigate('/userinfo');
-        } else if (userRole === "teacher") {
-          navigate('/schedule');
+  useEffect(() => {
+    const showAlert = () => {
+      Swal.fire({
+        icon: 'error',
+        title: 'ข้อผิดพลาด',
+        text: 'คุณไม่มีสิทธิ์เข้าถึงหน้านี้',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'ตกลง'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          if (userRole === "admin") {
+            navigate('/userinfo');
+          } else if (userRole === "teacher") {
+            navigate('/schedule');
+          }
         }
-      }
-    });
-  };
+      });
+    };
 
-  if (userRole !== 'education department') {
-    showAlert();
-    return null;
-  }
+    if (userRole !== 'education department') {
+      showAlert();
+    }
+  }, [userRole, navigate]);
 
 
   // const totalPages = Math.ceil(users.length / usersPerPage);
