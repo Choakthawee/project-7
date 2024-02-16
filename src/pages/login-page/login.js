@@ -61,36 +61,26 @@ const Login = () => {
                   </div>
                   <div className="font-style3 text-6xl md:text-8xl">Login</div>
                 </div>
-                <div className="absolute w-3/4 h-1/4 min-h-36 md:w-1/4 min-w-32 md:h-1/6 md:min-h-48 bg-custom rounded-2xl z-20 flex items-center justify-center">
-                  {/* <GoogleButton
-                    onClick={() => {
-                      loginGoogleAPI();
+                <div className="absolute w-3/4 h-1/4 min-h-36 md:w-1/4 min-w-32 md:h-1/6 md:min-h-48 bg-custom rounded-2xl z-20 flex items-center justify-center ">
+                  <GoogleLogin
+                    onSuccess={(credentialResponse) => {
+                      const credentialResponseDecoded = jwtDecode(
+                        credentialResponse.credential
+                      );
+                      loginGoogleAPI(
+                        credentialResponseDecoded.email,
+                        credentialResponseDecoded.picture
+                      );
                     }}
-                    style={{ backgroundColor: "white", color: "black" }}
-                  /> */}
-                  {/* <GoogleLogin
-                    clientId="203314193027-hlk7l9b9oq486spq5uhcbcjm4ddchkff.apps.googleusercontent.com"
-                    buttonText="Login with Google"
-                    onSuccess={loginGoogleAPI}
-                    onFailure={loginGoogleAPI}
-                    cookiePolicy={"single_host_origin"}
-                  /> */}
-                  <GoogleOAuthProvider clientId="203314193027-hlk7l9b9oq486spq5uhcbcjm4ddchkff.apps.googleusercontent.com">
-                    <GoogleLogin
-                      onSuccess={(credentialResponse) => {
-                        const credentialResponseDecoded = jwtDecode(
-                          credentialResponse.credential
-                        );
-                        loginGoogleAPI(
-                          credentialResponseDecoded.email,
-                          credentialResponseDecoded.picture
-                        );
-                      }}
-                      onError={() => {
-                        console.log("Login Failed");
-                      }}
-                    />
-                  </GoogleOAuthProvider>
+                    onError={() => {
+                      console.log("Login Failed");
+                    }}
+                    size="large"
+                    ux_mode="popup"
+                    shape="pill"
+                    width="300px"
+                    logo_alignment="left"
+                  />
                 </div>
 
                 <div className="absolute w-3/4 h-1/4 min-h-36 md:w-1/4 min-w-32 md:h-1/6 md:min-h-48 bg-white rounded-2xl z-0 -mt-3 ml-4"></div>
