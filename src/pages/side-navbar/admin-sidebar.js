@@ -129,11 +129,11 @@ const Sidebar = () => {
           </span>
         </div>
 
-        <div className={`flex flex-2 flex-col justify-center items-center mb-3 transition-all ${isSidebarCollapsed ? "opacity-0" : ""
+        <div className={`flex flex-2 flex-col justify-center items-center mb-3 transition-all ${isSidebarCollapsed ? "opacity-0 -mb-9" : ""
           }`}>
           <FaUser size={40} color="white" className="mb-5" />
-          <span className="text-xl text-white mb-5">สถานะ : {userRole}</span>
-          <span className="text-xl text-white mb-5">ชื่อ : {userName}</span>
+          <span className="text-sm text-white mb-5">สถานะ : {userRole}</span>
+          <span className="text-base text-white mb-5">ชื่อ : {userName}</span>
         </div>
 
         {role && (
@@ -143,9 +143,9 @@ const Sidebar = () => {
                 <li key={item.path} className="mb-2">
                   <Link
                     to={userRole ? item.path : "/"}
-                    className={`transition-all flex flex-1 justify-center items-center text-base mb-2 max-[600px]:text-base ${pathname.includes(item.path)
-                      ? "text-white font-medium text-xl bg-gray-500 bg-opacity-20 rounded-md"
-                      : "text-white font-medium text-xl hover:bg-gray-500 hover:bg-opacity-10 hover:text-gray-500 hover:rounded-md hover:font-semibold"
+                    className={`transition-all flex flex-1 justify-center items-center text-sm mb-2 max-[600px]:text-base ${pathname.includes(item.path)
+                      ? "text-white font-medium bg-gray-500 bg-opacity-20 rounded-md"
+                      : "text-white font-medium hover:bg-gray-500 hover:bg-opacity-10 hover:text-gray-500 hover:rounded-md hover:font-semibold"
                       }`}
                     style={{ height: '70px' }}
                   >
@@ -164,7 +164,7 @@ const Sidebar = () => {
           </nav>
         )}
 
-        <div className={`flex justify-end transition-all mr-2 mb-2 align-bottom ${isSidebarCollapsed ? "justify-center -mr-2" : ""}`}>
+        <div className={`flex justify-end transition-all mr-2 mb-2 align-bottom ${isSidebarCollapsed ? "justify-center ml-2 " : ""}`}>
           <Link to={userRole ? "/" : "/"} onClick={logout}>
             <button>
               <FaSignOutAlt size={30} className={`fill-red-600 ${isSidebarCollapsed ? "" : ""}`} />
