@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import "./insertuser.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileImport } from "@fortawesome/free-solid-svg-icons";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
@@ -17,7 +17,34 @@ const InsertUser = () => {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState(2);
   const [Sstatus, setSStatus] = useState(2);
-  const [fileData, setFileData] = useState([]); // State to hold data from the Excel file
+  const [fileData, setFileData] = useState([]);
+
+  const userRole = localStorage.getItem("role");
+  const navigate = useNavigate();
+
+  const showAlert = () => {
+    Swal.fire({
+      icon: 'error',
+      title: 'ข้อผิดพลาด',
+      text: 'คุณไม่มีสิทธิ์เข้าถึงหน้านี้',
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'ตกลง'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (userRole === "education department") {
+          navigate('/imcourse');
+        } else if (userRole === "teacher") {
+          navigate('/schedule');
+        }
+      }
+    });
+  };
+
+  if (userRole !== 'admin') {
+    showAlert();
+    return null;
+  }
+
 
   const InsertDatabase = async () => {
     if (!name || !email || !status) {

@@ -1,7 +1,7 @@
-//นำเข้ารายวิชา (ฝ่ายการศึกษา)
-//mdlsld,mslmcs;ld
+import { Link, useNavigate } from "react-router-dom";
 import "./course-set.css";
 import React, { useState } from "react";
+import Swal from "sweetalert2";
 
 const ImportCourse = () => {
   const [isSemOpen, setIsSemOpen] = useState(false);
@@ -14,6 +14,32 @@ const ImportCourse = () => {
   const toggleYearDropdown = () => {
     setIsYearOpen(!isYearOpen);
   };
+
+  const userRole = localStorage.getItem("role");
+  const navigate = useNavigate();
+
+  const showAlert = () => {
+    Swal.fire({
+      icon: 'error',
+      title: 'ข้อผิดพลาด',
+      text: 'คุณไม่มีสิทธิ์เข้าถึงหน้านี้',
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'ตกลง'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (userRole === "admin") {
+          navigate('/userinfo');
+        } else if (userRole === "teacher") {
+          navigate('/schedule');
+        }
+      }
+    });
+  };
+
+  if (userRole !== 'education department') {
+    showAlert();
+    return null;
+  }
 
   return (
     <div className="background">
@@ -91,20 +117,20 @@ const ImportCourse = () => {
                     aria-labelledby="dropdownDefaultButton"
                   >
                     <li>
-                      <a
-                        href="#"
+                      <Link
+                        to="#"
                         className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                       >
                         ต้น
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a
-                        href="#"
+                      <Link
+                        to="#"
                         className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                       >
                         ปลาย
-                      </a>
+                      </Link>
                     </li>
                   </ul>
                 </div>
@@ -158,70 +184,39 @@ const ImportCourse = () => {
                     aria-labelledby="dropdownDefaultButton"
                   >
                     <li>
-                      <a
-                        href="#"
+                      <Link
+                        to="#"
                         className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                       >
                         2566
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a
-                        href="#"
+                      <Link
+                        to="#"
                         className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                       >
                         2565
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a
-                        href="#"
+                      <Link
+                        to="#"
                         className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                       >
                         2564
-                      </a>
+                      </Link>
                     </li>
-                    <li>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                      >
-                        2563
-                      </a>
-                    </li>
+                    {/* Add other year options as needed */}
                   </ul>
                 </div>
               )}
             </div>
           </div>
         </div>
-        <div
-          style={{
-            display: "flex",
-            flex: 1,
-            borderColor: "blue",
-            borderWidth: 5,
-            marginLeft: 30,
-            marginTop: 30,
-          }}
-        >
-          <div className="flex flex-1 bg-slate-200 mt-10 rounded-lg overflow-x-auto shadow-xl">
-            <table className="h-full w-full">
-              <thead>
-                <tr className="column-color1 text-white">
-                  <th className="py-2 font-light text-xl">#</th>
-                  <th className="py-2 font-light text-xl">รหัสวิชา</th>
-                  <th className="py-2 font-light text-xl">ชื่อวิชา</th>
-                  <th className="py-2 font-light text-xl">หลักสูตร</th>
-                  <th className="py-2 font-light text-xl">หน่วยกิต</th>
-                  <th className="py-2 font-light text-xl">หมวดวิชา</th>
-                </tr>
-              </thead>
-            </table>
-          </div>
-        </div>
       </div>
     </div>
   );
 };
+
 export default ImportCourse;
