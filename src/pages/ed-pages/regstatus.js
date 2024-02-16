@@ -27,7 +27,7 @@ const RegStatus = () => {
     return null;
   }
   return (
-    <div>
+    <div className="h-screen">
       <h1>RegStatus</h1>
     </div>
   );
