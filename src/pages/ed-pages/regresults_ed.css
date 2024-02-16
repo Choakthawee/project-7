@@ -44,3 +44,8 @@
   border-style: solid;
   border-color: yellow;
 }
+.inDBox {
+  display: flex;
+  flex: 1;
+  position: relative;
+}

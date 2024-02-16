@@ -9,23 +9,23 @@ const RegResultED = () => {
 
   const showAlert = () => {
     Swal.fire({
-      icon: 'error',
-      title: 'ข้อผิดพลาด',
-      text: 'คุณไม่มีสิทธิ์เข้าถึงหน้านี้',
-      confirmButtonColor: '#3085d6',
-      confirmButtonText: 'ตกลง'
+      icon: "error",
+      title: "ข้อผิดพลาด",
+      text: "คุณไม่มีสิทธิ์เข้าถึงหน้านี้",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "ตกลง",
     }).then((result) => {
       if (result.isConfirmed) {
         if (userRole === "admin") {
-          navigate('/userinfo');
+          navigate("/userinfo");
         } else if (userRole === "teacher") {
-          navigate('/schedule');
+          navigate("/schedule");
         }
       }
     });
   };
 
-  if (userRole !== 'education department') {
+  if (userRole !== "education department") {
     showAlert();
     return null;
   }
@@ -93,7 +93,51 @@ const RegResultED = () => {
             </div>
           </div>
         </div>
-        <div className="DBox"></div>
+        <div className="DBox">
+          <div className="inDBox">
+            <div className="flex flex-1 bg-slate-200 mt-10 rounded-lg overflow-x-auto shadow-xl">
+              <table className="h-full w-full">
+                <thead>
+                  <tr className="column-color1 text-white">
+                    <th className="py-2 font-light text-xl">#</th>
+                    <th className="py-2 font-light text-xl">รหัสวิชา</th>
+                    <th className="py-2 font-light text-xl">ชื่อวิชา</th>
+                    <th className="py-2 font-light text-xl">หลักสูตร</th>
+                    <th className="py-2 font-light text-xl">หน่วยกิต</th>
+                    <th className="py-2 font-light text-xl">หมวดวิชา</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {/* {currentUsers.map((user, index) => (
+                  <tr
+                    key={startIndex + index}
+                    className={
+                      (startIndex + index) % 2 === 0
+                        ? "bg-gray-100"
+                        : "bg-white"
+                    }
+                  > */}
+                  <td className="py-2 font-light text-lg text-center">{"1"}</td>
+                  <td className="py-2 font-light text-lg text-center">
+                    {"03603423"}
+                  </td>
+                  <td className="py-2 font-light text-lg text-center">
+                    {"Network Programming"}
+                  </td>
+                  <td className="py-2 font-light text-lg text-center">
+                    {"2566"}
+                  </td>
+                  <td className="py-2 font-light text-lg text-center">{"3"}</td>
+                  <td className="py-2 font-light text-lg text-center">
+                    {"เฉพาะเลือก"}
+                  </td>
+                  {/* </tr>
+                ))} */}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
