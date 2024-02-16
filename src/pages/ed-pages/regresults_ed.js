@@ -1,7 +1,34 @@
 import "./regresults_ed.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowAltCircleDown } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router";
+import Swal from "sweetalert2";
 const RegResultED = () => {
+  const userRole = localStorage.getItem("role");
+  const navigate = useNavigate();
+
+  const showAlert = () => {
+    Swal.fire({
+      icon: 'error',
+      title: 'ข้อผิดพลาด',
+      text: 'คุณไม่มีสิทธิ์เข้าถึงหน้านี้',
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'ตกลง'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (userRole === "admin") {
+          navigate('/userinfo');
+        } else if (userRole === "teacher") {
+          navigate('/schedule');
+        }
+      }
+    });
+  };
+
+  if (userRole !== 'education department') {
+    showAlert();
+    return null;
+  }
   return (
     <div className="bged">
       <div className="ABox">

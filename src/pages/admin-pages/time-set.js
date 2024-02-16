@@ -5,6 +5,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import { apiurl } from "../../config";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const Time = () => {
   const [isChecked, setIsChecked] = useState(0);
@@ -32,6 +34,32 @@ const Time = () => {
     };
     getSystem();
   }, []);
+
+  const userRole = localStorage.getItem("role");
+  const navigate = useNavigate();
+
+  const showAlert = () => {
+    Swal.fire({
+      icon: 'error',
+      title: 'ข้อผิดพลาด',
+      text: 'คุณไม่มีสิทธิ์เข้าถึงหน้านี้',
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'ตกลง'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (userRole === "education department") {
+          navigate('/imcourse');
+        } else if (userRole === "teacher") {
+          navigate('/schedule');
+        }
+      }
+    });
+  };
+
+  if (userRole !== 'admin') {
+    showAlert();
+    return null;
+  }
 
   const handleCheckboxChange = (e) => {
     setIsChecked(e.target.checked);
@@ -136,11 +164,10 @@ const Time = () => {
                       }}
                     />
                     <div
-                      className={`w-16 h-9 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-green-800 ${
-                        isChecked
-                          ? "peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full"
-                          : ""
-                      } peer-checked:after:border-white after:content-[''] after:absolute after:top-1 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-7 after:w-7 after:transition-all dark:border-gray-600 peer-checked:bg-green-600`}
+                      className={`w-16 h-9 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-green-800 ${isChecked
+                        ? "peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full"
+                        : ""
+                        } peer-checked:after:border-white after:content-[''] after:absolute after:top-1 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-7 after:w-7 after:transition-all dark:border-gray-600 peer-checked:bg-green-600`}
                     ></div>
                     <span className="ms-3 text-l font-medium text-gray-900 dark:text-green-800">
                       เปิด

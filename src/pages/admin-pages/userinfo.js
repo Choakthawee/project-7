@@ -4,7 +4,8 @@ import { HiUserAdd } from "react-icons/hi";
 import { FaCircleLeft, FaCircleRight } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import swal from "sweetalert2";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const UserInfo = () => {
   const [users, setUsers] = useState([]);
@@ -20,6 +21,32 @@ const UserInfo = () => {
         console.error("Error fetching data: ", error);
       });
   }, []);
+
+  const userRole = localStorage.getItem("role");
+  const navigate = useNavigate();
+
+  const showAlert = () => {
+    Swal.fire({
+      icon: 'error',
+      title: 'ข้อผิดพลาด',
+      text: 'คุณไม่มีสิทธิ์เข้าถึงหน้านี้',
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'ตกลง'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (userRole === "education department") {
+          navigate('/imcourse');
+        } else if (userRole === "teacher") {
+          navigate('/schedule');
+        }
+      }
+    });
+  };
+
+  if (userRole !== 'admin') {
+    showAlert();
+    return null;
+  }
 
   const totalPages = Math.ceil(users.length / usersPerPage);
   const startIndex = (currentPage - 1) * usersPerPage;
@@ -37,7 +64,7 @@ const UserInfo = () => {
   const handleDeleteUser = (id) => {
     const userToDelete = users.find(user => user.id === id);
 
-    swal.fire({
+    Swal.fire({
       title: 'ยืนยันการลบผู้ใช้งาน',
       text: `คุณแน่ใจหรือไม่ว่าต้องการลบผู้ใช้ ${userToDelete.email}`,
       icon: 'warning',
@@ -50,7 +77,7 @@ const UserInfo = () => {
       if (result.isConfirmed) {
         axios.delete(`http://localhost:4133/api/admin/delete_user/${id}`)
           .then(response => {
-            swal.fire({
+            Swal.fire({
               title: 'ลบผู้ใช้งานสำเร็จ',
               text: 'ข้อมูลผู้ใช้งานได้ถูกลบออกแล้ว',
               icon: 'success',
