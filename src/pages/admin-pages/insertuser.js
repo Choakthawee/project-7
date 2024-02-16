@@ -127,7 +127,9 @@ const InsertUser = () => {
         <div className="box-1 m-1 items-center justify-center h-screen">
           <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
             <div className="m-auto">
-              <h1 className="text-header ">เพิ่มผู้ใช้งาน</h1>
+              <h1 className="flex font-family font-bold text-4xl size-30 text-midgreen h1text-shadow ">
+                เพิ่มผู้ใช้งาน
+              </h1>
             </div>
             <div className="mt-2">
               <p className="textinsert">
@@ -233,7 +235,9 @@ const InsertUser = () => {
           <div className="box-3 ml-20 mr-40 ">
             <div className=" bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 box2-flex ">
               <div className="m-auto">
-                <h1 className="text-header ">เพิ่มผู้ใช้งานหลายคน</h1>
+                <h1 className="flex font-family font-bold text-4xl size-30 text-midgreen h1text-shadow  ">
+                  เพิ่มผู้ใช้งานหลายคน
+                </h1>
               </div>
               <div className="import-file">
                 <button
