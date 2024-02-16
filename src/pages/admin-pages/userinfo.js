@@ -102,7 +102,7 @@ const UserInfo = () => {
 
 
   return (
-    <div className="flex-col flex py-10 px-10 overflow-hidden bg-white flex-1" style={{ height: "100vh" }}>
+    <div className="flex-col flex py-10 px-10 overflow-hidden bg-white flex-1 h-screen">
       <div className="flex">
         <p className="text-4xl font-bold h1text-shadow text-midgreen">
           ข้อมูลผู้ใช้งาน

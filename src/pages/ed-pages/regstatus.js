@@ -1,3 +1,4 @@
+import { Radio } from "lucide-react";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 const RegStatus = () => {
@@ -27,8 +28,16 @@ const RegStatus = () => {
     return null;
   }
   return (
-    <div className="h-screen">
-      <h1>RegStatus</h1>
+    <div className="flex-col flex py-10 px-10 bg-white flex-1 h-screen">
+
+      <div className="flex">
+        <p className="text-4xl font-bold h1text-shadow text-midgreen">
+          ตรวจสอบการลงทะเบียน
+        </p>
+      </div>
+
+      <div className="flex flex-1 flex-row">
+      </div>
     </div>
   );
 };
