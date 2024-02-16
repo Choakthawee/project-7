@@ -184,7 +184,7 @@ const Sidebar = () => {
         )}
 
         <div className={`flex justify-end transition-all mr-2 mb-2 align-bottom ${isSidebarCollapsed ? "justify-center -mr-2" : ""}`}>
-          <Link to="/login" onClick={logout}>
+          <Link to="/" onClick={logout}>
             <button>
               <FaSignOutAlt size={30} className={`fill-red-600 ${isSidebarCollapsed ? "" : ""}`} />
             </button>
