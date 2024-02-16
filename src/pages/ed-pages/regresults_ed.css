@@ -1,0 +1,46 @@
+.bged {
+  display: flex;
+  flex: 1;
+  background-color: #cce3de;
+  overflow: hidden;
+  height: 100vh;
+}
+
+.ABox {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  border-width: 5px;
+  border-style: solid;
+  border-color: red;
+}
+.BBox {
+  display: flex;
+  flex: 1;
+  position: relative;
+  border-width: 5px;
+  border-style: solid;
+  border-color: blue;
+}
+.CBox {
+  display: flex;
+  flex: 1;
+  position: relative;
+  border-width: 5px;
+  border-style: solid;
+  border-color: green;
+}
+.inCBox {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  align-items: center;
+}
+.DBox {
+  display: flex;
+  flex: 7;
+  position: relative;
+  border-width: 5px;
+  border-style: solid;
+  border-color: yellow;
+}
