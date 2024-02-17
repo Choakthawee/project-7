@@ -1,8 +1,6 @@
 //หน้า login
 import React from "react";
-import GoogleButton from "react-google-button";
 import { jwtDecode } from "jwt-decode";
-import { GoogleOAuthProvider } from "@react-oauth/google";
 import { GoogleLogin } from "@react-oauth/google";
 
 // import { GoogleLogin } from "react-google-login";
@@ -78,7 +76,7 @@ const Login = () => {
                     size="large"
                     ux_mode="popup"
                     shape="pill"
-                    width="300px"
+                    width="250px"
                     logo_alignment="left"
                   />
                 </div>
