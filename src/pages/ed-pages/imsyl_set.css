@@ -1,0 +1,61 @@
+.bgimsyl {
+  display: flex;
+  flex: 1;
+  background-color: #cce3de;
+}
+
+.boxbig {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  border-width: 4px;
+  border-style: solid;
+  border-color: red;
+}
+
+.boxsection {
+  display: flex;
+  flex: 1;
+  position: relative;
+  border-width: 4px;
+  border-style: solid;
+  border-color: blue;
+}
+
+.boxyear_course {
+  display: flex;
+  flex: 1;
+  position: relative;
+  border-width: 4px;
+  border-style: solid;
+  border-color: green;
+  align-items: center;
+}
+
+.boximport {
+  display: flex;
+  flex: 1;
+  position: relative;
+  border-width: 4px;
+  border-style: solid;
+  border-color: hwb(60 0% 0%);
+  align-items: center;
+}
+
+.boxbutton {
+  display: flex;
+  flex: 1;
+  position: relative;
+  border-width: 4px;
+  border-style: solid;
+  border-color: chocolate;
+}
+
+.boxtable {
+  display: flex;
+  flex: 4;
+  position: relative;
+  border-width: 4px;
+  border-style: solid;
+  border-color: blueviolet;
+}
