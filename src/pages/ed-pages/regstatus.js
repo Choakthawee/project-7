@@ -9,28 +9,28 @@ const RegStatus = () => {
   const [selectedSubject, setSelectedSubject] = useState("");
   const [selectedProb, setSelectedProb] = useState("");
 
-  // const showAlert = () => {
-  //   Swal.fire({
-  //     icon: 'error',
-  //     title: 'ข้อผิดพลาด',
-  //     text: 'คุณไม่มีสิทธิ์เข้าถึงหน้านี้',
-  //     confirmButtonColor: '#3085d6',
-  //     confirmButtonText: 'ตกลง'
-  //   }).then((result) => {
-  //     if (result.isConfirmed) {
-  //       if (userRole === "admin") {
-  //         navigate('/userinfo');
-  //       } else if (userRole === "teacher") {
-  //         navigate('/schedule');
-  //       }
-  //     }
-  //   });
-  // };
+  const showAlert = () => {
+    Swal.fire({
+      icon: 'error',
+      title: 'ข้อผิดพลาด',
+      text: 'คุณไม่มีสิทธิ์เข้าถึงหน้านี้',
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'ตกลง'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (userRole === "admin") {
+          navigate('/userinfo');
+        } else if (userRole === "teacher") {
+          navigate('/schedule');
+        }
+      }
+    });
+  };
 
-  // if (userRole !== 'education department') {
-  //   showAlert();
-  //   return null;
-  // }
+  if (userRole !== 'education department') {
+    showAlert();
+    return null;
+  }
 
   return (
     <div
@@ -111,37 +111,37 @@ const RegStatus = () => {
         <table className="h-full w-full">
           <thead>
             <tr className="column-color1 text-white">
-              <th className="py-2 font-light text-xl border-x-black border-x-2">
+              <th className="py-2 font-light text-base border-x-black border-x-2">
                 #
               </th>
-              <th className="py-2 font-light text-xl border-r-black border-x-2">
+              <th className="py-2 font-light text-base border-r-black border-x-2">
                 รหัส
               </th>
-              <th className="py-2 font-light text-xl border-r-black border-x-2">
+              <th className="py-2 font-light text-base border-r-black border-x-2">
                 วิชา
               </th>
-              <th className="py-2 font-light text-xl border-r-black border-x-2">
+              <th className="py-2 font-light text-base border-r-black border-x-2">
                 หน่วยกิต
               </th>
-              <th className="py-2 font-light text-xl border-r-black border-x-2">
+              <th className="py-2 font-light text-base border-r-black border-x-2">
                 lec/lab
               </th>
-              <th className="py-2 font-light text-xl border-r-black border-x-2">
+              <th className="py-2 font-light text-base border-r-black border-x-2">
                 อาจารย์ผู้สอน
               </th>
-              <th className="py-2 font-light text-xl border-r-black border-x-2">
+              <th className="py-2 font-light text-base border-r-black border-x-2">
                 จำนวนนิสิต
               </th>
-              <th className="py-2 font-light text-xl border-r-black border-x-2">
+              <th className="py-2 font-light text-base border-r-black border-x-2">
                 ชั้นปีที่เปิดรับ
               </th>
-              <th className="py-2 font-light text-xl border-r-black border-x-2">
+              <th className="py-2 font-light text-base border-r-black border-x-2">
                 วัน
               </th>
-              <th className="py-2 font-light text-xl border-r-black border-x-2">
+              <th className="py-2 font-light text-base border-r-black border-x-2">
                 เวลา
               </th>
-              <th className="py-2 font-light text-xl">หมายเหตุ</th>
+              <th className="py-2 font-light text-base">หมายเหตุ</th>
             </tr>
           </thead>
           <tbody></tbody>
