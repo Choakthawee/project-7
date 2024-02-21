@@ -32,7 +32,7 @@ const RegResultT = () => {
 
   const EditButton = () => {
     const handleSwab = () => {
-      navigate("/regresult_t_edit");
+      navigate("/");
     };
 
     return (
