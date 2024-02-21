@@ -21,27 +21,26 @@ const SubOpen = () => {
   useEffect(() => {
     const showAlert = () => {
       Swal.fire({
-        icon: 'error',
-        title: 'ข้อผิดพลาด',
-        text: 'คุณไม่มีสิทธิ์เข้าถึงหน้านี้',
-        confirmButtonColor: '#3085d6',
-        confirmButtonText: 'ตกลง'
+        icon: "error",
+        title: "ข้อผิดพลาด",
+        text: "คุณไม่มีสิทธิ์เข้าถึงหน้านี้",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "ตกลง",
       }).then((result) => {
         if (result.isConfirmed) {
           if (userRole === "admin") {
-            navigate('/userinfo');
+            navigate("/userinfo");
           } else if (userRole === "teacher") {
-            navigate('/schedule');
+            navigate("/schedule");
           }
         }
       });
     };
 
-    if (userRole !== 'education department') {
+    if (userRole !== "education department") {
       showAlert();
     }
   }, [userRole, navigate]);
-
 
   // const totalPages = Math.ceil(users.length / usersPerPage);
   // const [currentPage, setCurrentPage] = useState(1);
@@ -131,7 +130,7 @@ const SubOpen = () => {
             }}
             className="flex font-family text-xl font-medium"
           >
-            <p className="flex font-family text-xl font-medium ptext-shadow mr-3">
+            <p className="flex font-family text-xl font-medium ptext-shadow mr-3 mt-1">
               ภาคเรียน
             </p>
             <div style={{ position: "relative" }}>
@@ -164,7 +163,7 @@ const SubOpen = () => {
             }}
             className="flex font-family text-xl font-medium ml-3"
           >
-            <p className="flex font-family text-xl font-medium ptext-shadow mr-3">
+            <p className="flex font-family text-xl font-medium ptext-shadow mr-3 mt-1">
               ปีการศึกษา
             </p>
             <div style={{ position: "relative" }}>
