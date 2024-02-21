@@ -36,7 +36,7 @@ const ImportSyl = () => {
     return null;
   }
   return (
-    <div className="bgimsyl flex flex-1">
+    <div className="background">
       <div className="boxbig">
         <div className="boxsection">
           <p className="flex font-family font-bold text-4xl size-30 text-midgreen h1text-shadow mt-10 ml-10">
