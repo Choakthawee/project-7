@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import "./insertuser.css";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFileImport } from "@fortawesome/free-solid-svg-icons";
+import { faFileImport, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
 import { faCircleArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { faArrowAltCircleDown } from "@fortawesome/free-solid-svg-icons";
@@ -22,29 +22,29 @@ const InsertUser = () => {
   const userRole = localStorage.getItem("role");
   const navigate = useNavigate();
 
+  const [selectedFileName, setSelectedFileName] = useState(null);
   const showAlert = () => {
     Swal.fire({
-      icon: 'error',
-      title: 'ข้อผิดพลาด',
-      text: 'คุณไม่มีสิทธิ์เข้าถึงหน้านี้',
-      confirmButtonColor: '#3085d6',
-      confirmButtonText: 'ตกลง'
+      icon: "error",
+      title: "ข้อผิดพลาด",
+      text: "คุณไม่มีสิทธิ์เข้าถึงหน้านี้",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "ตกลง",
     }).then((result) => {
       if (result.isConfirmed) {
         if (userRole === "education department") {
-          navigate('/imcourse');
+          navigate("/imcourse");
         } else if (userRole === "teacher") {
-          navigate('/schedule');
+          navigate("/schedule");
         }
       }
     });
   };
 
-  if (userRole !== 'admin') {
+  if (userRole !== "admin") {
     showAlert();
     return null;
   }
-
 
   const InsertDatabase = async () => {
     if (!name || !email || !status) {
@@ -102,6 +102,7 @@ const InsertUser = () => {
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     if (selectedFile) {
+      setSelectedFileName(selectedFile.name);
       console.log("Selected File:", selectedFile);
       const fileReader = new FileReader();
       fileReader.readAsArrayBuffer(selectedFile);
@@ -149,149 +150,148 @@ const InsertUser = () => {
   };
 
   return (
-    <div className="backgroundinsert">
-      <div className="bigbox">
-        <div className="box-1 m-1 items-center justify-center h-screen">
-          <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-            <div className="m-auto">
-              <h1 className="flex font-family font-bold text-4xl size-30 text-midgreen h1text-shadow ">
-                เพิ่มผู้ใช้งาน
-              </h1>
-            </div>
-            <div className="mt-2">
-              <p className="textinsert">
-                ชื่อ-นามสกุล<span style={{ color: "red" }}>*</span>
-              </p>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="Name"
-                type="text"
-                placeholder="กรุณากรอกชื่อ-นามสกุล"
-                style={{ width: 500 }}
-                value={name}
-                onChange={handleNameChange}
-              />
-            </div>
-            <div className="mt-3">
-              <p className="textinsert">
-                Email<span style={{ color: "red" }}>*</span>
-              </p>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="email"
-                type="text"
-                placeholder="กรุณากรอก Email"
-                style={{ width: 500 }}
-                value={email}
-                onChange={handleEmailChange}
-              />
-            </div>
-            <div className="mt-3">
-              <p className="textinsert">
-                สถานะ<span style={{ color: "red" }}>*</span>
-              </p>
-              <div style={{ position: "relative" }}>
-                <select
-                  className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                  style={{ width: 500 }}
-                  value={status}
-                  onChange={handleStatusChange}
-                >
-                  <option>แอดมิน</option>
-                  <option>ฝ่ายการศึกษา</option>
-                  <option>อาจารย์</option>
-                </select>
-                <FontAwesomeIcon
-                  icon={faArrowAltCircleDown}
-                  style={{
-                    position: "absolute",
-                    top: "50%",
-                    right: "12px",
-                    transform: "translateY(-50%)",
-                    pointerEvents: "none",
-                  }}
-                />
-              </div>
-            </div>
-            <div className="m-auto mt-5 text-inbox">
-              <button
-                className="text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex items-center text-inbox"
-                type="button"
-                style={{
-                  backgroundColor: "#134e4a",
-                  width: 150,
-                  justifyContent: "center",
-                }}
-                onClick={() => InsertDatabase()}
+    <div className="backgroundinsert p-5 flex-col gap-3">
+      <div className="flex flex-row justify-end">
+        <Link
+          to="/userinfo"
+          className=" text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex items-center "
+          style={{
+            backgroundColor: "#134e4a",
+            width: 140,
+            height: "fit-content",
+            textDecoration: "none",
+          }}
+        >
+          <FontAwesomeIcon
+            icon={faCircleArrowLeft}
+            style={{
+              fontSize: "24px",
+              marginRight: "5px",
+            }}
+          />
+          ย้อนกลับ
+        </Link>
+      </div>
+      <div className="flex flex-col w-full md:flex-row items-end md:justify-center gap-8 overflow-y-auto md:items-center h-full">
+        <div className="bg-white shadow-md rounded w-full md:w-1/2 p-8 ">
+          <div className="m-auto">
+            <h1 className="flex font-family font-bold text-4xl size-30 text-midgreen h1text-shadow ">
+              เพิ่มผู้ใช้งาน
+            </h1>
+          </div>
+          <div className="mt-2">
+            <p className="textinsert">
+              ชื่อ-นามสกุล<span style={{ color: "red" }}>*</span>
+            </p>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="Name"
+              type="text"
+              placeholder="กรุณากรอกชื่อ-นามสกุล"
+              value={name}
+              onChange={handleNameChange}
+            />
+          </div>
+          <div className="mt-3">
+            <p className="textinsert">
+              Email<span style={{ color: "red" }}>*</span>
+            </p>
+            <input
+              className="shadow w-full xl:w-96 appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="email"
+              type="text"
+              placeholder="กรุณากรอก Email"
+              value={email}
+              onChange={handleEmailChange}
+            />
+          </div>
+          <div className="mt-3">
+            <p className="textinsert">
+              สถานะ<span style={{ color: "red" }}>*</span>
+            </p>
+            <div style={{ position: "relative" }}>
+              <select
+                className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                value={status}
+                onChange={handleStatusChange}
               >
-                <p className="m-0 " style={{ marginRight: "10px" }}>
-                  ยืนยัน
-                </p>
-                <FontAwesomeIcon
-                  icon={faSave}
-                  className="mr-2  "
-                  style={{ fontSize: "24px" }}
-                />
-              </button>
+                <option>แอดมิน</option>
+                <option>ฝ่ายการศึกษา</option>
+                <option>อาจารย์</option>
+              </select>
+              <FontAwesomeIcon
+                icon={faArrowAltCircleDown}
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  right: "12px",
+                  transform: "translateY(-50%)",
+                  pointerEvents: "none",
+                }}
+              />
             </div>
           </div>
-        </div>
-        <div className="border-display items-center justify-center bg-gray-500"></div>
-        <div className="box-2 ml-1 flex-col">
-          <div className="flex justify-end text-inbox">
-            <Link
-              to="/userinfo"
-              className="mt-10 mr-40 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex items-center "
+          <div className="m-auto mt-5 text-inbox">
+            <button
+              className="text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex items-center text-inbox"
+              type="button"
               style={{
                 backgroundColor: "#134e4a",
-                width: 140,
-                height: "fit-content",
-                textDecoration: "none",
+                width: 150,
+                justifyContent: "center",
               }}
+              onClick={() => InsertDatabase()}
             >
+              <p className="m-0 " style={{ marginRight: "10px" }}>
+                ยืนยัน
+              </p>
               <FontAwesomeIcon
-                icon={faCircleArrowLeft}
-                style={{
-                  fontSize: "24px",
-                  marginRight: "5px",
-                }}
+                icon={faSave}
+                className="mr-2  "
+                style={{ fontSize: "24px" }}
               />
-              ย้อนกลับ
-            </Link>
+            </button>
           </div>
-          <div className="box-3 ml-20 mr-40 ">
-            <div className=" bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 box2-flex ">
-              <div className="m-auto">
-                <h1 className="flex font-family font-bold text-4xl size-30 text-midgreen h1text-shadow  ">
-                  เพิ่มผู้ใช้งานหลายคน
-                </h1>
-              </div>
-              <div className="import-file">
-                <button
-                  className="textimport mt-5 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex items-center"
-                  type="button"
-                  style={{
-                    backgroundColor: "#ffffff",
-                    width: 300,
-                    border: "3px dashed black",
-                  }}
-                  onClick={handleClick}
-                >
-                  <FontAwesomeIcon icon={faFileImport} className="mr-2" />
-                  <p className="m-0 " style={{ marginLeft: "10px" }}>
-                    Import Excel File
-                  </p>
-                </button>
-
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  style={{ display: "none" }}
-                  onChange={handleFileChange}
-                />
-              </div>
-
-              <div className="m-auto mt-5 text-inbox">
+        </div>
+        <div className="visible flex h-1 w-full md:h-3/5 md:w-1  rounded-full  bg-gray-500"></div>
+        <div className="flex items-center w-full md:w-1/2">
+          <div className=" bg-white shadow-md rounded w-full px-8 pt-6 pb-8 flex gap-5  flex-col ">
+            <div className="mt-1">
+              <h1 className="flex font-family font-bold text-4xl size-30 text-midgreen h1text-shadow  ">
+                เพิ่มผู้ใช้งานหลายคน
+              </h1>
+            </div>
+            <div className="import-file">
+              <button
+                className="textimport mt-5 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex items-center"
+                type="button"
+                style={{
+                  backgroundColor: "#ffffff",
+                  border: "3px dashed black",
+                }}
+                onClick={handleClick}
+              >
+                <FontAwesomeIcon icon={faFileImport} className="mr-2" />
+                <p className="m-0 " style={{ marginLeft: "10px" }}>
+                  Import Excel File
+                </p>
+              </button>
+              <input
+                type="file"
+                ref={fileInputRef}
+                style={{ display: "none" }}
+                onChange={handleFileChange}
+              />
+            </div>
+            <div className="flex flex-1 relative">
+              <FontAwesomeIcon
+                icon={faArrowRight}
+                className="text-xl ml-3 mt-1"
+              />
+              <p className="ml-3 ">{selectedFileName}</p>
+            </div>
+            <div className="flex flex-row justify-start">
+              <div className="text-inbox ">
                 <button
                   className="text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex items-center"
                   type="button"
