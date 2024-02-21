@@ -76,14 +76,10 @@ const RegResultED = () => {
                 <option value="" disabled selected hidden>
                   ---
                 </option>
-                <option>2566</option>
-                <option>2565</option>
-                <option>2564</option>
-                <option>2563</option>
-                <option>2562</option>
-                <option>2561</option>
-                <option>2560</option>
-                <option>2559</option>
+                {[...Array(10 + 1).keys()].map((index) => {
+                  const year = new Date().getFullYear() + 544 - index;
+                  return <option key={year}>{year}</option>;
+                })}
               </select>
               <FontAwesomeIcon
                 icon={faArrowAltCircleDown}
