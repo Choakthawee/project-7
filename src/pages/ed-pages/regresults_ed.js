@@ -114,7 +114,7 @@ const RegResultED = () => {
         </div>
 
         <div className="flex flex-7 flex-col mt-5">
-          <div className="flex -flex-4">
+          <div className="flex flex-4">
             <div className="flex flex-1 ml-10 mr-5 bg-slate-200 rounded-lg overflow-x-auto shadow-xl h-full overflow-y-auto">
               <table className=" w-full">
                 <thead>
