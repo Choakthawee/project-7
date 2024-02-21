@@ -102,7 +102,7 @@ const Schedule = () => {
 
       {/*โค๊ดสำหรับตาราง*/}
 
-      <table className="mt-0 w-full border-collapse border border-gray-400">
+      <table className="mt-0 border-collapse border border-gray-400">
         <thead>
           <tr className="bg-gray-200">
             <th className="border border-gray-400 py-2 px-4"></th>
