@@ -16,7 +16,6 @@ import RegCourseEdit from "./pages/teacher-pages/regcourse_edit";
 import RegResultT from "./pages/teacher-pages/regresults_t";
 import Schedule from "./pages/teacher-pages/schedule";
 import ScheduleEdit from "./pages/teacher-pages/schedule_edit";
-import RegResultTED from "./pages/teacher-pages/regresults_t_edit";
 
 // Education Pages
 import ImportCourse from "./pages/ed-pages/imcourse";
@@ -49,7 +48,6 @@ function App() {
                 <Route path="/regresults_t" element={<RegResultT />} />
                 <Route path="/schedule" element={<Schedule />} />
                 <Route path="/schedule_edit" element={<ScheduleEdit />} />
-                <Route path="/regresult_t_edit" element={<RegResultTED />} />
 
                 {/* Education Pages */}
                 <Route path="/imcourse" element={<ImportCourse />} />
