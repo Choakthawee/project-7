@@ -103,8 +103,8 @@ const RegCourse = () => {
       <div
         style={{
           flex: 1,
-          borderColor: "red",
-          borderWidth: 5,
+          // borderColor: "red",
+          // borderWidth: 5,
           flexDirection: "column",
         }}
         className="mt-10 ml-10"
@@ -134,7 +134,7 @@ const RegCourse = () => {
             }}
             className="flex font-family text-xl font-medium"
           >
-            <p className="flex font-family text-xl font-medium ptext-shadow mr-3">
+            <p className="flex font-family text-xl font-medium ptext-shadow mr-3 mt-1">
               ภาคเรียน
             </p>
             <div style={{ position: "relative" }}>
@@ -167,7 +167,7 @@ const RegCourse = () => {
             }}
             className="flex font-family text-xl font-medium ml-2"
           >
-            <p className="flex font-family text-xl font-medium ptext-shadow mr-3">
+            <p className="flex font-family text-xl font-medium ptext-shadow mr-3 mt-1">
               ปีการศึกษา
             </p>
             <div style={{ position: "relative" }}>
