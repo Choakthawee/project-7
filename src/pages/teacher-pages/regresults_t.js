@@ -7,28 +7,28 @@ const RegResultT = () => {
 
   const showAlert = () => {
     Swal.fire({
-      icon: 'error',
-      title: 'ข้อผิดพลาด',
-      text: 'คุณไม่มีสิทธิ์เข้าถึงหน้านี้',
-      confirmButtonColor: '#3085d6',
-      confirmButtonText: 'ตกลง'
+      icon: "error",
+      title: "ข้อผิดพลาด",
+      text: "คุณไม่มีสิทธิ์เข้าถึงหน้านี้",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "ตกลง",
     }).then((result) => {
       if (result.isConfirmed) {
         if (userRole === "admin") {
-          navigate('/userinfo');
+          navigate("/userinfo");
         } else if (userRole === "education department") {
-          navigate('/imcourse');
+          navigate("/imcourse");
         }
       }
     });
   };
 
-  if (userRole !== 'teacher') {
+  if (userRole !== "teacher") {
     showAlert();
     return null;
   }
   return (
-    <div>
+    <div className="background">
       <h1>RegResultT</h1>
     </div>
   );

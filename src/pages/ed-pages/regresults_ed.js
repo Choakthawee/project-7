@@ -36,14 +36,14 @@ const RegResultED = () => {
   }
   return (
     <div className="bged">
-      <div className="ABox">
-        <div className="BBox">
+      <div className="flex flex-1 flex-col">
+        <div className="flex relative">
           <p className="flex font-family font-bold text-4xl size-30  text-midgreen h1text-shadow mt-10 ml-10">
             ผลการลงทะเบียน
           </p>
         </div>
-        <div className="CBox">
-          <div className="inCBox">
+        <div className="flex relative mt-10">
+          <div className="flex flex-row flex-1 items-center">
             <p className="textinsert font-bold ml-10">ภาคเรียน</p>
             <div className="flex relative ml-5">
               <select
@@ -76,14 +76,10 @@ const RegResultED = () => {
                 <option value="" disabled selected hidden>
                   ---
                 </option>
-                <option>2566</option>
-                <option>2565</option>
-                <option>2564</option>
-                <option>2563</option>
-                <option>2562</option>
-                <option>2561</option>
-                <option>2560</option>
-                <option>2559</option>
+                {[...Array(10 + 1).keys()].map((index) => {
+                  const year = new Date().getFullYear() + 544 - index;
+                  return <option key={year}>{year}</option>;
+                })}
               </select>
               <FontAwesomeIcon
                 icon={faArrowAltCircleDown}
@@ -117,8 +113,8 @@ const RegResultED = () => {
           </div>
         </div>
 
-        <div className="DBox ">
-          <div className="inDBox">
+        <div className="flex flex-7 flex-col mt-5">
+          <div className="flex -flex-4">
             <div className="flex flex-1 ml-10 mr-5 bg-slate-200 rounded-lg overflow-x-auto shadow-xl h-full overflow-y-auto">
               <table className=" w-full">
                 <thead>
@@ -199,19 +195,19 @@ const RegResultED = () => {
             </div>
           </div>
 
-          <div className="inDBox2">
+          <div className="flex flex-1 justify-center">
             <button>
-              <FaCircleLeft size={21} color="#0a6765" className="mr-3" />
+              <FaCircleLeft size={21} color="#0a6765" className="mr-3 mt-8" />
             </button>
             <p className="text-lg font-semibold text-midgreen  mt-8">
               หน้า 1 จาก 1
             </p>
             <button>
-              <FaCircleRight size={21} color="#0a6765" className="ml-3" />
+              <FaCircleRight size={21} color="#0a6765" className="ml-3 mt-8" />
             </button>
           </div>
 
-          <div className="inDBox3">
+          <div className="flex felx-1 justify-end">
             <div className="flex relative ml-5 mt-5 mr-10">
               <button
                 type="button"
