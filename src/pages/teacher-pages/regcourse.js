@@ -34,65 +34,65 @@ const RegCourse = () => {
     navigate("/regcourse_edit");
   };
 
-  const [statusSem, setSemStatus] = useState(1);
-  const [statusYear, setYearStatus] = useState(1);
-  const [statusSyl, setSylStatus] = useState(1);
-  const [statusCat, setCatStatus] = useState(1);
-  const [Sstatus, setSStatus] = useState(2);
+  // const [statusSem, setSemStatus] = useState(1);
+  // const [statusYear, setYearStatus] = useState(1);
+  // const [statusSyl, setSylStatus] = useState(1);
+  // const [statusCat, setCatStatus] = useState(1);
+  // const [Sstatus, setSStatus] = useState(2);
 
-  const handleSemStatusChange = (e) => {
-    setSemStatus(e.target.value);
-    if (e.target.value === "ต้น") {
-      setSStatus(1);
-    } else if (e.target.value === "ปลาย") {
-      setSStatus(2);
-    }
-  };
+  // const handleSemStatusChange = (e) => {
+  //   setSemStatus(e.target.value);
+  //   if (e.target.value === "ต้น") {
+  //     setSStatus(1);
+  //   } else if (e.target.value === "ปลาย") {
+  //     setSStatus(2);
+  //   }
+  // };
 
-  const handleYearStatusChange = (e) => {
-    setYearStatus(e.target.value);
-    if (e.target.value === "2566") {
-      setSStatus(1);
-    } else if (e.target.value === "2565") {
-      setSStatus(2);
-    } else if (e.target.value === "2564") {
-      setSStatus(3);
-    } else if (e.target.value === "2563") {
-      setSStatus(4);
-    } else if (e.target.value === "2562") {
-      setSStatus(5);
-    } else if (e.target.value === "2561") {
-      setSStatus(6);
-    }
-  };
+  // const handleYearStatusChange = (e) => {
+  //   setYearStatus(e.target.value);
+  //   if (e.target.value === "2566") {
+  //     setSStatus(1);
+  //   } else if (e.target.value === "2565") {
+  //     setSStatus(2);
+  //   } else if (e.target.value === "2564") {
+  //     setSStatus(3);
+  //   } else if (e.target.value === "2563") {
+  //     setSStatus(4);
+  //   } else if (e.target.value === "2562") {
+  //     setSStatus(5);
+  //   } else if (e.target.value === "2561") {
+  //     setSStatus(6);
+  //   }
+  // };
 
-  const handleSylStatusChange = (e) => {
-    setSylStatus(e.target.value);
-    if (e.target.value === "2566") {
-      setSStatus(1);
-    } else if (e.target.value === "2565") {
-      setSStatus(2);
-    } else if (e.target.value === "2564") {
-      setSStatus(3);
-    } else if (e.target.value === "2563") {
-      setSStatus(4);
-    } else if (e.target.value === "2562") {
-      setSStatus(5);
-    } else if (e.target.value === "2561") {
-      setSStatus(6);
-    }
-  };
+  // const handleSylStatusChange = (e) => {
+  //   setSylStatus(e.target.value);
+  //   if (e.target.value === "2566") {
+  //     setSStatus(1);
+  //   } else if (e.target.value === "2565") {
+  //     setSStatus(2);
+  //   } else if (e.target.value === "2564") {
+  //     setSStatus(3);
+  //   } else if (e.target.value === "2563") {
+  //     setSStatus(4);
+  //   } else if (e.target.value === "2562") {
+  //     setSStatus(5);
+  //   } else if (e.target.value === "2561") {
+  //     setSStatus(6);
+  //   }
+  // };
 
-  const handleCatStatusChange = (e) => {
-    setCatStatus(e.target.value);
-    if (e.target.value === "บังคับ") {
-      setSStatus(1);
-    } else if (e.target.value === "เฉพาะเลือก") {
-      setSStatus(2);
-    } else if (e.target.value === "เลือก") {
-      setSStatus(3);
-    }
-  };
+  // const handleCatStatusChange = (e) => {
+  //   setCatStatus(e.target.value);
+  //   if (e.target.value === "บังคับ") {
+  //     setSStatus(1);
+  //   } else if (e.target.value === "เฉพาะเลือก") {
+  //     setSStatus(2);
+  //   } else if (e.target.value === "เลือก") {
+  //     setSStatus(3);
+  //   }
+  // };
 
   if (userRole !== "teacher") {
     showAlert();
@@ -135,15 +135,18 @@ const RegCourse = () => {
             className="flex font-family text-xl font-medium"
           >
             <p className="flex font-family text-xl font-medium ptext-shadow mr-3 mt-1">
-              ภาคเรียน
+              ภาคเรียน <span style={{ color: "red" }}>*</span>
             </p>
             <div style={{ position: "relative" }}>
               <select
                 className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                 style={{ width: 120, height: 40 }}
-                value={statusSem}
-                onChange={handleSemStatusChange}
+                // value={statusSem}
+                // onChange={handleSemStatusChange}
               >
+                <option value="" disabled selected hidden>
+                  ---
+                </option>
                 <option>ต้น</option>
                 <option>ปลาย</option>
               </select>
@@ -168,21 +171,22 @@ const RegCourse = () => {
             className="flex font-family text-xl font-medium ml-2"
           >
             <p className="flex font-family text-xl font-medium ptext-shadow mr-3 mt-1">
-              ปีการศึกษา
+              ปีการศึกษา <span style={{ color: "red" }}>*</span>
             </p>
             <div style={{ position: "relative" }}>
               <select
                 className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                 style={{ width: 120, height: 40 }}
-                value={statusYear}
-                onChange={handleYearStatusChange}
+                // value={statusYear}
+                // onChange={handleYearStatusChange}
               >
-                <option>2566</option>
-                <option>2565</option>
-                <option>2564</option>
-                <option>2563</option>
-                <option>2562</option>
-                <option>2561</option>
+                <option value="" disabled selected hidden>
+                  ---
+                </option>
+                {[...Array(10 + 1).keys()].map((index) => {
+                  const year = new Date().getFullYear() + 544 - index;
+                  return <option key={year}>{year}</option>;
+                })}
               </select>
               <FontAwesomeIcon
                 icon={faArrowAltCircleDown}
@@ -219,7 +223,7 @@ const RegCourse = () => {
                   for="first_name"
                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
                 >
-                  วิชา/รหัสวิชา <span style={{ color: "red" }}>*</span>
+                  วิชา/รหัสวิชา
                 </label>
                 <input
                   type="text"
@@ -240,17 +244,18 @@ const RegCourse = () => {
             className="flex font-family font-medium ml-7 flex-col"
           >
             <div>
-              <p className="text-sm font-medium mb-2">
-                หลักสูตร <span style={{ color: "red" }}>*</span>
-              </p>
+              <p className="text-sm font-medium mb-2">หลักสูตร</p>
             </div>
             <div style={{ position: "relative" }}>
               <select
                 className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                 style={{ width: 140, height: 40 }}
-                value={statusSyl}
-                onChange={handleSylStatusChange}
+                // value={statusSyl}
+                // onChange={handleSylStatusChange}
               >
+                <option value="" disabled selected hidden>
+                  ---
+                </option>
                 <option>2566</option>
                 <option>2565</option>
                 <option>2564</option>
@@ -279,19 +284,20 @@ const RegCourse = () => {
             className="flex font-family font-medium ml-7 flex-col"
           >
             <div>
-              <p className="text-sm font-medium mb-2">
-                หมวดวิชา <span style={{ color: "red" }}>*</span>
-              </p>
+              <p className="text-sm font-medium mb-2">หมวดวิชา</p>
             </div>
             <div style={{ position: "relative" }}>
               <select
                 className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                 style={{ width: 140, height: 40 }}
-                value={statusCat}
-                onChange={handleCatStatusChange}
+                // value={statusCat}
+                // onChange={handleCatStatusChange}
               >
+                <option value="" disabled selected hidden>
+                  ---
+                </option>
+                <option>แกน</option>
                 <option>บังคับ</option>
-                <option>เฉพาะเลือก</option>
                 <option>เลือก</option>
               </select>
               <FontAwesomeIcon
@@ -373,7 +379,7 @@ const RegCourse = () => {
                   {"2566"}
                 </td>
                 <td className="py-2 font-light text-lg text-center">
-                  {"เฉพาะเลือก"}
+                  {"เลือก"}
                 </td>
                 <td className="py-2 font-light text-lg text-center">
                   <button
