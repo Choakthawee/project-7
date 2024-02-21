@@ -12,7 +12,7 @@ import Swal from "sweetalert2";
 const ImportSyl = () => {
   const userRole = localStorage.getItem("role");
   const navigate = useNavigate();
-
+  console.log(new Date().getFullYear() + 543);
   const showAlert = () => {
     Swal.fire({
       icon: "error",
@@ -36,15 +36,15 @@ const ImportSyl = () => {
     return null;
   }
   return (
-    <div className="bgimsyl h-screen">
+    <div className="bgimsyl flex flex-1">
       <div className="boxbig">
         <div className="boxsection">
-          <p className="flex font-family font-bold text-4xl size-30 text-midgreen h1text-shadow mt-5 ml-5">
+          <p className="flex font-family font-bold text-4xl size-30 text-midgreen h1text-shadow mt-10 ml-10">
             นำเข้าหลักสูตร
           </p>
         </div>
         <div className="boxyear_course">
-          <p className="textinsert font-bold ml-5">หลักสูตร</p>
+          <p className="textinsert font-bold ml-10">หลักสูตร</p>
           <div className="flex relative ml-5">
             <select
               className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
@@ -53,19 +53,11 @@ const ImportSyl = () => {
               <option value="" disabled selected hidden>
                 ---
               </option>
-              <option>2555</option>
-              <option>2556</option>
-              <option>2557</option>
-              <option>2558</option>
-              <option>2559</option>
-              <option>2560</option>
-              <option>2561</option>
-              <option>2562</option>
-              <option>2563</option>
-              <option>2564</option>
-              <option>2565</option>
-              <option>2566</option>
-              <option>2567</option>
+
+              {[...Array(10 + 1).keys()].map((index) => {
+                const year = new Date().getFullYear() + 544 - index;
+                return <option key={year}>{year}</option>;
+              })}
             </select>
             <FontAwesomeIcon
               icon={faArrowAltCircleDown}
@@ -82,7 +74,7 @@ const ImportSyl = () => {
         <div className="boximtoarrow">
           <div className="boximport">
             <div
-              className=" flex items-center justify-center bg-gray-200 border-dashed border-gray-400 border-4 p-4 ml-4"
+              className=" flex items-center justify-center bg-gray-200 border-dashed border-gray-400 border-4 p-4 ml-10"
               style={{ width: 190, height: 50 }}
             >
               <span className="ml-6"> Import Excel Flile</span>
@@ -91,7 +83,7 @@ const ImportSyl = () => {
                 style={{
                   position: "absolute",
                   top: "50%",
-                  left: "34px",
+                  left: "54px",
                   transform: "translateY(-50%)",
                   pointerEvents: "none",
                   fontSize: "20px",
