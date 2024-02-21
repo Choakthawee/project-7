@@ -3,6 +3,8 @@ import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import React, { useState } from "react";
 import "./reg-set.css";
+import { faCircleArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const RegCourseEdit = () => {
   const userRole = localStorage.getItem("role");
@@ -31,9 +33,37 @@ const RegCourseEdit = () => {
     return null;
   }
 
+  const handleSwab = () => {
+    navigate("/regcourse");
+  };
+
   return (
     <div className="background">
-      <h1>RegCourseEdit</h1>
+      <div className="mt-10 ml-10">
+        <div className="flex justify-end text-inbox">
+          <button
+            className="mt-10 mr-40 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex items-center "
+            style={{
+              backgroundColor: "#134e4a",
+              width: 140,
+              height: "fit-content",
+              textDecoration: "none",
+            }}
+            onClick={() => handleSwab()}
+          >
+            <FontAwesomeIcon
+              icon={faCircleArrowLeft}
+              style={{
+                fontSize: "24px",
+                marginRight: "5px",
+              }}
+            />
+            ย้อนกลับ
+          </button>
+        </div>
+        <div className="box-1 bg-white rounded"></div>
+        <h1>RegCourseEdit</h1>
+      </div>
     </div>
   );
 };

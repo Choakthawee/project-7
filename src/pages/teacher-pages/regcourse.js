@@ -135,7 +135,7 @@ const RegCourse = () => {
             className="flex font-family text-xl font-medium"
           >
             <p className="flex font-family text-xl font-medium ptext-shadow mr-3 mt-1">
-              ภาคเรียน
+              ภาคเรียน <span style={{ color: "red" }}>*</span>
             </p>
             <div style={{ position: "relative" }}>
               <select
@@ -168,7 +168,7 @@ const RegCourse = () => {
             className="flex font-family text-xl font-medium ml-2"
           >
             <p className="flex font-family text-xl font-medium ptext-shadow mr-3 mt-1">
-              ปีการศึกษา
+              ปีการศึกษา <span style={{ color: "red" }}>*</span>
             </p>
             <div style={{ position: "relative" }}>
               <select
@@ -219,7 +219,7 @@ const RegCourse = () => {
                   for="first_name"
                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
                 >
-                  วิชา/รหัสวิชา <span style={{ color: "red" }}>*</span>
+                  วิชา/รหัสวิชา
                 </label>
                 <input
                   type="text"
@@ -240,9 +240,7 @@ const RegCourse = () => {
             className="flex font-family font-medium ml-7 flex-col"
           >
             <div>
-              <p className="text-sm font-medium mb-2">
-                หลักสูตร <span style={{ color: "red" }}>*</span>
-              </p>
+              <p className="text-sm font-medium mb-2">หลักสูตร</p>
             </div>
             <div style={{ position: "relative" }}>
               <select
@@ -279,9 +277,7 @@ const RegCourse = () => {
             className="flex font-family font-medium ml-7 flex-col"
           >
             <div>
-              <p className="text-sm font-medium mb-2">
-                หมวดวิชา <span style={{ color: "red" }}>*</span>
-              </p>
+              <p className="text-sm font-medium mb-2">หมวดวิชา</p>
             </div>
             <div style={{ position: "relative" }}>
               <select
@@ -290,8 +286,8 @@ const RegCourse = () => {
                 value={statusCat}
                 onChange={handleCatStatusChange}
               >
+                <option>แกน</option>
                 <option>บังคับ</option>
-                <option>เฉพาะเลือก</option>
                 <option>เลือก</option>
               </select>
               <FontAwesomeIcon
@@ -373,7 +369,7 @@ const RegCourse = () => {
                   {"2566"}
                 </td>
                 <td className="py-2 font-light text-lg text-center">
-                  {"เฉพาะเลือก"}
+                  {"เลือก"}
                 </td>
                 <td className="py-2 font-light text-lg text-center">
                   <button
