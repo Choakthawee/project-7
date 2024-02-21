@@ -10,25 +10,25 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  border-width: 5px;
-  border-style: solid;
-  border-color: red;
+  /* border-width: 5px; */
+  /* border-style: solid;
+  border-color: red; */
 }
 .BBox {
   display: flex;
   flex: 1;
   position: relative;
-  border-width: 5px;
-  border-style: solid;
-  border-color: blue;
+  /* border-width: 5px; */
+  /* border-style: solid;
+  border-color: blue; */
 }
 .CBox {
   display: flex;
   flex: 1;
   position: relative;
-  border-width: 5px;
-  border-style: solid;
-  border-color: green;
+  /* border-width: 5px; */
+  /* border-style: solid;
+  border-color: green; */
 }
 .inCBox {
   display: flex;
@@ -39,13 +39,31 @@
 .DBox {
   display: flex;
   flex: 7;
-  position: relative;
-  border-width: 5px;
-  border-style: solid;
-  border-color: yellow;
+  /* border-width: 5px; */
+  /* border-style: solid;
+  border-color: yellow; */
+  flex-direction: column;
 }
 .inDBox {
   display: flex;
+  flex: 4;
+  /* border-width: 5px;
+  border-style: solid;
+  border-color: red; */
+}
+.inDBox2 {
+  display: flex;
   flex: 1;
-  position: relative;
+  justify-content: center;
+  /* border-width: 5px;
+  border-style: solid;
+  border-color: red; */
+}
+.inDBox3 {
+  display: flex;
+  flex: 1;
+  justify-content: end;
+  /* border-width: 5px;
+  border-style: solid;
+  border-color: red; */
 }

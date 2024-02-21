@@ -1,6 +1,11 @@
 import "./regresults_ed.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowAltCircleDown } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowAltCircleDown,
+  faFileDownload,
+} from "@fortawesome/free-solid-svg-icons";
+import { FaCircleLeft, FaCircleRight } from "react-icons/fa6";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 const RegResultED = () => {
@@ -91,32 +96,49 @@ const RegResultED = () => {
                 }}
               />
             </div>
+            <div className="flex relative ml-5 mt-2">
+              <button
+                type="button"
+                class="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                style={{
+                  backgroundColor: "#134e4a",
+                  width: 110,
+                  height: 35,
+                }}
+              >
+                <p className="text-lg mr-2">ค้นหา</p>
+                <FontAwesomeIcon
+                  icon={faMagnifyingGlass}
+                  className="mr-2"
+                  style={{ fontSize: "18px" }}
+                />
+              </button>
+            </div>
           </div>
         </div>
-        <div className="DBox">
+
+        <div className="DBox ">
           <div className="inDBox">
-            <div className="flex flex-1 bg-slate-200 mt-10 rounded-lg overflow-x-auto shadow-xl">
-              <table className="h-full w-full">
+            <div className="flex flex-1 ml-5 mr-5 bg-slate-200 rounded-lg overflow-x-auto shadow-xl h-full overflow-y-auto">
+              <table className=" w-full">
                 <thead>
                   <tr className="column-color1 text-white">
                     <th className="py-2 font-light text-xl">#</th>
                     <th className="py-2 font-light text-xl">รหัสวิชา</th>
                     <th className="py-2 font-light text-xl">ชื่อวิชา</th>
-                    <th className="py-2 font-light text-xl">หลักสูตร</th>
                     <th className="py-2 font-light text-xl">หน่วยกิต</th>
-                    <th className="py-2 font-light text-xl">หมวดวิชา</th>
+                    <th className="py-2 font-light text-xl">หมู่เรียน</th>
+                    <th className="py-2 font-light text-xl">อาจารย์ผู้สอน</th>
+                    <th className="py-2 font-light text-xl">จำนวนนิสิต</th>
+                    <th className="py-2 font-light text-xl">
+                      สาขาชั้นปีที่เปิดรับ
+                    </th>
+                    <th className="py-2 font-light text-xl">วันที่สอน</th>
+                    <th className="py-2 font-light text-xl">เวลาที่สอน</th>
                   </tr>
                 </thead>
+
                 <tbody>
-                  {/* {currentUsers.map((user, index) => (
-                  <tr
-                    key={startIndex + index}
-                    className={
-                      (startIndex + index) % 2 === 0
-                        ? "bg-gray-100"
-                        : "bg-white"
-                    }
-                  > */}
                   <td className="py-2 font-light text-lg text-center">{"1"}</td>
                   <td className="py-2 font-light text-lg text-center">
                     {"03603423"}
@@ -124,17 +146,89 @@ const RegResultED = () => {
                   <td className="py-2 font-light text-lg text-center">
                     {"Network Programming"}
                   </td>
+                  <td className="py-2 font-light text-lg text-center">{"3"}</td>
                   <td className="py-2 font-light text-lg text-center">
-                    {"2566"}
+                    {"800"}
+                  </td>
+                  <td className="py-2 font-light text-lg text-center">
+                    {"ยงเกียรติ แสวงสุข"}
+                  </td>
+                  <td className="py-2 font-light text-lg text-center">
+                    {"1 คน"}
+                  </td>
+                  <td className="py-2 font-light text-lg text-center">
+                    {"T-all"}
+                  </td>
+                  <td className="py-2 font-light text-lg text-center">
+                    {"อังคาร"}
+                  </td>
+                  <td className="py-2 font-light text-lg text-center">
+                    {"21.00-24.00"}
+                  </td>
+                </tbody>
+
+                <tbody>
+                  <td className="py-2 font-light text-lg text-center">{"2"}</td>
+                  <td className="py-2 font-light text-lg text-center">
+                    {"03603423"}
+                  </td>
+                  <td className="py-2 font-light text-lg text-center">
+                    {"Network Programming"}
                   </td>
                   <td className="py-2 font-light text-lg text-center">{"3"}</td>
                   <td className="py-2 font-light text-lg text-center">
-                    {"เฉพาะเลือก"}
+                    {"801"}
                   </td>
-                  {/* </tr>
-                ))} */}
+                  <td className="py-2 font-light text-lg text-center">
+                    {"ยงเกียรติ แสวงสุข"}
+                  </td>
+                  <td className="py-2 font-light text-lg text-center">
+                    {"1 คน"}
+                  </td>
+                  <td className="py-2 font-light text-lg text-center">
+                    {"T-all"}
+                  </td>
+                  <td className="py-2 font-light text-lg text-center">
+                    {"เสาร์"}
+                  </td>
+                  <td className="py-2 font-light text-lg text-center">
+                    {"21.00-24.00"}
+                  </td>
                 </tbody>
               </table>
+            </div>
+          </div>
+
+          <div className="inDBox2">
+            <button>
+              <FaCircleLeft size={21} color="#0a6765" className="mr-3" />
+            </button>
+            <p className="text-lg font-semibold text-midgreen  mt-8">
+              หน้า 1 จาก 1
+            </p>
+            <button>
+              <FaCircleRight size={21} color="#0a6765" className="ml-3" />
+            </button>
+          </div>
+
+          <div className="inDBox3">
+            <div className="flex relative ml-5 mt-5 mr-10">
+              <button
+                type="button"
+                class="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                style={{
+                  backgroundColor: "#134e4a",
+                  width: 190,
+                  height: 45,
+                }}
+              >
+                <p className="text-lg mr-2">นำออกไฟล์ xlsx</p>
+                <FontAwesomeIcon
+                  icon={faFileDownload}
+                  className=" ml-2"
+                  style={{ fontSize: "20px" }}
+                />
+              </button>
             </div>
           </div>
         </div>
