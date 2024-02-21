@@ -42,7 +42,7 @@ const RegResultED = () => {
             ผลการลงทะเบียน
           </p>
         </div>
-        <div className="flex relative mt-5">
+        <div className="flex relative mt-10">
           <div className="flex flex-row flex-1 items-center">
             <p className="textinsert font-bold ml-10">ภาคเรียน</p>
             <div className="flex relative ml-5">
@@ -117,7 +117,7 @@ const RegResultED = () => {
           </div>
         </div>
 
-        <div className="flex flex-7 flex-col mt-10">
+        <div className="flex flex-7 flex-col mt-5">
           <div className="flex -flex-4">
             <div className="flex flex-1 ml-10 mr-5 bg-slate-200 rounded-lg overflow-x-auto shadow-xl h-full overflow-y-auto">
               <table className=" w-full">
