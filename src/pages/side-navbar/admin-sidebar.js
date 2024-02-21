@@ -53,7 +53,7 @@ const Sidebar = () => {
     ],
     education: [
       { path: "/imsyl", label: "นำเข้าหลักสูตร", icon: <FaList size={24} /> },
-      { path: "/imcourse", label: "นำเข้ารายวิชา", icon: <FaBook size={24} /> },
+      { path: "/imcourse", label: "เลือกรายวิชาที่เปิดสอน", icon: <FaBook size={24} /> },
       {
         path: "/sub-open",
         label: "รายวิชาที่เปิดสอน",
