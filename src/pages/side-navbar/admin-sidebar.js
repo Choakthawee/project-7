@@ -20,7 +20,6 @@ const Sidebar = () => {
   const userName = localStorage.getItem("name");
   const userRole = localStorage.getItem("role");
 
-
   const sidebarItems = {
     admin: [
       {
@@ -53,7 +52,11 @@ const Sidebar = () => {
     ],
     education: [
       { path: "/imsyl", label: "นำเข้าหลักสูตร", icon: <FaList size={24} /> },
-      { path: "/imcourse", label: "เลือกรายวิชาที่เปิดสอน", icon: <FaBook size={24} /> },
+      {
+        path: "/imcourse",
+        label: "เลือกรายวิชาที่เปิดสอน",
+        icon: <FaBook size={24} />,
+      },
       {
         path: "/sub-open",
         label: "รายวิชาที่เปิดสอน",
@@ -72,7 +75,6 @@ const Sidebar = () => {
     ],
   };
 
-
   const getRole = () => {
     const userRole = localStorage.getItem("role");
 
@@ -90,8 +92,8 @@ const Sidebar = () => {
   const [isSidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   const logout = () => {
-    localStorage.clear()
-  }
+    localStorage.clear();
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -111,26 +113,37 @@ const Sidebar = () => {
 
   return (
     <div className={`flex ${isSidebarCollapsed ? "collapsed" : ""}`}>
-
       <div
-        className={`column-color1 px-2 py-2 flex flex-1 flex-col transition-all ${isSidebarCollapsed ? "w-20" : "w-60"}`}
+        className={`column-color1 px-2 py-2 flex flex-1 flex-col transition-all ${
+          isSidebarCollapsed ? "w-20" : "w-60"
+        }`}
       >
-
         <div
-          className={`sidebar-toggle items-center flex mb-10 justify-end cursor-pointer mt-2 mr-2 ${isSidebarCollapsed ? "justify-center -mr-0" : ""}`}
+          className={`sidebar-toggle items-center flex mb-10 justify-end cursor-pointer mt-2 mr-2 ${
+            isSidebarCollapsed ? "justify-center -mr-0" : ""
+          }`}
           onClick={() => setSidebarCollapsed(!isSidebarCollapsed)}
         >
           <span
-            className={`transform transition-all ${isSidebarCollapsed ? "rotate-180" : ""
-              }`}
+            className={`transform transition-all ${
+              isSidebarCollapsed ? "rotate-180" : ""
+            }`}
           >
-            <FaBars size={24} color="white" className={`transition-all ${isSidebarCollapsed ? "size-7 items-center" : ""
-              }`} />
+            <FaBars
+              size={24}
+              color="white"
+              className={`transition-all ${
+                isSidebarCollapsed ? "size-7 items-center" : ""
+              }`}
+            />
           </span>
         </div>
 
-        <div className={`flex flex-2 flex-col justify-center items-center mb-3 transition-all ${isSidebarCollapsed ? "opacity-0 -mb-9" : ""
-          }`}>
+        <div
+          className={`flex flex-2 flex-col justify-center items-center mb-3 transition-all ${
+            isSidebarCollapsed ? "opacity-0 -mb-9" : ""
+          }`}
+        >
           <FaUser size={40} color="white" className="mb-5" />
           <span className="text-sm text-white mb-5">สถานะ : {userRole}</span>
           <span className="text-base text-white mb-5">ชื่อ : {userName}</span>
@@ -143,15 +156,18 @@ const Sidebar = () => {
                 <li key={item.path} className="mb-2">
                   <Link
                     to={userRole ? item.path : "/"}
-                    className={`transition-all flex flex-1 justify-center items-center text-sm mb-2 max-[600px]:text-base ${pathname.includes(item.path)
-                      ? "text-white font-medium bg-gray-500 bg-opacity-20 rounded-md"
-                      : "text-white font-medium hover:bg-gray-500 hover:bg-opacity-10 hover:text-gray-500 hover:rounded-md hover:font-semibold"
-                      }`}
-                    style={{ height: '70px' }}
+                    className={`transition-all flex flex-1 justify-center items-center text-sm mb-2 max-[600px]:text-base ${
+                      pathname.includes(item.path)
+                        ? "text-white font-medium bg-gray-500 bg-opacity-20 rounded-md"
+                        : "text-white font-medium hover:bg-gray-500 hover:bg-opacity-10 hover:text-gray-500 hover:rounded-md hover:font-semibold"
+                    }`}
+                    style={{ height: "70px" }}
                   >
                     {item.icon && (
                       <span
-                        className={`items-center justify-center align-middle ${isSidebarCollapsed ? "" : "mr-2"}`}
+                        className={`items-center justify-center align-middle ${
+                          isSidebarCollapsed ? "" : "mr-2"
+                        }`}
                       >
                         {item.icon}
                       </span>
@@ -164,14 +180,29 @@ const Sidebar = () => {
           </nav>
         )}
 
-        <div className={`flex justify-end transition-all mr-2 mb-2 align-bottom ${isSidebarCollapsed ? "justify-center ml-2 " : ""}`}>
+        <div
+          className={`flex justify-end transition-all mr-2 mb-2 align-bottom ${
+            isSidebarCollapsed ? "justify-center ml-2 " : ""
+          }`}
+        >
           <Link to={userRole ? "/" : "/"} onClick={logout}>
-            <button>
-              <FaSignOutAlt size={30} className={`fill-red-600 ${isSidebarCollapsed ? "" : ""}`} />
+            <button
+              type="button"
+              class="flex items-center focus:outline-none text-white hover:bg-red-400  focus:ring-red-200 font-medium rounded-lg px-5 py-2.5 me-2 mb-2"
+              style={{
+                backgroundColor: "#134e4a",
+                width: 150,
+                height: 45,
+              }}
+            >
+              <p className="text-xl mr-3">LOGOUT</p>
+              <FaSignOutAlt
+                size={30}
+                className={`fill-red-600 ${isSidebarCollapsed ? "" : ""}`}
+              />
             </button>
           </Link>
         </div>
-
       </div>
     </div>
   );
