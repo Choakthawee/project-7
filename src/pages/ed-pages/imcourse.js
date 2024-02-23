@@ -128,24 +128,105 @@ const ImportCourse = () => {
                 }}
               />
             </div>
-            {/* <div className="flex relative ml-5 mt-2">
-              <button
-                type="button"
-                class="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-                style={{
-                  backgroundColor: "#134e4a",
-                  width: 110,
-                  height: 35,
-                }}
-              >
-                <p className="text-lg mr-2">ค้นหา</p>
-                <FontAwesomeIcon
-                  icon={faMagnifyingGlass}
-                  className="mr-2"
-                  style={{ fontSize: "18px" }}
+          </div>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            flex: 1,
+            // borderColor: "blue",
+            // borderWidth: 5,
+            marginLeft: 40,
+            marginTop: 10,
+          }}
+        >
+          <div
+            style={{
+              flex: 3,
+              // borderColor: "orange",
+              // borderWidth: 5,
+            }}
+          >
+            <form>
+              <div>
+                <label
+                  for="first_name"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
+                >
+                  วิชา/รหัสวิชา
+                </label>
+                <input
+                  type="text"
+                  id="course_code"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-400 dark:placeholder-gray-200 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="โปรดระบุวิชาหรือรหัสวิชา"
+                  required
                 />
-              </button>
-            </div> */}
+              </div>
+            </form>
+          </div>
+          <div
+            style={{
+              flex: 1,
+              // borderColor: "yellow",
+              // borderWidth: 5,
+            }}
+            className="flex font-family font-medium ml-7 flex-col"
+          >
+            <div>
+              <p className="text-sm font-medium mb-2">หมวดวิชา</p>
+            </div>
+            <div style={{ position: "relative" }}>
+              <select
+                className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                style={{ width: 140, height: 40 }}
+                // value={statusCat}
+                // onChange={handleCatStatusChange}
+              >
+                <option value="" disabled selected hidden>
+                  ---
+                </option>
+                <option>แกน</option>
+                <option>บังคับ</option>
+                <option>เลือก</option>
+              </select>
+              <FontAwesomeIcon
+                icon={faArrowAltCircleDown}
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  right: "12px",
+                  transform: "translateY(-50%)",
+                  pointerEvents: "none",
+                }}
+              />
+            </div>
+          </div>
+          <div
+            style={{
+              flex: 6,
+              // borderColor: "orange",
+              // borderWidth: 5,
+            }}
+            className="font-family mt-7 ml-10"
+          >
+            <button
+              type="button"
+              class="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+              style={{
+                backgroundColor: "#134e4a",
+                width: 110,
+                height: 35,
+                marginTop: 3,
+              }}
+            >
+              <p className="text-lg mr-2">ค้นหา</p>
+              <FontAwesomeIcon
+                icon={faMagnifyingGlass}
+                className="mr-2"
+                style={{ fontSize: "18px" }}
+              />
+            </button>
           </div>
         </div>
         <div className="flex flex-7 flex-col mt-5 ">
