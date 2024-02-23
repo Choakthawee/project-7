@@ -5,3 +5,22 @@
   overflow: hidden;
   height: 100vh;
 }
+
+.box {
+  display: flex;
+  flex: 5;
+  flex-direction: column;
+  background-color: white;
+}
+
+.box-gray {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  background-color: #f2efef;
+  border-radius: 0.5rem;
+}
+
+.text-lightgreen {
+  color: #6fa01d;
+}
