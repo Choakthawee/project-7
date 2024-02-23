@@ -27,7 +27,7 @@ const Time = () => {
         setEndDate(data.E_date);
         setStartTime(data.S_time);
         setEndTime(data.E_time);
-        setIsChecked(new Date(data.status));
+        setIsChecked(data.status);
       } catch (error) {
         alert(error.response.data.msgerror);
       }
@@ -40,23 +40,23 @@ const Time = () => {
 
   const showAlert = () => {
     Swal.fire({
-      icon: 'error',
-      title: 'ข้อผิดพลาด',
-      text: 'คุณไม่มีสิทธิ์เข้าถึงหน้านี้',
-      confirmButtonColor: '#3085d6',
-      confirmButtonText: 'ตกลง'
+      icon: "error",
+      title: "ข้อผิดพลาด",
+      text: "คุณไม่มีสิทธิ์เข้าถึงหน้านี้",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "ตกลง",
     }).then((result) => {
       if (result.isConfirmed) {
         if (userRole === "education department") {
-          navigate('/imcourse');
+          navigate("/imcourse");
         } else if (userRole === "teacher") {
-          navigate('/schedule');
+          navigate("/schedule");
         }
       }
     });
   };
 
-  if (userRole !== 'admin') {
+  if (userRole !== "admin") {
     showAlert();
     return null;
   }
@@ -84,8 +84,6 @@ const Time = () => {
   };
 
   const handleSaveTime = () => {
-    console.log(startDate, endDate, startTime, endTime);
-
     if (startDate && endDate && startTime && endTime) {
       const requestData = {
         systemstatus: 1,
@@ -94,17 +92,39 @@ const Time = () => {
         S_time: startTime,
         E_time: endTime,
       };
-      console.log(requestData);
+
       axios
         .post("http://localhost:4133/api/admin/System", requestData)
         .then((response) => {
+          Swal.fire({
+            title: "บันทึกสำเร็จ",
+            icon: "success",
+            confirmButtonColor: "#134e4a",
+          });
+
           console.log("Save successful:", response.data);
         })
         .catch((error) => {
-          console.error("Error saving data:", error);
+          Swal.fire({
+            title: "Error",
+            text: "บันทึกข้อมูลผิดพลาด เนื่องจากเซริฟเวอร์มีปัญหา",
+            icon: "error",
+            confirmButtonColor: "#134e4a",
+          });
+
+          console.error(
+            "บันทึกข้อมูลผิดพลาด เนื่องจากเซริฟเวอร์มีปัญหา:",
+            error
+          );
         });
     } else {
-      console.error("Please complete all selections.");
+      Swal.fire({
+        title: "โปรดใส่ข้อมูลให้ครบ",
+        icon: "error",
+        confirmButtonColor: "#134e4a",
+      });
+
+      console.error("โปรดใส่ข้อมูลให้ครบ");
     }
   };
 
@@ -164,10 +184,11 @@ const Time = () => {
                       }}
                     />
                     <div
-                      className={`w-16 h-9 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-green-800 ${isChecked
-                        ? "peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full"
-                        : ""
-                        } peer-checked:after:border-white after:content-[''] after:absolute after:top-1 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-7 after:w-7 after:transition-all dark:border-gray-600 peer-checked:bg-green-600`}
+                      className={`w-16 h-9 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-green-800 ${
+                        isChecked
+                          ? "peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full"
+                          : ""
+                      } peer-checked:after:border-white after:content-[''] after:absolute after:top-1 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-7 after:w-7 after:transition-all dark:border-gray-600 peer-checked:bg-green-600`}
                     ></div>
                     <span className="ms-3 text-l font-medium text-gray-900 dark:text-green-800">
                       เปิด
