@@ -1,13 +1,27 @@
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { EditIcon } from "lucide-react";
+import axios from "axios";
+import React from "react";
 
 const RegStatus = () => {
   const userRole = localStorage.getItem("role");
   const navigate = useNavigate();
-  const [selectedSubject, setSelectedSubject] = useState("");
+  const [selectedSubject, setSelectedSubject] = useState("required");
   const [selectedProb, setSelectedProb] = useState("");
+  const [category, setCategory] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:4133/api/subject_category')
+      .then((response) => {
+        setCategory(response.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching data: ', error);
+      });
+  }, []);
 
   const showAlert = () => {
     Swal.fire({
@@ -43,42 +57,23 @@ const RegStatus = () => {
         </p>
       </div>
 
-      <div className="flex flex-row justify-end ">
-        <label className="mr-2" for="required">
-          วิชาบังคับ
-        </label>
-        <input
-          className="mr-2"
-          type="radio"
-          name="subject_type"
-          value="required"
-          checked={selectedSubject === "required"}
-          onChange={() => setSelectedSubject("required")}
-        />
-
-        <label className="mr-2" for="elective">
-          วิชาเฉพาะเลือก
-        </label>
-        <input
-          className="mr-2"
-          type="radio"
-          name="subject_type"
-          value="elective"
-          checked={selectedSubject === "elective"}
-          onChange={() => setSelectedSubject("elective")}
-        />
-
-        <label className="mr-2" for="subelective">
-          วิชาเลือก
-        </label>
-        <input
-          className="mr-2"
-          type="radio"
-          name="subject_type"
-          value="subelective"
-          checked={selectedSubject === "subelective"}
-          onChange={() => setSelectedSubject("subelective")}
-        />
+      <div className="flex flex-row justify-end">
+        {category.map((item, index) => (
+          <React.Fragment key={index}>
+            <label className="mr-2" htmlFor={item.value}>
+              {item.name}
+            </label>
+            <input
+              className="mr-2"
+              type="radio"
+              name="subject_type"
+              value={item.value}
+              checked={selectedSubject === item.value}
+              onChange={() => setSelectedSubject(item.value)}
+              id={item.value}
+            />
+          </React.Fragment>
+        ))}
       </div>
 
       <div className="flex flex-row justify-end mt-3">
@@ -111,34 +106,34 @@ const RegStatus = () => {
         <table className="h-full w-full">
           <thead>
             <tr className="column-color1 text-white">
-              <th className="py-2 font-light text-base border-x-black border-x-2">
+              <th className="py-2 font-light text-base border-x-black border-x-2 border-opacity-10">
                 #
               </th>
-              <th className="py-2 font-light text-base border-r-black border-x-2">
+              <th className="py-2 font-light text-base border-r-black border-x-2 border-opacity-10">
                 รหัส
               </th>
-              <th className="py-2 font-light text-base border-r-black border-x-2">
+              <th className="py-2 font-light text-base border-r-black border-x-2 border-opacity-10">
                 วิชา
               </th>
-              <th className="py-2 font-light text-base border-r-black border-x-2">
+              <th className="py-2 font-light text-base border-r-black border-x-2 border-opacity-10">
                 หน่วยกิต
               </th>
-              <th className="py-2 font-light text-base border-r-black border-x-2">
+              <th className="py-2 font-light text-base border-r-black border-x-2 border-opacity-10">
                 lec/lab
               </th>
-              <th className="py-2 font-light text-base border-r-black border-x-2">
+              <th className="py-2 font-light text-base border-r-black border-x-2 border-opacity-10">
                 อาจารย์ผู้สอน
               </th>
-              <th className="py-2 font-light text-base border-r-black border-x-2">
+              <th className="py-2 font-light text-base border-r-black border-x-2 border-opacity-10">
                 จำนวนนิสิต
               </th>
-              <th className="py-2 font-light text-base border-r-black border-x-2">
+              <th className="py-2 font-light text-base border-r-black border-x-2 border-opacity-10">
                 ชั้นปีที่เปิดรับ
               </th>
-              <th className="py-2 font-light text-base border-r-black border-x-2">
+              <th className="py-2 font-light text-base border-r-black border-x-2 border-opacity-10">
                 วัน
               </th>
-              <th className="py-2 font-light text-base border-r-black border-x-2">
+              <th className="py-2 font-light text-base border-r-black border-x-2 border-opacity-10">
                 เวลา
               </th>
               <th className="py-2 font-light text-base">หมายเหตุ</th>
