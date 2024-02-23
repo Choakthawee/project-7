@@ -128,7 +128,7 @@ const ImportCourse = () => {
                 }}
               />
             </div>
-            <div className="flex relative ml-5 mt-2">
+            {/* <div className="flex relative ml-5 mt-2">
               <button
                 type="button"
                 class="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
@@ -145,7 +145,7 @@ const ImportCourse = () => {
                   style={{ fontSize: "18px" }}
                 />
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="flex flex-7 flex-col mt-5 ">
