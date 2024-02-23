@@ -42,7 +42,7 @@ const ScheduleEdit = () => {
   return (
     <div className="background ">
       <div className="flex flex-1 relative border-4 border-solid border-green-500 items-center">
-        <div className="flex flex- w-2/4 h-3/4 rounded-2xl mx-auto my-auto bg-white p-2  ">
+        <div className="flex  w-2/4 h-3/4 rounded-3xl mx-auto my-auto bg-white p-2  ">
           <div
             style={{
               flex: 1,
@@ -70,31 +70,51 @@ const ScheduleEdit = () => {
             </button>
           </div>
           <div className="flex flex-1 flex-col  relative border-4 border-solid border-green-500 mt-7 mr-56  ">
-            <div className="flex">
-              <p className="text-2xl font-bold text-midgreen mt-1">ตารางสอน</p>
-            </div>
-            <div className="flex flex-col mt-3">
-              <label className="text-midgreen mb-1">ชื่อรายวิชาที่สอน *</label>
-              <input className="focus:outline-none rounded-sm h-8 bg-gray-200"></input>
-            </div>
-            <div className="flex  mr-3 mt-1">
-              <label className="text-midgreen mb-1">รหัสวิชา :</label>
-            </div>
-            <div className="flex  mr-3 mt-1">
-              <label className="text-midgreen mb-1"> จำนวนหน่วยกิต :</label>
-            </div>
-            <div className="flex  mr-3 mt-1">
-              <label className="text-midgreen mb-1">หมวดวิชา :</label>
-            </div>
-            <div className="flex  mr-3 mt-1">
-              <label className="text-midgreen mb-1">
-                เพิ่มหมู่เรียน :
-                <FontAwesomeIcon
-                  icon={faPlusSquare}
-                  className="ml-2"
-                  style={{ fontSize: "16px" }}
-                />
-              </label>
+            <div className="ml-14 mr-60 ">
+              <div className="flex">
+                <p className="text-2xl font-bold text-midgreen mt-1">
+                  แก้ไขรายวิชา
+                </p>
+              </div>
+              <div className="flex flex-col mt-3">
+                <label className="text-midgreen mb-1">
+                  ชื่อรายวิชาที่สอน *
+                </label>
+                <input className="focus:outline-none rounded-sm h-8 bg-gray-200"></input>
+              </div>
+              <div className="flex  mr-3 mt-1">
+                <label className="text-midgreen mb-1">รหัสวิชา :</label>
+              </div>
+              <div className="flex  mr-3 mt-1">
+                <label className="text-midgreen mb-1"> จำนวนหน่วยกิต :</label>
+              </div>
+              <div className="flex  mr-3 mt-1">
+                <label className="text-midgreen mb-1">หมวดวิชา :</label>
+              </div>
+              <div className="flex  mr-3 mt-1">
+                <label className="text-midgreen mb-1">
+                  เพิ่มหมู่เรียน :
+                  <FontAwesomeIcon
+                    icon={faPlusSquare}
+                    className="ml-2"
+                    style={{ fontSize: "16px" }}
+                  />
+                </label>
+              </div>
+              <div className="flex mr-3 mt-1">
+                <div className="flex flex-col  border-4 border-red-500 rounded-3xl bg-gray-400 p-2">
+                  <div className="flex  mr-3 mt-1">
+                    <label className="flex flex-col text-midgreen mb-1 ">
+                      หมู่เรียนที่ :
+                    </label>
+                  </div>
+                  <div className="flex  mr-3 mt-1">
+                    <label className="flex flex-col text-midgreen mb-1">
+                      บรรยาย
+                    </label>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
