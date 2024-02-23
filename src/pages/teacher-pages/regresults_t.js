@@ -8,6 +8,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FaCircleLeft, FaCircleRight } from "react-icons/fa6";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import React, { useState } from "react";
 const RegResultT = () => {
   const userRole = localStorage.getItem("role");
   const navigate = useNavigate();
@@ -30,21 +31,80 @@ const RegResultT = () => {
     });
   };
 
-  const EditButton = () => {
-    const handleSwab = () => {
-      navigate("/");
-    };
+  const showSweetAlertWithInput = async () => {
+    const { value: day } = await Swal.fire({
+      title: "เปลี่ยนแปลงวัน",
+      input: "select",
+      inputOptions: {
+        จันทร์: "จันทร์",
+        อังคาร: "อังคาร",
+        พุธ: "พุธ",
+        พฤหัสบดี: "พฤหัสบดี",
+        ศุกร์: "ศุกร์",
+        เสาร์: "เสาร์",
+        อาทิตย์: "อาทิตย์",
+      },
+      inputPlaceholder: "เลือกวันที่จะสอน",
+      showCancelButton: true,
+      inputValidator: (value) => {
+        return new Promise((resolve) => {
+          if (value !== "") {
+            resolve();
+          } else {
+            resolve("Please select a day.");
+          }
+        });
+      },
+    });
 
-    return (
-      <div className="flex items-center me-4 justify-center">
-        <button
-          onClick={handleSwab}
-          className="bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded ml-3"
-        >
-          Edit
-        </button>
-      </div>
-    );
+    if (day) {
+      const { value: startTime } = await Swal.fire({
+        title: "เปลี่ยนแปลงเวลาเริ่มสอน",
+        input: "time",
+        inputPlaceholder: "Select a time",
+        showCancelButton: true,
+        inputValidator: (value) => {
+          return new Promise((resolve) => {
+            if (value !== "") {
+              resolve();
+            } else {
+              resolve("Please select a time.");
+            }
+          });
+        },
+      });
+
+      if (startTime) {
+        // Prompt for the end time
+        const { value: endTime } = await Swal.fire({
+          title: "เปลี่ยนแปลงเวลาสิ้นสุดการสอน",
+          input: "time",
+          inputPlaceholder: "Select a time",
+          showCancelButton: true,
+          inputValidator: (value) => {
+            return new Promise((resolve) => {
+              if (value !== "") {
+                resolve();
+              } else {
+                resolve("Please select a time.");
+              }
+            });
+          },
+        });
+
+        if (day && startTime && endTime) {
+          const message = `วันที่สอน: ${day} 
+          <br>เวลาเริ่มสอน: ${startTime} นาฬิกา
+          <br>เวลาสิ้นสุดการสอน: ${endTime} นาฬิกา
+          <br>`;
+
+          Swal.fire({
+            title: "สรุปการเปลี่ยนวันเวลา",
+            html: message,
+          });
+        }
+      }
+    }
   };
 
   if (userRole !== "teacher") {
@@ -162,7 +222,14 @@ const RegResultT = () => {
                   </td>
                   <td className="py-2 font-light text-lg text-center">{"-"}</td>
                   <td className="py-2 font-light text-lg text-center">
-                    <EditButton />
+                    <div className="flex items-center me-4 justify-center">
+                      <button
+                        className="bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded ml-3"
+                        onClick={showSweetAlertWithInput}
+                      >
+                        แก้ไขข้อมูล
+                      </button>
+                    </div>
                   </td>
                 </tbody>
               </table>
