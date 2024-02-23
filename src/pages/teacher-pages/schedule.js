@@ -13,18 +13,20 @@ const Schedule = () => {
   const [subjectAll, setSubjectAll] = useState([]);
   const [filteredSubjects, setFilteredSubjects] = useState([]);
   const [searchInput, setSearchInput] = useState('');
-
+  const [years, setYears] = useState(["ปี 1", "ปี 2", "ปี 3", "ปี 4", "ปี 4 ขึ้นไป"]);
+  const [subjectCategories, setSubjectCategories] = useState([]);
 
   useEffect(() => {
-    axios
-      .get('http://localhost:4133/api/teacher/schedule')
-      .then((response) => {
-        setSubjectAll(response.data);
-        setFilteredSubjects(response.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching data: ', error);
-      });
+    const fetchSubjectCategories = async () => {
+      try {
+        const response = await axios.get('http://localhost:4133/api/subject_category');
+        setSubjectCategories(response.data);
+      } catch (error) {
+        console.error('Error fetching subject categories: ', error);
+      }
+    };
+
+    fetchSubjectCategories();
   }, []);
 
   const handleInputChange = (e) => {
@@ -32,15 +34,34 @@ const Schedule = () => {
   };
 
   const handleSearch = () => {
+    const yearIndex = years.indexOf(searchInput); // หา index ของชั้นปีในอาร์เรย์ years
+    const yearToSearch = yearIndex + 1; // เพิ่ม 1 เพื่อให้เป็นชั้นปีเป็นตัวเลข เช่น ปี 1 => 1, ปี 2 => 2, และอื่น ๆ
+
     const filtered = subjectAll.filter((subject) => {
+      const idSubject = Array.isArray(subject.idSubject) ? subject.idSubject.join('') : subject.idSubject.toString();
+      const isOpenToYear = subject.branch.t12.includes(yearToSearch); // เช็คว่าชั้นปีที่เปิดรับมีชั้นปีที่ผู้ใช้เลือกหรือไม่
       return (
-        subject.idSubject.includes(searchInput) ||
+        idSubject.includes(searchInput) ||
         subject.SUBJECT.includes(searchInput) ||
-        subject.NAME.includes(searchInput)
+        subject.NAME.includes(searchInput) ||
+        isOpenToYear // เพิ่มเงื่อนไขนี้เพื่อให้ค้นหาด้วยชั้นปี
       );
     });
     setFilteredSubjects(filtered);
   };
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:4133/api/teacher/schedule')
+      .then((response) => {
+        setSubjectAll(response.data);
+        setFilteredSubjects(response.data);
+        console.log(response.data)
+      })
+      .catch((error) => {
+        console.error('Error fetching data: ', error);
+      });
+  }, [searchInput]);
 
   const showAlert = () => {
     Swal.fire({
@@ -90,17 +111,30 @@ const Schedule = () => {
       <div className="flex flex-row mt-10 mb-5">
         <div className="flex flex-col mr-3 w-48">
           <label className="text-midgreen mb-1">รหัส/วิชา/ผู้สอน</label>
-          <input className="focus:outline-none rounded-sm h-8" value={searchInput} onChange={handleInputChange}></input>        </div>
-        <div className="flex flex-col w-32 mr-3">
-          <label className="text-midgreen mb-1">สาขา/ชั้นปี</label>
-          <input className="focus:outline-none rounded-sm h-8" ></input>
-        </div>
-        <div className="flex flex-col w-32 mr-3">
-          <label className="text-midgreen mb-1">หมวดวิชา</label>
-          <input className="focus:outline-none rounded-sm h-8"></input>
+          <input className="focus:outline-none rounded-sm h-8" value={searchInput} onChange={handleInputChange}></input>
         </div>
 
-        <div className="flex mt-2 items-end cursor-pointer">
+        <div className="flex flex-col w-14 mr-3">
+          <label className="text-midgreen mb-1">ชั้นปี</label>
+          <select className="focus:outline-none rounded-sm h-8" value={searchInput} onChange={(e) => setSearchInput(e.target.value)}>
+            <option value="">เลือกชั้นปี</option>
+            {years.map((year, index) => (
+              <option key={index} value={year}>{year}</option>
+            ))}
+          </select>
+        </div>
+
+        <div className="flex flex-col mr-3">
+          <label className="text-midgreen mb-1">หมวดวิชา</label>
+          <select className="focus:outline-none rounded-sm h-8 w-36">
+            <option value="">เลือกหมวดวิชา</option>
+            {subjectCategories.map((category, index) => (
+              <option key={index} value={category.name}>{category.name === "required subject" ? "วิชาบังคับ" : category.name === "selected Subjects" ? "วิชาเลือก" : "วิชาเอก"}</option>
+            ))}
+          </select>
+        </div>
+
+        <div className="flex mt-2 items-end cursor-pointer ml-8">
           <button className="transition-all bg-green-600 rounded-3xl w-24 h-10 justify-center items-center flex flex-row shadow-lg" onClick={handleSearch}>
             <label className="text-white text-base cursor-pointer">ค้นหา</label>
             <Search size={21} color="white" />
