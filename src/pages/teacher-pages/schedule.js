@@ -15,6 +15,7 @@ const Schedule = () => {
   const [searchInput, setSearchInput] = useState('');
   const [years, setYears] = useState(["ปี 1", "ปี 2", "ปี 3", "ปี 4", "ปี 4 ขึ้นไป"]);
   const [subjectCategories, setSubjectCategories] = useState([]);
+  const [selectedYear, setSelectedYear] = useState('');
 
   useEffect(() => {
     const fetchSubjectCategories = async () => {
@@ -34,21 +35,26 @@ const Schedule = () => {
   };
 
   const handleSearch = () => {
-    const yearIndex = years.indexOf(searchInput); // หา index ของชั้นปีในอาร์เรย์ years
-    const yearToSearch = yearIndex + 1; // เพิ่ม 1 เพื่อให้เป็นชั้นปีเป็นตัวเลข เช่น ปี 1 => 1, ปี 2 => 2, และอื่น ๆ
-
+    const yearIndex = years.indexOf(selectedYear);
+    const yearToSearch = yearIndex + 1;
     const filtered = subjectAll.filter((subject) => {
       const idSubject = Array.isArray(subject.idSubject) ? subject.idSubject.join('') : subject.idSubject.toString();
-      const isOpenToYear = subject.branch.t12.includes(yearToSearch); // เช็คว่าชั้นปีที่เปิดรับมีชั้นปีที่ผู้ใช้เลือกหรือไม่
-      return (
-        idSubject.includes(searchInput) ||
-        subject.SUBJECT.includes(searchInput) ||
-        subject.NAME.includes(searchInput) ||
-        isOpenToYear // เพิ่มเงื่อนไขนี้เพื่อให้ค้นหาด้วยชั้นปี
-      );
+      const isOpenToYear = subject.branch.t12.includes(yearToSearch);
+
+      // ตรวจสอบว่ามีการเลือกปีการศึกษาและเปิดรายวิชาในปีนั้นๆ หรือไม่
+      if (selectedYear && isOpenToYear) {
+        return (
+          idSubject.includes(searchInput) ||
+          subject.SUBJECT.includes(searchInput) ||
+          subject.NAME.includes(searchInput)
+        );
+      } else {
+        return false; // ถ้าไม่เป็นไปตามเงื่อนไข ไม่ต้องเพิ่มลงใน filteredSubjects
+      }
     });
     setFilteredSubjects(filtered);
   };
+
 
   useEffect(() => {
     axios
@@ -116,7 +122,7 @@ const Schedule = () => {
 
         <div className="flex flex-col w-14 mr-3">
           <label className="text-midgreen mb-1">ชั้นปี</label>
-          <select className="focus:outline-none rounded-sm h-8" value={searchInput} onChange={(e) => setSearchInput(e.target.value)}>
+          <select className="focus:outline-none rounded-sm h-8" value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)}>
             <option value="">เลือกชั้นปี</option>
             {years.map((year, index) => (
               <option key={index} value={year}>{year}</option>
