@@ -117,32 +117,59 @@ const InsertUser = () => {
   };
 
   const handleSaveToDatabase = () => {
-    fileData.forEach((row) => {
-      if (row.length === 3) {
-        // ตรวจสอบว่าแถวนั้นมีข้อมูล 3 คอลัมน์หรือไม่
-        const [email, name, id] = row; // ดึงข้อมูล email, name, id จากแถวนั้น
-        axios
-          .post(apiurl + "/api/user1", { email, name, id })
-          .then((response) => {
-            console.log("Data saved successfully:", response.data);
-            Swal.fire({
-              title: "บันทึกข้อมูลสำเร็จ!",
-              text: "บันทึกข้อมูลลงฐานข้อมูลเรียบร้อยแล้ว",
-              icon: "success",
-              confirmButtonColor: "#134e4a",
+    if (selectedFileName) {
+      Swal.fire({
+        title: "ต้องการอัพโหลดไฟล์ใช่ไหม",
+        icon: "info",
+        confirmButtonColor: "#134e4a",
+        showCancelButton: true, // Show cancel button
+        confirmButtonText: "ใช่", // Confirm button text
+        cancelButtonText: "ไม่", // Cancel button text
+      }).then((result) => {
+        if (result.isConfirmed) {
+          try {
+            fileData.forEach((row) => {
+              if (row.length === 3) {
+                const [email, name, id] = row;
+
+                axios
+                  .post(apiurl + "/api/user1", { email, name, id })
+                  .then((response) => {
+                    console.log("Data saved successfully:", response.data);
+                    Swal.fire({
+                      title: "บันทึกข้อมูลสำเร็จ!",
+                      text: "บันทึกข้อมูลลงฐานข้อมูลเรียบร้อยแล้ว",
+                      icon: "success",
+                      confirmButtonColor: "#134e4a",
+                    });
+                  })
+                  .catch((error) => {
+                    console.error("Error saving data:", error);
+                    Swal.fire({
+                      title: "เกิดข้อผิดพลาด!",
+                      text: "ไม่สามารถบันทึกข้อมูลได้ โปรดลองอีกครั้ง",
+                      icon: "error",
+                      confirmButtonColor: "#134e4a",
+                    });
+                  });
+              }
             });
-          })
-          .catch((error) => {
-            console.error("Error saving data:", error);
-            Swal.fire({
-              title: "เกิดข้อผิดพลาด!",
-              text: "ไม่สามารถบันทึกข้อมูลได้ โปรดลองอีกครั้ง",
-              icon: "error",
-              confirmButtonColor: "#134e4a",
-            });
-          });
-      }
-    });
+          } catch (error) {
+            console.error("Error processing fileData:", error);
+          }
+        } else {
+          // Handle the case where the user clicked "No" or closed the modal
+          console.log("User canceled the operation or closed the modal.");
+        }
+      });
+    } else {
+      Swal.fire({
+        title: "กรุณาอัพโหลดไฟล์",
+        icon: "warning",
+        confirmButtonColor: "#134e4a",
+        confirmButtonText: "ok", // Confirm button text
+      });
+    }
   };
 
   const handleClick = () => {
@@ -300,7 +327,7 @@ const InsertUser = () => {
                     width: 150,
                     justifyContent: "center",
                   }}
-                  onClick={handleSaveToDatabase} // Call handleSaveToDatabase function when clicking Save button
+                  onClick={handleSaveToDatabase}
                 >
                   <p className="m-0 " style={{ marginRight: "10px" }}>
                     ยืนยัน

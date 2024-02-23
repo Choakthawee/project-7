@@ -2,9 +2,9 @@
 import React from "react";
 import { jwtDecode } from "jwt-decode";
 import { GoogleLogin } from "@react-oauth/google";
-
+import Swal from "sweetalert2";
 // import { GoogleLogin } from "react-google-login";
-import "./login.css"; // import CSS file
+import "./login.css";
 import axios from "axios";
 import { apiurl } from "../../config";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +12,18 @@ const Login = () => {
   const navigate = useNavigate();
 
   const loginGoogleAPI = async (email, urlpic) => {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      },
+    });
+
     try {
       const responseData = await axios.get(
         apiurl + "/api/admin/user/single/" + email
@@ -19,16 +31,36 @@ const Login = () => {
       await localStorage.setItem("email", responseData.data.email);
       await localStorage.setItem("name", responseData.data.name);
       await localStorage.setItem("role", responseData.data.role);
-      console.log(responseData.data);
-      if (responseData.data.id === 3) {
-        navigate("/imcourse");
-      } else if (responseData.data.id === 2) {
-        navigate("/userinfo");
-      } else if (responseData.data.id === 1) {
-        navigate("/regcourse");
-      }
+
+      Swal.fire({
+        title: "Login Successful",
+        text: "ล็อคอินสำเร็จ",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+      });
+
+      setTimeout(() => {
+        if (responseData.data.id === 3) {
+          navigate("/imcourse");
+        } else if (responseData.data.id === 2) {
+          navigate("/userinfo");
+        } else if (responseData.data.id === 1) {
+          navigate("/regcourse");
+        }
+      }, 2000);
     } catch (error) {
       console.error(error.response.data.error);
+
+      Swal.fire({
+        title: "Login Failed",
+        text: "ไม่มีผู้ใช้งานนี้ในระบบ",
+        icon: "error",
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+      });
     }
   };
 
