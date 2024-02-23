@@ -17,6 +17,7 @@ const Schedule = () => {
   const [subjectCategories, setSubjectCategories] = useState([]);
   const [selectedYear, setSelectedYear] = useState('');
 
+
   useEffect(() => {
     const fetchSubjectCategories = async () => {
       try {
