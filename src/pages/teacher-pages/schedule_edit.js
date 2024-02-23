@@ -12,6 +12,7 @@ import { faArrowAltCircleDown } from "@fortawesome/free-solid-svg-icons";
 import { RiEdit2Fill } from "react-icons/ri";
 import React, { useState } from "react";
 import "./reg-set.css";
+import Secadd from "./secadd";
 
 const ScheduleEdit = () => {
   const userRole = localStorage.getItem("role");
@@ -39,10 +40,15 @@ const ScheduleEdit = () => {
     showAlert();
     return null;
   }
+
+  const handleSwab = () => {
+    navigate("/schedule");
+  };
+
   return (
     <div className="background ">
       <div className="flex flex-1 relative border-4 border-solid border-green-500 items-center">
-        <div className="flex  w-2/4 h-3/4 rounded-3xl mx-auto my-auto bg-white p-2  ">
+        <div className="flex  w-3/4  rounded-3xl mx-auto my-auto bg-white p-2  ">
           <div
             style={{
               flex: 1,
@@ -60,6 +66,7 @@ const ScheduleEdit = () => {
                 width: 90,
                 height: 40,
               }}
+              onClick={() => handleSwab()}
             >
               <FontAwesomeIcon
                 icon={faArrowLeft}
@@ -70,7 +77,7 @@ const ScheduleEdit = () => {
             </button>
           </div>
           <div className="flex flex-1 flex-col  relative border-4 border-solid border-green-500 mt-7 mr-56  ">
-            <div className="ml-14 mr-60 ">
+            <div className="ml-14 mr-80 ">
               <div className="flex">
                 <p className="text-2xl font-bold text-midgreen mt-1">
                   แก้ไขรายวิชา
@@ -101,19 +108,8 @@ const ScheduleEdit = () => {
                   />
                 </label>
               </div>
-              <div className="flex mr-3 mt-1">
-                <div className="flex flex-col  border-4 border-red-500 rounded-3xl bg-gray-400 p-2">
-                  <div className="flex  mr-3 mt-1">
-                    <label className="flex flex-col text-midgreen mb-1 ">
-                      หมู่เรียนที่ :
-                    </label>
-                  </div>
-                  <div className="flex  mr-3 mt-1">
-                    <label className="flex flex-col text-midgreen mb-1">
-                      บรรยาย
-                    </label>
-                  </div>
-                </div>
+              <div className="flex mr-3 mt-1 ">
+                <Secadd></Secadd>
               </div>
             </div>
           </div>
