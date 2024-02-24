@@ -10,7 +10,7 @@ import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 
 const SubOpen = () => {
-  const userRole = localStorage.getItem("role");
+  const userRole = localStorage.getItem("role_id");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,16 +23,16 @@ const SubOpen = () => {
         confirmButtonText: "ตกลง",
       }).then((result) => {
         if (result.isConfirmed) {
-          if (userRole === "admin") {
+          if (userRole === "2") {
             navigate("/userinfo");
-          } else if (userRole === "teacher") {
+          } else if (userRole === "1") {
             navigate("/schedule");
           }
         }
       });
     };
 
-    if (userRole !== "education department") {
+    if (userRole !== "3") {
       showAlert();
     }
   }, [userRole, navigate]);

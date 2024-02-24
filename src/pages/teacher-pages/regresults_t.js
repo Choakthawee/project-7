@@ -10,7 +10,7 @@ import { FaCircleLeft, FaCircleRight } from "react-icons/fa6";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import React, { useState } from "react";
 const RegResultT = () => {
-  const userRole = localStorage.getItem("role");
+  const userRole = localStorage.getItem("role_id");
   const navigate = useNavigate();
 
   const showAlert = () => {
@@ -22,9 +22,9 @@ const RegResultT = () => {
       confirmButtonText: "ตกลง",
     }).then((result) => {
       if (result.isConfirmed) {
-        if (userRole === "admin") {
+        if (userRole === "2") {
           navigate("/userinfo");
-        } else if (userRole === "education department") {
+        } else if (userRole === "3") {
           navigate("/imcourse");
         }
       }
@@ -107,7 +107,7 @@ const RegResultT = () => {
     }
   };
 
-  if (userRole !== "teacher") {
+  if (userRole !== "1") {
     showAlert();
     return null;
   }

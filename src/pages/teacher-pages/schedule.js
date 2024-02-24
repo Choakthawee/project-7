@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 const Schedule = () => {
-  const userRole = localStorage.getItem('role');
+  const userRole = localStorage.getItem('role_id');
   const navigate = useNavigate();
   const [isTeacher, setIsTeacher] = useState(false);
   const [subjectAll, setSubjectAll] = useState([]);
@@ -72,23 +72,23 @@ const Schedule = () => {
 
   const showAlert = () => {
     Swal.fire({
-      icon: 'error',
-      title: 'ข้อผิดพลาด',
-      text: 'คุณไม่มีสิทธิ์เข้าถึงหน้านี้',
-      confirmButtonColor: '#3085d6',
-      confirmButtonText: 'ตกลง',
+      icon: "error",
+      title: "ข้อผิดพลาด",
+      text: "คุณไม่มีสิทธิ์เข้าถึงหน้านี้",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "ตกลง",
     }).then((result) => {
       if (result.isConfirmed) {
-        if (userRole === 'admin') {
-          navigate('/userinfo');
-        } else if (userRole === 'education department') {
-          navigate('/imcourse');
+        if (userRole === "2") {
+          navigate("/userinfo");
+        } else if (userRole === "3") {
+          navigate("/imcourse");
         }
       }
     });
   };
 
-  if (userRole !== 'teacher') {
+  if (userRole !== "1") {
     showAlert();
     return null;
   }

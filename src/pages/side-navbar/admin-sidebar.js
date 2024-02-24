@@ -77,13 +77,14 @@ const Sidebar = () => {
 
   const getRole = () => {
     const userRole = localStorage.getItem("role");
-
+    const userRole_id = localStorage.getItem("role_id");
     // Check if the user role is valid
     if (userRole && sidebarItems[userRole]) {
       return userRole;
-    } else if (userRole === "education department") {
+    } else if (userRole_id === "3") {
       return "education";
-    }
+    } else if (userRole_id === "2") return "admin"; else if (userRole_id === "1") return "teacher";
+   
 
     return null;
   };

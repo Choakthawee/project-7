@@ -21,7 +21,7 @@ const ImportCourse = () => {
     setIsYearOpen(!isYearOpen);
   };
 
-  const userRole = localStorage.getItem("role");
+  const userRole = localStorage.getItem("role_id");
 
   const navigate = useNavigate();
   const InlineCheckbox = () => {
@@ -46,16 +46,16 @@ const ImportCourse = () => {
       confirmButtonText: "ตกลง",
     }).then((result) => {
       if (result.isConfirmed) {
-        if (userRole === "admin") {
+        if (userRole === "2") {
           navigate("/userinfo");
-        } else if (userRole === "teacher") {
+        } else if (userRole === "1") {
           navigate("/schedule");
         }
       }
     });
   };
 
-  if (userRole !== "education department") {
+  if (userRole !== "3") {
     showAlert();
     return null;
   }

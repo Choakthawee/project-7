@@ -25,7 +25,7 @@ import RegStatus from "./pages/ed-pages/regstatus";
 import SubOpen from "./pages/ed-pages/sub-open";
 
 function App() {
-  console.log(window.location.pathname);
+  
   return (
     <Router>
       <Routes>

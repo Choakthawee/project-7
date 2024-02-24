@@ -6,7 +6,7 @@ import axios from "axios";
 import React from "react";
 
 const RegStatus = () => {
-  const userRole = localStorage.getItem("role");
+  const userRole = localStorage.getItem("role_id");
   const navigate = useNavigate();
   const [selectedSubject, setSelectedSubject] = useState("required");
   const [selectedProb, setSelectedProb] = useState("");
@@ -25,23 +25,23 @@ const RegStatus = () => {
 
   const showAlert = () => {
     Swal.fire({
-      icon: 'error',
-      title: 'ข้อผิดพลาด',
-      text: 'คุณไม่มีสิทธิ์เข้าถึงหน้านี้',
-      confirmButtonColor: '#3085d6',
-      confirmButtonText: 'ตกลง'
+      icon: "error",
+      title: "ข้อผิดพลาด",
+      text: "คุณไม่มีสิทธิ์เข้าถึงหน้านี้",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "ตกลง",
     }).then((result) => {
       if (result.isConfirmed) {
-        if (userRole === "admin") {
-          navigate('/userinfo');
-        } else if (userRole === "teacher") {
-          navigate('/schedule');
+        if (userRole === "2") {
+          navigate("/userinfo");
+        } else if (userRole === "1") {
+          navigate("/schedule");
         }
       }
     });
   };
 
-  if (userRole !== 'education department') {
+  if (userRole !== "3") {
     showAlert();
     return null;
   }
