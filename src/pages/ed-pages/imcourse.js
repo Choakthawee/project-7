@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import "./course-set.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { FaCircleLeft, FaCircleRight } from "react-icons/fa6";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,6 +9,9 @@ import {
   faFileDownload,
 } from "@fortawesome/free-solid-svg-icons";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { AwardIcon } from "lucide-react";
+import axios from "axios";
+import { apiurl } from "../../config";
 const ImportCourse = () => {
   const [isSemOpen, setIsSemOpen] = useState(false);
   const [isYearOpen, setIsYearOpen] = useState(false);
@@ -22,8 +25,35 @@ const ImportCourse = () => {
   };
 
   const userRole = localStorage.getItem("role_id");
-
   const navigate = useNavigate();
+  const [subjects, setSubjects] = useState([]);
+  const [noneSubject, setNoneSubject] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const subjectsPage = 30;
+  const totalPages = Math.ceil(subjects.length / subjectsPage);
+  const startIndex = (currentPage - 1) * subjectsPage;
+  const endIndex = startIndex + subjectsPage;
+  const currentsubjects = subjects.msg ? [] : subjects.slice(startIndex, endIndex);
+  useEffect(() => {
+    const getdataSubject = async () => {
+      try {
+        const responsedata = await axios.get(apiurl + "/api/education/getallsubjects");
+        const data = responsedata.data;
+        setSubjects(data);
+
+      } catch (err) {
+        setNoneSubject(err.response.data.msgerror);
+      }
+    }
+    getdataSubject();
+  }, [])
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
+
+  const handlePrevPage = () => {
+    setCurrentPage((prevPage) => prevPage - 1);
+  };
   const InlineCheckbox = () => {
     return (
       <div className="flex items-center me-4 justify-center">
@@ -61,27 +91,16 @@ const ImportCourse = () => {
   }
 
   return (
-    <div className="background">
-      <div
-        style={{
-          flex: 1,
-          // borderColor: "red",
-          // borderWidth: 5,
-          flexDirection: "column",
-        }}
-      >
-        <h1
-          style={{
-            flex: 1,
-          }}
-          className="flex font-family font-bold text-4xl size-30 text-midgreen h1text-shadow mt-10 ml-10 "
-        >
+    <div className="background21 block min-h-screen w-full p-10">
+      <div className="flex flex-col">
+        <div className="flex gap-5 flex-col">
+          <h1 className="flex font-family font-bold text-4xl size-30 text-midgreen h1text-shadow ">
           เลือกรายวิชาที่เปิดสอน
         </h1>
-        <div className="flex flex-1 relative mt-10">
-          <div className="flex flex-1 flex-row items-center ">
-            <p className="textinsert font-bold ml-10">ภาคเรียน</p>
-            <div className="flex relative ml-5">
+        <div className="flex flex-1 relative">
+          <div className="flex flex-1 flex-row items-center gap-5">
+            <p className="textinsert font-bold">ภาคเรียน</p>
+            <div className="flex relative">
               <select
                 className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                 style={{ width: 150 }}
@@ -103,8 +122,8 @@ const ImportCourse = () => {
                 }}
               />
             </div>
-            <p className="textinsert font-bold ml-5">ปีการศึกษา</p>
-            <div className="flex relative ml-5">
+            <p className="textinsert font-bold ">ปีการศึกษา</p>
+            <div className="flex relative">
               <select
                 className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                 style={{ width: 150 }}
@@ -130,58 +149,32 @@ const ImportCourse = () => {
             </div>
           </div>
         </div>
-        <div
-          style={{
-            display: "flex",
-            flex: 1,
-            // borderColor: "blue",
-            // borderWidth: 5,
-            marginLeft: 40,
-            marginTop: 10,
-          }}
-        >
+        <div className="flex flex-1 gap-3">
           <div
             style={{
               flex: 3,
-              // borderColor: "orange",
-              // borderWidth: 5,
             }}
           >
-            <form>
-              <div>
-                <label
-                  for="first_name"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
-                >
+          <div className="flex gap-2 flex-col">
+                <label for="first_name" class="block text-sm font-medium text-gray-900 dark:text-black">
                   วิชา/รหัสวิชา
                 </label>
                 <input
-                  type="text"
-                  id="course_code"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-400 dark:placeholder-gray-200 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="โปรดระบุวิชาหรือรหัสวิชา"
-                  required
+                  type="text" id="course_code" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-400 dark:placeholder-gray-200 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="โปรดระบุวิชาหรือรหัสวิชา" required
                 />
-              </div>
-            </form>
           </div>
-          <div
-            style={{
-              flex: 1,
-              // borderColor: "yellow",
-              // borderWidth: 5,
-            }}
-            className="flex font-family font-medium ml-7 flex-col"
-          >
+          </div>
+          <div className="flex-1 flex font-family font-medium flex-col gap-2">
             <div>
-              <p className="text-sm font-medium mb-2">หมวดวิชา</p>
+              <p className="text-sm font-medium ">หมวดวิชา</p>
             </div>
             <div style={{ position: "relative" }}>
               <select
                 className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                 style={{ width: 140, height: 40 }}
-                // value={statusCat}
-                // onChange={handleCatStatusChange}
+              // value={statusCat}
+              // onChange={handleCatStatusChange}
               >
                 <option value="" disabled selected hidden>
                   ---
@@ -205,10 +198,8 @@ const ImportCourse = () => {
           <div
             style={{
               flex: 6,
-              // borderColor: "orange",
-              // borderWidth: 5,
             }}
-            className="font-family mt-7 ml-10"
+            className="font-family"
           >
             <button
               type="button"
@@ -229,9 +220,11 @@ const ImportCourse = () => {
             </button>
           </div>
         </div>
-        <div className="flex flex-7 flex-col mt-5 ">
+        </div>
+        
+        <div className="flex flex-7 flex-col gap-3">
           <div className="flex flex-4">
-            <div className="flex flex-1 ml-10 mr-5 bg-slate-200 rounded-lg overflow-x-auto shadow-xl h-full overflow-y-auto">
+            <div className="flex flex-1 bg-slate-200 rounded-lg overflow-x-auto shadow-xl h-full overflow-y-auto">
               <table className=" w-full">
                 <thead>
                   <tr className="column-color1 text-white">
@@ -243,57 +236,41 @@ const ImportCourse = () => {
                     <th className="py-2 font-light text-xl">หน่วยกิต</th>
                   </tr>
                 </thead>
+                {currentsubjects.map((v, i) => (
+                  <tbody>
+                    <td className="py-2 font-light text-lg text-center">
+                      <InlineCheckbox />
+                    </td>
+                    <td className="py-2 font-light text-lg text-center">
+                      {v.idsubject}
+                    </td>
+                    <td className="py-2 font-light text-lg text-center">
+                      {v.name}
+                    </td>
+                    <td className="py-2 font-light text-lg text-center">
+                      {v.years}
+                    </td>
+                    <td className="py-2 font-light text-lg text-center">
+                      {v.subject_category}
+                    </td>
+                    <td className="py-2 font-light text-lg text-center">{v.credit}</td>
+                  </tbody>
 
-                <tbody>
-                  <td className="py-2 font-light text-lg text-center">
-                    <InlineCheckbox />
-                  </td>
-                  <td className="py-2 font-light text-lg text-center">
-                    {"03603423"}
-                  </td>
-                  <td className="py-2 font-light text-lg text-center">
-                    {"Network Programming"}
-                  </td>
-                  <td className="py-2 font-light text-lg text-center">
-                    {"60"}
-                  </td>
-                  <td className="py-2 font-light text-lg text-center">
-                    {"บังคับ"}
-                  </td>
-                  <td className="py-2 font-light text-lg text-center">{"3"}</td>
-                </tbody>
+                ))}
 
-                <tbody>
-                  <td className="py-2 font-light text-lg text-center ">
-                    <InlineCheckbox />
-                  </td>
-                  <td className="py-2 font-light text-lg text-center">
-                    {"03603423"}
-                  </td>
-                  <td className="py-2 font-light text-lg text-center">
-                    {"Network Programming"}
-                  </td>
-                  <td className="py-2 font-light text-lg text-center">
-                    {"64"}
-                  </td>
-                  <td className="py-2 font-light text-lg text-center">
-                    {"บังคับ"}
-                  </td>
-                  <td className="py-2 font-light text-lg text-center">{"3"}</td>
-                </tbody>
               </table>
             </div>
           </div>
-
-          <div className="flex flex-1 justify-center">
+          {subjects.msg && <div className=" p-5 text-center w-full text-2xl text-red-500 underline">{subjects.msg}</div>}
+          <div className="flex flex-1 justify-center items-center gap-3">
             <button>
-              <FaCircleLeft size={21} color="#0a6765" className="mr-3 mt-8" />
+              <FaCircleLeft size={21} color="#0a6765" className="" />
             </button>
-            <p className="text-lg font-semibold text-midgreen  mt-8">
-              หน้า 1 จาก 1
+            <p className="text-lg font-semibold text-midgreen">
+              หน้า 1 จาก {totalPages}
             </p>
             <button>
-              <FaCircleRight size={21} color="#0a6765" className="ml-3 mt-8" />
+              <FaCircleRight size={21} color="#0a6765" className="" />
             </button>
           </div>
 

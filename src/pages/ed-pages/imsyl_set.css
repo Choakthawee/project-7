@@ -52,15 +52,6 @@
   border-color: chocolate; */
 }
 
-.boxtable {
-  display: flex;
-  flex: 4;
-  flex-direction: column;
-  position: relative;
-  /* border-width: 4px;
-  border-style: solid;
-  border-color: blueviolet; */
-}
 
 .boxtable2 {
   display: flex;

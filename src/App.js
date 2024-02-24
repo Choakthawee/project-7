@@ -34,7 +34,7 @@ function App() {
         <Route
           path="/*"
           element={
-            <div style={{ display: "flex" }}>
+            <div style={{ display: "flex"}}>
               <Sidebar /> {/* แสดง Sidebar ทุกๆ หน้า */}
               <Routes>
                 {/* Admin Pages */}
