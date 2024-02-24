@@ -9,7 +9,7 @@ import React, { useState } from "react";
 import "./reg-set.css";
 
 const RegCourse = () => {
-  const userRole = localStorage.getItem("role");
+  const userRole = localStorage.getItem("role_id");
   const navigate = useNavigate();
 
   const showAlert = () => {
@@ -21,9 +21,9 @@ const RegCourse = () => {
       confirmButtonText: "ตกลง",
     }).then((result) => {
       if (result.isConfirmed) {
-        if (userRole === "admin") {
+        if (userRole === "2") {
           navigate("/userinfo");
-        } else if (userRole === "education department") {
+        } else if (userRole === "3") {
           navigate("/imcourse");
         }
       }
@@ -94,7 +94,7 @@ const RegCourse = () => {
   //   }
   // };
 
-  if (userRole !== "teacher") {
+  if (userRole !== "1") {
     showAlert();
     return null;
   }

@@ -19,7 +19,7 @@ const InsertUser = () => {
   const [Sstatus, setSStatus] = useState(2);
   const [fileData, setFileData] = useState([]);
 
-  const userRole = localStorage.getItem("role");
+  const userRole = localStorage.getItem("role_id");
   const navigate = useNavigate();
 
   const [selectedFileName, setSelectedFileName] = useState(null);
@@ -32,16 +32,16 @@ const InsertUser = () => {
       confirmButtonText: "ตกลง",
     }).then((result) => {
       if (result.isConfirmed) {
-        if (userRole === "education department") {
+        if (userRole === "3") {
           navigate("/imcourse");
-        } else if (userRole === "teacher") {
+        } else if (userRole === "1") {
           navigate("/schedule");
         }
       }
     });
   };
 
-  if (userRole !== "admin") {
+  if (userRole !== "2") {
     showAlert();
     return null;
   }

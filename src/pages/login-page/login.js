@@ -31,7 +31,7 @@ const Login = () => {
       await localStorage.setItem("email", responseData.data.email);
       await localStorage.setItem("name", responseData.data.name);
       await localStorage.setItem("role", responseData.data.role);
-
+      await localStorage.setItem("role_id", responseData.data.id);
       Swal.fire({
         title: "Login Successful",
         text: "ล็อคอินสำเร็จ",

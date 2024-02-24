@@ -19,7 +19,7 @@ import { FiPlusCircle } from "react-icons/fi";
 // }
 
 const RegCourseEdit = () => {
-  const userRole = localStorage.getItem("role");
+  const userRole = localStorage.getItem("role_id");
   const navigate = useNavigate();
 
   const [data, setData] = useState([{ subhour: "" }]);
@@ -42,16 +42,16 @@ const RegCourseEdit = () => {
       confirmButtonText: "ตกลง",
     }).then((result) => {
       if (result.isConfirmed) {
-        if (userRole === "admin") {
+        if (userRole === "2") {
           navigate("/userinfo");
-        } else if (userRole === "education department") {
+        } else if (userRole === "3") {
           navigate("/imcourse");
         }
       }
     });
   };
 
-  if (userRole !== "teacher") {
+  if (userRole !== "1") {
     showAlert();
     return null;
   }
