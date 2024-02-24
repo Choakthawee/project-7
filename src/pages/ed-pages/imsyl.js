@@ -185,8 +185,8 @@ const ImportSyl = () => {
         </div>
 
 
-        <div className="boxtable2 h-32 flex-col max-h-72">
-          <div className="flex flex-1  bg-slate-200 rounded-lg overflow-x-auto shadow-xl h-full overflow-y-auto ">
+        <div className="boxtable2 flex-col max-h-72">
+          <div className="flex  bg-slate-200 rounded-lg overflow-x-auto shadow-xl overflow-y-auto ">
             <table className="w-full">
               <thead>
                 <tr className="column-color1 text-white">
@@ -205,7 +205,7 @@ const ImportSyl = () => {
                 </tbody>
                 : files.map((v, i) => (
                   <tbody>
-                    <td className="py-2 font-light text-base text-center">
+                    <td className="p-3 font-light text-base text-center">
                       <a href={apiurl + v.link}>{v.years}</a>
                     </td>
                     <td className="py-2 font-light text-base text-center">

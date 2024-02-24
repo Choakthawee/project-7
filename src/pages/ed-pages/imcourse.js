@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import "./course-set.css";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Swal from "sweetalert2";
 import { FaCircleLeft, FaCircleRight } from "react-icons/fa6";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -54,13 +54,27 @@ const ImportCourse = () => {
   const handlePrevPage = () => {
     setCurrentPage((prevPage) => prevPage - 1);
   };
-  const InlineCheckbox = () => {
+  const [sendApi,setSendApi] = useState([]) 
+  const InlineCheckbox = ({ id, isOpen }) => {
+    const firststate = isOpen;
+    const [checkbox1, setCheck] = useState(isOpen);
+    useEffect(() => {
+      if (checkbox1 != isOpen) {
+        setSendApi(...sendApi, { id: id, IsOpen: checkbox1 })
+        console.log(sendApi)
+      } else {
+        
+      }
+    },[checkbox1])
     return (
       <div className="flex items-center me-4 justify-center">
         <input
           id="inline-checkbox"
           type="checkbox"
+          
+          checked={isOpen}
           value=""
+          onChange={(e)=>{setCheck(e.target.checked)}}
           className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 ml-3"
         />
       </div>
@@ -92,7 +106,7 @@ const ImportCourse = () => {
 
   return (
     <div className="background21 block min-h-screen w-full p-10">
-      <div className="flex flex-col">
+      <div className="flex flex-col gap-3">
         <div className="flex gap-5 flex-col">
           <h1 className="flex font-family font-bold text-4xl size-30 text-midgreen h1text-shadow ">
           เลือกรายวิชาที่เปิดสอน
@@ -169,10 +183,10 @@ const ImportCourse = () => {
             <div>
               <p className="text-sm font-medium ">หมวดวิชา</p>
             </div>
-            <div style={{ position: "relative" }}>
+            <div className="flex items-center box-border min-w-40">
               <select
                 className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                style={{ width: 140, height: 40 }}
+                style={{height: 40 }}
               // value={statusCat}
               // onChange={handleCatStatusChange}
               >
@@ -185,30 +199,24 @@ const ImportCourse = () => {
               </select>
               <FontAwesomeIcon
                 icon={faArrowAltCircleDown}
-                style={{
-                  position: "absolute",
-                  top: "50%",
-                  right: "12px",
-                  transform: "translateY(-50%)",
-                  pointerEvents: "none",
-                }}
+                  className="static -ml-7"
+                  
               />
             </div>
           </div>
           <div
             style={{
-              flex: 6,
+              flex: 5,
             }}
-            className="font-family"
+            className="font-family  items-end flex"
           >
             <button
               type="button"
-              class="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+              class="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-5 py-2.5 mb-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
               style={{
                 backgroundColor: "#134e4a",
                 width: 110,
                 height: 35,
-                marginTop: 3,
               }}
             >
               <p className="text-lg mr-2">ค้นหา</p>
@@ -239,7 +247,7 @@ const ImportCourse = () => {
                 {currentsubjects.map((v, i) => (
                   <tbody>
                     <td className="py-2 font-light text-lg text-center">
-                      <InlineCheckbox />
+                      <InlineCheckbox id={v.id} isOpen={v.IsOpen}/>
                     </td>
                     <td className="py-2 font-light text-lg text-center">
                       {v.idsubject}
@@ -263,13 +271,13 @@ const ImportCourse = () => {
           </div>
           {subjects.msg && <div className=" p-5 text-center w-full text-2xl text-red-500 underline">{subjects.msg}</div>}
           <div className="flex flex-1 justify-center items-center gap-3">
-            <button>
+            <button onClick={handlePrevPage}>
               <FaCircleLeft size={21} color="#0a6765" className="" />
             </button>
             <p className="text-lg font-semibold text-midgreen">
-              หน้า 1 จาก {totalPages}
+              หน้า {currentPage} จาก {totalPages}
             </p>
-            <button>
+            <button onClick={handleNextPage}> 
               <FaCircleRight size={21} color="#0a6765" className="" />
             </button>
           </div>
