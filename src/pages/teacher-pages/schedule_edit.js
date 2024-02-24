@@ -1,22 +1,15 @@
-//แก้ไขรายวิชา หน้าตารางสอน (อาจารย์)
+import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faArrowLeft,
-  faMagnifyingGlass,
-  faPlus,
-  faPlusSquare,
-} from "@fortawesome/free-solid-svg-icons";
-import { faArrowAltCircleDown } from "@fortawesome/free-solid-svg-icons";
-import { RiEdit2Fill } from "react-icons/ri";
-import React, { useState } from "react";
-import "./reg-set.css";
+import { faArrowLeft, faPlusSquare } from "@fortawesome/free-solid-svg-icons";
 import Secadd from "./secadd";
 
 const ScheduleEdit = () => {
   const userRole = localStorage.getItem("role_id");
   const navigate = useNavigate();
+
+  const [redBoxes, setRedBoxes] = useState([]);
 
   const showAlert = () => {
     Swal.fire({
@@ -45,22 +38,28 @@ const ScheduleEdit = () => {
     navigate("/schedule");
   };
 
+  const addRedBox = () => {
+    setRedBoxes([...redBoxes, {}]);
+  };
+
+  const removeRedBox = (index) => {
+    setRedBoxes(redBoxes.filter((_, i) => i !== index));
+  };
+
   return (
-    <div className="background ">
-      <div className="flex flex-1 relative border-4 border-solid border-green-500 items-center">
-        <div className="flex  w-3/4  rounded-3xl mx-auto my-auto bg-white p-2  ">
+    <div className="background">
+      <div className="flex flex-1 relative border-4 border-solid border-green-500 items-center overflow-y-scroll">
+        <div className="flex w-3/4 rounded-3xl mx-auto my-auto bg-white p-2 ">
           <div
             style={{
               flex: 1,
-              // borderColor: "orange",
-              // borderWidth: 5,
               height: 50,
             }}
-            className=" flex flex-col  font-family mt-7 ml-5"
+            className="flex flex-col font-family mt-7 ml-5"
           >
             <button
               type="button"
-              class="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-4 py-2.5 me-1 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+              className="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-4 py-2.5 me-1 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
               style={{
                 backgroundColor: "#134e4a",
                 width: 90,
@@ -76,8 +75,8 @@ const ScheduleEdit = () => {
               <p className="text-lg text-center"> back </p>
             </button>
           </div>
-          <div className="flex flex-1 flex-col  relative border-4 border-solid border-green-500 mt-7 mr-56  ">
-            <div className="ml-14 mr-80 ">
+          <div className="flex flex-1 flex-col  relative border-4 border-solid border-green-500 mt-7 mr-56">
+            <div className="ml-14 mr-80">
               <div className="flex">
                 <p className="text-2xl font-bold text-midgreen mt-1">
                   แก้ไขรายวิชา
@@ -87,30 +86,45 @@ const ScheduleEdit = () => {
                 <label className="text-midgreen mb-1">
                   ชื่อรายวิชาที่สอน *
                 </label>
-                <input className="focus:outline-none rounded-sm h-8 bg-gray-200"></input>
+                <input
+                  type="text"
+                  id="sub_name"
+                  class="bg-gray-50 border w-64 h-10 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-white dark:border-gray-400 dark:placeholder-gray-200 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="โปรดระบุวิชาหรือรหัสวิชา"
+                  required
+                />
               </div>
-              <div className="flex  mr-3 mt-1">
+              <div className="flex mr-3 mt-1">
                 <label className="text-midgreen mb-1">รหัสวิชา :</label>
               </div>
-              <div className="flex  mr-3 mt-1">
+              <div className="flex mr-3 mt-1">
                 <label className="text-midgreen mb-1"> จำนวนหน่วยกิต :</label>
               </div>
-              <div className="flex  mr-3 mt-1">
+              <div className="flex mr-3 mt-1">
                 <label className="text-midgreen mb-1">หมวดวิชา :</label>
               </div>
-              <div className="flex  mr-3 mt-1">
+              <div className="flex mr-3 mt-1">
                 <label className="text-midgreen mb-1">
                   เพิ่มหมู่เรียน :
                   <FontAwesomeIcon
                     icon={faPlusSquare}
                     className="ml-2"
                     style={{ fontSize: "16px" }}
+                    onClick={addRedBox}
                   />
                 </label>
               </div>
-              <div className="flex mr-3 mt-1 ">
-                <Secadd></Secadd>
-              </div>
+              {redBoxes.map((_, index) => (
+                <div className="flex mr-3 mt-1" key={index}>
+                  <Secadd />
+                  <button
+                    className="ml-2 text-red-500 focus:outline-none"
+                    onClick={() => removeRedBox(index)}
+                  >
+                    Delete
+                  </button>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -118,4 +132,5 @@ const ScheduleEdit = () => {
     </div>
   );
 };
+
 export default ScheduleEdit;
