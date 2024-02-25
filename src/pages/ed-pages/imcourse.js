@@ -12,6 +12,7 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { AwardIcon } from "lucide-react";
 import axios from "axios";
 import { apiurl } from "../../config";
+import InlineCheckbox from "./imcoursetab";
 const ImportCourse = () => {
   const [isSemOpen, setIsSemOpen] = useState(false);
   const [isYearOpen, setIsYearOpen] = useState(false);
@@ -62,33 +63,9 @@ const ImportCourse = () => {
     }
   };
   const [sendApi, setSendApi] = useState([]);
-
-  const InlineCheckbox = ({ id, isOpen }) => {
-    const firststate = isOpen;
-    const [checkbox1, setCheck] = useState(isOpen);
-    useEffect(() => {
-      if (checkbox1 != isOpen) {
-        setSendApi(...sendApi, { id: id, IsOpen: checkbox1 });
-        console.log(sendApi);
-      } else {
-      }
-    }, [checkbox1]);
-    return (
-      <div className="flex items-center me-4 justify-center">
-        <input
-          id="inline-checkbox"
-          type="checkbox"
-          checked={isOpen}
-          value=""
-          onChange={(e) => {
-            setCheck(e.target.checked);
-          }}
-          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 ml-3"
-        />
-      </div>
-    );
-  };
-
+  useEffect(() => {
+    console.log("sendApi in ImportCourse:", sendApi);
+  }, [sendApi]);
   const showAlert = () => {
     Swal.fire({
       icon: "error",
@@ -130,6 +107,7 @@ const ImportCourse = () => {
                   <option value="" disabled selected hidden>
                     ---
                   </option>
+
                   <option>ต้น</option>
                   <option>ปลาย</option>
                 </select>
@@ -258,9 +236,14 @@ const ImportCourse = () => {
                   </tr>
                 </thead>
                 {currentsubjects.map((v, i) => (
-                  <tbody>
+                  <tbody key={startIndex + i}>
                     <td className="py-2 font-light text-lg text-center">
-                      <InlineCheckbox id={v.id} isOpen={v.IsOpen} />
+                      <InlineCheckbox
+                        id={v.id}
+                        isOpen={v.IsOpen}
+                        setApi={setSendApi}
+                        sandapi={sendApi}
+                      />
                     </td>
                     <td className="py-2 font-light text-lg text-center">
                       {v.idsubject}
@@ -309,6 +292,7 @@ const ImportCourse = () => {
                   width: 110,
                   height: 45,
                 }}
+                onClick={() => console.log(sendApi)}
               >
                 <p className="text-lg mr-2">ยืนยัน</p>
                 <FontAwesomeIcon
