@@ -1,4 +1,3 @@
-//ใส่ข้อมูลลงทะเบียนรายวิชา (อาจารย์)
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import React, { useState } from "react";
@@ -6,6 +5,8 @@ import "./reg-set.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { faArrowAltCircleDown } from "@fortawesome/free-solid-svg-icons";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FaTimes } from "react-icons/fa";
 import { FaCirclePlus } from "react-icons/fa6";
 import { FiPlusCircle } from "react-icons/fi";
 import { TiDelete } from "react-icons/ti";
@@ -38,45 +39,83 @@ const RegCourseEdit = () => {
     setBranch(deleteBranch);
   };
 
-  const BranchCheckbox = () => {
+  //เลือกสาขา
+  const [selectedBranch, setSelectedBranch] = useState("");
+  const [selectedYears, setSelectedYears] = useState([]);
+  const [selectedOptions, setSelectedOptions] = useState([]);
+
+  const handleBranchChange = (event) => {
+    setSelectedBranch(event.target.value);
+    setSelectedYears([]);
+  };
+
+  const handleYearChange = (event, year) => {
+    const isChecked = event.target.checked;
+    if (isChecked) {
+      setSelectedYears([...selectedYears, year]);
+    } else {
+      setSelectedYears(selectedYears.filter((y) => y !== year));
+    }
+  };
+
+  const handleConfirm = () => {
+    if (selectedBranch && selectedYears.length > 0) {
+      const options = selectedYears.map((year) => `${selectedBranch}-${year}`);
+      const duplicateOptions = options.filter((option) =>
+        selectedOptions.includes(option)
+      );
+      if (duplicateOptions.length === 0) {
+        setSelectedOptions([...selectedOptions, ...options]);
+      } else {
+        alert("คุณได้เลือกสาขาและปีนี้ไว้แล้ว");
+      }
+      setSelectedYears([]);
+    }
+  };
+
+  const handleDeleteOption = (option) => {
+    setSelectedOptions(selectedOptions.filter((item) => item !== option));
+  };
+
+  const handleClearAll = () => {
+    setSelectedOptions([]);
+  };
+
+  const BranchCheckbox = ({ id, checked, onChange }) => {
     return (
       <div className="flex items-center me-4 justify-center">
         <input
-          id="branch-checkbox"
+          id={id}
           type="checkbox"
-          value=""
+          checked={checked}
+          onChange={onChange}
           className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 ml-3"
         />
       </div>
     );
   };
 
-  const BranchBox = (x) => {
+  const BranchBox = () => {
     return (
-      <div className="box-gray mt-3 mb-3">
-        <div className="flex justify-end">
-          <button onClick={() => handleDeleteBranch(x)}>
-            <TiDeleteOutline size={20} />
-          </button>
-        </div>
+      <div className="box-gray mt-1 mb-3">
         <div className="flex flex-col mt-2">
           <div>
             <label class="block mb-2 ">
-              สาขา <span style={{ color: "red" }}>*</span>
+              สาขาที่เปิดสอน <span style={{ color: "red" }}>*</span>
             </label>
             <div style={{ position: "relative" }}>
               <select
                 className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                 style={{ width: 120, height: 40 }}
-                // value={statusSem}
-                // onChange={handleSemStatusChange}
+                value={selectedBranch}
+                onChange={handleBranchChange}
               >
                 <option value="" disabled selected hidden>
                   ---
                 </option>
-                <option>T01(วิศวะอิอิ)</option>
-                <option>T02(วิศวะป่าตอง)</option>
-                <option>T12(วิศวกรรมคอมพิวเตอร์และสารสนเทศ)</option>
+                <option>T01</option>
+                <option>T02</option>
+                <option>T12</option>
               </select>
               <FontAwesomeIcon
                 icon={faArrowAltCircleDown}
@@ -92,52 +131,106 @@ const RegCourseEdit = () => {
           </div>
           <div className="mt-3">
             <p>
-              ชั้นปีที่เปิดรับ(เลือกได้มากกว่า 1){" "}
+              ชั้นปีที่เปิดรับ(เลือกได้มากกว่า 1)
               <span style={{ color: "red" }}>*</span>
             </p>
             <div className="flex flex-row">
               <div className="mt-2">
                 <div className="flex flex-row mb-1">
-                  <BranchCheckbox id="bcb1" />
-                  <label for="bcb1">ชั้นปี 1</label>
+                  <BranchCheckbox
+                    id={`bcb1`}
+                    checked={selectedYears.includes("1")}
+                    onChange={(e) => handleYearChange(e, "1")}
+                  />
+                  <label htmlFor={`bcb1`}>ชั้นปี 1</label>
                 </div>
                 <div className="flex flex-row mb-1">
-                  <BranchCheckbox id="bcb2" />
-                  <label for="bcb2">ชั้นปี 2</label>
+                  <BranchCheckbox
+                    id={`bcb2`}
+                    checked={selectedYears.includes("2")}
+                    onChange={(e) => handleYearChange(e, "2")}
+                  />
+                  <label htmlFor={`bcb2`}>ชั้นปี 2</label>
                 </div>
                 <div className="flex flex-row mb-1">
-                  <BranchCheckbox id="bcb3" />
-                  <label for="bcb3">ชั้นปี 3</label>
+                  <BranchCheckbox
+                    id={`bcb3`}
+                    checked={selectedYears.includes("3")}
+                    onChange={(e) => handleYearChange(e, "3")}
+                  />
+                  <label htmlFor={`bcb3`}>ชั้นปี 3</label>
                 </div>
                 <div className="flex flex-row mb-1">
-                  <BranchCheckbox id="bcb4" />
-                  <label for="bcb4">ชั้นปี 4</label>
+                  <BranchCheckbox
+                    id={`bcb4`}
+                    checked={selectedYears.includes("4")}
+                    onChange={(e) => handleYearChange(e, "4")}
+                  />
+                  <label htmlFor={`bcb4`}>ชั้นปี 4</label>
                 </div>
               </div>
               <div className="mt-2 ml-3">
                 <div className="flex flex-row mb-1">
-                  <BranchCheckbox id="bcb5" />
-                  <label for="bcb5">ชั้นปี 5</label>
+                  <BranchCheckbox
+                    id={`bcb5`}
+                    checked={selectedYears.includes("5")}
+                    onChange={(e) => handleYearChange(e, "5")}
+                  />
+                  <label htmlFor={`bcb5`}>ชั้นปี 5</label>
                 </div>
                 <div className="flex flex-row mb-1">
-                  <BranchCheckbox id="bcb6" />
-                  <label for="bcb6">ชั้นปี 6</label>
+                  <BranchCheckbox
+                    id={`bcb6`}
+                    checked={selectedYears.includes("6")}
+                    onChange={(e) => handleYearChange(e, "6")}
+                  />
+                  <label htmlFor={`bcb6`}>ชั้นปี 6</label>
                 </div>
                 <div className="flex flex-row mb-1">
-                  <BranchCheckbox id="bcb7" />
-                  <label for="bcb7">ชั้นปี 7</label>
+                  <BranchCheckbox
+                    id={`bcb7`}
+                    checked={selectedYears.includes("7")}
+                    onChange={(e) => handleYearChange(e, "7")}
+                  />
+                  <label htmlFor={`bcb7`}>ชั้นปี 7</label>
                 </div>
                 <div className="flex flex-row mb-1">
-                  <BranchCheckbox id="bcb8" />
-                  <label for="bcb8">ชั้นปี 8</label>
+                  <BranchCheckbox
+                    id={`bcb8`}
+                    checked={selectedYears.includes("8")}
+                    onChange={(e) => handleYearChange(e, "8")}
+                  />
+                  <label htmlFor={`bcb8`}>ชั้นปี 8</label>
                 </div>
               </div>
             </div>
-            <button className="bg-lightgreen text-white hover:bg-white hover:text-gray-300 font-bold py-1 px-4 rounded mt-3">
+            <button
+              onClick={handleConfirm}
+              className="bg-lightgreen text-white hover:bg-white hover:text-gray-300 font-bold py-1 px-4 rounded mt-3"
+            >
               ตกลง
             </button>
           </div>
         </div>
+        {selectedOptions.length > 0 && ( // Check if there are selected options
+          <div className="flex flex-wrap mt-3">
+            {selectedOptions.map((option) => (
+              <div key={option} className="flex items-center mr-4 mb-2">
+                <p className="text-midgreen">{option}</p>
+                <FaTimes
+                  className="ml-2 cursor-pointer text-red-500"
+                  onClick={() => handleDeleteOption(option)}
+                />
+              </div>
+            ))}
+            <button
+              onClick={handleClearAll}
+              className="bg-red-500 w-20 h-6 text-white py-1 rounded mt-1 mb-1 text-xs"
+            >
+              ลบทั้งหมด
+            </button>
+          </div>
+        )}
       </div>
     );
   };
@@ -159,32 +252,32 @@ const RegCourseEdit = () => {
             <fieldset className="flex flex-row mb-2">
               <div className="ml-2">
                 <input type="radio" id="lec"></input>
-                <label for="lec" className="ml-1">
+                <label htmlFor="lec" className="ml-1">
                   บรรยาย
                 </label>
               </div>
               <div className="ml-2">
                 <input type="radio" id="lab"></input>
-                <label for="lab" className="ml-1">
+                <label htmlFor="lab" className="ml-1">
                   ปฏิบัติ
                 </label>
               </div>
             </fieldset>
           </div>
           <div>
-            <label class="block mb-2 ">
+            <label className="block mb-2 ">
               จำนวนชั่วโมง <span style={{ color: "red" }}>*</span>
             </label>
             <input
               type="text"
               id="sub_hour"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-400 dark:placeholder-gray-200 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-400 dark:placeholder-gray-200 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="โปรดระบุจำนวนชั่วโมงที่ใช้สอน"
               required
             />
           </div>
           <div className="mt-2">
-            <label class="block mb-2 ">
+            <label className="block mb-2 ">
               วันที่ต้องการเปิดสอน
               <span style={{ color: "red" }}>*</span>
             </label>
@@ -240,25 +333,19 @@ const RegCourseEdit = () => {
             </div>
           </div>
           <div className="mt-2">
-            <label class="block mb-2 ">
+            <label className="block mb-2 ">
               จำนวนนิสิตที่เปิดรับ
               <span style={{ color: "red" }}>*</span>
             </label>
             <input
               type="text"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-400 dark:placeholder-gray-200 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-400 dark:placeholder-gray-200 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="โปรดระบุจำนวนนิสิตที่ต้องการเปิดรับ"
               required
             />
           </div>
-          <div className="flex flex-col mt-2">
-            <label for="bbox" class="block mb-2 mr-2">
-              สาขาที่เปิดสอน<span style={{ color: "red" }}>*</span>
-            </label>
-            <button id="bbox" onClick={() => addbox_branch()}>
-              <FiPlusCircle size={20} />
-            </button>
-            {branch.map((val_b, x) => BranchBox(x))}
+          <div className="flex flex-col">
+            <BranchBox />
           </div>
         </div>
       </div>
@@ -324,7 +411,7 @@ const RegCourseEdit = () => {
             </h1>
             <div className="mt-3 text-sm font-medium text-gray-900 dark:text-black">
               <div>
-                <label class="block mb-2">ชื่อรายวิชา</label>
+                <label className="block mb-2">ชื่อรายวิชา</label>
                 <p className="text-xl text-gray-300">Network Programming</p>
               </div>
               <div className="flex mt-3">
@@ -340,7 +427,7 @@ const RegCourseEdit = () => {
                 <p className="text-gray-300">เลือก</p>
               </div>
               <div className="mt-3 text-lightgreen">
-                <label for="add" className="mr-3">
+                <label htmlFor="add" className="mr-3">
                   เพิ่มหมู่เรียน
                 </label>
                 <button id="add" onClick={() => addbox()}>
