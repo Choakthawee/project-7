@@ -1,4 +1,5 @@
 import "./imsyl_set.css";
+
 import {
   faArrowRight,
   faFileImport,
@@ -165,7 +166,13 @@ const ImportSyl = () => {
 
           <div className="flex flex-row gap-10 justify-center">
             <FontAwesomeIcon icon={faArrowRight} />
-            {file ? file.name + "  <----- ทำ view file on web เลย" : ""}
+            {file ? (
+              <a href={"/ViewExcel/" + encodeURIComponent(file.name)}>
+                {file.name + "  <----- ทำ view file on web เลย"}
+              </a>
+            ) : (
+              ""
+            )}
           </div>
         </div>
         {progress !== 0 && (
