@@ -117,7 +117,18 @@ const ImportSyl = () => {
     showAlert();
     return null;
   }
-
+  const deleteFiles = () => {
+    Swal.fire({
+      title: "ยืนยันการลบผู้ใช้งาน",
+      text: `คุณแน่ใจหรือไม่ว่าต้องการลบผู้ใช้`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+    });
+  };
   return (
     <div className="block min-h-screen background21 w-full overflow-y-auto">
       <div className=" flex h-full w-full p-10 flex-col gap-10">
@@ -125,7 +136,7 @@ const ImportSyl = () => {
           นำเข้าหลักสูตร
         </p>
         <div className="flex flex-row gap-3 items-center">
-          <p className="textinsert font-bold ">หลักสูตร ปีการศึกษา</p>
+          <p className="textinsert font-bold ">หลักสูตร</p>
           <div className="flex relative">
             <select
               className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
@@ -221,7 +232,7 @@ const ImportSyl = () => {
                       <td className="py-2 font-light text-base text-center">
                         {" "}
                         {/* เพิ่มส่วนของปุ่มลบที่นี่ */}
-                        <button>
+                        <button onClick={() => deleteFiles()}>
                           <p>
                             <FontAwesomeIcon icon={faTrash} />
                           </p>
