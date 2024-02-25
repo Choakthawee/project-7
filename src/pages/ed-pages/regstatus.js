@@ -12,10 +12,21 @@ const RegStatus = () => {
   const [selectedSubject, setSelectedSubject] = useState("required");
   const [selectedProb, setSelectedProb] = useState("");
   const [category, setCategory] = useState([]);
+  const [subjectReg, setsubjectReg] = useState([]);
+
+  useEffect(() => {
+    axios.get(apiurl + '/api/eu/allRegister')
+      .then((response) => {
+        setsubjectReg(response.data.message);
+      })
+      .catch((error) => {
+        console.error('Error fetching data', error)
+      })
+  }, [])
 
   useEffect(() => {
     axios
-      .get(apiurl+'/api/subject_category')
+      .get(apiurl + '/api/subject_category')
       .then((response) => {
         setCategory(response.data);
       })
@@ -62,7 +73,7 @@ const RegStatus = () => {
         {category.map((item, index) => (
           <React.Fragment key={index}>
             <label className="mr-2" htmlFor={item.value}>
-              {item.name}
+              {item.name === "required subject" ? "วิชาบังคับ" : item.name === "selected Subjects" ? "วิชาเลือก" : "วิชาเอก"}
             </label>
             <input
               className="mr-2"
@@ -78,6 +89,18 @@ const RegStatus = () => {
       </div>
 
       <div className="flex flex-row justify-end mt-3">
+        <label className="mr-2" for="passed">
+          ผ่านแล้ว
+        </label>
+        <input
+          className="mr-2"
+          type="radio"
+          name="prob_type"
+          value="passed"
+          checked={selectedProb === "passed"}
+          onChange={() => setSelectedProb("passed")}
+        />
+
         <label className="mr-2" for="wait">
           รอยืนยัน
         </label>
@@ -102,6 +125,8 @@ const RegStatus = () => {
           onChange={() => setSelectedProb("prob")}
         />
       </div>
+
+      {/*รอยืนยัน*/}
 
       <div className="flex flex-1 bg-slate-200 mt-5 rounded-lg overflow-x-auto shadow-xl">
         <table className="h-full w-full">
@@ -140,7 +165,23 @@ const RegStatus = () => {
               <th className="py-2 font-light text-base">หมายเหตุ</th>
             </tr>
           </thead>
-          <tbody></tbody>
+          <tbody>
+            {subjectReg.length > 0 && subjectReg.map((subject, index) => (
+              <tr key={index}>
+                <td className="py-2 font-light text-lg text-center">{index + 1}</td>
+                <td className="py-2 font-light text-lg text-center">{subject.STARTTIME}</td>
+                <td className="py-2 font-light text-lg text-center">{subject.STARTTIME}</td>
+                <td className="py-2 font-light text-lg text-center">{subject.STARTTIME}</td>
+                <td className="py-2 font-light text-lg text-center">{subject.STARTTIME}</td>
+                <td className="py-2 font-light text-lg text-center">{subject.STARTTIME}</td>
+                <td className="py-2 font-light text-lg text-center">{subject.STARTTIME}</td>
+                <td className="py-2 font-light text-lg text-center">{subject.STARTTIME}</td>
+                <td className="py-2 font-light text-lg text-center">{subject.STARTTIME}</td>
+                <td className="py-2 font-light text-lg text-center">{subject.STARTTIME}</td>
+                <td className="py-2 font-light text-lg text-center">{subject.STARTTIME}</td>
+              </tr>
+            ))}
+          </tbody>
         </table>
       </div>
     </div>
