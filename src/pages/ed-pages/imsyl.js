@@ -50,7 +50,7 @@ const ImportSyl = () => {
       formData.append('file', file);  // ชื่อต้องตรงกับที่ระบุใน upload.single('file') // ตรงกับ req.body.name ใน Express
       formData.append('year', selection_year.current.value);
       try {
-        const response = await axios.post('http://localhost:4133/api/education/Course/uploadfile', formData, {
+        const response = await axios.post(apiurl+'/api/education/Course/uploadfile', formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           },

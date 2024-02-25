@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { EditIcon } from "lucide-react";
 import axios from "axios";
 import React from "react";
+import { apiurl } from "../../config";
 
 const RegStatus = () => {
   const userRole = localStorage.getItem("role_id");
@@ -14,7 +15,7 @@ const RegStatus = () => {
 
   useEffect(() => {
     axios
-      .get('http://localhost:4133/api/subject_category')
+      .get(apiurl+'/api/subject_category')
       .then((response) => {
         setCategory(response.data);
       })

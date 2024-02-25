@@ -12,7 +12,13 @@ import Swal from "sweetalert2";
 const SubOpen = () => {
   const userRole = localStorage.getItem("role_id");
   const navigate = useNavigate();
-
+  useEffect(()=>{
+    const getapi = async()=>{
+      const database = await axios.get(apiurl+"/api/subjest")
+      const data = database.data;
+      console.log(data)
+    }
+  },[])
   useEffect(() => {
     const showAlert = () => {
       Swal.fire({
