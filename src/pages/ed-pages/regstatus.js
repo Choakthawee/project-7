@@ -5,6 +5,7 @@ import { EditIcon } from "lucide-react";
 import axios from "axios";
 import React from "react";
 import { apiurl } from "../../config";
+import swal from "sweetalert2";
 
 const RegStatus = () => {
   const userRole = localStorage.getItem("role_id");
@@ -14,7 +15,6 @@ const RegStatus = () => {
   const [category, setCategory] = useState([]);
   const [subjectReg, setsubjectReg] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState("");
-
 
   useEffect(() => {
     axios.get(apiurl + '/api/eu/allRegister')
@@ -36,6 +36,34 @@ const RegStatus = () => {
         console.error('Error fetching data: ', error);
       });
   }, []);
+
+  const handleEdit = (subject) => {
+    if (subject.status_id === 2) {
+      const branchNames = subject.branch.t12.map(item => `T12-${item}`).join(", ");
+      Swal.fire({
+        title: `วิชา ${subject.SUBJECTNAME} รหัสวิชา ${subject.Subjects_id}`,
+        html: `
+          <div>
+            <p><strong>อาจารย์ผู้สอน :</strong> ${subject.USERNAME}</p>
+            <p><strong>หมู่เรียน :</strong> ${subject.sec}</p>
+            <p><strong>จำนวนหน่วยกิต :</strong> ${subject.credit}</p>
+            <p><strong>จำนวนนิสิต :</strong> ${subject.N_people}</p>
+            <p><strong>สาขาที่เปิดรับ :</strong> ${branchNames}</p>
+            <p><strong>สอนวัน :</strong> ${subject.DAYNAME}</p>
+            <p><strong>เวลา :</strong> ${subject.st} - ${subject.et}</p>
+          </div>
+        `,
+        showCancelButton: true,
+        confirmButtonText: "ยืนยัน",
+        cancelButtonText: "ยกเลิก",
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+      }).then((result) => {
+        if (result.isConfirmed) {
+        }
+      });
+    }
+  };
 
   const showAlert = () => {
     Swal.fire({
@@ -173,25 +201,32 @@ const RegStatus = () => {
               <tr key={index} className={
                 (index) % 2 === 0 ? "bg-gray-100" : "bg-white"
               }>
-                <td className="py-2 font-normal text-lg text-center border-2 border-black border-opacity-100">{index + 1}</td>
-                <td className="py-2 font-normal text-lg text-center border-2 border-black border-opacity-100">{subject.Subjects_id}</td>
-                <td className="py-2 font-normal text-lg text-center border-2 border-black border-opacity-1000">{subject.SUBJECTNAME}</td>
-                <td className="py-2 font-normal text-lg text-center border-2 border-black border-opacity-100">{subject.N_people}</td>
-                <td className="py-2 font-normal text-lg text-center border-2 border-black border-opacity-100">{subject.CATEGORYNAME}</td>
-                <td className="py-2 font-normal text-lg text-center border-2 border-black border-opacity-100">{subject.USERNAME}</td>
-                <td className="py-2 font-normal text-lg text-center border-2 border-black border-opacity-100">
+                <td className="py-2 font-normal text-lg text-center">{index + 1}</td>
+                <td className="py-2 font-normal text-lg text-center">{subject.Subjects_id}</td>
+                <td className="py-2 font-normal text-lg text-center">{subject.SUBJECTNAME}</td>
+                <td className="py-2 font-normal text-lg text-center">{subject.credit}</td>
+                <td className="py-2 font-normal text-lg text-center">{subject.CATEGORYNAME}</td>
+                <td className="py-2 font-normal text-lg text-center">{subject.USERNAME}</td>
+
+                <td className="py-2 font-normal text-lg text-center">{subject.N_people}</td>
+                <td className="py-2 font-normal text-lg text-center">
                   {subject.branch.t12.map((item, index) => (
                     <span>
                       {index > 0 && ", "}
-                      ชั้นปี {item}
+                      T12-{item}
                     </span>
                   ))}
                 </td>
-                <td className="py-2 font-normal text-lg text-center border-2 border-black border-opacity-100">{subject.USERNAME}</td>
-                <td className="py-2 font-normal text-lg text-center border-2 border-black border-opacity-100">{subject.DAYNAME}</td>
-                <td className="py-2 font-normal text-lg text-center border-2 border-black border-opacity-100">{subject.st}-{subject.et}</td>
-                <td className="py-2 font-normal text-lg text-center border-2 border-black border-opacity-100">{subject.STATUSNAME === "wait" ? "รอยืนยัน.." : "ผ่านแล้ว"}</td>
-                <td className="border-2 border-black border-opacity-100"> <EditIcon size={24} className="cursor-pointer self-center" /></td>
+                <td className="py-2 font-normal text-lg text-center">{subject.DAYNAME}</td>
+                <td className="py-2 font-normal text-lg text-center">{subject.st}-{subject.et}</td>
+                <td className="py-2 font-normal text-lg text-center">{subject.STATUSNAME === "wait" ? "รอยืนยัน.." : "ผ่านแล้ว"}</td>
+                <td >
+                  <EditIcon
+                    size={24}
+                    className="cursor-pointer self-center"
+                    onClick={() => handleEdit(subject)}
+                  />
+                </td>
               </tr>
             ))}
           </tbody>
