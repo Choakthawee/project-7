@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./reg-set.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleArrowLeft } from "@fortawesome/free-solid-svg-icons";
@@ -12,15 +12,34 @@ import { FaCirclePlus } from "react-icons/fa6";
 import { FiPlusCircle } from "react-icons/fi";
 import { TiDelete } from "react-icons/ti";
 import { TiDeleteOutline } from "react-icons/ti";
+import axios from "axios";
+import { apiurl } from "../../config";
 
 const RegCourseEdit = () => {
   const userRole = localStorage.getItem("role_id");
   const navigate = useNavigate();
-  const {id} = useParams();
-  console.log(id)
+  const { id } = useParams();
   const [data, setData] = useState([{ subhour: "" }]);
   const [branch, setBranch] = useState([{ subbranch: "" }]);
+  const [subject, setSubject] = useState({});
+  const [errormsg, setErrorMsg] = useState({});
+  useEffect(() => {
+    const getdataApi = async () => {
+      try {
+        const dataRespone = await axios.get(apiurl + "/api/teacher/subject/" + id);
+        const data = dataRespone.data;
+        setSubject(data[0]);
+        console.log(data)
+      } catch (error) {
+        if (error.response.data.msgerror)
+          alert(error.response.data.msgerror)
+        if (error.response.data.msgerrortime)
+          alert(error.response.data.msgerrortime)
+      }
 
+    }
+    getdataApi();
+  }, [])
   const addbox = () => {
     setData([...data, { subhour: "" }]);
   };
@@ -287,8 +306,8 @@ const RegCourseEdit = () => {
               <select
                 className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                 style={{ width: 120, height: 40 }}
-                // value={statusSem}
-                // onChange={handleSemStatusChange}
+              // value={statusSem}
+              // onChange={handleSemStatusChange}
               >
                 <option value="" disabled selected hidden>
                   ---
@@ -414,11 +433,11 @@ const RegCourseEdit = () => {
             <div className="mt-3 text-sm font-medium text-gray-900 dark:text-black">
               <div>
                 <label className="block mb-2">ชื่อรายวิชา</label>
-                <p className="text-xl text-gray-300">Network Programming</p>
+                <p className="text-xl text-gray-300">{subject.name?subject.name:"Error"}</p>
               </div>
               <div className="flex mt-3">
                 <p className="mr-3">รหัสวิชา : </p>
-                <p className="text-gray-300">03603423</p>
+                <p className="text-gray-300">{subject.idsubject?subject.idsubject:"Error"}</p>
               </div>
               <div className="flex mt-3">
                 <p className="mr-3">จำนวนหน่วยกิต :</p>

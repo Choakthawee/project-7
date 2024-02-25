@@ -43,7 +43,7 @@ const RegCourse = () => {
   useEffect(() => {
     async function getSubject() {
       try {
-        const responseData = await axios.get(apiurl + "/api/teacher/subjests")
+        const responseData = await axios.get(apiurl + "/api/teacher/subjects")
         const data = responseData.data;
         setSubjects(data);
         console.log(data.results)
