@@ -84,7 +84,7 @@ const Sidebar = () => {
     } else if (userRole_id === "3") {
       return "education";
     } else if (userRole_id === "2") return "admin"; else if (userRole_id === "1") return "teacher";
-   
+
 
     return null;
   };
@@ -130,14 +130,14 @@ const Sidebar = () => {
             <FaBars
               size={24}
               color="white"
-              className={`transition-all ${isSidebarCollapsed ? "size-7 items-center" : ""
+              className={`transition-all ${isSidebarCollapsed ? "size-7 -ml-1 items-center" : ""
                 }`}
             />
           </span>
         </div>
 
         <div
-          className={`flex flex-2 flex-col justify-center items-center mb-3 transition-all ${isSidebarCollapsed ? "opacity-0 -mb-9" : ""
+          className={`flex flex-2 flex-col justify-center items-center mb-3 transition-all ${isSidebarCollapsed ? "opacity-0 -mb-10" : ""
             }`}
         >
           <FaUser size={40} color="white" className="mb-5" />
@@ -175,22 +175,18 @@ const Sidebar = () => {
         )}
 
         <div
-          className={`flex justify-end transition-all  mb-2 align-bottom ${isSidebarCollapsed ? "justify-center ml-2 " : "justify-center"
+          className={`flex flex-1 justify-center items-end transition-all align-bottom ${isSidebarCollapsed ? "justify-center" : "justify-center"
             }`}
         >
           <Link to={userRole ? "/" : "/"} onClick={logout}>
             <button
               type="button"
-              className={`transition-all flex self-center focus:outline-none text-white bg-red-500 hover:bg-red-400  font-medium rounded-lg px-5 py-2.5 mb-2 ${isSidebarCollapsed ? "opacity-0" : ""}`}
-              style={{
-                width: 150,
-                height: 45,
-              }}
+              className={`transition-all flex self-center focus:outline-none text-white bg-red-500 hover:bg-red-400  font-medium rounded-lg px-5 py-2.5 mb-2 ${isSidebarCollapsed ? "" : ""}`}
             >
-              <p className="text-xl transition-all mr-3">LOGOUT</p>
+              <p className={`text-xl transition-all mr-3 ${isSidebarCollapsed ? "" : ""}`}>{isSidebarCollapsed ? "" : "LOCKOUT"}</p>
               <FaSignOutAlt
-                size={30}
-                className={`fill-red-600 ${isSidebarCollapsed ? "" : ""}`}
+                size={isSidebarCollapsed ? "20" : "30"}
+                className={`fill-red-600 ${isSidebarCollapsed ? "opacity-100 -ml-2" : ""}`}
               />
             </button>
           </Link>
