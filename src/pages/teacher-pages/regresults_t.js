@@ -112,7 +112,7 @@ const RegResultT = () => {
     return null;
   }
   return (
-    <div className="background">
+    <div className="flex flex-auto overflow-hidden h-screen background21">
       <div className="flex flex-1 flex-col">
         <div className="flex relative">
           <p className="flex font-family font-bold text-4xl size-30  text-midgreen h1text-shadow mt-10 ml-10">

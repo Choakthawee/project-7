@@ -18,21 +18,22 @@ const SubOpen = () => {
   const totalPages = Math.ceil(subjects.length / subjectsPage);
   const startIndex = (currentPage - 1) * subjectsPage;
   const endIndex = startIndex + subjectsPage;
-  const currentsubjects = subjects.msg || subjects.msgerr ? []: subjects.slice(startIndex, endIndex);
+  const currentsubjects =
+    subjects.msg || subjects.msgerr ? [] : subjects.slice(startIndex, endIndex);
   useEffect(() => {
     const getapi = async () => {
       try {
-        const database = await axios.get(apiurl + "/api/subjest")
+        const database = await axios.get(apiurl + "/api/subjest");
         const data = database.data;
         setSubjects(data);
-        console.log(data)
+        console.log(data);
       } catch (error) {
         setSubjects(error.response.data);
-        console.log(error)
+        console.log(error);
       }
-    }
+    };
     getapi();
-  }, [])
+  }, []);
   useEffect(() => {
     const showAlert = () => {
       Swal.fire({
@@ -56,8 +57,6 @@ const SubOpen = () => {
       showAlert();
     }
   }, [userRole, navigate]);
-
-
 
   const handleNextPage = () => {
     setCurrentPage((prevPage) => prevPage + 1);
@@ -110,23 +109,23 @@ const SubOpen = () => {
   //     setSStatus(3);
   //   }
   // };
-  const unOpenSubject = async(id)=>{
-    try{
-      const dataResponse = await axios.put(apiurl+"/api/edu/delete_subjectsIsopen/"+id)
+  const unOpenSubject = async (id) => {
+    try {
+      const dataResponse = await axios.put(
+        apiurl + "/api/edu/delete_subjectsIsopen/" + id
+      );
       const dataDelete = dataResponse.data;
-      alert(dataDelete.message)
-    }catch (err){
-      if(err.response.data.error){
-        alert(err.response.data.error)
-      }else{
-        alert(err)
+      console.log(dataDelete.message);
+    } catch (err) {
+      if (err.response.data.error) {
+        console.log(err.response.data.error);
+      } else {
+        console.log(err);
       }
-      
     }
-    
-  }
+  };
   return (
-    <div className="background">
+    <div className="flex flex-auto overflow-hidden h-screen background21 ">
       <div
         style={{
           flex: 1,
@@ -160,8 +159,8 @@ const SubOpen = () => {
               <select
                 className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                 style={{ width: 120, height: 40 }}
-              // value={statusSem}
-              // onChange={handleSemStatusChange}
+                // value={statusSem}
+                // onChange={handleSemStatusChange}
               >
                 <option value="" disabled selected hidden>
                   ---
@@ -171,12 +170,20 @@ const SubOpen = () => {
               </select>
               <FontAwesomeIcon
                 icon={faArrowAltCircleDown}
-                style={{ position: "absolute", top: "50%", right: "12px", transform: "translateY(-50%)", pointerEvents: "none" }}
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  right: "12px",
+                  transform: "translateY(-50%)",
+                  pointerEvents: "none",
+                }}
               />
             </div>
           </div>
           <div
-            style={{ flex: 4 }} className="flex font-family text-xl font-medium ml-3">
+            style={{ flex: 4 }}
+            className="flex font-family text-xl font-medium ml-3"
+          >
             <p className="flex font-family text-xl font-medium ptext-shadow mr-3 mt-1">
               ปีการศึกษา <span style={{ color: "red" }}>*</span>
             </p>
@@ -184,8 +191,8 @@ const SubOpen = () => {
               <select
                 className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                 style={{ width: 120, height: 40 }}
-              // value={statusYear}
-              // onChange={handleYearStatusChange}
+                // value={statusYear}
+                // onChange={handleYearStatusChange}
               >
                 <option value="" disabled selected hidden>
                   ---
@@ -256,8 +263,8 @@ const SubOpen = () => {
               <select
                 className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                 style={{ width: 140, height: 40 }}
-              // value={statusCat}
-              // onChange={handleCatStatusChange}
+                // value={statusCat}
+                // onChange={handleCatStatusChange}
               >
                 <option value="" disabled selected hidden>
                   ---
@@ -323,7 +330,9 @@ const SubOpen = () => {
                   <th className="py-2 font-light text-xl">หลักสูตร</th>
                   <th className="py-2 font-light text-xl">หน่วยกิต</th>
                   <th className="py-2 font-light text-xl">หมวดวิชา</th>
-                  <th className="py-2 font-light text-xl">ลบ</th>
+                  <th className="py-2 font-light text-xl">
+                    ลบรายวิชาที่เปิดสอน
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -336,38 +345,60 @@ const SubOpen = () => {
                         : "bg-white"
                     }
                   >
-                <td className="py-2 font-light text-lg text-center">{index+1}</td>
-                <td className="py-2 font-light text-lg text-center">
-                  {v.idsubject}
-                </td>
-                <td className="py-2 font-light text-lg text-center">
-                  {v.name}
-                </td>
-                <td className="py-2 font-light text-lg text-center">
-                  {v.years}
-                </td>
-                <td className="py-2 font-light text-lg text-center">{"3"}</td>
-                <td className="py-2 font-light text-lg text-center">
-                  {v.subject_category}
-                </td>
-                <td>
-                  <button className="py-2 text-red-700 underline" onClick={()=>{
-                    unOpenSubject(v.id);
-                    setSubjects(subjects.filter(item => item.id !== v.id));
-                  }}>ลบ</button>
-                </td>
-                </tr>
+                    <td className="py-2 font-light text-lg text-center">
+                      {index + 1}
+                    </td>
+                    <td className="py-2 font-light text-lg text-center">
+                      {v.idsubject}
+                    </td>
+                    <td className="py-2 font-light text-lg text-center">
+                      {v.name}
+                    </td>
+                    <td className="py-2 font-light text-lg text-center">
+                      {v.years}
+                    </td>
+                    <td className="py-2 font-light text-lg text-center">
+                      {"3"}
+                    </td>
+                    <td className="py-2 font-light text-lg text-center">
+                      {v.subject_category}
+                    </td>
+                    <td className="py-2 text-red-700 underline text-center">
+                      <button
+                        className=" underline "
+                        onClick={() => {
+                          Swal.fire({
+                            title: "ต้องการลบใช่หรือไม่?",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3085d6",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "ใช่",
+                            cancelButtonText: "ไม่",
+                          }).then((result) => {
+                            if (result.isConfirmed) {
+                              unOpenSubject(v.id);
+                              setSubjects(
+                                subjects.filter((item) => item.id !== v.id)
+                              );
+                              Swal.fire("Deleted!", "ลบสำเร็จ!", "success");
+                            }
+                          });
+                        }}
+                      >
+                        ลบรายวิชา
+                      </button>
+                    </td>
+                  </tr>
                 ))}
               </tbody>
             </table>
-            
           </div>
         </div>
         <div className=" text-center mt-5 text-red-600 text-2xl">
           {subjects.msg}
           {subjects.msgerr}
         </div>
-        
       </div>
     </div>
   );
