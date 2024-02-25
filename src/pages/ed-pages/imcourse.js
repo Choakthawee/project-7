@@ -201,8 +201,8 @@ const ImportCourse = () => {
                 <select
                   className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                   style={{ height: 40 }}
-                  // value={statusCat}
-                  // onChange={handleCatStatusChange}
+                // value={statusCat}
+                // onChange={handleCatStatusChange}
                 >
                   <option value="" disabled selected hidden>
                     ---
@@ -282,11 +282,11 @@ const ImportCourse = () => {
               </table>
             </div>
           </div>
-          {subjects.msg && (
-            <div className=" p-5 text-center w-full text-2xl text-red-500 underline">
-              {subjects.msg}
-            </div>
-          )}
+
+          <div className=" p-5 text-center w-full text-2xl text-red-500 underline">
+            {subjects.msg}{noneSubject}
+          </div>
+
           <div className="flex flex-1 justify-center items-center gap-3">
             <button onClick={handlePrevPage}>
               <FaCircleLeft size={21} color="#0a6765" className="" />
