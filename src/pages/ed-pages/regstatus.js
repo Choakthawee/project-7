@@ -13,6 +13,8 @@ const RegStatus = () => {
   const [selectedProb, setSelectedProb] = useState("");
   const [category, setCategory] = useState([]);
   const [subjectReg, setsubjectReg] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState("");
+
 
   useEffect(() => {
     axios.get(apiurl + '/api/eu/allRegister')
@@ -162,28 +164,41 @@ const RegStatus = () => {
               <th className="py-2 font-light text-base border-r-black border-x-2 border-opacity-10">
                 เวลา
               </th>
-              <th className="py-2 font-light text-base">หมายเหตุ</th>
+              <th className="py-2 font-light text-base border-r-black border-x-2 border-opacity-10">หมายเหตุ</th>
+              <th className="py-2 font-light text-base">แก้ไข</th>
             </tr>
           </thead>
           <tbody>
             {subjectReg.length > 0 && subjectReg.map((subject, index) => (
-              <tr key={index}>
-                <td className="py-2 font-light text-lg text-center">{index + 1}</td>
-                <td className="py-2 font-light text-lg text-center">{subject.STARTTIME}</td>
-                <td className="py-2 font-light text-lg text-center">{subject.STARTTIME}</td>
-                <td className="py-2 font-light text-lg text-center">{subject.STARTTIME}</td>
-                <td className="py-2 font-light text-lg text-center">{subject.STARTTIME}</td>
-                <td className="py-2 font-light text-lg text-center">{subject.STARTTIME}</td>
-                <td className="py-2 font-light text-lg text-center">{subject.STARTTIME}</td>
-                <td className="py-2 font-light text-lg text-center">{subject.STARTTIME}</td>
-                <td className="py-2 font-light text-lg text-center">{subject.STARTTIME}</td>
-                <td className="py-2 font-light text-lg text-center">{subject.STARTTIME}</td>
-                <td className="py-2 font-light text-lg text-center">{subject.STARTTIME}</td>
+              <tr key={index} className={
+                (index) % 2 === 0 ? "bg-gray-100" : "bg-white"
+              }>
+                <td className="py-2 font-normal text-lg text-center border-2 border-black border-opacity-100">{index + 1}</td>
+                <td className="py-2 font-normal text-lg text-center border-2 border-black border-opacity-100">{subject.Subjects_id}</td>
+                <td className="py-2 font-normal text-lg text-center border-2 border-black border-opacity-1000">{subject.SUBJECTNAME}</td>
+                <td className="py-2 font-normal text-lg text-center border-2 border-black border-opacity-100">{subject.N_people}</td>
+                <td className="py-2 font-normal text-lg text-center border-2 border-black border-opacity-100">{subject.CATEGORYNAME}</td>
+                <td className="py-2 font-normal text-lg text-center border-2 border-black border-opacity-100">{subject.USERNAME}</td>
+                <td className="py-2 font-normal text-lg text-center border-2 border-black border-opacity-100">
+                  {subject.branch.t12.map((item, index) => (
+                    <span>
+                      {index > 0 && ", "}
+                      ชั้นปี {item}
+                    </span>
+                  ))}
+                </td>
+                <td className="py-2 font-normal text-lg text-center border-2 border-black border-opacity-100">{subject.USERNAME}</td>
+                <td className="py-2 font-normal text-lg text-center border-2 border-black border-opacity-100">{subject.DAYNAME}</td>
+                <td className="py-2 font-normal text-lg text-center border-2 border-black border-opacity-100">{subject.st}-{subject.et}</td>
+                <td className="py-2 font-normal text-lg text-center border-2 border-black border-opacity-100">{subject.STATUSNAME === "wait" ? "รอยืนยัน.." : "ผ่านแล้ว"}</td>
+                <td className="border-2 border-black border-opacity-100"> <EditIcon size={24} className="cursor-pointer self-center" /></td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+
+
     </div>
   );
 };
