@@ -5,8 +5,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { faArrowAltCircleDown } from "@fortawesome/free-solid-svg-icons";
 import { RiEdit2Fill } from "react-icons/ri";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./reg-set.css";
+import axios from "axios";
+import { apiurl } from "../../config";
+import { LockIcon } from "lucide-react";
 
 const RegCourse = () => {
   const userRole = localStorage.getItem("role_id");
@@ -29,9 +32,43 @@ const RegCourse = () => {
       }
     });
   };
+  const [subjects, setSubjects] = useState([]);
+  const [noneSubject, setNoneSubject] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const subjectsPage = 7;
+  const totalPages = Math.ceil(subjects.length / subjectsPage);
+  const startIndex = (currentPage - 1) * subjectsPage;
+  const endIndex = startIndex + subjectsPage;
 
-  const handleSwab = () => {
-    navigate("/regcourse_edit");
+  useEffect(() => {
+    async function getSubject() {
+      try {
+        const responseData = await axios.get(apiurl + "/api/teacher/subjects")
+        const data = responseData.data;
+        setSubjects(data);
+        console.log(data.results)
+      } catch (err) {
+        setNoneSubject(err.response.data);
+      }
+    }
+    getSubject();
+  }, [])
+  const currentsubjects = subjects.msg
+    ? []
+    : subjects.results ? subjects.results.slice(startIndex, endIndex) : [];
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prevPage) => prevPage - 1);
+    }
+  };
+  const handleSwab = (v) => {
+    navigate("/regcourse_edit/" + v.id);
   };
 
   // const [statusSem, setSemStatus] = useState(1);
@@ -100,40 +137,12 @@ const RegCourse = () => {
   }
   return (
     <div className="flex flex-auto overflow-hidden h-screen background21">
-      <div
-        style={{
-          flex: 1,
-          // borderColor: "red",
-          // borderWidth: 5,
-          flexDirection: "column",
-        }}
-        className="mt-10 ml-10"
-      >
-        <h1
-          style={{
-            flex: 1,
-          }}
-          className="flex font-family font-bold text-4xl size-30 text-midgreen h1text-shadow"
-        >
+      <div className="flex-1 flex flex-col p-10 gap-5">
+        <h1 className="flex  font-family font-bold text-4xl size-30 text-midgreen h1text-shadow">
           ลงทะเบียนรายวิชา
         </h1>
-        <div
-          style={{
-            display: "flex",
-            flex: 1,
-            // borderColor: "blue",
-            // borderWidth: 5,
-            marginTop: 40,
-          }}
-        >
-          <div
-            style={{
-              flex: 1,
-              // borderColor: "green",
-              // borderWidth: 5,
-            }}
-            className="flex font-family text-xl font-medium"
-          >
+        <div className="flex">
+          <div className="flex font-family text-xl font-medium">
             <p className="flex font-family text-xl font-medium ptext-shadow mr-3 mt-1">
               ภาคเรียน <span style={{ color: "red" }}>*</span>
             </p>
@@ -141,8 +150,8 @@ const RegCourse = () => {
               <select
                 className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                 style={{ width: 120, height: 40 }}
-                // value={statusSem}
-                // onChange={handleSemStatusChange}
+              // value={statusSem}
+              // onChange={handleSemStatusChange}
               >
                 <option value="" disabled selected hidden>
                   ---
@@ -165,8 +174,6 @@ const RegCourse = () => {
           <div
             style={{
               flex: 4,
-              // borderColor: "yellow",
-              // borderWidth: 5,
             }}
             className="flex font-family text-xl font-medium ml-2"
           >
@@ -177,8 +184,8 @@ const RegCourse = () => {
               <select
                 className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                 style={{ width: 120, height: 40 }}
-                // value={statusYear}
-                // onChange={handleYearStatusChange}
+              // value={statusYear}
+              // onChange={handleYearStatusChange}
               >
                 <option value="" disabled selected hidden>
                   ---
@@ -204,17 +211,11 @@ const RegCourse = () => {
         <div
           style={{
             display: "flex",
-            flex: 1,
-            // borderColor: "blue",
-            // borderWidth: 5,
-            marginTop: 30,
           }}
         >
           <div
             style={{
               flex: 4,
-              // borderColor: "orange",
-              // borderWidth: 5,
             }}
           >
             <form>
@@ -235,14 +236,7 @@ const RegCourse = () => {
               </div>
             </form>
           </div>
-          <div
-            style={{
-              flex: 1,
-              // borderColor: "yellow",
-              // borderWidth: 5,
-            }}
-            className="flex font-family font-medium ml-7 flex-col"
-          >
+          <div className="flex flex-1 font-family font-medium ml-7 flex-col">
             <div>
               <p className="text-sm font-medium mb-2">หลักสูตร</p>
             </div>
@@ -250,8 +244,8 @@ const RegCourse = () => {
               <select
                 className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                 style={{ width: 140, height: 40 }}
-                // value={statusSyl}
-                // onChange={handleSylStatusChange}
+              // value={statusSyl}
+              // onChange={handleSylStatusChange}
               >
                 <option value="" disabled selected hidden>
                   ---
@@ -275,13 +269,7 @@ const RegCourse = () => {
               />
             </div>
           </div>
-          <div
-            style={{
-              flex: 1,
-              // borderColor: "yellow",
-              // borderWidth: 5,
-            }}
-            className="flex font-family font-medium ml-7 flex-col"
+          <div className="flex flex-1 font-family font-medium ml-7 flex-col"
           >
             <div>
               <p className="text-sm font-medium mb-2">หมวดวิชา</p>
@@ -290,8 +278,8 @@ const RegCourse = () => {
               <select
                 className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                 style={{ width: 140, height: 40 }}
-                // value={statusCat}
-                // onChange={handleCatStatusChange}
+              // value={statusCat}
+              // onChange={handleCatStatusChange}
               >
                 <option value="" disabled selected hidden>
                   ---
@@ -315,8 +303,6 @@ const RegCourse = () => {
           <div
             style={{
               flex: 6,
-              // borderColor: "orange",
-              // borderWidth: 5,
             }}
             className="font-family mt-7 ml-10"
           >
@@ -338,63 +324,69 @@ const RegCourse = () => {
             </button>
           </div>
         </div>
-        <div
-          style={{
-            display: "flex",
-            flex: 1,
-            // borderColor: "blue",
-            // borderWidth: 5,
-          }}
-        >
-          <div className="flex flex-1 bg-slate-200 mt-10 rounded-lg overflow-x-auto shadow-xl">
-            <table className="h-full w-full">
-              <thead>
-                <tr className="column-color1 text-white">
-                  <th className="py-2 font-light text-xl">#</th>
-                  <th className="py-2 font-light text-xl">รหัสวิชา</th>
-                  <th className="py-2 font-light text-xl">ชื่อวิชา</th>
-                  <th className="py-2 font-light text-xl">หลักสูตร</th>
-                  <th className="py-2 font-light text-xl">หมวดวิชา</th>
-                  <th className="py-2 font-light text-xl">ลงทะเบียน</th>
-                </tr>
-              </thead>
-              <tbody>
-                {/* {currentUsers.map((user, index) => (
-                  <tr
-                    key={startIndex + index}
+        {noneSubject.msgerrortime ?
+          <div className=" text-2xl text-red-700 text-center underline">{noneSubject.msgerrortime}</div> :
+          <div className="flex flex-col gap-2">
+            <h1 className=" h1text-shadow text-xl">{subjects.msgtime &&`*${subjects.msgtime}`}</h1>
+            <div className="flex flex-1 bg-slate-200 rounded-lg overflow-x-auto shadow-xl">
+              <table className="h-full w-full">
+                <thead>
+                  <tr className="column-color1 text-white">
+                    <th className="py-2 font-light text-xl">#</th>
+                    <th className="py-2 font-light text-xl">รหัสวิชา</th>
+                    <th className="py-2 font-light text-xl">ชื่อวิชา</th>
+                    <th className="py-2 font-light text-xl">หลักสูตร</th>
+                    <th className="py-2 font-light text-xl">หมวดวิชา</th>
+                    <th className="py-2 font-light text-xl">ลงทะเบียน</th>
+                  </tr>
+                </thead>
+
+                {currentsubjects.map((v, i) => (
+                  <tbody key={startIndex + i}
+
                     className={
-                      (startIndex + index) % 2 === 0
+                      (startIndex + i) % 2 === 0
                         ? "bg-gray-100"
                         : "bg-white"
                     }
-                  > */}
-                <td className="py-2 font-light text-lg text-center">{"1"}</td>
-                <td className="py-2 font-light text-lg text-center">
-                  {"03603423"}
-                </td>
-                <td className="py-2 font-light text-lg text-center">
-                  {"Network Programming"}
-                </td>
-                <td className="py-2 font-light text-lg text-center">
-                  {"2566"}
-                </td>
-                <td className="py-2 font-light text-lg text-center">
-                  {"เลือก"}
-                </td>
-                <td className="py-2 font-light text-lg text-center">
-                  <button
-                    className="text-green-950 py-1 px-2 rounded-md font-light"
-                    onClick={() => handleSwab()}
                   >
-                    <RiEdit2Fill size={20} />
-                  </button>
-                </td>
-                {/* </tr>
-                ))} */}
-              </tbody>
-            </table>
+                    <td className="py-2 font-light text-lg text-center">{i + 1}</td>
+                    <td className="py-2 font-light text-lg text-center">
+                      {v.idsubject}
+                    </td>
+                    <td className="py-2 font-light text-lg text-center">
+                      {v.name}
+                    </td>
+                    <td className="py-2 font-light text-lg text-center">
+                      {v.years}
+                    </td>
+                    <td className="py-2 font-light text-lg text-center">
+                      {v.subject_category}
+                    </td>
+                    <td className="py-2 font-light text-lg text-center">
+                      <button
+                        className="text-green-950 py-1 px-2 rounded-md font-light"
+                        onClick={() => {
+                          subjects.msgtime ? Swal.fire({
+                            icon: "warning", "text": subjects.msgtime, title: "ข้อผิดพลาด",
+                            confirmButtonColor: "#3085d6",
+                            confirmButtonText: "ตกลง",
+                          }) : handleSwab(v)
+                        }}
+                      >
+                        {subjects.msgtime ? <LockIcon></LockIcon> : <RiEdit2Fill size={20} />}
+                      </button>
+                    </td>
+                  </tbody>
+                ))}
+
+              </table>
+             
+            </div>
+            <h1 className="text-center text-xl">{noneSubject.msgerror}</h1>
           </div>
-        </div>
+        }
+
       </div>
     </div>
   );

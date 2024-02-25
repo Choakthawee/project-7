@@ -45,7 +45,7 @@ function App() {
 
                 {/* Teacher Pages */}
                 <Route path="/regcourse" element={<RegCourse />} />
-                <Route path="/regcourse_edit" element={<RegCourseEdit />} />
+                <Route path="/regcourse_edit/:id" element={<RegCourseEdit />} />
                 <Route path="/regresults_t" element={<RegResultT />} />
                 <Route path="/schedule" element={<Schedule />} />
                 <Route path="/schedule_edit" element={<ScheduleEdit />} />
