@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router";
+import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import React, { useState } from "react";
 import "./reg-set.css";
@@ -15,7 +16,8 @@ import { TiDeleteOutline } from "react-icons/ti";
 const RegCourseEdit = () => {
   const userRole = localStorage.getItem("role_id");
   const navigate = useNavigate();
-
+  const {id} = useParams();
+  console.log(id)
   const [data, setData] = useState([{ subhour: "" }]);
   const [branch, setBranch] = useState([{ subbranch: "" }]);
 
