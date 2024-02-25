@@ -2,7 +2,7 @@
   display: flex;
   flex: auto;
   background-color: #cce3de;
-  overflow: hidden;
+  overflow-x: scroll;
   height: 100vh;
 }
 
@@ -21,6 +21,19 @@
   border-radius: 0.5rem;
 }
 
+.box-gray-row {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  background-color: #f2efef;
+  border-radius: 0.5rem;
+}
+
+.lightgreen,
 .text-lightgreen {
   color: #6fa01d;
+}
+
+.bg-lightgreen {
+  background-color: #6fa01d;
 }
