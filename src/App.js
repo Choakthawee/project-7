@@ -23,9 +23,9 @@ import ImportSyl from "./pages/ed-pages/imsyl";
 import RegResultED from "./pages/ed-pages/regresults_ed";
 import RegStatus from "./pages/ed-pages/regstatus";
 import SubOpen from "./pages/ed-pages/sub-open";
+import Viewpage from "./pages/xlsxView/Viewpage";
 
 function App() {
-  
   return (
     <Router>
       <Routes>
@@ -34,7 +34,7 @@ function App() {
         <Route
           path="/*"
           element={
-            <div style={{ display: "flex"}}>
+            <div style={{ display: "flex" }}>
               <Sidebar /> {/* แสดง Sidebar ทุกๆ หน้า */}
               <Routes>
                 {/* Admin Pages */}
@@ -55,6 +55,11 @@ function App() {
                 <Route path="/regresults_ed" element={<RegResultED />} />
                 <Route path="/regstatus" element={<RegStatus />} />
                 <Route path="/sub-open" element={<SubOpen />} />
+
+                <Route
+                  path="/ViewExcel/:file"
+                  element={<Viewpage></Viewpage>}
+                />
               </Routes>
             </div>
           }
