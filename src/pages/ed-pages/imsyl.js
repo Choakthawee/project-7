@@ -17,6 +17,7 @@ import Swal from "sweetalert2";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { apiurl } from "../../config";
+import { Link } from "react-router-dom";
 const ImportSyl = () => {
   const userRole = localStorage.getItem("role_id");
   const navigate = useNavigate();
@@ -178,9 +179,9 @@ const ImportSyl = () => {
           <div className="flex flex-row gap-10 justify-center">
             <FontAwesomeIcon icon={faArrowRight} />
             {file ? (
-              <a href={"/ViewExcel/" + encodeURIComponent(file.name)}>
-                {file.name + "  <----- ทำ view file on web เลย"}
-              </a>
+              <Link className=" underline text-blue-700 text-xl" target="_self" to={"/ViewExcel"} state={{file}}>
+                {`${file.name} <--- กดเพื่อ View `}
+              </Link>
             ) : (
               ""
             )}

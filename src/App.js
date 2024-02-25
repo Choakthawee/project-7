@@ -24,6 +24,7 @@ import RegResultED from "./pages/ed-pages/regresults_ed";
 import RegStatus from "./pages/ed-pages/regstatus";
 import SubOpen from "./pages/ed-pages/sub-open";
 import Viewpage from "./pages/xlsxView/Viewpage";
+import Viewxlsx from "./pages/xlsxView/Viewpage";
 
 function App() {
   return (
@@ -57,8 +58,8 @@ function App() {
                 <Route path="/sub-open" element={<SubOpen />} />
 
                 <Route
-                  path="/ViewExcel/:file"
-                  element={<Viewpage></Viewpage>}
+                  path="/ViewExcel/"
+                  element={<Viewxlsx/>}
                 />
               </Routes>
             </div>
