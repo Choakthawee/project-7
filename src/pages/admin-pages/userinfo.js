@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import { apiurl } from "../../config";
 
 const UserInfo = () => {
   const [users, setUsers] = useState([]);
@@ -14,7 +15,7 @@ const UserInfo = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:4133/api/user")
+      .get(apiurl+"/api/user")
       .then((response) => {
         setUsers(response.data.message);
       })
