@@ -12,13 +12,28 @@ import Swal from "sweetalert2";
 const SubOpen = () => {
   const userRole = localStorage.getItem("role_id");
   const navigate = useNavigate();
-  useEffect(()=>{
-    const getapi = async()=>{
-      const database = await axios.get(apiurl+"/api/subjest")
-      const data = database.data;
-      console.log(data)
-    }
-  },[])
+  const [subjects, setSubjects] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const subjectsPage = 7;
+  const totalPages = Math.ceil(subjects.length / subjectsPage);
+  const startIndex = (currentPage - 1) * subjectsPage;
+  const endIndex = startIndex + subjectsPage;
+  const currentsubjects =
+    subjects.msg || subjects.msgerr ? [] : subjects.slice(startIndex, endIndex);
+  useEffect(() => {
+    const getapi = async () => {
+      try {
+        const database = await axios.get(apiurl + "/api/subjest");
+        const data = database.data;
+        setSubjects(data);
+        console.log(data);
+      } catch (error) {
+        setSubjects(error.response.data);
+        console.log(error);
+      }
+    };
+    getapi();
+  }, []);
   useEffect(() => {
     const showAlert = () => {
       Swal.fire({
@@ -43,19 +58,13 @@ const SubOpen = () => {
     }
   }, [userRole, navigate]);
 
-  // const totalPages = Math.ceil(users.length / usersPerPage);
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const [users, setUsers] = useState([]);
-  // const currentUsers = users.slice(startIndex, endIndex);
-  // const usersPerPage = 7;
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
 
-  // const handleNextPage = () => {
-  //   setCurrentPage((prevPage) => prevPage + 1);
-  // };
-
-  // const handlePrevPage = () => {
-  //   setCurrentPage((prevPage) => prevPage - 1);
-  // };
+  const handlePrevPage = () => {
+    setCurrentPage((prevPage) => prevPage - 1);
+  };
 
   // const [statusSem, setSemStatus] = useState(1);
   // const [statusYear, setYearStatus] = useState(1);
@@ -100,14 +109,26 @@ const SubOpen = () => {
   //     setSStatus(3);
   //   }
   // };
-
+  const unOpenSubject = async (id) => {
+    try {
+      const dataResponse = await axios.put(
+        apiurl + "/api/edu/delete_subjectsIsopen/" + id
+      );
+      const dataDelete = dataResponse.data;
+      console.log(dataDelete.message);
+    } catch (err) {
+      if (err.response.data.error) {
+        console.log(err.response.data.error);
+      } else {
+        console.log(err);
+      }
+    }
+  };
   return (
-    <div className="background">
+    <div className="flex flex-auto overflow-hidden h-screen background21 ">
       <div
         style={{
           flex: 1,
-          // borderColor: "red",
-          // borderWidth: 5,
           flexDirection: "column",
         }}
       >
@@ -119,8 +140,6 @@ const SubOpen = () => {
           style={{
             display: "flex",
             flex: 1,
-            // borderColor: "blue",
-            // borderWidth: 5,
             marginLeft: 30,
             marginTop: 40,
           }}
@@ -162,11 +181,7 @@ const SubOpen = () => {
             </div>
           </div>
           <div
-            style={{
-              flex: 4,
-              // borderColor: "yellow",
-              // borderWidth: 5,
-            }}
+            style={{ flex: 4 }}
             className="flex font-family text-xl font-medium ml-3"
           >
             <p className="flex font-family text-xl font-medium ptext-shadow mr-3 mt-1">
@@ -238,8 +253,6 @@ const SubOpen = () => {
           <div
             style={{
               flex: 1,
-              // borderColor: "yellow",
-              // borderWidth: 5,
             }}
             className="flex font-family font-medium ml-7 flex-col"
           >
@@ -317,10 +330,13 @@ const SubOpen = () => {
                   <th className="py-2 font-light text-xl">หลักสูตร</th>
                   <th className="py-2 font-light text-xl">หน่วยกิต</th>
                   <th className="py-2 font-light text-xl">หมวดวิชา</th>
+                  <th className="py-2 font-light text-xl">
+                    ลบรายวิชาที่เปิดสอน
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                {/* {currentUsers.map((user, index) => (
+                {currentsubjects.map((v, index) => (
                   <tr
                     key={startIndex + index}
                     className={
@@ -328,26 +344,60 @@ const SubOpen = () => {
                         ? "bg-gray-100"
                         : "bg-white"
                     }
-                  > */}
-                <td className="py-2 font-light text-lg text-center">{"1"}</td>
-                <td className="py-2 font-light text-lg text-center">
-                  {"03603423"}
-                </td>
-                <td className="py-2 font-light text-lg text-center">
-                  {"Network Programming"}
-                </td>
-                <td className="py-2 font-light text-lg text-center">
-                  {"2566"}
-                </td>
-                <td className="py-2 font-light text-lg text-center">{"3"}</td>
-                <td className="py-2 font-light text-lg text-center">
-                  {"เลือก"}
-                </td>
-                {/* </tr>
-                ))} */}
+                  >
+                    <td className="py-2 font-light text-lg text-center">
+                      {index + 1}
+                    </td>
+                    <td className="py-2 font-light text-lg text-center">
+                      {v.idsubject}
+                    </td>
+                    <td className="py-2 font-light text-lg text-center">
+                      {v.name}
+                    </td>
+                    <td className="py-2 font-light text-lg text-center">
+                      {v.years}
+                    </td>
+                    <td className="py-2 font-light text-lg text-center">
+                      {"3"}
+                    </td>
+                    <td className="py-2 font-light text-lg text-center">
+                      {v.subject_category}
+                    </td>
+                    <td className="py-2 text-red-700 underline text-center">
+                      <button
+                        className=" underline "
+                        onClick={() => {
+                          Swal.fire({
+                            title: "ต้องการลบใช่หรือไม่?",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3085d6",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "ใช่",
+                            cancelButtonText: "ไม่",
+                          }).then((result) => {
+                            if (result.isConfirmed) {
+                              unOpenSubject(v.id);
+                              setSubjects(
+                                subjects.filter((item) => item.id !== v.id)
+                              );
+                              Swal.fire("Deleted!", "ลบสำเร็จ!", "success");
+                            }
+                          });
+                        }}
+                      >
+                        ลบรายวิชา
+                      </button>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
+        </div>
+        <div className=" text-center mt-5 text-red-600 text-2xl">
+          {subjects.msg}
+          {subjects.msgerr}
         </div>
       </div>
     </div>

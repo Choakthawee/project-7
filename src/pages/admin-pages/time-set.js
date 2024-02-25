@@ -133,7 +133,7 @@ const Time = () => {
   };
 
   return (
-    <div className="background">
+    <div className="flex flex-auto overflow-hidden h-screen background21">
       <div>
         <h1
           style={{

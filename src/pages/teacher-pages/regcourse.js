@@ -99,7 +99,7 @@ const RegCourse = () => {
     return null;
   }
   return (
-    <div className="background">
+    <div className="flex flex-auto overflow-hidden h-screen background21">
       <div
         style={{
           flex: 1,
