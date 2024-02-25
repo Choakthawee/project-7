@@ -1,5 +1,9 @@
 import "./imsyl_set.css";
-import { faArrowRight, faFileImport } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowRight,
+  faFileImport,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowAltCircleDown,
@@ -20,68 +24,74 @@ const ImportSyl = () => {
   const [errors, setErr] = useState([]);
   const [warn, setWarn] = useState([]);
   const [progress, setProgress] = useState(0);
-  const [files, setFileUnload] = useState([])
+  const [files, setFileUnload] = useState([]);
   const [errorFiles, setErrorFiles] = useState(null);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     const getDownloadfile = async () => {
       try {
-        const responseData = await axios.get(apiurl + "/api/education/downloadlist");
+        const responseData = await axios.get(
+          apiurl + "/api/education/downloadlist"
+        );
         const data = responseData.data;
         setFileUnload(data);
       } catch (error) {
-        setErrorFiles(error.response.data.msgerror)
+        setErrorFiles(error.response.data.msgerror);
       }
-    }
+    };
     getDownloadfile();
-  }, [loading])
+  }, [loading]);
   const uploadFiles = async () => {
-
-    if (selection_year.current.value === '---' || selection_year.current.value === null) {
+    if (
+      selection_year.current.value === "---" ||
+      selection_year.current.value === null
+    ) {
       Swal.fire({
         icon: "error",
         title: "ข้อผิดพลาด",
         text: "เลือกปีการศึกษาก่อนครับ",
         confirmButtonColor: "#3085d6",
         confirmButtonText: "ตกลง",
-      })
+      });
     } else {
       const formData = new FormData();
-      formData.append('file', file);  // ชื่อต้องตรงกับที่ระบุใน upload.single('file') // ตรงกับ req.body.name ใน Express
-      formData.append('year', selection_year.current.value);
+      formData.append("file", file); // ชื่อต้องตรงกับที่ระบุใน upload.single('file') // ตรงกับ req.body.name ใน Express
+      formData.append("year", selection_year.current.value);
       try {
-        const response = await axios.post(apiurl+'/api/education/Course/uploadfile', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          },
-          onUploadProgress: (progressEvent) => {
-            const { loaded, total } = progressEvent;
-            const percent = Math.floor((loaded * 100) / total);
-            setProgress(percent);
+        const response = await axios.post(
+          "http://localhost:4133/api/education/Course/uploadfile",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+            onUploadProgress: (progressEvent) => {
+              const { loaded, total } = progressEvent;
+              const percent = Math.floor((loaded * 100) / total);
+              setProgress(percent);
+            },
           }
-        });
+        );
         if (response.data.warning.warnmsg !== null) {
           alert(response.data.msg);
-          alert(response.data.warning.warnmsg)
+          alert(response.data.warning.warnmsg);
           setWarn(response.data.warning.data);
-
         } else {
           alert(response.data.msg);
         }
         setLoading(!loading);
-
       } catch (error) {
-        console.log(error)
+        console.log(error);
         alert(error.response.data.msgerror);
-        setErr(error.response.data.error)
+        setErr(error.response.data.error);
         if (error.response.data.warning !== null) {
-          alert(error.response.data.warning.warnmsg)
+          alert(error.response.data.warning.warnmsg);
           setWarn(error.response.data.warning.data);
         }
         setLoading(!loading);
       }
     }
-  }
+  };
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
@@ -130,13 +140,12 @@ const ImportSyl = () => {
                 const year = new Date().getFullYear() + 544 - index;
                 return <option key={year}>{year}</option>;
               })}
-              
             </select>
             <FontAwesomeIcon
               icon={faArrowAltCircleDown}
               style={{
                 position: "absolute",
-                top:"50%",
+                top: "50%",
                 right: "12px",
                 transform: "translateY(-50%)",
                 pointerEvents: "none",
@@ -145,28 +154,26 @@ const ImportSyl = () => {
           </div>
         </div>
         <div className="flex flex-col md:flex-row md:items-center gap-3">
-          <div
-            className=" flex items-center justify-center bg-gray-200 border-dashed border-gray-400 border-4 p-4 w-full md:w-1/2"
-          >
-            <FontAwesomeIcon
-              icon={faFileImport}
+          <div className=" flex items-center justify-center bg-gray-200 border-dashed border-gray-400 border-4 p-4 w-full md:w-1/2">
+            <FontAwesomeIcon icon={faFileImport} />
+            <input
+              type="file"
+              onChange={handleFileChange}
+              class="file:bg-transparent file:border-0 file:text-sm file:font-medium file:p-2 file:w-full file:outline-none file:cursor-pointer"
             />
-            <input type="file" onChange={handleFileChange} class="file:bg-transparent file:border-0 file:text-sm file:font-medium file:p-2 file:w-full file:outline-none file:cursor-pointer" />
           </div>
 
           <div className="flex flex-row gap-10 justify-center">
-            <FontAwesomeIcon
-              icon={faArrowRight}
-            />
+            <FontAwesomeIcon icon={faArrowRight} />
             {file ? file.name + "  <----- ทำ view file on web เลย" : ""}
           </div>
-
         </div>
-        {progress !== 0 && <div className=" flex flex-row w-full items-center md:w-1/2">
-          <span className=" absolute">{progress}%</span>
-          <progress className="w-full" value={progress} max="100" />
-        </div>}
-
+        {progress !== 0 && (
+          <div className=" flex flex-row w-full items-center md:w-1/2">
+            <span className=" absolute">{progress}%</span>
+            <progress className="w-full" value={progress} max="100" />
+          </div>
+        )}
 
         <div className="flex ">
           <button
@@ -178,12 +185,11 @@ const ImportSyl = () => {
               height: 25,
             }}
           >
-            <button className="text-mb" onClick={uploadFiles}>บันทึก</button>
-
+            <button className="text-mb" onClick={uploadFiles}>
+              บันทึก
+            </button>
           </button>
-
         </div>
-
 
         <div className="boxtable2 flex-col max-h-72">
           <div className="flex  bg-slate-200 rounded-lg overflow-x-auto shadow-xl overflow-y-auto ">
@@ -192,33 +198,45 @@ const ImportSyl = () => {
                 <tr className="column-color1 text-white">
                   <th className="py-2 font-light text-l ">หลักสูตร</th>
                   <th className="py-2 font-light text-l">ไฟล์</th>
+                  <th className="py-1 px-0.5 font-light">#</th>
                 </tr>
               </thead>
-              {!errorFiles ? files.msg ?
-
-                <tbody>
-                  <td className="py-2 font-light text-base text-center">
-                  </td>
-                  <td className="py-2 font-light text-base text-center">
-                    {files.msg}
-                  </td>
-                </tbody>
-                : files.map((v, i) => (
+              {!errorFiles ? (
+                files.msg ? (
                   <tbody>
-                    <td className="p-3 font-light text-base text-center">
-                      <a href={apiurl + v.link}>{v.years}</a>
-                    </td>
+                    <td className="py-2 font-light text-base text-center"></td>
                     <td className="py-2 font-light text-base text-center">
-                      <a href={apiurl + v.link}>{v.filename}</a>
+                      {files.msg}
                     </td>
                   </tbody>
-                ))
-                : <tbody>
+                ) : (
+                  files.map((v, i) => (
+                    <tbody>
+                      <td className="p-3 font-light text-base text-center">
+                        <a href={apiurl + v.link}>{v.years}</a>
+                      </td>
+                      <td className="py-2 font-light text-base text-center">
+                        <a href={apiurl + v.link}>{v.filename}</a>
+                      </td>
+                      <td className="py-2 font-light text-base text-center">
+                        {" "}
+                        {/* เพิ่มส่วนของปุ่มลบที่นี่ */}
+                        <button>
+                          <p>
+                            <FontAwesomeIcon icon={faTrash} />
+                          </p>
+                        </button>
+                      </td>
+                    </tbody>
+                  ))
+                )
+              ) : (
+                <tbody>
                   <td className="py-2 font-light text-base text-center">
                     {errorFiles}
                   </td>
                 </tbody>
-              }
+              )}
             </table>
           </div>
 
@@ -229,36 +247,32 @@ const ImportSyl = () => {
           </p>
         </div>
         <div className=" overflow-y-auto">
-          {errors.length > 0 &&
+          {errors.length > 0 && (
             <div className="">
               <p>Error</p>
               <div className=" bg-red-600 p-3 rounded-lg ">
                 {errors.map((v, i) => (
-                  <div >{v.value.idsubject} {v.value.name} {v.errorMessage}</div>
+                  <div>
+                    {v.value.idsubject} {v.value.name} {v.errorMessage}
+                  </div>
                 ))}
               </div>
             </div>
-          }
+          )}
 
-          {warn.length > 0 &&
+          {warn.length > 0 && (
             <div className="">
               <p>Warning</p>
               <div className=" bg-yellow-400 p-3 rounded-lg ">
-                {
-                  warn.map((v, i) => (
-                    <div>{`${v.Message}${v.value.name} ${v.value.years}`}</div>
-                  ))
-                }
+                {warn.map((v, i) => (
+                  <div>{`${v.Message}${v.value.name} ${v.value.years}`}</div>
+                ))}
               </div>
             </div>
-          }
-
+          )}
         </div>
       </div>
-
     </div>
-
-
   );
 };
 export default ImportSyl;
