@@ -1,14 +1,18 @@
 import { useState } from "react";
 
-export default function InlineCheckbox({ id, isOpen, setApi }) {
-  const [checkbox1, setCheck] = useState(Boolean(isOpen));
+export default function InlineCheckbox({ id,isOpen,setApi}) {
+  const [checkbox1, setCheck] = useState(localStorage.getItem("ch-" + id)?localStorage.getItem("ch-" + id)==="1"?true:false:Boolean(isOpen));
+  
   const d = (checkbox1) => {
+    let subjects=[]
     console.log(checkbox1, isOpen);
     if (checkbox1 != isOpen) {
       setApi((p) => [...p, { id: id, IsOpen: checkbox1 }]);
     } else {
       setApi((prevSendApi) => prevSendApi.filter((item) => item.id !== id));
     }
+    localStorage.setItem("ch-" + id, checkbox1 ? 1 : 0)
+    
   };
   return (
     <div className="flex items-center me-4 justify-center">

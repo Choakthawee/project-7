@@ -45,10 +45,23 @@ const ImportCourse = () => {
         );
         const data = responsedata.data;
         setSubjects(data);
+        subjects.map((v, i) => {
+          localStorage.setItem(`ch-${v.id}`,v.IsOpen)
+        })
       } catch (err) {
         setNoneSubject(err.response.data.msgerror);
       }
     };
+    const clearLocalStorageByPrefix = (prefix) => {
+      Object.keys(localStorage).forEach((key) => {
+        if (key.startsWith(prefix)) {
+          localStorage.removeItem(key);
+        }
+      });
+    };
+    
+    // Call the function to clear keys with prefix 'ch-'
+    clearLocalStorageByPrefix('ch-');
     getdataSubject();
   }, []);
   const handleNextPage = () => {
@@ -90,19 +103,19 @@ const ImportCourse = () => {
   }
 
   return (
-    <div className="background21 block min-h-screen w-full p-10">
+    <div className="background21 block min-h-screen w-full p-3 md:p-10">
       <div className="flex flex-col gap-3">
         <div className="flex gap-5 flex-col">
           <h1 className="flex font-family font-bold text-4xl size-30 text-midgreen h1text-shadow ">
             เลือกรายวิชาที่เปิดสอน
           </h1>
           <div className="flex flex-1 relative">
-            <div className="flex flex-1 flex-row items-center gap-5">
+            <div className="flex flex-1 flex-col md:flex-row md:items-center gap-5">
               <p className="textinsert font-bold">ภาคเรียน</p>
               <div className="flex relative">
                 <select
-                  className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                  style={{ width: 150 }}
+                  className="block md:w-36 appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                  
                 >
                   <option value="" disabled selected hidden>
                     ---
@@ -125,8 +138,8 @@ const ImportCourse = () => {
               <p className="textinsert font-bold ">ปีการศึกษา</p>
               <div className="flex relative">
                 <select
-                  className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                  style={{ width: 150 }}
+                  className="block md:w-36 appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                  
                 >
                   <option value="" disabled selected hidden>
                     ---
@@ -149,7 +162,7 @@ const ImportCourse = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-1 gap-3">
+          <div className="flex flex-1 gap-3 flex-col md:flex-row">
             <div
               style={{
                 flex: 3,
@@ -238,11 +251,11 @@ const ImportCourse = () => {
                 {currentsubjects.map((v, i) => (
                   <tbody key={startIndex + i}>
                     <td className="py-2 font-light text-lg text-center">
-                      <InlineCheckbox
+                      <InlineCheckbox index={startIndex + i}
                         id={v.id}
                         isOpen={v.IsOpen}
                         setApi={setSendApi}
-                        sandapi={sendApi}
+                        sendApi ={sendApi}
                       />
                     </td>
                     <td className="py-2 font-light text-lg text-center">
