@@ -98,7 +98,7 @@ const Sidebar = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth <= 600) {
+      if (window.innerWidth <= 1000) {
         setSidebarCollapsed(true);
       } else {
         setSidebarCollapsed(false);
@@ -113,9 +113,9 @@ const Sidebar = () => {
   }, []);
 
   return (
-    <div className={`flex ${isSidebarCollapsed ? "collapsed" : ""}`}>
+    <div className={`column-color1 flex ${isSidebarCollapsed ? "collapsed" : ""}`}>
       <div
-        className={`column-color1 px-2 py-2 flex flex-1 flex-col transition-all ${isSidebarCollapsed ? "w-20" : "w-60"
+        className={` overflow-x-auto px-2 py-2 gap-2 flex flex-1 md:flex-col transition-all ${isSidebarCollapsed ? "w-20" : "w-60"
           }`}
       >
         <div
@@ -137,22 +137,22 @@ const Sidebar = () => {
         </div>
 
         <div
-          className={`flex flex-2 flex-col justify-center items-center mb-3 transition-all ${isSidebarCollapsed ? "opacity-0 -mb-10" : ""
+          className={` sm:h-fit sm:w-auto flex flex-2 flex-col justify-center items-center mb-3 transition-all ${isSidebarCollapsed ? "h-0 w-0 sm:h-auto sm:w-auto opacity-0 -mb-10" : "min-w-28"
             }`}
         >
           <FaUser size={40} color="white" className="mb-5" />
-          <span className="text-sm text-white mb-5">สถานะ : {userRole}</span>
-          <span className="text-base text-white mb-5">ชื่อ : {userName}</span>
+          <span className=" text-sm text-white mb-5">สถานะ : {userRole}</span>
+          <span className=" text-base text-white mb-5">ชื่อ : {userName}</span>
         </div>
 
         {role && (
-          <nav className="flex flex-1 justify-center">
-            <ul className="flex flex-1 flex-col">
+          <nav className="flex flex-1 gap-2 justify-center items-center">
+            <ul className="flex flex-1 justify-between sm:justify-start md:flex-col">
               {sidebarItems[role].map((item) => (
                 <li key={item.path} className="mb-2">
                   <Link
                     to={userRole ? item.path : "/"}
-                    className={`transition-all flex flex-1 justify-center items-center text-sm mb-2 max-[600px]:text-base ${pathname.includes(item.path)
+                    className={`min-w-28 md:min-w-0 transition-all flex flex-1 justify-center items-center text-sm mb-2 max-[600px]:text-base ${pathname.includes(item.path)
                       ? "text-white font-medium bg-gray-500 bg-opacity-20 rounded-md"
                       : "text-white font-medium hover:bg-gray-500 hover:bg-opacity-10 hover:text-gray-500 hover:rounded-md hover:font-semibold"
                       }`}
@@ -175,7 +175,7 @@ const Sidebar = () => {
         )}
 
         <div
-          className={`flex flex-1 justify-center items-end transition-all align-bottom ${isSidebarCollapsed ? "justify-center" : "justify-center"
+          className={`flex flex-1 justify-center items-center md:items-end transition-all align-bottom ${isSidebarCollapsed ? "justify-center" : "justify-center"
             }`}
         >
           <Link to={userRole ? "/" : "/"} onClick={logout}>
