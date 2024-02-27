@@ -127,28 +127,28 @@ const RegCourseEdit = () => {
             <div className="flex">
               <div className="flex items-center justify-end">
                 <select
-                className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                style={{ width: 120, height: 40 }}
-                value={selectedBranch}
-                onChange={handleBranchChange}
-              >
-                <option value="" disabled selected hidden>
-                  ---
-                </option>
-                <option>T01</option>
-                <option>T02</option>
-                <option>T12</option>
-              </select>
-              <FontAwesomeIcon
-                icon={faArrowAltCircleDown}
-                style={{
-                
-                  pointerEvents: "none",
-                  marginLeft:-25
-                }}
-              />
+                  className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                  style={{ width: 120, height: 40 }}
+                  value={selectedBranch}
+                  onChange={handleBranchChange}
+                >
+                  <option value="" disabled selected hidden>
+                    ---
+                  </option>
+                  <option>T01</option>
+                  <option>T02</option>
+                  <option>T12</option>
+                </select>
+                <FontAwesomeIcon
+                  icon={faArrowAltCircleDown}
+                  style={{
+
+                    pointerEvents: "none",
+                    marginLeft: -25
+                  }}
+                />
               </div>
-              
+
             </div>
           </div>
           <div className="mt-3">
@@ -257,7 +257,7 @@ const RegCourseEdit = () => {
     );
   };
 
-  const GrayBox = (i, practice_t, lecture_t,exsub) => {
+  const GrayBox = (i, practice_t, lecture_t, exsub) => {
     return (
       <div className="box-gray p-2">
 
@@ -268,22 +268,22 @@ const RegCourseEdit = () => {
               <TiDelete size={28} />
             </button>
           </div>
-          
-          {exsub===1 && <div><p>หน่วยกิต</p><input placeholder="กรอกหน่วยกิตที่ต้องการ" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-400 dark:placeholder-gray-200 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"></input></div>}
+
+          {exsub === 1 && <div><p>หน่วยกิต</p><input placeholder="กรอกหน่วยกิตที่ต้องการ" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-400 dark:placeholder-gray-200 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"></input></div>}
           <div className="flex">
             <p>
               หมู่เรียน <span style={{ color: "red" }}>*</span> :
             </p>
             <fieldset className="flex flex-row">
               <div className="ml-2">
-                <input disabled={practice_t===0?exsub?false:true:false} type="radio" id="lec"></input>
-                <label htmlFor="lec" className={`ml-1 ${practice_t===0?exsub?"":" line-through":""}`}>
+                <input disabled={lecture_t === 0 ? exsub ? false : true : false} type="radio" id="lec"></input>
+                <label htmlFor="lec" className={`ml-1 ${lecture_t === 0 ? exsub ? "" : " line-through" : ""}`}>
                   บรรยาย
                 </label>
               </div>
               <div className="ml-2">
-                <input disabled={lecture_t===0?exsub?false:true:false} type="radio" id="lab"></input>
-                <label htmlFor="lab" className={`ml-1 ${lecture_t===0?exsub?"":" line-through":""}`}>
+                <input disabled={practice_t === 0 ? exsub ? false : true : false} type="radio" id="lab"></input>
+                <label htmlFor="lab" className={`ml-1 ${practice_t === 0 ? exsub ? "" : " line-through" : ""}`}>
                   ปฏิบัติ
                 </label>
               </div>
@@ -297,7 +297,7 @@ const RegCourseEdit = () => {
               type="text"
               id="sub_hour"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-400 dark:placeholder-gray-200 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="โปรดระบุจำนวนชั่วโมงที่ใช้สอน"
+              placeholder={`โปรดระบุจำนวนชั่วโมงที่ใช้สอน ${lecture_t !==  0? "บรรยาย " + lecture_t + " ชั่วโมง" : ""} ${practice_t !==0 ? "ปฏิบัติ " + practice_t : ""}`}
               required
             />
           </div>
@@ -328,9 +328,9 @@ const RegCourseEdit = () => {
                 <FontAwesomeIcon
                   icon={faArrowAltCircleDown}
                   style={{
-                 
+
                     pointerEvents: "none",
-                    marginLeft:-25
+                    marginLeft: -25
                   }}
                 />
               </div>
@@ -411,15 +411,10 @@ const RegCourseEdit = () => {
         <div className=" -z-6 justify-end flex text-inbox">
           <button
             className="text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex items-center "
-            style={{backgroundColor: "#134e4a",width: 140,height: "fit-content",textDecoration: "none"}}
+            style={{ backgroundColor: "#134e4a", width: 140, height: "fit-content", textDecoration: "none" }}
             onClick={() => handleSwab()}
           >
-            <FontAwesomeIcon
-              icon={faCircleArrowLeft}
-              style={{
-                fontSize: "24px",
-                marginRight: "5px",
-              }}
+            <FontAwesomeIcon icon={faCircleArrowLeft} style={{ fontSize: "24px", marginRight: "5px", }}
             />
             ย้อนกลับ
           </button>
@@ -445,7 +440,7 @@ const RegCourseEdit = () => {
               </div>
               <div className="flex ">
                 <p className="mr-3">หมวดวิชา :</p>
-                <p className="text-gray-300">{subject.subject_category?subject.subject_category : "Error"}</p>
+                <p className="text-gray-300">{subject.subject_category ? subject.subject_category : "Error"}</p>
               </div>
               <div className="gap-3 flex flex-col text-lightgreen">
                 <label htmlFor="add" className="">
@@ -454,7 +449,7 @@ const RegCourseEdit = () => {
                 <button id="add" onClick={() => addbox()}>
                   <FaCirclePlus size={20} />
                 </button>
-                {data.map((val, i) => GrayBox(i,subject.practice_t,subject.lecture_t,subject.exsub))}
+                {data.map((val, i) => GrayBox(i, subject.practice_t, subject.lecture_t, subject.exsub))}
               </div>
             </div>
           </div>

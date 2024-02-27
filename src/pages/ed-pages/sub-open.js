@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { faArrowAltCircleDown } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import { FaCircleLeft, FaCircleRight } from "react-icons/fa6";
 import { apiurl } from "../../config";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
@@ -14,7 +15,7 @@ const SubOpen = () => {
   const navigate = useNavigate();
   const [subjects, setSubjects] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const subjectsPage = 7;
+  const subjectsPage = 8;
   const totalPages = Math.ceil(subjects.length / subjectsPage);
   const startIndex = (currentPage - 1) * subjectsPage;
   const endIndex = startIndex + subjectsPage;
@@ -23,7 +24,7 @@ const SubOpen = () => {
   useEffect(() => {
     const getapi = async () => {
       try {
-        const database = await axios.get(apiurl + "/api/subjest");
+        const database = await axios.get(apiurl + "/api/opensubject");
         const data = database.data;
         setSubjects(data);
         console.log(data);
@@ -59,11 +60,15 @@ const SubOpen = () => {
   }, [userRole, navigate]);
 
   const handleNextPage = () => {
-    setCurrentPage((prevPage) => prevPage + 1);
+    if (currentPage < totalPages) {
+      setCurrentPage((prevPage) => prevPage + 1);
+    }
   };
 
   const handlePrevPage = () => {
-    setCurrentPage((prevPage) => prevPage - 1);
+    if (currentPage > 1) {
+      setCurrentPage((prevPage) => prevPage - 1);
+    }
   };
 
   // const [statusSem, setSemStatus] = useState(1);
@@ -125,42 +130,21 @@ const SubOpen = () => {
     }
   };
   return (
-    <div className="flex flex-auto overflow-hidden h-screen background21 ">
-      <div
-        style={{
-          flex: 1,
-          flexDirection: "column",
-        }}
-      >
-        <h1 className="flex font-family font-bold text-4xl size-30 text-midgreen h1text-shadow mt-10 ml-10 ">
+    <div className="flex min-h-screen w-full background21 ">
+      <div className=" flex flex-col h-full w-full p-10 gap-5">
+        <h1 className="flex font-family font-bold text-4xl size-30 text-midgreen h1text-shadow">
           รายวิชาที่เปิดสอน
         </h1>
-
-        <div
-          style={{
-            display: "flex",
-            flex: 1,
-            marginLeft: 30,
-            marginTop: 40,
-          }}
-        >
-          <div
-            style={{
-              flex: 1,
-              // borderColor: "green",
-              // borderWidth: 5,
-            }}
-            className="flex font-family text-xl font-medium"
-          >
-            <p className="flex font-family text-xl font-medium ptext-shadow mr-3 mt-1">
+        <div className=" flex gap-5 flex-col md:flex-row">
+          <div className="flex font-family text-xl font-medium gap-3">
+            <p className="flex md:text-nowrap font-family text-xl font-medium ptext-shadow">
               ภาคเรียน <span style={{ color: "red" }}>*</span>
             </p>
-            <div style={{ position: "relative" }}>
+            <div className=" flex w-full items-center">
               <select
-                className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                style={{ width: 120, height: 40 }}
-                // value={statusSem}
-                // onChange={handleSemStatusChange}
+                className="appearance-none w-full h-fit md:w-32 md:h-10 bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+              // value={statusSem}
+              // onChange={handleSemStatusChange}
               >
                 <option value="" disabled selected hidden>
                   ---
@@ -170,29 +154,20 @@ const SubOpen = () => {
               </select>
               <FontAwesomeIcon
                 icon={faArrowAltCircleDown}
-                style={{
-                  position: "absolute",
-                  top: "50%",
-                  right: "12px",
-                  transform: "translateY(-50%)",
-                  pointerEvents: "none",
-                }}
+                className="-ml-8"
               />
             </div>
           </div>
-          <div
-            style={{ flex: 4 }}
-            className="flex font-family text-xl font-medium ml-3"
-          >
-            <p className="flex font-family text-xl font-medium ptext-shadow mr-3 mt-1">
+          <div className="flex font-family text-xl font-medium items-center gap-3 ">
+            <p className=" md:text-nowrap flex font-family text-xl font-medium ptext-shadow">
               ปีการศึกษา <span style={{ color: "red" }}>*</span>
             </p>
-            <div style={{ position: "relative" }}>
+            <div className=" flex w-full items-center">
               <select
-                className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                style={{ width: 120, height: 40 }}
-                // value={statusYear}
-                // onChange={handleYearStatusChange}
+                className="flex appearance-none h-fit md:w-36 md:h-10 w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+
+              // value={statusYear}
+              // onChange={handleYearStatusChange}
               >
                 <option value="" disabled selected hidden>
                   ---
@@ -204,124 +179,64 @@ const SubOpen = () => {
               </select>
               <FontAwesomeIcon
                 icon={faArrowAltCircleDown}
-                style={{
-                  position: "absolute",
-                  top: "50%",
-                  right: "12px",
-                  transform: "translateY(-50%)",
-                  pointerEvents: "none",
-                }}
+                className="-ml-8"
               />
             </div>
           </div>
         </div>
-        <div
-          style={{
-            display: "flex",
-            flex: 1,
-            // borderColor: "blue",
-            // borderWidth: 5,
-            marginLeft: 30,
-            marginTop: 30,
-          }}
-        >
-          <div
-            style={{
-              flex: 3,
-              // borderColor: "orange",
-              // borderWidth: 5,
-            }}
-          >
-            <form>
+        <div className=" flex gap-5 flex-col md:flex-row">
+          <form>
+            <label for="first_name" class="block mb-2 text-sm font-medium  dark:text-black">
+              วิชา/รหัสวิชา
+            </label>
+            <input type="text" id="course_code" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-400 dark:placeholder-gray-200 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="โปรดระบุวิชาหรือรหัสวิชา" required />
+          </form>
+          <div className="flex gap-8 ">
+            <div className="flex w-full font-family font-medium flex-col">
               <div>
-                <label
-                  for="first_name"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
-                >
-                  วิชา/รหัสวิชา
-                </label>
-                <input
-                  type="text"
-                  id="course_code"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-400 dark:placeholder-gray-200 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="โปรดระบุวิชาหรือรหัสวิชา"
-                  required
-                />
+                <p className="text-sm font-medium mb-2">หมวดวิชา</p>
               </div>
-            </form>
-          </div>
-          <div
-            style={{
-              flex: 1,
-            }}
-            className="flex font-family font-medium ml-7 flex-col"
-          >
-            <div>
-              <p className="text-sm font-medium mb-2">หมวดวิชา</p>
-            </div>
-            <div style={{ position: "relative" }}>
-              <select
-                className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                style={{ width: 140, height: 40 }}
+
+              <div className="flex items-center">
+                <select
+                  className="flex h-fit md:w-36 md:h-10 appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                 // value={statusCat}
                 // onChange={handleCatStatusChange}
-              >
-                <option value="" disabled selected hidden>
-                  ---
-                </option>
-                <option>แกน</option>
-                <option>บังคับ</option>
-                <option>เลือก</option>
-              </select>
-              <FontAwesomeIcon
-                icon={faArrowAltCircleDown}
+                >
+                  <option value="" disabled selected hidden>
+                    ---
+                  </option>
+                  <option>แกน</option>
+                  <option>บังคับ</option>
+                  <option>เลือก</option>
+                </select>
+                <FontAwesomeIcon icon={faArrowAltCircleDown} className="  pointer-events-none -ml-8 h-5" />
+              </div>
+            </div>
+            <div className="font-family flex items-end ">
+              <button type="button" class="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-5 py-2.5 mb-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                 style={{
-                  position: "absolute",
-                  top: "50%",
-                  right: "12px",
-                  transform: "translateY(-50%)",
-                  pointerEvents: "none",
+                  backgroundColor: "#134e4a",
+                  width: 110,
+                  height: 35,
                 }}
-              />
+              >
+                <p className="text-lg mr-2">ค้นหา</p>
+                <FontAwesomeIcon
+                  icon={faMagnifyingGlass}
+                  className="mr-2"
+                  style={{ fontSize: "18px" }}
+                />
+              </button>
             </div>
           </div>
-          <div
-            style={{
-              flex: 6,
-              // borderColor: "orange",
-              // borderWidth: 5,
-            }}
-            className="font-family mt-7 ml-10"
-          >
-            <button
-              type="button"
-              class="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-              style={{
-                backgroundColor: "#134e4a",
-                width: 110,
-                height: 35,
-              }}
-            >
-              <p className="text-lg mr-2">ค้นหา</p>
-              <FontAwesomeIcon
-                icon={faMagnifyingGlass}
-                className="mr-2"
-                style={{ fontSize: "18px" }}
-              />
-            </button>
-          </div>
+
+
         </div>
-        <div
-          style={{
-            display: "flex",
-            flex: 1,
-            // borderColor: "blue",
-            // borderWidth: 5,
-            marginLeft: 30,
-          }}
-        >
-          <div className="flex flex-1 bg-slate-200 mt-10 rounded-lg overflow-x-auto shadow-xl">
-            <table className="h-full w-full">
+        <div className=" flex flex-1">
+          <div className="flex w-full bg-slate-200  rounded-lg overflow-x-auto shadow-xl">
+            <table className=" w-full">
               <thead>
                 <tr className="column-color1 text-white">
                   <th className="py-2 font-light text-xl">#</th>
@@ -346,7 +261,7 @@ const SubOpen = () => {
                     }
                   >
                     <td className="py-2 font-light text-lg text-center">
-                      {index + 1}
+                      {startIndex + index + 1}
                     </td>
                     <td className="py-2 font-light text-lg text-center">
                       {v.idsubject}
@@ -395,9 +310,25 @@ const SubOpen = () => {
             </table>
           </div>
         </div>
-        <div className=" text-center mt-5 text-red-600 text-2xl">
+        {subjects.msg || subjects.msgerr && <div className=" text-center text-red-600 text-2xl">
           {subjects.msg}
           {subjects.msgerr}
+        </div>}
+
+        <div className="flex justify-center items-end gap-3 h-full">
+          <div className="flex  gap-2 items-center">
+            <button onClick={handlePrevPage}>
+              <FaCircleLeft size={21} color="#0a6765" className="" />
+
+            </button>
+            <p className="text-lg font-semibold text-midgreen">
+              หน้า {currentPage} จาก {totalPages}
+            </p>
+            <button onClick={handleNextPage}>
+              <FaCircleRight size={21} color="#0a6765" className="" />
+            </button>
+          </div>
+
         </div>
       </div>
     </div>

@@ -133,7 +133,7 @@ const ImportSyl = () => {
   };
   return (
     <div className="block min-h-screen background21 w-full overflow-y-auto">
-      <div className=" flex h-full w-full p-10 flex-col gap-10">
+      <div className=" flex h-full w-full p-3 md:p-10 flex-col gap-10">
         <p className="flex font-family font-bold text-4xl text-midgreen h1text-shadow">
           นำเข้าหลักสูตร
         </p>
