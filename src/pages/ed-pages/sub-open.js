@@ -136,14 +136,13 @@ const SubOpen = () => {
           รายวิชาที่เปิดสอน
         </h1>
         <div className=" flex gap-5 flex-col md:flex-row">
-          <div className="flex font-family text-xl font-medium">
-            <p className="flex font-family text-xl font-medium ptext-shadow">
+          <div className="flex font-family text-xl font-medium gap-3">
+            <p className="flex md:text-nowrap font-family text-xl font-medium ptext-shadow">
               ภาคเรียน <span style={{ color: "red" }}>*</span>
             </p>
-            <div style={{ position: "relative" }}>
+            <div className=" flex w-full items-center">
               <select
-                className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                style={{ width: 120, height: 40 }}
+                className="appearance-none w-full h-fit md:w-32 md:h-10 bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
               // value={statusSem}
               // onChange={handleSemStatusChange}
               >
@@ -155,24 +154,18 @@ const SubOpen = () => {
               </select>
               <FontAwesomeIcon
                 icon={faArrowAltCircleDown}
-                style={{
-                  position: "absolute",
-                  top: "50%",
-                  right: "12px",
-                  transform: "translateY(-50%)",
-                  pointerEvents: "none",
-                }}
+                className="-ml-8"
               />
             </div>
           </div>
-          <div className="flex font-family text-xl font-medium ">
-            <p className="flex font-family text-xl font-medium ptext-shadow mr-3 mt-1">
+          <div className="flex font-family text-xl font-medium items-center gap-3 ">
+            <p className=" md:text-nowrap flex font-family text-xl font-medium ptext-shadow">
               ปีการศึกษา <span style={{ color: "red" }}>*</span>
             </p>
-            <div style={{ position: "relative" }}>
+            <div className=" flex w-full items-center">
               <select
-                className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                style={{ width: 120, height: 40 }}
+                className="flex appearance-none h-fit md:w-36 md:h-10 w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+
               // value={statusYear}
               // onChange={handleYearStatusChange}
               >
@@ -186,62 +179,60 @@ const SubOpen = () => {
               </select>
               <FontAwesomeIcon
                 icon={faArrowAltCircleDown}
-                style={{
-                  position: "absolute",
-                  top: "50%",
-                  right: "12px",
-                  transform: "translateY(-50%)",
-                  pointerEvents: "none",
-                }}
+                className="-ml-8"
               />
             </div>
           </div>
         </div>
-        <div className=" flex gap-5">
+        <div className=" flex gap-5 flex-col md:flex-row">
           <form>
-            <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">
+            <label for="first_name" class="block mb-2 text-sm font-medium  dark:text-black">
               วิชา/รหัสวิชา
             </label>
             <input type="text" id="course_code" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-400 dark:placeholder-gray-200 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="โปรดระบุวิชาหรือรหัสวิชา" required />
           </form>
-          <div className="flex font-family font-medium flex-col">
-            <div>
-              <p className="text-sm font-medium mb-2">หมวดวิชา</p>
+          <div className="flex gap-8 ">
+            <div className="flex w-full font-family font-medium flex-col">
+              <div>
+                <p className="text-sm font-medium mb-2">หมวดวิชา</p>
+              </div>
+
+              <div className="flex items-center">
+                <select
+                  className="flex h-fit md:w-36 md:h-10 appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                // value={statusCat}
+                // onChange={handleCatStatusChange}
+                >
+                  <option value="" disabled selected hidden>
+                    ---
+                  </option>
+                  <option>แกน</option>
+                  <option>บังคับ</option>
+                  <option>เลือก</option>
+                </select>
+                <FontAwesomeIcon icon={faArrowAltCircleDown} className="  pointer-events-none -ml-8 h-5" />
+              </div>
             </div>
-            <div className="flex items-center">
-              <select
-                className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                style={{ width: 140, height: 40 }}
-              // value={statusCat}
-              // onChange={handleCatStatusChange}
+            <div className="font-family flex items-end ">
+              <button type="button" class="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-5 py-2.5 mb-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                style={{
+                  backgroundColor: "#134e4a",
+                  width: 110,
+                  height: 35,
+                }}
               >
-                <option value="" disabled selected hidden>
-                  ---
-                </option>
-                <option>แกน</option>
-                <option>บังคับ</option>
-                <option>เลือก</option>
-              </select>
-              <FontAwesomeIcon icon={faArrowAltCircleDown} className="  pointer-events-none -ml-8 h-5" />
+                <p className="text-lg mr-2">ค้นหา</p>
+                <FontAwesomeIcon
+                  icon={faMagnifyingGlass}
+                  className="mr-2"
+                  style={{ fontSize: "18px" }}
+                />
+              </button>
             </div>
           </div>
-          <div className="font-family flex items-end ">
-            <button type="button" class="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-5 py-2.5 mb-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-              style={{
-                backgroundColor: "#134e4a",
-                width: 110,
-                height: 35,
-              }}
-            >
-              <p className="text-lg mr-2">ค้นหา</p>
-              <FontAwesomeIcon
-                icon={faMagnifyingGlass}
-                className="mr-2"
-                style={{ fontSize: "18px" }}
-              />
-            </button>
-          </div>
+
+
         </div>
         <div className=" flex flex-1">
           <div className="flex w-full bg-slate-200  rounded-lg overflow-x-auto shadow-xl">
@@ -325,16 +316,19 @@ const SubOpen = () => {
         </div>}
 
         <div className="flex justify-center items-end gap-3 h-full">
-          <button onClick={handlePrevPage}>
-            <FaCircleLeft size={21} color="#0a6765" className="" />
+          <div className="flex  gap-2 items-center">
+            <button onClick={handlePrevPage}>
+              <FaCircleLeft size={21} color="#0a6765" className="" />
 
-          </button>
-          <p className="text-lg font-semibold text-midgreen">
-            หน้า {currentPage} จาก {totalPages}
-          </p>
-          <button onClick={handleNextPage}>
-            <FaCircleRight size={21} color="#0a6765" className="" />
-          </button>
+            </button>
+            <p className="text-lg font-semibold text-midgreen">
+              หน้า {currentPage} จาก {totalPages}
+            </p>
+            <button onClick={handleNextPage}>
+              <FaCircleRight size={21} color="#0a6765" className="" />
+            </button>
+          </div>
+
         </div>
       </div>
     </div>

@@ -28,7 +28,7 @@ const ImportCourse = () => {
   const userRole = localStorage.getItem("role_id");
   const navigate = useNavigate();
   const [subjects, setSubjects] = useState([]);
-  const [noneSubject, setNoneSubject] = useState([]);
+  const [noneSubject, setNoneSubject] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const subjectsPage = 7;
   const totalPages = Math.ceil(subjects.length / subjectsPage);
@@ -48,7 +48,7 @@ const ImportCourse = () => {
         setSubjects(data);
 
       } catch (err) {
-        setNoneSubject(err.response.data.msgerror);
+        setNoneSubject(err.response.data);
       }
     };
     getdataSubject();
@@ -84,16 +84,16 @@ const ImportCourse = () => {
   }, [subjects]);
   const addSubjects = async (sendApi) => {
     try {
-      const responseData = await axios.post(apiurl + "/api/education/subjectOpen", {subjects:sendApi });
+      const responseData = await axios.post(apiurl + "/api/education/subjectOpen", { subjects: sendApi });
       const data = responseData.data;
       sendApi.forEach((v) => {
-        localStorage.removeItem("ch-"+v.id)
+        localStorage.removeItem("ch-" + v.id)
       });
-      Swal.fire({icon:"success","title":data.msg}).then(()=>window.location.reload())
-      
+      Swal.fire({ icon: "success", "title": data.msg }).then(() => window.location.reload())
+
     } catch (error) {
 
-      Swal.fire({icon:"error",titleText:error.response.data.msgerror})
+      Swal.fire({ icon: "error", titleText: error.response.data.msgerror })
     }
 
   }
@@ -122,11 +122,11 @@ const ImportCourse = () => {
 
   return (
     <div className="background21 block min-h-screen w-full p-3 md:p-10">
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3 h-full">
         <div className="flex gap-5 flex-col">
-          <h1 className="flex font-family font-bold text-4xl size-30 text-midgreen h1text-shadow ">
+          <div className="flex font-family text-wrap font-bold text-4xl size-30 text-midgreen h1text-shadow ">
             เลือกรายวิชาที่เปิดสอน
-          </h1>
+          </div>
           <div className="flex flex-1 relative">
             <div className="flex flex-1 flex-col md:flex-row md:items-center gap-5">
               <p className="textinsert font-bold">ภาคเรียน</p>
@@ -181,35 +181,27 @@ const ImportCourse = () => {
             </div>
           </div>
           <div className="flex flex-1 gap-3 flex-col md:flex-row">
-            <div
-              style={{
-                flex: 3,
-              }}
-            >
-              <div className="flex gap-2 flex-col">
-                <label
-                  for="first_name"
-                  class="block text-sm font-medium text-gray-900 dark:text-black"
-                >
-                  วิชา/รหัสวิชา
-                </label>
-                <input
-                  type="text"
-                  id="course_code"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-400 dark:placeholder-gray-200 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="โปรดระบุวิชาหรือรหัสวิชา"
-                  required
-                />
-              </div>
+            <div className="flex gap-2 flex-col">
+              <label
+                for="first_name"
+                class="block text-sm font-medium text-gray-900 dark:text-black"
+              >
+                วิชา/รหัสวิชา
+              </label>
+              <input
+                type="text"
+                id="course_code"
+                class="bg-gray-50 md:min-w-64 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-400 dark:placeholder-gray-200 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="โปรดระบุวิชาหรือรหัสวิชา"
+                required
+              />
             </div>
-            <div className="flex-1 flex font-family font-medium flex-col gap-2">
-              <div>
-                <p className="text-sm font-medium ">หมวดวิชา</p>
-              </div>
-              <div className="flex items-center box-border md:min-w-40">
+            <div className="flex font-family font-medium md:md:w-36 flex-col gap-2">
+              <p className="text-sm font-medium ">หมวดวิชา</p>
+              <div className="flex items-center ">
                 <select
-                  className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                  style={{ height: 40 }}
+                  className="flex  md:h-10 appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+
                 // value={statusCat}
                 // onChange={handleCatStatusChange}
                 >
@@ -226,12 +218,7 @@ const ImportCourse = () => {
                 />
               </div>
             </div>
-            <div
-              style={{
-                flex: 5,
-              }}
-              className="font-family  items-end flex"
-            >
+            <div className="font-family items-end flex">
               <button
                 type="button"
                 class="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-5 py-2.5 mb-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
@@ -251,57 +238,87 @@ const ImportCourse = () => {
             </div>
           </div>
         </div>
-
-        <div className="flex flex-7 flex-col gap-3">
-          <div className="flex flex-4">
-            <div className="flex flex-1 bg-slate-200 rounded-lg overflow-x-auto shadow-xl h-full overflow-y-auto">
-              <table className=" w-full">
-                <thead>
-                  <tr className="column-color1 text-white">
-                    <th className="py-2 font-light text-xl">#</th>
-                    <th className="py-2 font-light text-xl">รหัสวิชา</th>
-                    <th className="py-2 font-light text-xl">ชื่อวิชา</th>
-                    <th className="py-2 font-light text-xl">หลักสูตร</th>
-                    <th className="py-2 font-light text-xl">หมวดวิชา</th>
-                    <th className="py-2 font-light text-xl">หน่วยกิต</th>
-                  </tr>
-                </thead>
-                {currentsubjects.map((v, i) => (
-                  <tbody key={startIndex + i}>
-                    <td className="py-2 font-light text-lg text-center">
-                      <InlineCheckbox index={startIndex + i}
-                        id={v.id}
-                        isOpen={v.IsOpen}
-                        setApi={setSendApi}
-                        sendApi={sendApi}
-                      />
-                    </td>
-                    <td className="py-2 font-light text-lg text-center">
-                      {v.idsubject}
-                    </td>
-                    <td className="py-2 font-light text-lg text-center">
-                      {v.name}
-                    </td>
-                    <td className="py-2 font-light text-lg text-center">
-                      {v.years}
-                    </td>
-                    <td className="py-2 font-light text-lg text-center">
-                      {v.subject_category}
-                    </td>
-                    <td className="py-2 font-light text-lg text-center">
-                      {v.credit}
-                    </td>
-                  </tbody>
-                ))}
-              </table>
-            </div>
+        <div className="flex flex-1">
+          <div className="flex w-full bg-slate-200 rounded-lg overflow-x-auto shadow-xl h-full overflow-y-auto">
+            <table className=" w-full">
+              <thead>
+                <tr className="column-color1 text-white">
+                  <th className="py-2 font-light text-xl">#</th>
+                  <th className="py-2 font-light text-xl">รหัสวิชา</th>
+                  <th className="py-2 font-light text-xl">ชื่อวิชา</th>
+                  <th className="py-2 font-light text-xl">หลักสูตร</th>
+                  <th className="py-2 font-light text-xl">หมวดวิชา</th>
+                  <th className="py-2 font-light text-xl">หน่วยกิต</th>
+                </tr>
+              </thead>
+              {currentsubjects.map((v, i) => (
+                <tbody key={startIndex + i} className={` ${i % 2 == 0 ? " bg-slate-100" : " bg-white"}`}>
+                  <td className="py-2 font-light text-lg text-center">
+                    <InlineCheckbox index={startIndex + i}
+                      id={v.id}
+                      isOpen={v.IsOpen}
+                      setApi={setSendApi}
+                      sendApi={sendApi}
+                    />
+                  </td>
+                  <td className="py-2 font-light text-lg text-center">
+                    {v.idsubject}
+                  </td>
+                  <td className="py-2 font-light text-lg text-center">
+                    {v.name}
+                  </td>
+                  <td className="py-2 font-light text-lg text-center">
+                    {v.years}
+                  </td>
+                  <td className="py-2 font-light text-lg text-center">
+                    {v.subject_category}
+                  </td>
+                  <td className="py-2 font-light text-lg text-center">
+                    {v.credit}
+                  </td>
+                </tbody>
+              ))}
+            </table>
           </div>
 
-          <div className=" p-5 text-center w-full text-2xl text-red-500 underline">
-            {subjects.msg}{noneSubject}
-          </div>
+        </div>
+        {(subjects.msg || noneSubject.msgerror) && <div className=" p-5 text-center w-full text-2xl text-red-500 underline">
+          {subjects.msg}{noneSubject.msgerror}
+        </div>}
+        <div className="flex justify-end">
+          <div className="flex relative gap-5">
+            {sendApi.length > 0 &&
+              <button class="flex justify-center items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                style={{
+                  backgroundColor: "#134e4a",
+                  width: 110,
+                  height: 45,
+                }} onClick={() => { clearLocalStorageByPrefix("ch-"); window.location.reload() }} >
+                <IoMdUndo size={34} />
+              </button>}
 
-          <div className="flex flex-1 justify-center items-center gap-3">
+            <button
+
+              type="submit"
+              class="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+              style={{
+                backgroundColor: "#134e4a",
+                width: 110,
+                height: 45,
+              }}
+              onClick={() => addSubjects(sendApi)}
+            >
+              <p className="text-lg mr-2">ยืนยัน</p>
+              <FontAwesomeIcon
+                icon={faFileDownload}
+                className=" ml-2"
+                style={{ fontSize: "20px" }}
+              />
+            </button>
+          </div>
+        </div>
+        <div className="flex h-full justify-center items-end">
+          <div className="flex justify-center items-center gap-3">
             <button onClick={handlePrevPage}>
               <FaCircleLeft size={21} color="#0a6765" className="" />
             </button>
@@ -312,39 +329,8 @@ const ImportCourse = () => {
               <FaCircleRight size={21} color="#0a6765" className="" />
             </button>
           </div>
-
-          <div className="flex flex-1 justify-end">
-            <div className="flex relative gap-5">
-              {sendApi.length > 0 && <button class="flex justify-center items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-                style={{
-                  backgroundColor: "#134e4a",
-                  width: 110,
-                  height: 45,
-                }}  >
-                <IoMdUndo onClick={() => { clearLocalStorageByPrefix("ch-"); window.location.reload() }} size={34} />
-              </button>}
-                
-              <button
-              
-                type="submit"
-                class="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-                style={{
-                  backgroundColor: "#134e4a",
-                  width: 110,
-                  height: 45,
-                }}
-                onClick={() => addSubjects(sendApi)}
-              >
-                <p className="text-lg mr-2">ยืนยัน</p>
-                <FontAwesomeIcon
-                  icon={faFileDownload}
-                  className=" ml-2"
-                  style={{ fontSize: "20px" }}
-                />
-              </button>
-            </div>
-          </div>
         </div>
+
       </div>
     </div>
   );
