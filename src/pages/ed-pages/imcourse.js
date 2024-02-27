@@ -9,7 +9,7 @@ import {
   faFileDownload,
 } from "@fortawesome/free-solid-svg-icons";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { AwardIcon } from "lucide-react";
+import { IoMdUndo } from "react-icons/io";
 import axios from "axios";
 import { apiurl } from "../../config";
 import InlineCheckbox from "./imcoursetab";
@@ -37,6 +37,7 @@ const ImportCourse = () => {
   const currentsubjects = subjects.msg
     ? []
     : subjects.slice(startIndex, endIndex);
+  const [sendApi, setSendApi] = useState([]);
   useEffect(() => {
     const getdataSubject = async () => {
       try {
@@ -45,25 +46,20 @@ const ImportCourse = () => {
         );
         const data = responsedata.data;
         setSubjects(data);
-        subjects.map((v, i) => {
-          localStorage.setItem(`ch-${v.id}`,v.IsOpen)
-        })
+
       } catch (err) {
         setNoneSubject(err.response.data.msgerror);
       }
     };
-    const clearLocalStorageByPrefix = (prefix) => {
-      Object.keys(localStorage).forEach((key) => {
-        if (key.startsWith(prefix)) {
-          localStorage.removeItem(key);
-        }
-      });
-    };
-    
-    // Call the function to clear keys with prefix 'ch-'
-    clearLocalStorageByPrefix('ch-');
     getdataSubject();
-  }, []);
+  }, [setSendApi]);
+  const clearLocalStorageByPrefix = (prefix) => {
+    Object.keys(localStorage).forEach((key) => {
+      if (key.startsWith(prefix)) {
+        localStorage.removeItem(key);
+      }
+    });
+  };
   const handleNextPage = () => {
     if (currentPage < totalPages) {
       setCurrentPage((prevPage) => prevPage + 1);
@@ -75,10 +71,32 @@ const ImportCourse = () => {
       setCurrentPage((prevPage) => prevPage - 1);
     }
   };
-  const [sendApi, setSendApi] = useState([]);
   useEffect(() => {
-    console.log("sendApi in ImportCourse:", sendApi);
+    console.log(sendApi)
   }, [sendApi]);
+  useEffect(() => {
+    subjects.forEach((v) => {
+      const datalocal = localStorage.getItem("ch-" + v.id);
+      if (datalocal !== null && !sendApi.some(item => item.id === v.id)) {
+        setSendApi((prevSendApi) => [...prevSendApi, { id: v.id, IsOpen: datalocal }]);
+      }
+    });
+  }, [subjects]);
+  const addSubjects = async (sendApi) => {
+    try {
+      const responseData = await axios.post(apiurl + "/api/education/subjectOpen", {subjects:sendApi });
+      const data = responseData.data;
+      sendApi.forEach((v) => {
+        localStorage.removeItem("ch-"+v.id)
+      });
+      Swal.fire({icon:"success","title":data.msg}).then(()=>window.location.reload())
+      
+    } catch (error) {
+
+      Swal.fire({icon:"error",titleText:error.response.data.msgerror})
+    }
+
+  }
   const showAlert = () => {
     Swal.fire({
       icon: "error",
@@ -115,7 +133,7 @@ const ImportCourse = () => {
               <div className="flex relative">
                 <select
                   className="block md:w-36 appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                  
+
                 >
                   <option value="" disabled selected hidden>
                     ---
@@ -139,7 +157,7 @@ const ImportCourse = () => {
               <div className="flex relative">
                 <select
                   className="block md:w-36 appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                  
+
                 >
                   <option value="" disabled selected hidden>
                     ---
@@ -255,7 +273,7 @@ const ImportCourse = () => {
                         id={v.id}
                         isOpen={v.IsOpen}
                         setApi={setSendApi}
-                        sendApi ={sendApi}
+                        sendApi={sendApi}
                       />
                     </td>
                     <td className="py-2 font-light text-lg text-center">
@@ -296,16 +314,26 @@ const ImportCourse = () => {
           </div>
 
           <div className="flex flex-1 justify-end">
-            <div className="flex relative ml-5 mt-5 mr-10">
+            <div className="flex relative gap-5">
+              {sendApi.length > 0 && <button class="flex justify-center items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                style={{
+                  backgroundColor: "#134e4a",
+                  width: 110,
+                  height: 45,
+                }}  >
+                <IoMdUndo onClick={() => { clearLocalStorageByPrefix("ch-"); window.location.reload() }} size={34} />
+              </button>}
+                
               <button
-                type="button"
+              
+                type="submit"
                 class="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                 style={{
                   backgroundColor: "#134e4a",
                   width: 110,
                   height: 45,
                 }}
-                onClick={() => console.log(sendApi)}
+                onClick={() => addSubjects(sendApi)}
               >
                 <p className="text-lg mr-2">ยืนยัน</p>
                 <FontAwesomeIcon

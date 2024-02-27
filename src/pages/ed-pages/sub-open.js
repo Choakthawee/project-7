@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { faArrowAltCircleDown } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import { FaCircleLeft, FaCircleRight } from "react-icons/fa6";
 import { apiurl } from "../../config";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
@@ -14,7 +15,7 @@ const SubOpen = () => {
   const navigate = useNavigate();
   const [subjects, setSubjects] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const subjectsPage = 7;
+  const subjectsPage = 6;
   const totalPages = Math.ceil(subjects.length / subjectsPage);
   const startIndex = (currentPage - 1) * subjectsPage;
   const endIndex = startIndex + subjectsPage;
@@ -23,7 +24,7 @@ const SubOpen = () => {
   useEffect(() => {
     const getapi = async () => {
       try {
-        const database = await axios.get(apiurl + "/api/subjest");
+        const database = await axios.get(apiurl + "/api/opensubject");
         const data = database.data;
         setSubjects(data);
         console.log(data);
@@ -59,11 +60,15 @@ const SubOpen = () => {
   }, [userRole, navigate]);
 
   const handleNextPage = () => {
-    setCurrentPage((prevPage) => prevPage + 1);
+    if (currentPage < totalPages) {
+      setCurrentPage((prevPage) => prevPage + 1);
+    }
   };
 
   const handlePrevPage = () => {
-    setCurrentPage((prevPage) => prevPage - 1);
+    if (currentPage > 1) {
+      setCurrentPage((prevPage) => prevPage - 1);
+    }
   };
 
   // const [statusSem, setSemStatus] = useState(1);
@@ -346,7 +351,7 @@ const SubOpen = () => {
                     }
                   >
                     <td className="py-2 font-light text-lg text-center">
-                      {index + 1}
+                      {startIndex+index + 1}
                     </td>
                     <td className="py-2 font-light text-lg text-center">
                       {v.idsubject}
@@ -399,6 +404,18 @@ const SubOpen = () => {
           {subjects.msg}
           {subjects.msgerr}
         </div>
+        <div className="flex flex-1 justify-center items-center gap-3">
+            <button onClick={handlePrevPage}>
+            <FaCircleLeft size={21} color="#0a6765" className="" />
+            
+            </button>
+            <p className="text-lg font-semibold text-midgreen">
+              หน้า {currentPage} จาก {totalPages}
+            </p>
+            <button onClick={handleNextPage}>
+              <FaCircleRight size={21} color="#0a6765" className="" />
+            </button>
+          </div>
       </div>
     </div>
   );
