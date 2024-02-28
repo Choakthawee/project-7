@@ -31,7 +31,7 @@ const ImportCourse = () => {
   const [noneSubject, setNoneSubject] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const subjectsPage = 7;
-  const totalPages = Math.ceil(subjects.length / subjectsPage);
+  const totalPages = subjects.length>0?Math.ceil(subjects.length / subjectsPage):1;
   const startIndex = (currentPage - 1) * subjectsPage;
   const endIndex = startIndex + subjectsPage;
   const currentsubjects = subjects.msg
@@ -75,12 +75,15 @@ const ImportCourse = () => {
     console.log(sendApi)
   }, [sendApi]);
   useEffect(() => {
-    subjects.forEach((v) => {
+    if (subjects.length >0){
+       subjects.forEach((v) => {
       const datalocal = localStorage.getItem("ch-" + v.id);
       if (datalocal !== null && !sendApi.some(item => item.id === v.id)) {
         setSendApi((prevSendApi) => [...prevSendApi, { id: v.id, IsOpen: datalocal }]);
       }
     });
+    }
+   
   }, [subjects]);
   const addSubjects = async (sendApi) => {
     try {
