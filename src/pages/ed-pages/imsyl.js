@@ -119,18 +119,52 @@ const ImportSyl = () => {
     showAlert();
     return null;
   }
-  const deleteFiles = () => {
+  const deleteFiles = (year) => {
+    const delete_subject = async (year) => {
+      try {
+        const Data = await axios.delete(
+          apiurl + "/api/edu/delete_subjects/" + year
+        );
+
+        await Swal.fire({
+          title: "Success!",
+          text: "ลบหลักสูตรแล้ว",
+          icon: "success",
+          showConfirmButton: false,
+          timer: 2000,
+          timerProgressBar: true,
+        });
+
+        window.location.reload();
+      } catch (error) {
+        await Swal.fire({
+          title: "Error!",
+          text: error.response.data.error,
+          icon: "error",
+          showConfirmButton: false,
+          timer: 2000,
+          timerProgressBar: true,
+        });
+
+        console.error(error);
+      }
+    };
+
     Swal.fire({
-      title: "ยืนยันการลบผู้ใช้งาน",
-      text: `คุณแน่ใจหรือไม่ว่าต้องการลบผู้ใช้`,
+      title: "ยืนยันการลบหลักสูตรใช่ไหม",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "ยืนยัน",
       cancelButtonText: "ยกเลิก",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        delete_subject(year);
+      }
     });
   };
+
   return (
     <div className="block min-h-screen background21 w-full overflow-y-auto">
       <div className=" flex h-full w-full p-3 md:p-10 flex-col gap-10">
@@ -179,7 +213,12 @@ const ImportSyl = () => {
           <div className="flex flex-row gap-10 justify-center">
             <FontAwesomeIcon icon={faArrowRight} />
             {file ? (
-              <Link className=" underline text-blue-700 text-xl" target="_self" to={"/ViewExcel"} state={{file}}>
+              <Link
+                className=" underline text-blue-700 text-xl"
+                target="_self"
+                to={"/ViewExcel"}
+                state={{ file }}
+              >
                 {`${file.name} <--- กดเพื่อ View `}
               </Link>
             ) : (
@@ -240,7 +279,7 @@ const ImportSyl = () => {
                       <td className="py-2 font-light text-base text-center">
                         {" "}
                         {/* เพิ่มส่วนของปุ่มลบที่นี่ */}
-                        <button onClick={() => deleteFiles()}>
+                        <button onClick={() => deleteFiles(v.years)}>
                           <p>
                             <FontAwesomeIcon icon={faTrash} />
                           </p>
