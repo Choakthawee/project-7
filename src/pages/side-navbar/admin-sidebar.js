@@ -214,7 +214,8 @@ const Sidebar = () => {
             isSidebarCollapsed ? "justify-center" : "justify-center"
           }`}
         >
-          <button
+          <div className=" flex flex-col items-end">
+            <button
             type="button"
             className={`transition-all flex self-center focus:outline-none text-white bg-red-500 hover:bg-red-400  font-medium rounded-lg px-5 py-2.5 mb-2 ${
               isSidebarCollapsed ? "" : ""
@@ -235,6 +236,8 @@ const Sidebar = () => {
               }`}
             />
           </button>
+          </div>
+          
         </div>
       </div>
     </div>
