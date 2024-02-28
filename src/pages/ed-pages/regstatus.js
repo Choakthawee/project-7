@@ -19,6 +19,7 @@ const RegStatus = () => {
   useEffect(() => {
     axios.get(apiurl + '/api/eu/allRegister')
       .then((response) => {
+        
         setsubjectReg(response.data.message);
       })
       .catch((error) => {
@@ -30,6 +31,7 @@ const RegStatus = () => {
     axios
       .get(apiurl + '/api/subject_category')
       .then((response) => {
+        console.log(response.data)
         setCategory(response.data);
       })
       .catch((error) => {
@@ -103,7 +105,7 @@ const RegStatus = () => {
         {category.map((item, index) => (
           <React.Fragment key={index}>
             <label className="mr-2" htmlFor={item.value}>
-              {item.name === "required subject" ? "วิชาบังคับ" : item.name === "selected Subjects" ? "วิชาเลือก" : "วิชาเอก"}
+              {item.name}
             </label>
             <input
               className="mr-2"
