@@ -158,7 +158,7 @@ const RegStatus = () => {
 
       {/*รอยืนยัน*/}
 
-      <div className="flex flex-1 bg-slate-200 mt-5 rounded-lg overflow-x-auto shadow-xl">
+      <div className="flex bg-slate-200 mt-5 rounded-lg overflow-x-auto shadow-xl">
         <table className="h-full w-full">
           <thead>
             <tr className="column-color1 text-white">
@@ -232,8 +232,6 @@ const RegStatus = () => {
           </tbody>
         </table>
       </div>
-
-
     </div>
   );
 };
