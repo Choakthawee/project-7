@@ -41,7 +41,7 @@ const RegStatus = () => {
     if (subject.status_id === 2) {
       const branchNames = subject.branch.t12.map(item => `T12-${item}`).join(", ");
       Swal.fire({
-        title: `วิชา ${subject.SUBJECTNAME} รหัสวิชา ${subject.Subjects_id}`,
+        title: `<span style="color: #246705;"> วิชา </span> <span style="color: red;">${subject.SUBJECTNAME}</span> <span style="color: #246705;"> รหัสวิชา </span> <span style="color: red;">${subject.Subjects_id}</span>`,
         html: `
           <div>
             <p><strong>อาจารย์ผู้สอน :</strong> ${subject.USERNAME}</p>
@@ -56,7 +56,7 @@ const RegStatus = () => {
         showCancelButton: true,
         confirmButtonText: "ยืนยัน",
         cancelButtonText: "ยกเลิก",
-        confirmButtonColor: "#3085d6",
+        confirmButtonColor: "#4C956C",
         cancelButtonColor: "#d33",
       }).then((result) => {
         if (result.isConfirmed) {
@@ -103,7 +103,7 @@ const RegStatus = () => {
         {category.map((item, index) => (
           <React.Fragment key={index}>
             <label className="mr-2" htmlFor={item.value}>
-              {item.name === "required subject" ? "วิชาบังคับ" : item.name === "selected Subjects" ? "วิชาเลือก" : "วิชาเอก"}
+              {item.name}
             </label>
             <input
               className="mr-2"
@@ -219,7 +219,7 @@ const RegStatus = () => {
                 </td>
                 <td className="py-2 font-normal text-lg text-center">{subject.DAYNAME}</td>
                 <td className="py-2 font-normal text-lg text-center">{subject.st}-{subject.et}</td>
-                <td className="py-2 font-normal text-lg text-center">{subject.STATUSNAME === "wait" ? "รอยืนยัน.." : "ผ่านแล้ว"}</td>
+                <td className={`py-2 font-normal text-lg text-center ${subject.STATUSNAME === "รอ" ? "text-orange-400" : subject.STATUSNAME === "ไม่ผ่าน" ? "text-red-500" : "text-green-400"}`}>{subject.STATUSNAME}</td>
                 <td >
                   <EditIcon
                     size={24}
