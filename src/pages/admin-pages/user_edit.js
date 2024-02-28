@@ -1,6 +1,6 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./insertuser.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileImport, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
@@ -10,6 +10,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { apiurl } from "../../config";
 import * as XLSX from "xlsx";
+import { LockIcon } from "lucide-react";
 
 const User_edit = () => {
   const fileInputRef = useRef(null);
@@ -18,11 +19,41 @@ const User_edit = () => {
   const [status, setStatus] = useState(2);
   const [Sstatus, setSStatus] = useState(2);
   const [fileData, setFileData] = useState([]);
-
+  const { id } = useParams();
   const userRole = localStorage.getItem("role_id");
   const navigate = useNavigate();
-
   const [selectedFileName, setSelectedFileName] = useState(null);
+  const Nev = useNavigate()
+  const [Lock,setLock] = useState(0);
+  useEffect(() => {
+    const getapi = async () => {
+      try {
+        const getdata = await axios.get(apiurl + "/api/admin/user/" + id);
+        const data = getdata.data[0];
+        setName(data.name);
+        setEmail(data.email);
+        setStatus(data.role);
+        setSStatus(data.role_id)
+        if(localStorage.getItem("email")===data.email){
+          setLock(1);
+          alert("ไม่สามารถแก้ไขตัวเองได้")
+        }
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: error.response.data.msgerror,
+          showConfirmButton: false,
+          timer: 2000,
+          timerProgressBar: true,
+        }).then(() => {
+          alert(error.response.data.msgerror)
+          Nev(-1);
+        })
+      }
+
+    }
+    getapi();
+  }, [])
   const showAlert = () => {
     Swal.fire({
       icon: "error",
@@ -46,41 +77,25 @@ const User_edit = () => {
     return null;
   }
 
-  const InsertDatabase = async () => {
-    if (!name || !email || !status) {
-      Swal.fire({
-        title: "ผิดพลาด!",
-        text: "กรอกข้อมูลให้ครบ",
-        icon: "error",
-        confirmButtonColor: "#134e4a",
-      });
-      return;
-    }
-
+  const updateData = async () => {
     try {
-      console.log(Sstatus);
-      const responsedata = await axios.post(apiurl + "/api/user1", {
-        email: email,
-        name: name,
-        id: Sstatus,
-      });
-      const data = responsedata.data;
-
+      const getdate = await axios.post(apiurl + "/api/admin/userupdate", { id: id, email: email, name: name, role_id: Sstatus })
+      const data = getdate.data;
       Swal.fire({
-        title: "กรอกข้อมูลสำเร็จ!",
-        text: data,
         icon: "success",
-        confirmButtonColor: "#134e4a",
-      });
+        title: "สำเร็จ",
+        text: data.msg
+      })
     } catch (error) {
       Swal.fire({
-        title: "กรอกข้อมูลผิดพลาด!",
-        text: error.response.data,
         icon: "error",
-        confirmButtonColor: "#134e4a",
-      });
+        title: "ไม่สำเร็จ",
+        text: error.response.data.msgerror
+      })
     }
-  };
+
+  }
+
 
   const handleNameChange = (e) => {
     setName(e.target.value);
@@ -97,83 +112,6 @@ const User_edit = () => {
     } else if (e.target.value === "ฝ่ายการศึกษา") {
       setSStatus(3);
     } else if (e.target.value === "อาจารย์") setSStatus(1);
-  };
-
-  const handleFileChange = (event) => {
-    const selectedFile = event.target.files[0];
-    if (selectedFile) {
-      setSelectedFileName(selectedFile.name);
-      console.log("Selected File:", selectedFile);
-      const fileReader = new FileReader();
-      fileReader.readAsArrayBuffer(selectedFile);
-      fileReader.onload = (e) => {
-        const bufferArray = e.target.result;
-        const wb = XLSX.read(bufferArray, { type: "buffer" });
-        const ws = wb.Sheets[wb.SheetNames[0]];
-        const excelData = XLSX.utils.sheet_to_json(ws, { header: 1 });
-        setFileData(excelData);
-      };
-    }
-  };
-
-  const handleSaveToDatabase = () => {
-    if (selectedFileName) {
-      Swal.fire({
-        title: "ต้องการอัพโหลดไฟล์ใช่ไหม",
-        icon: "info",
-        confirmButtonColor: "#134e4a",
-        showCancelButton: true, // Show cancel button
-        confirmButtonText: "ใช่", // Confirm button text
-        cancelButtonText: "ไม่", // Cancel button text
-      }).then((result) => {
-        if (result.isConfirmed) {
-          try {
-            fileData.forEach((row) => {
-              if (row.length === 3) {
-                const [email, name, id] = row;
-
-                axios
-                  .post(apiurl + "/api/user1", { email, name, id })
-                  .then((response) => {
-                    console.log("Data saved successfully:", response.data);
-                    Swal.fire({
-                      title: "บันทึกข้อมูลสำเร็จ!",
-                      text: "บันทึกข้อมูลลงฐานข้อมูลเรียบร้อยแล้ว",
-                      icon: "success",
-                      confirmButtonColor: "#134e4a",
-                    });
-                  })
-                  .catch((error) => {
-                    console.error("Error saving data:", error);
-                    Swal.fire({
-                      title: "เกิดข้อผิดพลาด!",
-                      text: "ไม่สามารถบันทึกข้อมูลได้ โปรดลองอีกครั้ง",
-                      icon: "error",
-                      confirmButtonColor: "#134e4a",
-                    });
-                  });
-              }
-            });
-          } catch (error) {
-            console.error("Error processing fileData:", error);
-          }
-        } else {
-          // Handle the case where the user clicked "No" or closed the modal
-          console.log("User canceled the operation or closed the modal.");
-        }
-      });
-    } else {
-      Swal.fire({
-        title: "กรุณาอัพโหลดไฟล์",
-        icon: "warning",
-        confirmButtonColor: "#134e4a",
-        confirmButtonText: "ok", // Confirm button text
-      });
-    }
-  };
-
-  const handleClick = () => {
-    fileInputRef.current.click();
   };
 
   return (
@@ -267,16 +205,19 @@ const User_edit = () => {
                 width: 150,
                 justifyContent: "center",
               }}
-              onClick={() => InsertDatabase()}
+              onClick={() => {if(!Lock){updateData() }else{
+                alert("ห้ามแก้จ้า")
+              }}}
             >
               <p className="m-0 " style={{ marginRight: "10px" }}>
                 ยืนยัน
               </p>
-              <FontAwesomeIcon
+              {Lock===0? <FontAwesomeIcon
                 icon={faSave}
                 className="mr-2  "
                 style={{ fontSize: "24px" }}
-              />
+              /> : <LockIcon></LockIcon>}
+             
             </button>
           </div>
         </div>

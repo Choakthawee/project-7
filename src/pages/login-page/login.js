@@ -28,6 +28,7 @@ const Login = () => {
       const responseData = await axios.get(
         apiurl + "/api/admin/user/single/" + email
       );
+      await localStorage.setItem("userid", responseData.data.id);
       await localStorage.setItem("email", responseData.data.email);
       await localStorage.setItem("name", responseData.data.name);
       await localStorage.setItem("role", responseData.data.role);

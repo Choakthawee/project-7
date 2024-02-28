@@ -15,7 +15,7 @@ const Time = () => {
   const [endDate, setEndDate] = useState(new Date());
   const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date());
-
+  const [modeTime, setModeTime] = useState(1);
   useEffect(() => {
     const getSystem = async () => {
       try {
@@ -28,6 +28,8 @@ const Time = () => {
         setStartTime(data.S_time);
         setEndTime(data.E_time);
         setIsChecked(data.status);
+        setModeTime(data.type)
+        setIsRadioSelected(data.type === 1 ? true : false)
       } catch (error) {
         alert(error.response.data.msgerror);
       }
@@ -37,7 +39,10 @@ const Time = () => {
 
   const userRole = localStorage.getItem("role_id");
   const navigate = useNavigate();
-
+  const reset = async () => {
+    const responseData = await axios.post(apiurl + "/api/admin/System", { systemstatus: 1 });
+    window.location.reload();
+  }
   const showAlert = () => {
     Swal.fire({
       icon: "error",
@@ -64,7 +69,7 @@ const Time = () => {
   const handleCheckboxChange = (e) => {
     setIsChecked(e.target.checked);
     axios
-      .post("http://localhost:4133/api/admin/System", {
+      .post(apiurl + "/api/admin/System", {
         systemstatus: e.target.checked ? 1 : 0,
       })
       .then((response) => {
@@ -93,8 +98,7 @@ const Time = () => {
         E_time: endTime,
       };
 
-      axios
-        .post("http://localhost:4133/api/admin/System", requestData)
+      axios.post(apiurl + "/api/admin/System", requestData)
         .then((response) => {
           Swal.fire({
             title: "บันทึกสำเร็จ",
@@ -138,8 +142,6 @@ const Time = () => {
         <h1
           style={{
             flex: 1,
-            // borderColor: "red",
-            // borderWidth: 5,
           }}
           className="flex flex-col font-family font-bold text-4xl size-30 text-midgreen h1text-shadow mt-10 ml-10 "
         >
@@ -149,8 +151,6 @@ const Time = () => {
         <div
           style={{
             flex: 1,
-            // borderColor: "green",
-            // borderWidth: 10,
           }}
           className="flex flex-col font-family mt-10 ml-10 font-bold text-xl size-30 "
         >
@@ -184,11 +184,10 @@ const Time = () => {
                       }}
                     />
                     <div
-                      className={`w-16 h-9 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-green-800 ${
-                        isChecked
-                          ? "peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full"
-                          : ""
-                      } peer-checked:after:border-white after:content-[''] after:absolute after:top-1 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-7 after:w-7 after:transition-all dark:border-gray-600 peer-checked:bg-green-600`}
+                      className={`w-16 h-9 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-green-800 ${isChecked
+                        ? "peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full"
+                        : ""
+                        } peer-checked:after:border-white after:content-[''] after:absolute after:top-1 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-7 after:w-7 after:transition-all dark:border-gray-600 peer-checked:bg-green-600`}
                     ></div>
                     <span className="ms-3 text-l font-medium text-gray-900 dark:text-green-800">
                       เปิด
@@ -225,16 +224,12 @@ const Time = () => {
                     style={{
                       display: "flex",
                       flex: 1,
-                      // borderColor: "yellow",
-                      // borderWidth: 5,
                       flexDirection: "row",
                     }}
                   >
                     <div
                       style={{
                         flex: 1,
-                        // borderColor: "green",
-                        // borderWidth: 5,
                         marginTop: 15,
                       }}
                     >
@@ -330,9 +325,14 @@ const Time = () => {
                 </div>
               </div>
               <div className="flex mt-3 ml-5">
+                {modeTime===1 &&
+                 <button className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                  onClick={()=>reset()}> ไม่ใช้เวลา
+                  </button>
+                  }
                 <button
                   type="button"
-                  class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                  className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                   onClick={handleSaveTime}
                 >
                   บันทึก

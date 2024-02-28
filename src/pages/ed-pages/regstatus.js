@@ -40,6 +40,7 @@ const RegStatus = () => {
     axios
       .get(apiurl + '/api/subject_category')
       .then((response) => {
+        console.log(response.data)
         setCategory(response.data);
       })
       .catch((error) => {
