@@ -43,7 +43,7 @@ function App() {
                 <Route path="/insertuser" element={<InsertUser />} />
                 <Route path="/time-set" element={<TimeSet />} />
                 <Route path="/userinfo" element={<UserInfo />} />
-                <Route path="/user_edit" element={<User_edit />} />
+                <Route path="/user_edit/:id" element={<User_edit />} />
 
                 {/* Teacher Pages */}
                 <Route path="/regcourse" element={<RegCourse />} />
