@@ -7,6 +7,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { apiurl } from "../../config";
+import "./user_edit";
 
 const UserInfo = () => {
   const [users, setUsers] = useState([]);
@@ -15,7 +16,7 @@ const UserInfo = () => {
 
   useEffect(() => {
     axios
-      .get(apiurl+"/api/user")
+      .get(apiurl + "/api/user")
       .then((response) => {
         setUsers(response.data.message);
       })
@@ -123,6 +124,7 @@ const UserInfo = () => {
               <th className="py-2 font-light text-xl">Email</th>
               <th className="py-2 font-light text-xl">สถานะ</th>
               <th className="py-2 font-light text-xl">แก้ไข</th>
+              <th className="py-2 font-light text-xl">ลบ</th>
             </tr>
           </thead>
           <tbody>
@@ -144,6 +146,22 @@ const UserInfo = () => {
                 </td>
                 <td className="py-2 font-light text-lg text-center">
                   {user.rolename}
+                </td>
+                <td className="py-2 font-light text-lg text-center">
+                  <div className="flex flex-row justify-center">
+                    <Link
+                      to="/user_edit"
+                      className=" text-white font-bold py-2 px-2 rounded focus:outline-none focus:shadow-outline flex items-center "
+                      style={{
+                        backgroundColor: "#DAA520",
+                        width: 60,
+                        height: "fit-content",
+                        textDecoration: "none",
+                      }}
+                    >
+                      แก้ไข
+                    </Link>
+                  </div>
                 </td>
                 <td className="py-2 font-light text-lg text-center">
                   <button
