@@ -79,7 +79,7 @@ const UserInfo = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`http://localhost:4133/api/admin/delete_user/${id}`)
+          .delete(apiurl+`/api/admin/delete_user/${id}`)
           .then((response) => {
             Swal.fire({
               title: "ลบผู้ใช้งานสำเร็จ",
@@ -88,7 +88,7 @@ const UserInfo = () => {
               confirmButtonText: "ตกลง",
             }).then(() => {
               axios
-                .get("http://localhost:4133/api/user")
+                .get(apiurl+"/api/user")
                 .then((response) => {
                   setUsers(response.data.message);
                 })
@@ -149,8 +149,9 @@ const UserInfo = () => {
                 </td>
                 <td className="py-2 font-light text-lg text-center">
                   <div className="flex flex-row justify-center">
-                    <Link
-                      to="/user_edit"
+
+                    <Link 
+                      to={"/user_edit/"+user.id}
                       className=" text-white font-bold py-2 px-2 rounded focus:outline-none focus:shadow-outline flex items-center "
                       style={{
                         backgroundColor: "#DAA520",
