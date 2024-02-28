@@ -27,6 +27,7 @@ import SubOpen from "./pages/ed-pages/sub-open";
 import Viewpage from "./pages/xlsxView/Viewpage";
 import Viewxlsx from "./pages/xlsxView/Viewpage";
 import User_edit from "./pages/admin-pages/user_edit";
+import { Table } from "lucide-react";
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
                 <Route path="/time-set" element={<TimeSet />} />
                 <Route path="/userinfo" element={<UserInfo />} />
                 <Route path="/user_edit/:id" element={<User_edit />} />
+                <Route path="/table_edit" element={<TableEdit />} />
 
                 {/* Teacher Pages */}
                 <Route path="/regcourse" element={<RegCourse />} />
