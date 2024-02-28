@@ -16,10 +16,15 @@ const RegResultED = () => {
   const navigate = useNavigate();
   useEffect(() => {
     const show_regresult = async () => {
-      const Data = await axios.get(apiurl + "/api/statusRegistered");
-      console.log(Data.data);
+      const Data = await axios.get(
+        apiurl + "/api/statusRegistered/" + localStorage.getItem("userid")
+      );
     };
-    show_regresult();
+    try {
+      show_regresult();
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
   const showAlert = () => {
     Swal.fire({
