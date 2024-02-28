@@ -46,7 +46,7 @@ const RegCourse = () => {
         const responseData = await axios.get(apiurl + "/api/teacher/subjects")
         const data = responseData.data;
         setSubjects(data);
-        console.log(data.results)
+        console.log(data)
       } catch (err) {
         setNoneSubject(err.response.data);
       }
@@ -379,11 +379,9 @@ const RegCourse = () => {
                     </td>
                   </tbody>
                 ))}
-
               </table>
-             
             </div>
-            <h1 className="text-center text-xl">{noneSubject.msgerror}</h1>
+            <h1 className="text-center text-xl">{subjects.msg}{noneSubject.msgerror}</h1>
           </div>
         }
 
