@@ -25,6 +25,7 @@ import RegStatus from "./pages/ed-pages/regstatus";
 import SubOpen from "./pages/ed-pages/sub-open";
 import Viewpage from "./pages/xlsxView/Viewpage";
 import Viewxlsx from "./pages/xlsxView/Viewpage";
+import User_edit from "./pages/admin-pages/user_edit";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
                 <Route path="/insertuser" element={<InsertUser />} />
                 <Route path="/time-set" element={<TimeSet />} />
                 <Route path="/userinfo" element={<UserInfo />} />
+                <Route path="/user_edit" element={<User_edit />} />
 
                 {/* Teacher Pages */}
                 <Route path="/regcourse" element={<RegCourse />} />
@@ -57,10 +59,7 @@ function App() {
                 <Route path="/regstatus" element={<RegStatus />} />
                 <Route path="/sub-open" element={<SubOpen />} />
 
-                <Route
-                  path="/ViewExcel/"
-                  element={<Viewxlsx/>}
-                />
+                <Route path="/ViewExcel/" element={<Viewxlsx />} />
               </Routes>
             </div>
           }
