@@ -16,11 +16,11 @@ const SubOpen = () => {
   const [subjects, setSubjects] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const subjectsPage = 8;
-  const totalPages = Math.ceil(subjects.length / subjectsPage);
+  const totalPages = (subjects.msg || subjects.msgerr )?1:Math.ceil(subjects.length / subjectsPage);
   const startIndex = (currentPage - 1) * subjectsPage;
   const endIndex = startIndex + subjectsPage;
   const currentsubjects =
-    subjects.msg || subjects.msgerr ? [] : subjects.slice(startIndex, endIndex);
+  (subjects.msg || subjects.msgerr )? [] : subjects.slice(startIndex, endIndex);
   useEffect(() => {
     const getapi = async () => {
       try {
@@ -310,7 +310,7 @@ const SubOpen = () => {
             </table>
           </div>
         </div>
-        {subjects.msg || subjects.msgerr && <div className=" text-center text-red-600 text-2xl">
+        {(subjects.msg || subjects.msgerr) && <div className=" text-center text-red-600 text-2xl">
           {subjects.msg}
           {subjects.msgerr}
         </div>}
