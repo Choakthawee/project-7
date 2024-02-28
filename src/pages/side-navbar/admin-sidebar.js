@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   FaBars,
   FaUser,
@@ -91,8 +91,9 @@ const Sidebar = () => {
 
   const role = getRole();
   const [isSidebarCollapsed, setSidebarCollapsed] = useState(false);
-
+  const Nav = useNavigate();
   const logout = () => {
+    Nav("/")
     localStorage.clear();
   };
 
@@ -178,18 +179,18 @@ const Sidebar = () => {
           className={`flex flex-1 justify-center items-end transition-all align-bottom ${isSidebarCollapsed ? "justify-center" : "justify-center"
             }`}
         >
-          <Link to={userRole ? "/" : "/"} onClick={logout}>
-            <button
-              type="button"
-              className={`transition-all flex self-center focus:outline-none text-white bg-red-500 hover:bg-red-400  font-medium rounded-lg px-5 py-2.5 mb-2 ${isSidebarCollapsed ? "" : ""}`}
-            >
-              <p className={`text-xl transition-all mr-3 ${isSidebarCollapsed ? "" : ""}`}>{isSidebarCollapsed ? "" : "LOCKOUT"}</p>
-              <FaSignOutAlt
-                size={isSidebarCollapsed ? "20" : "30"}
-                className={`fill-red-600 ${isSidebarCollapsed ? "opacity-100 -ml-2" : ""}`}
-              />
-            </button>
-          </Link>
+          <button
+            type="button"
+            className={`transition-all flex self-center focus:outline-none text-white bg-red-500 hover:bg-red-400  font-medium rounded-lg px-5 py-2.5 mb-2 ${isSidebarCollapsed ? "" : ""}`}
+            onClick={logout}
+          >
+            <p className={`text-xl transition-all mr-3 ${isSidebarCollapsed ? "" : ""}`}>{isSidebarCollapsed ? "" : "LOCKOUT"}</p>
+            <FaSignOutAlt
+              size={isSidebarCollapsed ? "20" : "30"}
+              className={`fill-red-600 ${isSidebarCollapsed ? "opacity-100 -ml-2" : ""}`}
+            />
+          </button>
+
         </div>
       </div>
     </div>
