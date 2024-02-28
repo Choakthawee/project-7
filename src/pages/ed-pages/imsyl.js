@@ -43,6 +43,7 @@ const ImportSyl = () => {
     };
     getDownloadfile();
   }, [loading]);
+
   const uploadFiles = async () => {
     if (
       selection_year.current.value === "---" ||
@@ -57,8 +58,9 @@ const ImportSyl = () => {
       });
     } else {
       const formData = new FormData();
-      formData.append("file", file); // ชื่อต้องตรงกับที่ระบุใน upload.single('file') // ตรงกับ req.body.name ใน Express
+      formData.append("file", file);
       formData.append("year", selection_year.current.value);
+
       try {
         const response = await axios.post(
           "http://localhost:4133/api/education/Course/uploadfile",
@@ -74,26 +76,54 @@ const ImportSyl = () => {
             },
           }
         );
+
         if (response.data.warning.warnmsg !== null) {
-          alert(response.data.msg);
-          alert(response.data.warning.warnmsg);
+          Swal.fire({
+            icon: "warning",
+            title: "",
+            text: response.data.warning.warnmsg,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "ตกลง",
+          });
           setWarn(response.data.warning.data);
         } else {
-          alert(response.data.msg);
+          Swal.fire({
+            icon: "success",
+            title: "อัพโหลดสำเร็จ",
+            text: response.data.msg,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "ตกลง",
+          });
         }
+
         setLoading(!loading);
       } catch (error) {
         console.log(error);
-        alert(error.response.data.msgerror);
+        Swal.fire({
+          icon: "error",
+          title: "ข้อผิดพลาด",
+          text: error.response.data.msgerror,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "ตกลง",
+        }).then(() => {
+          if (error.response.data.warning.warnmsg) {
+            Swal.fire({
+              icon: "warning",
+              title: "Warning",
+              text: error.response.data.warning.warnmsg,
+              confirmButtonColor: "#3085d6",
+              confirmButtonText: "ตกลง",
+            });
+            setWarn(error.response.data.warning.data);
+          }
+        });
         setErr(error.response.data.error);
-        if (error.response.data.warning !== null) {
-          alert(error.response.data.warning.warnmsg);
-          setWarn(error.response.data.warning.data);
-        }
+
         setLoading(!loading);
       }
     }
   };
+
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
