@@ -9,6 +9,7 @@ import Login from "./pages/login-page/login";
 import InsertUser from "./pages/admin-pages/insertuser";
 import TimeSet from "./pages/admin-pages/time-set";
 import UserInfo from "./pages/admin-pages/userinfo";
+import TableEdit from "./pages/admin-pages/table-edit";
 
 // Teacher Pages
 import RegCourse from "./pages/teacher-pages/regcourse";
@@ -44,6 +45,7 @@ function App() {
                 <Route path="/time-set" element={<TimeSet />} />
                 <Route path="/userinfo" element={<UserInfo />} />
                 <Route path="/user_edit" element={<User_edit />} />
+                <Route path="table_edit" element={<TableEdit />} />
 
                 {/* Teacher Pages */}
                 <Route path="/regcourse" element={<RegCourse />} />

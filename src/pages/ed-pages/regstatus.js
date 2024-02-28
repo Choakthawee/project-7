@@ -5,21 +5,31 @@ import { EditIcon } from "lucide-react";
 import axios from "axios";
 import React from "react";
 import { apiurl } from "../../config";
-import swal from "sweetalert2";
 
 const RegStatus = () => {
   const userRole = localStorage.getItem("role_id");
   const navigate = useNavigate();
   const [selectedSubject, setSelectedSubject] = useState("required");
-  const [selectedProb, setSelectedProb] = useState("");
   const [category, setCategory] = useState([]);
-  const [subjectReg, setsubjectReg] = useState([]);
+  const [chstatus, setchStatus] = useState([]);
+  const [subjectReg, setSubjectReg] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
 
   useEffect(() => {
     axios.get(apiurl + '/api/eu/allRegister')
       .then((response) => {
-        setsubjectReg(response.data.message);
+        setSubjectReg(response.data.message);
+      })
+      .catch((error) => {
+        console.error('Error fetching data', error)
+      })
+  }, [])
+
+  useEffect(() => {
+    axios.get(apiurl + '/api/all/status')
+      .then((response) => {
+        setchStatus(response.data.message);
       })
       .catch((error) => {
         console.error('Error fetching data', error)
@@ -102,61 +112,40 @@ const RegStatus = () => {
       <div className="flex flex-row justify-end">
         {category.map((item, index) => (
           <React.Fragment key={index}>
-            <label className="mr-2" htmlFor={item.value}>
+            <label className="mr-2" htmlFor={item.id}>
               {item.name}
             </label>
             <input
               className="mr-2"
               type="radio"
-              name="subject_type"
-              value={item.value}
-              checked={selectedSubject === item.value}
-              onChange={() => setSelectedSubject(item.value)}
-              id={item.value}
+              name="category"
+              value={item.id}
+              checked={selectedCategory === item.id}
+              onChange={() => setSelectedCategory(item.id)}
+              id={item.id}
             />
           </React.Fragment>
         ))}
       </div>
 
-      <div className="flex flex-row justify-end mt-3">
-        <label className="mr-2" for="passed">
-          ผ่านแล้ว
-        </label>
-        <input
-          className="mr-2"
-          type="radio"
-          name="prob_type"
-          value="passed"
-          checked={selectedProb === "passed"}
-          onChange={() => setSelectedProb("passed")}
-        />
-
-        <label className="mr-2" for="wait">
-          รอยืนยัน
-        </label>
-        <input
-          className="mr-2"
-          type="radio"
-          name="prob_type"
-          value="wait"
-          checked={selectedProb === "wait"}
-          onChange={() => setSelectedProb("wait")}
-        />
-
-        <label className="mr-2" for="prob">
-          วิชาที่ติดปัญหา
-        </label>
-        <input
-          className="mr-2"
-          type="radio"
-          name="prob_type"
-          value="prob"
-          checked={selectedProb === "prob"}
-          onChange={() => setSelectedProb("prob")}
-        />
+      <div className="flex flex-row justify-end">
+        {chstatus.map((item, index) => (
+          <React.Fragment key={index}>
+            <label className="mr-2" htmlFor={item.id}>
+              {item.name}
+            </label>
+            <input
+              className="mr-2"
+              type="radio"
+              name="status"
+              value={item.id}
+              checked={selectedStatus === item.id}
+              onChange={() => setSelectedStatus(item.id)}
+              id={item.id}
+            />
+          </React.Fragment>
+        ))}
       </div>
-
-      {/*รอยืนยัน*/}
 
       <div className="flex bg-slate-200 mt-5 rounded-lg overflow-x-auto shadow-xl">
         <table className="h-full w-full">
@@ -197,38 +186,43 @@ const RegStatus = () => {
             </tr>
           </thead>
           <tbody>
-            {subjectReg.length > 0 && subjectReg.map((subject, index) => (
-              <tr key={index} className={
-                (index) % 2 === 0 ? "bg-gray-100" : "bg-white"
-              }>
-                <td className="py-2 font-normal text-lg text-center">{index + 1}</td>
-                <td className="py-2 font-normal text-lg text-center">{subject.Subjects_id}</td>
-                <td className="py-2 font-normal text-lg text-center">{subject.SUBJECTNAME}</td>
-                <td className="py-2 font-normal text-lg text-center">{subject.credit}</td>
-                <td className="py-2 font-normal text-lg text-center">{subject.CATEGORYNAME}</td>
-                <td className="py-2 font-normal text-lg text-center">{subject.USERNAME}</td>
+            {subjectReg.length > 0 && subjectReg
+              .filter(subject =>
+                (selectedCategory === "" || subject.category_id === selectedCategory) &&
+                (selectedStatus === "" || subject.status_id === selectedStatus)
+              )
+              .map((subject, index) => (
+                <tr key={index} className={
+                  (index) % 2 === 0 ? "bg-gray-100" : "bg-white"
+                }>
+                  <td className="py-2 font-normal text-lg text-center">{index + 1}</td>
+                  <td className="py-2 font-normal text-lg text-center">{subject.Subjects_id}</td>
+                  <td className="py-2 font-normal text-lg text-center">{subject.SUBJECTNAME}</td>
+                  <td className="py-2 font-normal text-lg text-center">{subject.credit}</td>
+                  <td className="py-2 font-normal text-lg text-center">{subject.CATEGORYNAME}</td>
+                  <td className="py-2 font-normal text-lg text-center">{subject.USERNAME}</td>
 
-                <td className="py-2 font-normal text-lg text-center">{subject.N_people}</td>
-                <td className="py-2 font-normal text-lg text-center">
-                  {subject.branch.t12.map((item, index) => (
-                    <span>
-                      {index > 0 && ", "}
-                      T12-{item}
-                    </span>
-                  ))}
-                </td>
-                <td className="py-2 font-normal text-lg text-center">{subject.DAYNAME}</td>
-                <td className="py-2 font-normal text-lg text-center">{subject.st}-{subject.et}</td>
-                <td className={`py-2 font-normal text-lg text-center ${subject.STATUSNAME === "รอ" ? "text-orange-400" : subject.STATUSNAME === "ไม่ผ่าน" ? "text-red-500" : "text-green-400"}`}>{subject.STATUSNAME}</td>
-                <td >
-                  <EditIcon
-                    size={24}
-                    className="cursor-pointer self-center"
-                    onClick={() => handleEdit(subject)}
-                  />
-                </td>
-              </tr>
-            ))}
+                  <td className="py-2 font-normal text-lg text-center">{subject.N_people}</td>
+                  <td className="py-2 font-normal text-lg text-center">
+                    {subject.branch.t12.map((item, index) => (
+                      <span>
+                        {index > 0 && ", "}
+                        T12-{item}
+                      </span>
+                    ))}
+                  </td>
+                  <td className="py-2 font-normal text-lg text-center">{subject.DAYNAME}</td>
+                  <td className="py-2 font-normal text-lg text-center">{subject.st}-{subject.et}</td>
+                  <td className={`py-2 font-normal text-lg text-center ${subject.STATUSNAME === "รอ" ? "text-orange-400" : subject.STATUSNAME === "ไม่ผ่าน" ? "text-red-500" : "text-green-400"}`}>{subject.STATUSNAME}</td>
+                  <td >
+                    <EditIcon
+                      size={24}
+                      className="cursor-pointer self-center"
+                      onClick={() => handleEdit(subject)}
+                    />
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
