@@ -8,10 +8,19 @@ import { FaCircleLeft, FaCircleRight } from "react-icons/fa6";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
+import axios from "axios";
+import { apiurl } from "../../config";
+import { useEffect } from "react";
 const RegResultED = () => {
   const userRole = localStorage.getItem("role_id");
   const navigate = useNavigate();
-
+  useEffect(() => {
+    const show_regresult = async () => {
+      const Data = await axios.get(apiurl + "/api/statusRegistered");
+      console.log(Data.data);
+    };
+    show_regresult();
+  }, []);
   const showAlert = () => {
     Swal.fire({
       icon: "error",
@@ -34,6 +43,7 @@ const RegResultED = () => {
     showAlert();
     return null;
   }
+
   return (
     <div className="bged">
       <div className="flex flex-1 flex-col">
