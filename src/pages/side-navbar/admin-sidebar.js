@@ -35,7 +35,7 @@ const Sidebar = () => {
         icon: <FaClock size={20} className="max-[600px]:size-5" />,
       },
       {
-        path: "/table-edit",
+        path: "/table_edit",
         label: "ตั้งค่า Database",
         icon: <Settings size={20} className="max-[600px]:size-5" />,
       },

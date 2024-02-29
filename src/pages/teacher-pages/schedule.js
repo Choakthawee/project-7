@@ -11,64 +11,38 @@ const Schedule = () => {
   const navigate = useNavigate();
   const [isTeacher, setIsTeacher] = useState(false);
   const [subjectAll, setSubjectAll] = useState([]);
-  const [filteredSubjects, setFilteredSubjects] = useState([]);
   const [searchInput, setSearchInput] = useState('');
   const [years, setYears] = useState(["ปี 1", "ปี 2", "ปี 3", "ปี 4", "ปี 4 ขึ้นไป"]);
   const [subjectCategories, setSubjectCategories] = useState([]);
   const [selectedYear, setSelectedYear] = useState('');
 
-
   useEffect(() => {
-    const fetchSubjectCategories = async () => {
-      try {
-        const response = await axios.get('http://localhost:4133/api/subject_category');
+    axios
+      .get(apiurl + '/api/subject_category')
+      .then((response) => {
         setSubjectCategories(response.data);
-      } catch (error) {
-        console.error('Error fetching subject categories: ', error);
-      }
-    };
-
-    fetchSubjectCategories();
+        console.log(response.data)
+      })
+      .catch((error) => {
+        console.error('Error fetching data: ', error);
+      });
   }, []);
 
   const handleInputChange = (e) => {
     setSearchInput(e.target.value);
   };
 
-  const handleSearch = () => {
-    const yearIndex = years.indexOf(selectedYear);
-    const yearToSearch = yearIndex + 1;
-    const filtered = subjectAll.filter((subject) => {
-      const idSubject = Array.isArray(subject.idSubject) ? subject.idSubject.join('') : subject.idSubject.toString();
-      const isOpenToYear = subject.branch.t12.includes(yearToSearch);
-
-      // ตรวจสอบว่ามีการเลือกปีการศึกษาและเปิดรายวิชาในปีนั้นๆ หรือไม่
-      if (selectedYear && isOpenToYear) {
-        return (
-          idSubject.includes(searchInput) ||
-          subject.SUBJECT.includes(searchInput) ||
-          subject.NAME.includes(searchInput)
-        );
-      } else {
-        return false; // ถ้าไม่เป็นไปตามเงื่อนไข ไม่ต้องเพิ่มลงใน filteredSubjects
-      }
-    });
-    setFilteredSubjects(filtered);
-  };
-
-
   useEffect(() => {
     axios
-      .get('http://localhost:4133/api/teacher/schedule')
+      .get(apiurl + '/api/teacher/schedule')
       .then((response) => {
         setSubjectAll(response.data);
-        setFilteredSubjects(response.data);
         console.log(response.data)
       })
       .catch((error) => {
         console.error('Error fetching data: ', error);
       });
-  }, [searchInput]);
+  }, []);
 
   const showAlert = () => {
     Swal.fire({
@@ -142,7 +116,7 @@ const Schedule = () => {
         </div>
 
         <div className="flex mt-2 items-end cursor-pointer ml-8">
-          <button className="transition-all bg-green-600 rounded-3xl w-24 h-10 justify-center items-center flex flex-row shadow-lg" onClick={handleSearch}>
+          <button className="transition-all bg-green-600 rounded-3xl w-24 h-10 justify-center items-center flex flex-row shadow-lg" onClick={ }>
             <label className="text-white text-base cursor-pointer">ค้นหา</label>
             <Search size={21} color="white" />
           </button>
@@ -239,7 +213,7 @@ const Schedule = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredSubjects.map((subject, index) => (
+            {subjectAll.map((subject, index) => (
               <tr key={index} className="bg-white ptext-shadow">
                 <td className="border border-gray-400 py-2 px-4 border-opacity-10">{index + 1}</td>
                 <td className="border border-gray-400 py-2 px-4 border-opacity-10">{subject.idSubject}</td>
