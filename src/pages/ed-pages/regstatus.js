@@ -197,7 +197,7 @@ const RegStatus = () => {
                   (index) % 2 === 0 ? "bg-gray-100" : "bg-white"
                 }>
                   <td className="py-2 font-normal text-lg text-center">{index + 1}</td>
-                  <td className="py-2 font-normal text-lg text-center">{subject.Subjects_id}</td>
+                  <td className="py-2 font-normal text-lg text-center">{subject.idsubject}-{subject.years.substring(2)}</td>
                   <td className="py-2 font-normal text-lg text-center">{subject.SUBJECTNAME}</td>
                   <td className="py-2 font-normal text-lg text-center">{subject.credit}</td>
                   <td className="py-2 font-normal text-lg text-center">{subject.CATEGORYNAME}</td>
@@ -213,7 +213,7 @@ const RegStatus = () => {
                     ))}
                   </td>
                   <td className="py-2 font-normal text-lg text-center">{subject.DAYNAME}</td>
-                  <td className="py-2 font-normal text-lg text-center">{subject.st}-{subject.et}</td>
+                  <td className="py-2 font-normal text-lg text-center">{subject.st.substring(0, 5)}-{subject.et.substring(0, 5)} น.</td>
                   <td className={`py-2 font-normal text-lg text-center ${subject.STATUSNAME === "รอ" ? "text-orange-400" : subject.STATUSNAME === "ไม่ผ่าน" ? "text-red-500" : "text-green-400"}`}>{subject.STATUSNAME}</td>
                   <td >
                     <EditIcon

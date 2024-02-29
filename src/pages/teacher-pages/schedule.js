@@ -5,6 +5,7 @@ import { Search } from 'lucide-react';
 import { CalendarClockIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { apiurl } from '../../config';
 
 const Schedule = () => {
   const userRole = localStorage.getItem('role_id');
@@ -15,6 +16,7 @@ const Schedule = () => {
   const [years, setYears] = useState(["ปี 1", "ปี 2", "ปี 3", "ปี 4", "ปี 4 ขึ้นไป"]);
   const [subjectCategories, setSubjectCategories] = useState([]);
   const [selectedYear, setSelectedYear] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
 
   useEffect(() => {
     axios
@@ -97,10 +99,12 @@ const Schedule = () => {
 
         <div className="flex flex-col w-14 mr-3">
           <label className="text-midgreen mb-1">ชั้นปี</label>
-          <select className="focus:outline-none rounded-sm h-8" value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)}>
+          <select className="focus:outline-none rounded-sm h-8">
             <option value="">เลือกชั้นปี</option>
             {years.map((year, index) => (
-              <option key={index} value={year}>{year}</option>
+              <option key={index} value={year.substring(3)}
+                checked={selectedYear === year.substring(3)}
+                onChange={() => setSelectedYear(year.substring(3))}>{year}</option>
             ))}
           </select>
         </div>
@@ -110,13 +114,15 @@ const Schedule = () => {
           <select className="focus:outline-none rounded-sm h-8 w-36">
             <option value="">เลือกหมวดวิชา</option>
             {subjectCategories.map((category, index) => (
-              <option key={index} value={category.name}>{category.name === "required subject" ? "วิชาบังคับ" : category.name === "selected Subjects" ? "วิชาเลือก" : "วิชาเอก"}</option>
+              <option key={index} value={category.name}
+                checked={selectedCategory === category.id}
+                onChange={() => setSelectedCategory(category.id)}>{category.name}</option>
             ))}
           </select>
         </div>
 
         <div className="flex mt-2 items-end cursor-pointer ml-8">
-          <button className="transition-all bg-green-600 rounded-3xl w-24 h-10 justify-center items-center flex flex-row shadow-lg" onClick={ }>
+          <button className="transition-all bg-green-600 rounded-3xl w-24 h-10 justify-center items-center flex flex-row shadow-lg">
             <label className="text-white text-base cursor-pointer">ค้นหา</label>
             <Search size={21} color="white" />
           </button>
@@ -145,7 +151,7 @@ const Schedule = () => {
 
 
 
-      <div className='flex-1 flex'>
+      <div className='flex'>
         <table className=" mt-0 border-collapse border border-gray-400 shadow-md">
           <thead>
             <tr className="bg-gray-200">
@@ -175,7 +181,7 @@ const Schedule = () => {
         </table>
       </div>
 
-      <div className="flex flex-1 bg-slate-200 mt-10 rounded-lg overflow-x-auto shadow-xl text-center">
+      <div className="flex bg-slate-200 mt-10 rounded-lg overflow-x-auto shadow-xl text-center">
         <table className="h-full w-full">
           <thead>
             <tr className="column-color1 text-white">
@@ -216,15 +222,20 @@ const Schedule = () => {
             {subjectAll.map((subject, index) => (
               <tr key={index} className="bg-white ptext-shadow">
                 <td className="border border-gray-400 py-2 px-4 border-opacity-10">{index + 1}</td>
-                <td className="border border-gray-400 py-2 px-4 border-opacity-10">{subject.idSubject}</td>
+                <td className="border border-gray-400 py-2 px-4 border-opacity-10">{subject.id_subject}-{subject.ySubject.substring(2)}</td>
                 <td className="border border-gray-400 py-2 px-4 border-opacity-10">{subject.SUBJECT}</td>
                 <td className="border border-gray-400 py-2 px-4 border-opacity-10">{subject.credit}</td>
                 <td className="border border-gray-400 py-2 px-4 border-opacity-10">{subject.Moo}</td>
                 <td className="border border-gray-400 py-2 px-4 border-opacity-10">{subject.NAME}</td>
                 <td className="border border-gray-400 py-2 px-4 border-opacity-10">{subject.N_people}</td>
-                <td className="border border-gray-400 py-2 px-4 border-opacity-10">{subject.branch.t12.join(', ')}</td>
+                <td className="border border-gray-400 py-2 px-4 border-opacity-10">{subject.branch.t12.map((item, index) => (
+                  <span>
+                    {index > 0 && ", "}
+                    ชั้นปี {item}
+                  </span>
+                ))}</td>
                 <td className="border border-gray-400 py-2 px-4 border-opacity-10">{subject.day}</td>
-                <td className="border border-gray-400 py-2 px-4 border-opacity-10">{subject.st}-{subject?.et}</td>
+                <td className="border border-gray-400 py-2 px-4 border-opacity-10">{subject.st.substring(0, 5)}-{subject.et.substring(0, 5)} น.</td>
                 <td className="border border-gray-400 py-2 px-4 border-opacity-10">
                   <Link to="/schedule_edit">
                     <button className="bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded ml-3">
