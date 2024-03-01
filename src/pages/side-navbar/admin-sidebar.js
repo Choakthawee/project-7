@@ -149,30 +149,35 @@ const Sidebar = () => {
   return (
     <div className={`flex ${isSidebarCollapsed ? "collapsed" : ""}`}>
       <div
-        className={`column-color1 px-2 py-2 flex flex-1 flex-col transition-all ${isSidebarCollapsed ? "w-20" : "w-60"
-          }`}
+        className={`column-color1 px-2 py-2 flex flex-1 flex-col transition-all ${
+          isSidebarCollapsed ? "w-20" : "w-60"
+        }`}
       >
         <div
-          className={`sidebar-toggle items-center flex mb-10 justify-end cursor-pointer mt-2 mr-2 ${isSidebarCollapsed ? "justify-center -mr-0" : ""
-            }`}
+          className={`sidebar-toggle items-center flex mb-10 justify-end cursor-pointer mt-2 mr-2 ${
+            isSidebarCollapsed ? "justify-center -mr-0" : ""
+          }`}
           onClick={() => setSidebarCollapsed(!isSidebarCollapsed)}
         >
           <span
-            className={`transform transition-all ${isSidebarCollapsed ? "rotate-180" : ""
-              }`}
+            className={`transform transition-all ${
+              isSidebarCollapsed ? "rotate-180" : ""
+            }`}
           >
             <FaBars
               size={24}
               color="white"
-              className={`transition-all ${isSidebarCollapsed ? "size-7 -ml-1 items-center" : ""
-                }`}
+              className={`transition-all ${
+                isSidebarCollapsed ? "size-7 -ml-1 items-center" : ""
+              }`}
             />
           </span>
         </div>
 
         <div
-          className={`flex flex-2 flex-col justify-center items-center mb-3 transition-all ${isSidebarCollapsed ? "opacity-0 -mb-10" : ""
-            }`}
+          className={`flex flex-2 flex-col justify-center items-center mb-3 transition-all ${
+            isSidebarCollapsed ? "opacity-0 -mb-10" : ""
+          }`}
         >
           <FaUser size={40} color="white" className="mb-5" />
           <span className="text-sm text-white mb-5">สถานะ : {userRole}</span>
@@ -186,16 +191,18 @@ const Sidebar = () => {
                 <li key={item.path} className="mb-2">
                   <Link
                     to={userRole ? item.path : "/"}
-                    className={`transition-all flex flex-1 justify-center items-center text-sm mb-2 max-[600px]:text-base ${pathname.includes(item.path)
-                      ? "text-white font-medium bg-gray-500 bg-opacity-20 rounded-md"
-                      : "text-white font-medium hover:bg-gray-500 hover:bg-opacity-10 hover:text-gray-500 hover:rounded-md hover:font-semibold"
-                      }`}
+                    className={`transition-all flex flex-1 justify-center items-center text-sm mb-2 max-[600px]:text-base ${
+                      pathname.includes(item.path)
+                        ? "text-white font-medium bg-gray-500 bg-opacity-20 rounded-md"
+                        : "text-white font-medium hover:bg-gray-500 hover:bg-opacity-10 hover:text-gray-500 hover:rounded-md hover:font-semibold"
+                    }`}
                     style={{ height: "70px" }}
                   >
                     {item.icon && (
                       <span
-                        className={`items-center justify-center align-middle ${isSidebarCollapsed ? "" : "mr-2"
-                          }`}
+                        className={`items-center justify-center align-middle ${
+                          isSidebarCollapsed ? "" : "mr-2"
+                        }`}
                       >
                         {item.icon}
                       </span>
@@ -209,30 +216,33 @@ const Sidebar = () => {
         )}
 
         <div
-          className={`flex flex-1 justify-center items-end transition-all align-bottom ${isSidebarCollapsed ? "justify-center" : "justify-center"
-            }`}
+          className={`flex flex-1 justify-center items-end transition-all align-bottom ${
+            isSidebarCollapsed ? "justify-center" : "justify-center"
+          }`}
         >
           <div className=" flex flex-col items-end">
             <button
               type="button"
-              className={`transition-all flex self-center focus:outline-none text-white bg-red-500 hover:bg-red-400  font-medium rounded-lg px-5 py-2.5 mb-2 ${isSidebarCollapsed ? "" : ""
-                }`}
+              className={`transition-all flex self-center focus:outline-none text-white bg-red-500 hover:bg-red-400  font-medium rounded-lg px-5 py-2.5 mb-2 ${
+                isSidebarCollapsed ? "" : ""
+              }`}
               onClick={logout}
             >
               <p
-                className={`text-xl transition-all mr-3 ${isSidebarCollapsed ? "" : ""
-                  }`}
+                className={`text-xl transition-all mr-3 ${
+                  isSidebarCollapsed ? "" : ""
+                }`}
               >
-                {isSidebarCollapsed ? "" : "LOCKOUT"}
+                {isSidebarCollapsed ? "" : "LOGOUT"}
               </p>
               <FaSignOutAlt
                 size={isSidebarCollapsed ? "20" : "30"}
-                className={`fill-red-600 ${isSidebarCollapsed ? "opacity-100 -ml-2" : ""
-                  }`}
+                className={`fill-red-600 ${
+                  isSidebarCollapsed ? "opacity-100 -ml-2" : ""
+                }`}
               />
             </button>
           </div>
-
         </div>
       </div>
     </div>

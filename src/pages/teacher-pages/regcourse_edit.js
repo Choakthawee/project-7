@@ -26,20 +26,20 @@ const RegCourseEdit = () => {
   useEffect(() => {
     const getdataApi = async () => {
       try {
-        const dataRespone = await axios.get(apiurl + "/api/teacher/subject/" + id);
+        const dataRespone = await axios.get(
+          apiurl + "/api/teacher/subject/" + id
+        );
         const data = dataRespone.data;
         setSubject(data[0]);
-        console.log(data)
+        console.log(data);
       } catch (error) {
-        if (error.response.data.msgerror)
-          alert(error.response.data.msgerror)
+        if (error.response.data.msgerror) alert(error.response.data.msgerror);
         if (error.response.data.msgerrortime)
-          alert(error.response.data.msgerrortime)
+          alert(error.response.data.msgerrortime);
       }
-
-    }
+    };
     getdataApi();
-  }, [])
+  }, []);
   const addbox = () => {
     setData([...data, { subhour: "" }]);
   };
@@ -142,13 +142,11 @@ const RegCourseEdit = () => {
                 <FontAwesomeIcon
                   icon={faArrowAltCircleDown}
                   style={{
-
                     pointerEvents: "none",
-                    marginLeft: -25
+                    marginLeft: -25,
                   }}
                 />
               </div>
-
             </div>
           </div>
           <div className="mt-3">
@@ -260,7 +258,6 @@ const RegCourseEdit = () => {
   const GrayBox = (i, practice_t, lecture_t, exsub) => {
     return (
       <div className="box-gray p-2">
-
         <div className="flex flex-col gap-3">
           <div className="flex justify-between">
             <h1 className="text-lg">หมู่เรียนที่ : {i + 1}</h1>
@@ -269,21 +266,49 @@ const RegCourseEdit = () => {
             </button>
           </div>
 
-          {exsub === 1 && <div><p>หน่วยกิต</p><input placeholder="กรอกหน่วยกิตที่ต้องการ" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-400 dark:placeholder-gray-200 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"></input></div>}
+          {exsub === 1 && (
+            <div>
+              <p>หน่วยกิต</p>
+              <input
+                placeholder="กรอกหน่วยกิตที่ต้องการ"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-400 dark:placeholder-gray-200 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              ></input>
+            </div>
+          )}
           <div className="flex">
             <p>
               หมู่เรียน <span style={{ color: "red" }}>*</span> :
             </p>
             <fieldset className="flex flex-row">
               <div className="ml-2">
-                <input disabled={lecture_t === 0 ? exsub ? false : true : false} type="radio" id="lec"></input>
-                <label htmlFor="lec" className={`ml-1 ${lecture_t === 0 ? exsub ? "" : " line-through" : ""}`}>
+                <input
+                  disabled={lecture_t === 0 ? (exsub ? false : true) : false}
+                  type="radio"
+                  id="lec"
+                  name="default-radio"
+                ></input>
+                <label
+                  htmlFor="lec"
+                  className={`ml-1 ${
+                    lecture_t === 0 ? (exsub ? "" : " line-through") : ""
+                  }`}
+                >
                   บรรยาย
                 </label>
               </div>
               <div className="ml-2">
-                <input disabled={practice_t === 0 ? exsub ? false : true : false} type="radio" id="lab"></input>
-                <label htmlFor="lab" className={`ml-1 ${practice_t === 0 ? exsub ? "" : " line-through" : ""}`}>
+                <input
+                  disabled={practice_t === 0 ? (exsub ? false : true) : false}
+                  type="radio"
+                  id="lab"
+                  name="default-radio"
+                ></input>
+                <label
+                  htmlFor="lab"
+                  className={`ml-1 ${
+                    practice_t === 0 ? (exsub ? "" : " line-through") : ""
+                  }`}
+                >
                   ปฏิบัติ
                 </label>
               </div>
@@ -297,7 +322,9 @@ const RegCourseEdit = () => {
               type="text"
               id="sub_hour"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-400 dark:placeholder-gray-200 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder={`โปรดระบุจำนวนชั่วโมงที่ใช้สอน ${lecture_t !==  0? "บรรยาย " + lecture_t + " ชั่วโมง" : ""} ${practice_t !==0 ? "ปฏิบัติ " + practice_t : ""}`}
+              placeholder={`โปรดระบุจำนวนชั่วโมงที่ใช้สอน ${
+                lecture_t !== 0 ? "บรรยาย " + lecture_t + " ชั่วโมง" : ""
+              } ${practice_t !== 0 ? "ปฏิบัติ " + practice_t : ""}`}
               required
             />
           </div>
@@ -311,8 +338,8 @@ const RegCourseEdit = () => {
                 <select
                   className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                   style={{ width: 120, height: 40 }}
-                // value={statusSem}
-                // onChange={handleSemStatusChange}
+                  // value={statusSem}
+                  // onChange={handleSemStatusChange}
                 >
                   <option value="" disabled selected hidden>
                     ---
@@ -328,13 +355,11 @@ const RegCourseEdit = () => {
                 <FontAwesomeIcon
                   icon={faArrowAltCircleDown}
                   style={{
-
                     pointerEvents: "none",
-                    marginLeft: -25
+                    marginLeft: -25,
                   }}
                 />
               </div>
-
             </div>
           </div>
           <div className="flex flex-row mt-2">
@@ -411,10 +436,17 @@ const RegCourseEdit = () => {
         <div className=" -z-6 justify-end flex text-inbox">
           <button
             className="text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline flex items-center "
-            style={{ backgroundColor: "#134e4a", width: 140, height: "fit-content", textDecoration: "none" }}
+            style={{
+              backgroundColor: "#134e4a",
+              width: 140,
+              height: "fit-content",
+              textDecoration: "none",
+            }}
             onClick={() => handleSwab()}
           >
-            <FontAwesomeIcon icon={faCircleArrowLeft} style={{ fontSize: "24px", marginRight: "5px", }}
+            <FontAwesomeIcon
+              icon={faCircleArrowLeft}
+              style={{ fontSize: "24px", marginRight: "5px" }}
             />
             ย้อนกลับ
           </button>
@@ -428,19 +460,29 @@ const RegCourseEdit = () => {
             <div className="flex flex-col gap-3 text-sm font-medium text-gray-900 dark:text-black">
               <div>
                 <label className="block mb-2">ชื่อรายวิชา</label>
-                <p className="text-xl text-gray-300">{subject.name ? subject.name : "Error"}</p>
+                <p className="text-xl text-gray-300">
+                  {subject.name ? subject.name : "Error"}
+                </p>
               </div>
               <div className="flex ">
                 <p className="mr-3">รหัสวิชา : </p>
-                <p className="text-gray-300">{subject.idsubject ? subject.idsubject : "Error"}</p>
+                <p className="text-gray-300">
+                  {subject.idsubject ? subject.idsubject : "Error"}
+                </p>
               </div>
               <div className="flex ">
                 <p className="mr-3">จำนวนหน่วยกิต :</p>
-                <p className="text-gray-300">{subject.credit ? subject.credit : "Error"}</p>
+                <p className="text-gray-300">
+                  {subject.credit ? subject.credit : "Error"}
+                </p>
               </div>
               <div className="flex ">
                 <p className="mr-3">หมวดวิชา :</p>
-                <p className="text-gray-300">{subject.subject_category ? subject.subject_category : "Error"}</p>
+                <p className="text-gray-300">
+                  {subject.subject_category
+                    ? subject.subject_category
+                    : "Error"}
+                </p>
               </div>
               <div className="gap-3 flex flex-col text-lightgreen">
                 <label htmlFor="add" className="">
@@ -449,7 +491,19 @@ const RegCourseEdit = () => {
                 <button id="add" onClick={() => addbox()}>
                   <FaCirclePlus size={20} />
                 </button>
-                {data.map((val, i) => GrayBox(i, subject.practice_t, subject.lecture_t, subject.exsub))}
+                {data.map((val, i) =>
+                  GrayBox(
+                    i,
+                    subject.practice_t,
+                    subject.lecture_t,
+                    subject.exsub
+                  )
+                )}
+              </div>
+              <div className="items-center">
+                <button className="bg-lightgreen text-white hover:bg-white hover:text-gray-300 font-bold py-1 px-4 rounded mt-3 items-center">
+                  บันทึก
+                </button>
               </div>
             </div>
           </div>
