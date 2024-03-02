@@ -11,6 +11,7 @@ import "./reg-set.css";
 import axios from "axios";
 import { apiurl } from "../../config";
 import { LockIcon } from "lucide-react";
+import SearchingBar from "../component/searchBar";
 
 const RegCourse = () => {
   const userRole = localStorage.getItem("role_id");
@@ -37,17 +38,16 @@ const RegCourse = () => {
   const [noneSubject, setNoneSubject] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const subjectsPage = 10;
-  const totalPages = subjects.results?Math.ceil(subjects.results.length / subjectsPage):1;
+  const totalPages = subjects.results ? Math.ceil(subjects.results.length / subjectsPage) : 1;
   const startIndex = (currentPage - 1) * subjectsPage;
   const endIndex = startIndex + subjectsPage;
-
+  const [subject_category, setSubject_category] = useState([])
   useEffect(() => {
     async function getSubject() {
       try {
         const responseData = await axios.get(apiurl + "/api/teacher/subjects")
         const data = responseData.data;
         setSubjects(data);
-        console.log(data)
       } catch (err) {
         setNoneSubject(err.response.data);
       }
@@ -71,71 +71,26 @@ const RegCourse = () => {
   const handleSwab = (v) => {
     navigate("/regcourse_edit/" + v.id);
   };
-
-  // const [statusSem, setSemStatus] = useState(1);
-  // const [statusYear, setYearStatus] = useState(1);
-  // const [statusSyl, setSylStatus] = useState(1);
-  // const [statusCat, setCatStatus] = useState(1);
-  // const [Sstatus, setSStatus] = useState(2);
-
-  // const handleSemStatusChange = (e) => {
-  //   setSemStatus(e.target.value);
-  //   if (e.target.value === "ต้น") {
-  //     setSStatus(1);
-  //   } else if (e.target.value === "ปลาย") {
-  //     setSStatus(2);
-  //   }
-  // };
-
-  // const handleYearStatusChange = (e) => {
-  //   setYearStatus(e.target.value);
-  //   if (e.target.value === "2566") {
-  //     setSStatus(1);
-  //   } else if (e.target.value === "2565") {
-  //     setSStatus(2);
-  //   } else if (e.target.value === "2564") {
-  //     setSStatus(3);
-  //   } else if (e.target.value === "2563") {
-  //     setSStatus(4);
-  //   } else if (e.target.value === "2562") {
-  //     setSStatus(5);
-  //   } else if (e.target.value === "2561") {
-  //     setSStatus(6);
-  //   }
-  // };
-
-  // const handleSylStatusChange = (e) => {
-  //   setSylStatus(e.target.value);
-  //   if (e.target.value === "2566") {
-  //     setSStatus(1);
-  //   } else if (e.target.value === "2565") {
-  //     setSStatus(2);
-  //   } else if (e.target.value === "2564") {
-  //     setSStatus(3);
-  //   } else if (e.target.value === "2563") {
-  //     setSStatus(4);
-  //   } else if (e.target.value === "2562") {
-  //     setSStatus(5);
-  //   } else if (e.target.value === "2561") {
-  //     setSStatus(6);
-  //   }
-  // };
-
-  // const handleCatStatusChange = (e) => {
-  //   setCatStatus(e.target.value);
-  //   if (e.target.value === "บังคับ") {
-  //     setSStatus(1);
-  //   } else if (e.target.value === "เฉพาะเลือก") {
-  //     setSStatus(2);
-  //   } else if (e.target.value === "เลือก") {
-  //     setSStatus(3);
-  //   }
-  // };
-
+  const [yearopen,setYearsopen] = useState([])
+  useEffect(() => {
+    async function getYears() {
+      try {
+        const dataresponse = await axios.get(apiurl + "/api/years")
+        const data = dataresponse.data;
+        setYearsopen(data.data)
+      } catch (error) {
+        console.log(error);
+      }
+      
+    } 
+    getYears()
+  }, [])
+  const [searchInput, setSearchInput] = useState('');
   if (userRole !== "1") {
     showAlert();
     return null;
   }
+ 
   return (
     <div className="flex flex-auto h-full min-h-screen  background21  w-full">
       <div className="flex flex-col p-2 md:p-10 gap-5 w-full">
@@ -173,8 +128,7 @@ const RegCourse = () => {
               />
             </div>
           </div>
-          <div className="flex font-family text-xl font-medium items-center gap-2"
-          >
+          <div className="flex font-family text-xl font-medium items-center gap-2">
             <p className="flex font-family text-xl font-medium ptext-shadow">
               ปีการศึกษา <span style={{ color: "red" }}>*</span>
             </p>
@@ -208,15 +162,7 @@ const RegCourse = () => {
           </div>
         </div>
         <div className="flex gap-2 flex-col md:flex-row">
-          <div className=" flex flex-col gap-2">
-            <label className="block text-sm font-medium text-gray-900 dark:text-black">
-              วิชา/รหัสวิชา
-            </label>
-            <input type="text" id="course_code" className="bg-gray-50 border md:min-w-36 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-400 dark:placeholder-gray-200 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="โปรดระบุวิชาหรือรหัสวิชา"
-              required
-            />
-          </div>
+          <SearchingBar searchInput={searchInput} setSearchInput={setSearchInput} url="/api/Searchsubjectopen/"></SearchingBar>
           <div className="flex font-family font-medium flex-col gap-2">
             <div>
               <p className="text-sm font-medium ">หลักสูตร</p>
@@ -232,12 +178,11 @@ const RegCourse = () => {
                 <option value="" disabled hidden>
                   ---
                 </option>
-                <option>2566</option>
-                <option>2565</option>
-                <option>2564</option>
-                <option>2563</option>
-                <option>2562</option>
-                <option>2561</option>
+                {yearopen.map((v, i) => (
+                  <option value={v.years}>{v.years}</option>
+                ))}
+                
+               
               </select>
               <FontAwesomeIcon
                 icon={faArrowAltCircleDown}
@@ -358,21 +303,21 @@ const RegCourse = () => {
             <h1 className="text-center text-xl">{subjects.msg}{noneSubject.msgerror}</h1>
           </div>
         }
-      <div className="flex h-full justify-center items-end">
-        <div className="flex justify-center items-center gap-3">
-          <button onClick={handlePrevPage}>
-            <FaCircleLeft size={21} color="#0a6765" className="" />
-          </button>
-          <p className="text-lg font-semibold text-midgreen">
-            หน้า {currentPage} จาก {totalPages}
-          </p>
-          <button onClick={handleNextPage}>
-            <FaCircleRight size={21} color="#0a6765" className="" />
-          </button>
+        <div className="flex h-full justify-center items-end">
+          <div className="flex justify-center items-center gap-3">
+            <button onClick={handlePrevPage}>
+              <FaCircleLeft size={21} color="#0a6765" className="" />
+            </button>
+            <p className="text-lg font-semibold text-midgreen">
+              หน้า {currentPage} จาก {totalPages}
+            </p>
+            <button onClick={handleNextPage}>
+              <FaCircleRight size={21} color="#0a6765" className="" />
+            </button>
+          </div>
         </div>
       </div>
-      </div>
-      
+
     </div>
   );
 };

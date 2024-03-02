@@ -13,6 +13,7 @@ import { IoMdUndo } from "react-icons/io";
 import axios from "axios";
 import { apiurl } from "../../config";
 import InlineCheckbox from "./imcoursetab";
+import SearchingBar from "../component/searchBar";
 const ImportCourse = () => {
   const [isSemOpen, setIsSemOpen] = useState(false);
   const [isYearOpen, setIsYearOpen] = useState(false);
@@ -34,6 +35,7 @@ const ImportCourse = () => {
   const totalPages = subjects.length>0?Math.ceil(subjects.length / subjectsPage):1;
   const startIndex = (currentPage - 1) * subjectsPage;
   const endIndex = startIndex + subjectsPage;
+  const [searchInput, setSearchInput] = useState('');
   const currentsubjects = subjects.msg
     ? []
     : subjects.slice(startIndex, endIndex);
@@ -184,21 +186,7 @@ const ImportCourse = () => {
             </div>
           </div>
           <div className="flex flex-1 gap-3 flex-col md:flex-row">
-            <div className="flex gap-2 flex-col">
-              <label
-                for="first_name"
-                class="block text-sm font-medium text-gray-900 dark:text-black"
-              >
-                วิชา/รหัสวิชา
-              </label>
-              <input
-                type="text"
-                id="course_code"
-                class="bg-gray-50 md:min-w-64 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-400 dark:placeholder-gray-200 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="โปรดระบุวิชาหรือรหัสวิชา"
-                required
-              />
-            </div>
+          <SearchingBar searchInput={searchInput} setSearchInput={setSearchInput}></SearchingBar>
             <div className="flex font-family font-medium md:md:w-36 flex-col gap-2">
               <p className="text-sm font-medium ">หมวดวิชา</p>
               <div className="flex items-center ">
