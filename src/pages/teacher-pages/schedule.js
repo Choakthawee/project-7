@@ -6,6 +6,7 @@ import { CalendarClockIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { apiurl } from '../../config';
+import SearchTab from './searchtab';
 
 const Schedule = () => {
   const userRole = localStorage.getItem('role_id');
@@ -33,13 +34,34 @@ const Schedule = () => {
   const handleInputChange = (e) => {
     setSearchInput(e.target.value);
   };
+  const [searching, setSearching] = useState([]);
+  const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    const getapiSearch = async () => {
+      try {
+        setLoading(true);
+        const dataresponse = await axios.get(apiurl + "/api/searchregister/" + searchInput);
+        const data = dataresponse.data;
+        setSearching(data.message);
+      } catch (err) {
+        setSearching({ error: err.response.data.error });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (searchInput && searching) {
+      getapiSearch();
+    } else {
+      setSearching([]);
+    }
+  }, [searchInput]);
   useEffect(() => {
     axios
       .get(apiurl + '/api/teacher/schedule')
       .then((response) => {
         setSubjectAll(response.data);
-        console.log(response.data)
       })
       .catch((error) => {
         console.error('Error fetching data: ', error);
@@ -94,7 +116,10 @@ const Schedule = () => {
       <div className="flex flex-row mt-10 mb-5">
         <div className="flex flex-col mr-3 w-48">
           <label className="text-midgreen mb-1">รหัส/วิชา/ผู้สอน</label>
-          <input className="focus:outline-none rounded-sm h-8" value={searchInput} onChange={handleInputChange}></input>
+          <input type='search' className="focus:outline-none rounded-sm h-8" value={searchInput} onChange={handleInputChange}></input>
+          {searching && (
+            <SearchTab searching={searching} setSearching={setSearching} loading={loading} handleInputChange={handleInputChange} />
+          )}
         </div>
 
         <div className="flex flex-col w-14 mr-3">

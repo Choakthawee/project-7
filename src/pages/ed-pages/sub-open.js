@@ -9,6 +9,7 @@ import { FaCircleLeft, FaCircleRight } from "react-icons/fa6";
 import { apiurl } from "../../config";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
+import SearchingBar from "../component/searchBar";
 
 const SubOpen = () => {
   const userRole = localStorage.getItem("role_id");
@@ -16,11 +17,13 @@ const SubOpen = () => {
   const [subjects, setSubjects] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const subjectsPage = 8;
-  const totalPages = (subjects.msg || subjects.msgerr )?1:Math.ceil(subjects.length / subjectsPage);
+  const totalPages = (subjects.msg || subjects.msgerr) ? 1 : Math.ceil(subjects.length / subjectsPage);
   const startIndex = (currentPage - 1) * subjectsPage;
   const endIndex = startIndex + subjectsPage;
+  const [searchInput, setSearchInput] = useState('');
+  
   const currentsubjects =
-  (subjects.msg || subjects.msgerr )? [] : subjects.slice(startIndex, endIndex);
+    (subjects.msg || subjects.msgerr) ? [] : subjects.slice(startIndex, endIndex);
   useEffect(() => {
     const getapi = async () => {
       try {
@@ -185,13 +188,7 @@ const SubOpen = () => {
           </div>
         </div>
         <div className=" flex gap-5 flex-col md:flex-row">
-          <form>
-            <label for="first_name" class="block mb-2 text-sm font-medium  dark:text-black">
-              วิชา/รหัสวิชา
-            </label>
-            <input type="text" id="course_code" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-400 dark:placeholder-gray-200 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="โปรดระบุวิชาหรือรหัสวิชา" required />
-          </form>
+          <SearchingBar searchInput={searchInput} setSearchInput={setSearchInput} url="/api/Searchsubjectopen/"></SearchingBar>
           <div className="flex gap-8 ">
             <div className="flex w-full font-family font-medium flex-col">
               <div>
