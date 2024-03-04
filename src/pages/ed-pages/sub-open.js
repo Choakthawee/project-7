@@ -10,6 +10,9 @@ import { apiurl } from "../../config";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import SearchingBar from "../component/searchBar";
+import HeaderSort_pre from "../component/headSort_pre";
+import Category_sub from "../component/category_sub";
+import CourseYears from "../component/courseyear";
 
 const SubOpen = () => {
   const userRole = localStorage.getItem("role_id");
@@ -73,50 +76,6 @@ const SubOpen = () => {
       setCurrentPage((prevPage) => prevPage - 1);
     }
   };
-
-  // const [statusSem, setSemStatus] = useState(1);
-  // const [statusYear, setYearStatus] = useState(1);
-  // const [statusCat, setCatStatus] = useState(1);
-  // const [Sstatus, setSStatus] = useState(2);
-
-  // const handleSemStatusChange = (e) => {
-  //   setSemStatus(e.target.value);
-  //   if (e.target.value === "ต้น") {
-  //     setSStatus(1);
-  //   } else if (e.target.value === "ปลาย") {
-  //     setSStatus(2);
-  //   }
-  // };
-
-  // const handleYearStatusChange = (e) => {
-  //   setYearStatus(e.target.value);
-  //   if (e.target.value === "") {
-  //     setSStatus(0);
-  //   } else if (e.target.value === "2566") {
-  //     setSStatus(1);
-  //   } else if (e.target.value === "2565") {
-  //     setSStatus(2);
-  //   } else if (e.target.value === "2564") {
-  //     setSStatus(3);
-  //   } else if (e.target.value === "2563") {
-  //     setSStatus(4);
-  //   } else if (e.target.value === "2562") {
-  //     setSStatus(5);
-  //   } else if (e.target.value === "2561") {
-  //     setSStatus(6);
-  //   }
-  // };
-
-  // const handleCatStatusChange = (e) => {
-  //   setCatStatus(e.target.value);
-  //   if (e.target.value === "บังคับ") {
-  //     setSStatus(1);
-  //   } else if (e.target.value === "เฉพาะเลือก") {
-  //     setSStatus(2);
-  //   } else if (e.target.value === "เลือก") {
-  //     setSStatus(3);
-  //   }
-  // };
   const unOpenSubject = async (id) => {
     try {
       const dataResponse = await axios.put(
@@ -138,79 +97,12 @@ const SubOpen = () => {
         <h1 className="flex font-family font-bold text-4xl size-30 text-midgreen h1text-shadow">
           รายวิชาที่เปิดสอน
         </h1>
-        <div className=" flex gap-5 flex-col md:flex-row">
-          <div className="flex font-family text-xl font-medium gap-3">
-            <p className="flex md:text-nowrap font-family text-xl font-medium ptext-shadow">
-              ภาคเรียน <span style={{ color: "red" }}>*</span>
-            </p>
-            <div className=" flex w-full items-center">
-              <select
-                className="appearance-none w-full h-fit md:w-32 md:h-10 bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-              // value={statusSem}
-              // onChange={handleSemStatusChange}
-              >
-                <option value="" disabled selected hidden>
-                  ---
-                </option>
-                <option>ต้น</option>
-                <option>ปลาย</option>
-              </select>
-              <FontAwesomeIcon
-                icon={faArrowAltCircleDown}
-                className="-ml-8"
-              />
-            </div>
-          </div>
-          <div className="flex font-family text-xl font-medium items-center gap-3 ">
-            <p className=" md:text-nowrap flex font-family text-xl font-medium ptext-shadow">
-              ปีการศึกษา <span style={{ color: "red" }}>*</span>
-            </p>
-            <div className=" flex w-full items-center">
-              <select
-                className="flex appearance-none h-fit md:w-36 md:h-10 w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-
-              // value={statusYear}
-              // onChange={handleYearStatusChange}
-              >
-                <option value="" disabled selected hidden>
-                  ---
-                </option>
-                {[...Array(10 + 1).keys()].map((index) => {
-                  const year = new Date().getFullYear() + 544 - index;
-                  return <option key={year}>{year}</option>;
-                })}
-              </select>
-              <FontAwesomeIcon
-                icon={faArrowAltCircleDown}
-                className="-ml-8"
-              />
-            </div>
-          </div>
-        </div>
+        {/* <HeaderSort_pre/> */}
         <div className=" flex gap-5 flex-col md:flex-row">
           <SearchingBar searchInput={searchInput} setSearchInput={setSearchInput} url="/api/Searchsubjectopen/"></SearchingBar>
+          <CourseYears/>
           <div className="flex gap-8 ">
-            <div className="flex w-full font-family font-medium flex-col">
-              <div>
-                <p className="text-sm font-medium mb-2">หมวดวิชา</p>
-              </div>
-
-              <div className="flex items-center">
-                <select
-                  className="flex h-fit md:w-36 md:h-10 appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                // value={statusCat}
-                // onChange={handleCatStatusChange}
-                >
-                  <option value="" disabled selected hidden>
-                    ---
-                  </option>
-                  <option>แกน</option>
-                  <option>บังคับ</option>
-                  <option>เลือก</option>
-                </select>
-                <FontAwesomeIcon icon={faArrowAltCircleDown} className="  pointer-events-none -ml-8 h-5" />
-              </div>
-            </div>
+            <Category_sub/>
             <div className="font-family flex items-end ">
               <button type="button" class="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-5 py-2.5 mb-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                 style={{

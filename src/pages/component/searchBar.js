@@ -10,6 +10,8 @@ export default function SearchingBar({ searchInput, setSearchInput, url }) {
     useEffect(() => {
         if (searchInput && searching) {
             setLoading(true);
+        }else{
+            setLoading(false)
         }
         const delaySearch = setTimeout(() => {
             const getapiSearch = async () => {
@@ -30,7 +32,7 @@ export default function SearchingBar({ searchInput, setSearchInput, url }) {
                 getapiSearch();
             } else {
                 setSearching([]);
-                setLoading(false)
+                
             }
         }, 800); // 500 milliseconds delay
 
