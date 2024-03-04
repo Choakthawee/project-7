@@ -10,6 +10,11 @@ import { apiurl } from "../../config";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import SearchingBar from "../component/searchBar";
+import HeaderSort_pre from "../component/headSort_pre";
+import Category_sub from "../component/category_sub";
+import CourseYears from "../component/courseyear";
+import ButtonSeaching from "../component/buttonSearching";
+import SortBar from "../component/sortBar";
 
 const SubOpen = () => {
   const userRole = localStorage.getItem("role_id");
@@ -17,20 +22,19 @@ const SubOpen = () => {
   const [subjects, setSubjects] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const subjectsPage = 8;
-  const totalPages = (subjects.msg || subjects.msgerr) ? 1 : Math.ceil(subjects.length / subjectsPage);
+  const totalPages = (subjects.msg || subjects.msgerr) ? 1 : subjects.results? Math.ceil(subjects.results.length / subjectsPage):1;
   const startIndex = (currentPage - 1) * subjectsPage;
   const endIndex = startIndex + subjectsPage;
   const [searchInput, setSearchInput] = useState('');
-  
+
   const currentsubjects =
-    (subjects.msg || subjects.msgerr) ? [] : subjects.slice(startIndex, endIndex);
+    (subjects.msg || subjects.msgerr) ? [] :subjects.results? subjects.results.slice(startIndex, endIndex):[];
   useEffect(() => {
     const getapi = async () => {
       try {
         const database = await axios.get(apiurl + "/api/opensubject");
         const data = database.data;
         setSubjects(data);
-        console.log(data);
       } catch (error) {
         setSubjects(error.response.data);
         console.log(error);
@@ -73,50 +77,6 @@ const SubOpen = () => {
       setCurrentPage((prevPage) => prevPage - 1);
     }
   };
-
-  // const [statusSem, setSemStatus] = useState(1);
-  // const [statusYear, setYearStatus] = useState(1);
-  // const [statusCat, setCatStatus] = useState(1);
-  // const [Sstatus, setSStatus] = useState(2);
-
-  // const handleSemStatusChange = (e) => {
-  //   setSemStatus(e.target.value);
-  //   if (e.target.value === "ต้น") {
-  //     setSStatus(1);
-  //   } else if (e.target.value === "ปลาย") {
-  //     setSStatus(2);
-  //   }
-  // };
-
-  // const handleYearStatusChange = (e) => {
-  //   setYearStatus(e.target.value);
-  //   if (e.target.value === "") {
-  //     setSStatus(0);
-  //   } else if (e.target.value === "2566") {
-  //     setSStatus(1);
-  //   } else if (e.target.value === "2565") {
-  //     setSStatus(2);
-  //   } else if (e.target.value === "2564") {
-  //     setSStatus(3);
-  //   } else if (e.target.value === "2563") {
-  //     setSStatus(4);
-  //   } else if (e.target.value === "2562") {
-  //     setSStatus(5);
-  //   } else if (e.target.value === "2561") {
-  //     setSStatus(6);
-  //   }
-  // };
-
-  // const handleCatStatusChange = (e) => {
-  //   setCatStatus(e.target.value);
-  //   if (e.target.value === "บังคับ") {
-  //     setSStatus(1);
-  //   } else if (e.target.value === "เฉพาะเลือก") {
-  //     setSStatus(2);
-  //   } else if (e.target.value === "เลือก") {
-  //     setSStatus(3);
-  //   }
-  // };
   const unOpenSubject = async (id) => {
     try {
       const dataResponse = await axios.put(
@@ -134,103 +94,12 @@ const SubOpen = () => {
   };
   return (
     <div className="flex min-h-screen w-full background21 ">
-      <div className=" flex flex-col h-full w-full p-10 gap-5">
+      <div className=" flex flex-col h-full w-full p-2 md:p-10 gap-5">
         <h1 className="flex font-family font-bold text-4xl size-30 text-midgreen h1text-shadow">
           รายวิชาที่เปิดสอน
         </h1>
-        <div className=" flex gap-5 flex-col md:flex-row">
-          <div className="flex font-family text-xl font-medium gap-3">
-            <p className="flex md:text-nowrap font-family text-xl font-medium ptext-shadow">
-              ภาคเรียน <span style={{ color: "red" }}>*</span>
-            </p>
-            <div className=" flex w-full items-center">
-              <select
-                className="appearance-none w-full h-fit md:w-32 md:h-10 bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-              // value={statusSem}
-              // onChange={handleSemStatusChange}
-              >
-                <option value="" disabled selected hidden>
-                  ---
-                </option>
-                <option>ต้น</option>
-                <option>ปลาย</option>
-              </select>
-              <FontAwesomeIcon
-                icon={faArrowAltCircleDown}
-                className="-ml-8"
-              />
-            </div>
-          </div>
-          <div className="flex font-family text-xl font-medium items-center gap-3 ">
-            <p className=" md:text-nowrap flex font-family text-xl font-medium ptext-shadow">
-              ปีการศึกษา <span style={{ color: "red" }}>*</span>
-            </p>
-            <div className=" flex w-full items-center">
-              <select
-                className="flex appearance-none h-fit md:w-36 md:h-10 w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-
-              // value={statusYear}
-              // onChange={handleYearStatusChange}
-              >
-                <option value="" disabled selected hidden>
-                  ---
-                </option>
-                {[...Array(10 + 1).keys()].map((index) => {
-                  const year = new Date().getFullYear() + 544 - index;
-                  return <option key={year}>{year}</option>;
-                })}
-              </select>
-              <FontAwesomeIcon
-                icon={faArrowAltCircleDown}
-                className="-ml-8"
-              />
-            </div>
-          </div>
-        </div>
-        <div className=" flex gap-5 flex-col md:flex-row">
-          <SearchingBar searchInput={searchInput} setSearchInput={setSearchInput} url="/api/Searchsubjectopen/"></SearchingBar>
-          <div className="flex gap-8 ">
-            <div className="flex w-full font-family font-medium flex-col">
-              <div>
-                <p className="text-sm font-medium mb-2">หมวดวิชา</p>
-              </div>
-
-              <div className="flex items-center">
-                <select
-                  className="flex h-fit md:w-36 md:h-10 appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                // value={statusCat}
-                // onChange={handleCatStatusChange}
-                >
-                  <option value="" disabled selected hidden>
-                    ---
-                  </option>
-                  <option>แกน</option>
-                  <option>บังคับ</option>
-                  <option>เลือก</option>
-                </select>
-                <FontAwesomeIcon icon={faArrowAltCircleDown} className="  pointer-events-none -ml-8 h-5" />
-              </div>
-            </div>
-            <div className="font-family flex items-end ">
-              <button type="button" class="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-5 py-2.5 mb-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-                style={{
-                  backgroundColor: "#134e4a",
-                  width: 110,
-                  height: 35,
-                }}
-              >
-                <p className="text-lg mr-2">ค้นหา</p>
-                <FontAwesomeIcon
-                  icon={faMagnifyingGlass}
-                  className="mr-2"
-                  style={{ fontSize: "18px" }}
-                />
-              </button>
-            </div>
-          </div>
-
-
-        </div>
+        {/* <HeaderSort_pre/> */}
+        <SortBar url="/api/Searchsubjectopen/" type={3} url1="/api/searchingbar" setCurrent={setSubjects}/>
         <div className=" flex flex-1">
           <div className="flex w-full bg-slate-200  rounded-lg overflow-x-auto shadow-xl">
             <table className=" w-full">
@@ -270,7 +139,7 @@ const SubOpen = () => {
                       {v.years}
                     </td>
                     <td className="py-2 font-light text-lg text-center">
-                      {"3"}
+                      {v.credit}
                     </td>
                     <td className="py-2 font-light text-lg text-center">
                       {v.subject_category}

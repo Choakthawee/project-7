@@ -14,6 +14,11 @@ import axios from "axios";
 import { apiurl } from "../../config";
 import InlineCheckbox from "./imcoursetab";
 import SearchingBar from "../component/searchBar";
+import HeaderSort_pre from "../component/headSort_pre";
+import Category_sub from "../component/category_sub";
+import CourseYears from "../component/courseyear";
+import ButtonSeaching from "../component/buttonSearching";
+import SortBar from "../component/sortBar";
 const ImportCourse = () => {
   const [isSemOpen, setIsSemOpen] = useState(false);
   const [isYearOpen, setIsYearOpen] = useState(false);
@@ -32,13 +37,13 @@ const ImportCourse = () => {
   const [noneSubject, setNoneSubject] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const subjectsPage = 7;
-  const totalPages = subjects.length>0?Math.ceil(subjects.length / subjectsPage):1;
+  const totalPages = subjects.results ? Math.ceil(subjects.results.length / subjectsPage) : 1;
   const startIndex = (currentPage - 1) * subjectsPage;
   const endIndex = startIndex + subjectsPage;
   const [searchInput, setSearchInput] = useState('');
   const currentsubjects = subjects.msg
     ? []
-    : subjects.slice(startIndex, endIndex);
+    : subjects.results? subjects.results.slice(startIndex, endIndex):[];
   const [sendApi, setSendApi] = useState([]);
   useEffect(() => {
     const getdataSubject = async () => {
@@ -74,18 +79,15 @@ const ImportCourse = () => {
     }
   };
   useEffect(() => {
-    console.log(sendApi)
-  }, [sendApi]);
-  useEffect(() => {
-    if (subjects.length >0){
-       subjects.forEach((v) => {
-      const datalocal = localStorage.getItem("ch-" + v.id);
-      if (datalocal !== null && !sendApi.some(item => item.id === v.id)) {
-        setSendApi((prevSendApi) => [...prevSendApi, { id: v.id, IsOpen: datalocal }]);
-      }
-    });
+    if (subjects.length > 0) {
+      subjects.forEach((v) => {
+        const datalocal = localStorage.getItem("ch-" + v.id);
+        if (datalocal !== null && !sendApi.some(item => item.id === v.id)) {
+          setSendApi((prevSendApi) => [...prevSendApi, { id: v.id, IsOpen: datalocal }]);
+        }
+      });
     }
-   
+
   }, [subjects]);
   const addSubjects = async (sendApi) => {
     try {
@@ -132,102 +134,10 @@ const ImportCourse = () => {
           <div className="flex font-family text-wrap font-bold text-4xl size-30 text-midgreen h1text-shadow ">
             เลือกรายวิชาที่เปิดสอน
           </div>
-          <div className="flex flex-1 relative">
-            <div className="flex flex-1 flex-col md:flex-row md:items-center gap-5">
-              <p className="textinsert font-bold">ภาคเรียน</p>
-              <div className="flex relative">
-                <select
-                  className="block md:w-36 appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
 
-                >
-                  <option value="" disabled selected hidden>
-                    ---
-                  </option>
-
-                  <option>ต้น</option>
-                  <option>ปลาย</option>
-                </select>
-                <FontAwesomeIcon
-                  icon={faArrowAltCircleDown}
-                  style={{
-                    position: "absolute",
-                    top: "50%",
-                    right: "12px",
-                    transform: "translateY(-50%)",
-                    pointerEvents: "none",
-                  }}
-                />
-              </div>
-              <p className="textinsert font-bold ">ปีการศึกษา</p>
-              <div className="flex relative">
-                <select
-                  className="block md:w-36 appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-
-                >
-                  <option value="" disabled selected hidden>
-                    ---
-                  </option>
-                  {[...Array(10 + 1).keys()].map((index) => {
-                    const year = new Date().getFullYear() + 544 - index;
-                    return <option key={year}>{year}</option>;
-                  })}
-                </select>
-                <FontAwesomeIcon
-                  icon={faArrowAltCircleDown}
-                  style={{
-                    position: "absolute",
-                    top: "50%",
-                    right: "12px",
-                    transform: "translateY(-50%)",
-                    pointerEvents: "none",
-                  }}
-                />
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-1 gap-3 flex-col md:flex-row">
-          <SearchingBar searchInput={searchInput} setSearchInput={setSearchInput}></SearchingBar>
-            <div className="flex font-family font-medium md:md:w-36 flex-col gap-2">
-              <p className="text-sm font-medium ">หมวดวิชา</p>
-              <div className="flex items-center ">
-                <select
-                  className="flex  md:h-10 appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-
-                // value={statusCat}
-                // onChange={handleCatStatusChange}
-                >
-                  <option value="" disabled selected hidden>
-                    ---
-                  </option>
-                  <option>แกน</option>
-                  <option>บังคับ</option>
-                  <option>เลือก</option>
-                </select>
-                <FontAwesomeIcon
-                  icon={faArrowAltCircleDown}
-                  className="static -ml-7"
-                />
-              </div>
-            </div>
-            <div className="font-family items-end flex">
-              <button
-                type="button"
-                class="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-5 py-2.5 mb-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-                style={{
-                  backgroundColor: "#134e4a",
-                  width: 110,
-                  height: 35,
-                }}
-              >
-                <p className="text-lg mr-2">ค้นหา</p>
-                <FontAwesomeIcon
-                  icon={faMagnifyingGlass}
-                  className="mr-2"
-                  style={{ fontSize: "18px" }}
-                />
-              </button>
-            </div>
-          </div>
+          {/* <HeaderSort_pre/> */}
+          
+          <SortBar url="/api/Searchsubject/" url1="/api/searchingbar" type={2} setCurrent={setSubjects}/>
         </div>
         <div className="flex flex-1">
           <div className="flex w-full bg-slate-200 rounded-lg overflow-x-auto shadow-xl h-full overflow-y-auto">
@@ -244,7 +154,8 @@ const ImportCourse = () => {
               </thead>
               {currentsubjects.map((v, i) => (
                 <tbody key={startIndex + i} className={` ${i % 2 == 0 ? " bg-slate-100" : " bg-white"}`}>
-                  <td className="py-2 font-light text-lg text-center">
+                  <tr>
+                    <td className="py-2 font-light text-lg text-center">
                     <InlineCheckbox index={startIndex + i}
                       id={v.id}
                       isOpen={v.IsOpen}
@@ -267,6 +178,8 @@ const ImportCourse = () => {
                   <td className="py-2 font-light text-lg text-center">
                     {v.credit}
                   </td>
+                  </tr>
+                  
                 </tbody>
               ))}
             </table>
@@ -279,7 +192,7 @@ const ImportCourse = () => {
         <div className="flex justify-end">
           <div className="flex relative gap-5">
             {sendApi.length > 0 &&
-              <button class="flex justify-center items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+              <button className="flex justify-center items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                 style={{
                   backgroundColor: "#134e4a",
                   width: 110,
@@ -291,7 +204,7 @@ const ImportCourse = () => {
             <button
 
               type="submit"
-              class="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+              className="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
               style={{
                 backgroundColor: "#134e4a",
                 width: 110,
