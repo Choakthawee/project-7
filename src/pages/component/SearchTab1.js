@@ -18,8 +18,8 @@ export default function SearchTab1({ searching, setSearching, loading,setSearchI
             ) : (
                 loading ? (
                     <input type='button' className='' value={"Loading..."} />
-                ) : (
-                    <p>{searching.msgerror}</p>
+                ) : (searching.msgerror &&
+                    <p className="p-2">{searching.msgerror}</p>
                 )
             )}
         </div>
