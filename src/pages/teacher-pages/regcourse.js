@@ -87,7 +87,7 @@ const RegCourse = () => {
           ลงทะเบียนรายวิชา
         </h1>
           {/* <HeaderSort_pre/> */}
-        <SortBar url="/api/Searchsubjectopen/" url1="/api/searchingbar" setCurrent={setSubjects} data={subjects}/>
+        <SortBar url="/api/Searchsubjectopen/" url1="/api/searchingbar" setCurrent={setSubjects}/>
         {noneSubject.msgerrortime ?
           <div className=" text-2xl text-red-700 text-center underline">{noneSubject.msgerrortime}</div> :
           <div className="flex flex-col gap-2">

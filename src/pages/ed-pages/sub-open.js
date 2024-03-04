@@ -14,6 +14,7 @@ import HeaderSort_pre from "../component/headSort_pre";
 import Category_sub from "../component/category_sub";
 import CourseYears from "../component/courseyear";
 import ButtonSeaching from "../component/buttonSearching";
+import SortBar from "../component/sortBar";
 
 const SubOpen = () => {
   const userRole = localStorage.getItem("role_id");
@@ -21,20 +22,19 @@ const SubOpen = () => {
   const [subjects, setSubjects] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const subjectsPage = 8;
-  const totalPages = (subjects.msg || subjects.msgerr) ? 1 : Math.ceil(subjects.length / subjectsPage);
+  const totalPages = (subjects.msg || subjects.msgerr) ? 1 : subjects.results? Math.ceil(subjects.results.length / subjectsPage):1;
   const startIndex = (currentPage - 1) * subjectsPage;
   const endIndex = startIndex + subjectsPage;
   const [searchInput, setSearchInput] = useState('');
 
   const currentsubjects =
-    (subjects.msg || subjects.msgerr) ? [] : subjects.slice(startIndex, endIndex);
+    (subjects.msg || subjects.msgerr) ? [] :subjects.results? subjects.results.slice(startIndex, endIndex):[];
   useEffect(() => {
     const getapi = async () => {
       try {
         const database = await axios.get(apiurl + "/api/opensubject");
         const data = database.data;
         setSubjects(data);
-        console.log(data);
       } catch (error) {
         setSubjects(error.response.data);
         console.log(error);
@@ -99,14 +99,7 @@ const SubOpen = () => {
           รายวิชาที่เปิดสอน
         </h1>
         {/* <HeaderSort_pre/> */}
-        <div className=" flex gap-5 flex-col lg:flex-row">
-          <SearchingBar searchInput={searchInput} setSearchInput={setSearchInput} url="/api/Searchsubjectopen/"></SearchingBar>
-          <div className="flex flex-col gap-3 w-full md:flex-row">
-              <CourseYears />
-              <Category_sub />
-              <ButtonSeaching onClick={()=>{alert("โง่")}}/>
-            </div>
-        </div>
+        <SortBar url="/api/Searchsubjectopen/" type={3} url1="/api/searchingbar" setCurrent={setSubjects}/>
         <div className=" flex flex-1">
           <div className="flex w-full bg-slate-200  rounded-lg overflow-x-auto shadow-xl">
             <table className=" w-full">
@@ -146,7 +139,7 @@ const SubOpen = () => {
                       {v.years}
                     </td>
                     <td className="py-2 font-light text-lg text-center">
-                      {"3"}
+                      {v.credit}
                     </td>
                     <td className="py-2 font-light text-lg text-center">
                       {v.subject_category}
