@@ -9,10 +9,11 @@ import SearchingBar from "../component/searchBar";
 import CourseYears from "../component/courseyear";
 import Category_sub from "../component/category_sub";
 import ButtonSeaching from "../component/buttonSearching";
+import SortBar from "../component/sortBar";
 const RegResultT = () => {
   const userRole = localStorage.getItem("role_id");
   const navigate = useNavigate();
-
+  const [subjects, setSubjects] = useState([{}])
   const showAlert = () => {
     Swal.fire({
       icon: "error",
@@ -120,12 +121,7 @@ const RegResultT = () => {
           </p>
         </div>
         <div className="flex flex-col lg:flex-row gap-3">
-          <SearchingBar searchInput={searchInput} setSearchInput={setSearchInput} url="/api/Searchsubjectopen/"></SearchingBar>
-          <div className="flex flex-col gap-3 w-full md:flex-row">
-            <CourseYears />
-            <Category_sub />
-            <ButtonSeaching onClick={() => { alert("โง่") }} />
-          </div>
+        <SortBar url="/api/Searchsubjectopen/" url1="/api/searchingbar" setCurrent={setSubjects} data={subjects}/>
         </div>
 
         <div className="flex flex-col">

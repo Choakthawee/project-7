@@ -3,11 +3,14 @@ import CourseYears from "../component/courseyear";
 import Category_sub from "../component/category_sub";
 import ButtonSeaching from "../component/buttonSearching";
 import { useEffect, useState } from "react";
-export default function SortBar({ data,setCurrent, url }) {
+import axios from "axios";
+import { apiurl } from "../../config";
+export default function SortBar({ setCurrent, url,type=1,url1 }) {
     const [searchInput, setSearchInput] = useState('');
-    const [years, setYears] = useState();
-    const [subject_category, setSubject_category] = useState();
+    const [years, setYears] = useState("");
+    const [subject_category, setSubject_category] = useState("");
     const [reset, setReset] = useState(false);
+    const [isSearch, setIsSearch] = useState(false);
     useEffect(() => {
         console.log(years, subject_category, searchInput);
         if ((years || searchInput || subject_category) && !reset) {
@@ -15,18 +18,49 @@ export default function SortBar({ data,setCurrent, url }) {
         }
     }, [years, subject_category, searchInput])
     const resetSort = () => {
-        setYears("")
-        setSubject_category("")
-        setSearchInput("")
-        setReset(false)
+        if (isSearch) {
+            window.location.reload();
+        } else {
+            setYears("")
+            setSubject_category("")
+            setSearchInput("")
+            setReset(false)
+        }
+
     }
+    const OnSearching = async () => {
+        setIsSearch(true)
+        try {
+            let queryString = apiurl + url1 + "?type=" + type;
+        
+        if (years !== "") {
+            queryString += "&years=" + years;
+        }
+        
+        if (searchInput !== "") {
+            queryString += "&search=" + searchInput;
+        }
+        
+        if (subject_category !== "") {
+            queryString += "&category_id=" + subject_category;
+        }
+        
+        const dataresponse = await axios.get(queryString);
+        const data = dataresponse.data;
+        setCurrent(data);
+        } catch (err) {
+            console.log(err);
+        }
+        
+    }
+
     return (
         <div className="flex gap-2 flex-col lg:flex-row">
             <SearchingBar searchInput={searchInput} setSearchInput={setSearchInput} url={url}></SearchingBar>
             <div className="flex flex-col gap-3 w-full md:flex-row">
                 <CourseYears value={years} setYears={setYears} />
                 <Category_sub value={subject_category} setSort={setSubject_category} />
-                <ButtonSeaching onClick={() => { alert("โง่") }} />
+                <ButtonSeaching onClick={() => { OnSearching(); }} />
                 {reset === true && <div className=" flex items-end">
                     <button className=" bg-slate-500 rounded-lg text-white  mb-1" onClick={() => { resetSort() }}
                         style={{
