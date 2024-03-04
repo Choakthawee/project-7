@@ -11,10 +11,10 @@ import "./reg-set.css";
 import axios from "axios";
 import { apiurl } from "../../config";
 import { LockIcon } from "lucide-react";
-import SearchingBar from "../component/searchBar";
+
 import HeaderSort_pre from "../component/headSort_pre";
-import CourseYears from "../component/courseyear";
-import Category_sub from "../component/category_sub";
+
+import SortBar from "../component/sortBar";
 
 const RegCourse = () => {
   const userRole = localStorage.getItem("role_id");
@@ -74,7 +74,7 @@ const RegCourse = () => {
   const handleSwab = (v) => {
     navigate("/regcourse_edit/" + v.id);
   };
-  const [searchInput, setSearchInput] = useState('');
+ 
   if (userRole !== "1") {
     showAlert();
     return null;
@@ -87,24 +87,7 @@ const RegCourse = () => {
           ลงทะเบียนรายวิชา
         </h1>
           {/* <HeaderSort_pre/> */}
-        <div className="flex gap-2 flex-col md:flex-row">
-          <SearchingBar searchInput={searchInput} setSearchInput={setSearchInput} url="/api/Searchsubjectopen/"></SearchingBar>
-          <CourseYears/>
-          <Category_sub/>
-          <div className="font-family flex  items-end ">
-            <button
-              type="button"
-              className="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-5 py-2.5 mb-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-              style={{
-                backgroundColor: "#134e4a",
-                width: 110,
-                height: 35,
-              }} >
-              <p className="text-lg mr-2">ค้นหา</p>
-              <FontAwesomeIcon icon={faMagnifyingGlass} style={{ fontSize: "18px" }} />
-            </button>
-          </div>
-        </div>
+        <SortBar url="/api/Searchsubjectopen/"/>
         {noneSubject.msgerrortime ?
           <div className=" text-2xl text-red-700 text-center underline">{noneSubject.msgerrortime}</div> :
           <div className="flex flex-col gap-2">

@@ -13,6 +13,7 @@ import SearchingBar from "../component/searchBar";
 import HeaderSort_pre from "../component/headSort_pre";
 import Category_sub from "../component/category_sub";
 import CourseYears from "../component/courseyear";
+import ButtonSeaching from "../component/buttonSearching";
 
 const SubOpen = () => {
   const userRole = localStorage.getItem("role_id");
@@ -24,7 +25,7 @@ const SubOpen = () => {
   const startIndex = (currentPage - 1) * subjectsPage;
   const endIndex = startIndex + subjectsPage;
   const [searchInput, setSearchInput] = useState('');
-  
+
   const currentsubjects =
     (subjects.msg || subjects.msgerr) ? [] : subjects.slice(startIndex, endIndex);
   useEffect(() => {
@@ -93,35 +94,18 @@ const SubOpen = () => {
   };
   return (
     <div className="flex min-h-screen w-full background21 ">
-      <div className=" flex flex-col h-full w-full p-10 gap-5">
+      <div className=" flex flex-col h-full w-full p-2 md:p-10 gap-5">
         <h1 className="flex font-family font-bold text-4xl size-30 text-midgreen h1text-shadow">
           รายวิชาที่เปิดสอน
         </h1>
         {/* <HeaderSort_pre/> */}
-        <div className=" flex gap-5 flex-col md:flex-row">
+        <div className=" flex gap-5 flex-col lg:flex-row">
           <SearchingBar searchInput={searchInput} setSearchInput={setSearchInput} url="/api/Searchsubjectopen/"></SearchingBar>
-          <CourseYears/>
-          <div className="flex gap-8 ">
-            <Category_sub/>
-            <div className="font-family flex items-end ">
-              <button type="button" class="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-5 py-2.5 mb-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-                style={{
-                  backgroundColor: "#134e4a",
-                  width: 110,
-                  height: 35,
-                }}
-              >
-                <p className="text-lg mr-2">ค้นหา</p>
-                <FontAwesomeIcon
-                  icon={faMagnifyingGlass}
-                  className="mr-2"
-                  style={{ fontSize: "18px" }}
-                />
-              </button>
+          <div className="flex flex-col gap-3 w-full md:flex-row">
+              <CourseYears />
+              <Category_sub />
+              <ButtonSeaching onClick={()=>{alert("โง่")}}/>
             </div>
-          </div>
-
-
         </div>
         <div className=" flex flex-1">
           <div className="flex w-full bg-slate-200  rounded-lg overflow-x-auto shadow-xl">

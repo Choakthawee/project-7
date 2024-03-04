@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { apiurl } from "../../config"
 import { faArrowAltCircleDown } from "@fortawesome/free-solid-svg-icons"
 
-export default function Category_sub({ setSort }) {
+export default function Category_sub({value, setSort }) {
 
     const [category, setCategory] = useState([{}])
     useEffect(() => {
@@ -29,6 +29,8 @@ export default function Category_sub({ setSort }) {
                 <select
                     className="block appearance-none w-full  md:w-36 md:h-10 bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                     defaultValue={""}
+                    value={value}
+                    onChange={(e)=>setSort(e.target.value)}
                 >
                     <option value="" disabled hidden>
                         ---

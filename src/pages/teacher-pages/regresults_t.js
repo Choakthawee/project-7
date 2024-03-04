@@ -8,6 +8,7 @@ import React, { useState } from "react";
 import SearchingBar from "../component/searchBar";
 import CourseYears from "../component/courseyear";
 import Category_sub from "../component/category_sub";
+import ButtonSeaching from "../component/buttonSearching";
 const RegResultT = () => {
   const userRole = localStorage.getItem("role_id");
   const navigate = useNavigate();
@@ -118,31 +119,13 @@ const RegResultT = () => {
             ผลการลงทะเบียน
           </p>
         </div>
-        <div className="flex flex-col md:flex-row gap-3">
-
-
+        <div className="flex flex-col lg:flex-row gap-3">
           <SearchingBar searchInput={searchInput} setSearchInput={setSearchInput} url="/api/Searchsubjectopen/"></SearchingBar>
-          <CourseYears />
-          <Category_sub />
-          <div className="flex items-end">
-            <button
-              type="button"
-              class="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-5 py-2.5  mb-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-              style={{
-                backgroundColor: "#134e4a",
-                width: 110,
-                height: 35,
-              }}
-            >
-              <p className="text-lg mr-2">ค้นหา</p>
-              <FontAwesomeIcon
-                icon={faMagnifyingGlass}
-                className="mr-2"
-                style={{ fontSize: "18px" }}
-              />
-            </button>
+          <div className="flex flex-col gap-3 w-full md:flex-row">
+            <CourseYears />
+            <Category_sub />
+            <ButtonSeaching onClick={() => { alert("โง่") }} />
           </div>
-
         </div>
 
         <div className="flex flex-col">

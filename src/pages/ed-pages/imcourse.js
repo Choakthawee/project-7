@@ -17,6 +17,7 @@ import SearchingBar from "../component/searchBar";
 import HeaderSort_pre from "../component/headSort_pre";
 import Category_sub from "../component/category_sub";
 import CourseYears from "../component/courseyear";
+import ButtonSeaching from "../component/buttonSearching";
 const ImportCourse = () => {
   const [isSemOpen, setIsSemOpen] = useState(false);
   const [isYearOpen, setIsYearOpen] = useState(false);
@@ -144,27 +145,10 @@ const ImportCourse = () => {
             <div className="flex flex-col gap-3 w-full md:flex-row">
               <CourseYears />
               <Category_sub />
-              <div className="font-family items-end flex">
-              <button
-                type="button"
-                class="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-5 py-2.5 mb-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-                style={{
-                  backgroundColor: "#134e4a",
-                  width: 110,
-                  height: 35,
-                }}
-              >
-                <p className="text-lg mr-2">ค้นหา</p>
-                <FontAwesomeIcon
-                  icon={faMagnifyingGlass}
-                  className="mr-2"
-                  style={{ fontSize: "18px" }}
-                />
-              </button>
-            </div>
+              <ButtonSeaching onClick={()=>{alert("โง่")}}/>
             </div>
 
-            
+
           </div>
         </div>
         <div className="flex flex-1">
