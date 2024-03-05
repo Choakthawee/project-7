@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function ButtonSeaching({ onClick }) {
     return (
-        <div className="font-family items-end flex">
+        <div className=" relative font-family items-end flex">
             <button
                 type="button"
                 className="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-5 py-2.5 mb-1 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"

@@ -25,7 +25,7 @@ export default function Category_sub({value, setSort }) {
             <div>
                 <p className="text-sm font-medium mb-2">หมวดวิชา</p>
             </div>
-            <div style={{ position: "relative" }}>
+            <div className="flex mr-3 items-center">
                 <select
                     className="block appearance-none w-full  md:w-36 md:h-10 bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
             
@@ -41,13 +41,7 @@ export default function Category_sub({value, setSort }) {
                 </select>
                 <FontAwesomeIcon
                     icon={faArrowAltCircleDown}
-                    style={{
-                        position: "absolute",
-                        top: "50%",
-                        right: "12px",
-                        transform: "translateY(-50%)",
-                        pointerEvents: "none",
-                    }}
+                    className="-ml-7"
                 />
             </div>
         </div>

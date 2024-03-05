@@ -10,7 +10,7 @@ export default function SearchTab1({ searching, setSearching, loading,setSearchI
         );
     }
     return (
-        <div style={{marginTop:72}} className=' rounded-lg bg-white w-fit md:w-1/2 max-h-44 absolute flex flex-col overflow-y-auto'>
+        <div style={{marginTop:72}} className=' rounded-lg bg-white w-fit max-h-44 absolute flex flex-col overflow-y-auto'>
             {searching.length > 0 ? (
                 searching.map((v, i) => (
                     <TabSubject key={i} index={i} name={v.name} year={v.years} idsubject={v.idsubject}></TabSubject>

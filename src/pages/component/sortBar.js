@@ -29,23 +29,26 @@ export default function SortBar({ setCurrent, url, type = 1, url1 }) {
     }
     const OnSearching = async () => {
         setIsSearch(true)
+
         try {
             let queryString = apiurl + url1 + "?type=" + type;
-        if (years !== "") {
-            queryString += "&years=" + years;
-        }
-        if (searchInput !== "") {
-            queryString += "&search=" + searchInput;
-        }
-        if (subject_category !== "") {
-            queryString += "&category_id=" + subject_category;
-        }
-        const dataresponse = await axios.get(queryString);
-        const data = dataresponse.data;
-        setCurrent(data);
+            if (years !== "") {
+                queryString += "&years=" + years;
+            }
+            if (searchInput !== "") {
+                queryString += "&search=" + searchInput;
+            }
+            if (subject_category !== "") {
+                queryString += "&category_id=" + subject_category;
+            }
+            console.log(queryString);
+            const dataresponse = await axios.get(queryString);
+            const data = dataresponse.data;
+            console.log(queryString);
+            setCurrent(data);
         } catch (err) {
             console.log(err);
-        } finally{
+        } finally {
             setSearching([]);
         }
     }
