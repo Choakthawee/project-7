@@ -27,7 +27,7 @@ import SubOpen from "./pages/ed-pages/sub-open";
 import Viewpage from "./pages/xlsxView/Viewpage";
 import Viewxlsx from "./pages/xlsxView/Viewpage";
 import User_edit from "./pages/admin-pages/user_edit";
-
+import RegResultED_Regis from "./pages/ed-pages/regresults_ed_regis";
 function App() {
   return (
     <Router>
@@ -60,7 +60,10 @@ function App() {
                 <Route path="/regresults_ed" element={<RegResultED />} />
                 <Route path="/regstatus" element={<RegStatus />} />
                 <Route path="/sub-open" element={<SubOpen />} />
-
+                <Route
+                  path="/regresults_ed_regis"
+                  element={<RegResultED_Regis />}
+                />
                 <Route path="/ViewExcel/" element={<Viewxlsx />} />
               </Routes>
             </div>
