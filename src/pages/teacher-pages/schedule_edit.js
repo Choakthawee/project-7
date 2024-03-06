@@ -69,7 +69,7 @@ const ScheduleEdit = () => {
 
   return (
     <div className="flex w-full h-full min-h-screen background21">
-      <div className="flex w-full relative border-4 border-solid border-green-500 items-center overflow-y-scroll justify-center px-40">
+      <div className="flex w-full relative  items-center overflow-y-scroll justify-center px-40">
         <div className="flex w-full rounded-3xl  bg-white p-2 ">
           <div
             style={{
