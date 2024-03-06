@@ -13,6 +13,7 @@ const Schedule = () => {
   const navigate = useNavigate();
   const [isTeacher, setIsTeacher] = useState(false);
   const [subjectAll, setSubjectAll] = useState([]);
+  const [searchInput, setSearchInput] = useState('');
 
   {/* option */ }
   const [years, setYears] = useState(["ปี 1", "ปี 2", "ปี 3", "ปี 4", "ปี 4 ขึ้นไป"]);
@@ -41,6 +42,7 @@ const Schedule = () => {
   const handleInputChange = (e) => {
     setSearchInput(e.target.value);
   };
+
   const [searching, setSearching] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -64,6 +66,7 @@ const Schedule = () => {
       setSearching([]);
     }
   }, [searchInput]);
+
   useEffect(() => {
     axios
       .get(apiurl + '/api/teacher/schedule')
@@ -83,15 +86,15 @@ const Schedule = () => {
     setSelectedCategory(e.target.value);
   };
 
+
   const handleSearch = () => {
-    if (searchTerm.trim() === '' || selectedCategory.trim() === '') {
+    if (searchInput.trim() === '') {
       setFilteredSubjects(subjectAll);
     } else {
       const filtered = subjectAll.filter(subject =>
-        subject.id_subject.includes(searchTerm) ||
-        subject.SUBJECT.includes(searchTerm) ||
-        subject.NAME.includes(searchTerm) ||
-        subject.subject_category_id.includes(selectedCategory)
+        subject.id_subject.includes(searchInput) ||
+        subject.SUBJECT.includes(searchInput) ||
+        subject.NAME.includes(searchInput)
       );
       setFilteredSubjects(filtered);
     }
