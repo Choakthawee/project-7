@@ -12,11 +12,18 @@ const Schedule = () => {
   const navigate = useNavigate();
   const [isTeacher, setIsTeacher] = useState(false);
   const [subjectAll, setSubjectAll] = useState([]);
-  const [searchInput, setSearchInput] = useState('');
+
+  {/* option */ }
   const [years, setYears] = useState(["ปี 1", "ปี 2", "ปี 3", "ปี 4", "ปี 4 ขึ้นไป"]);
   const [subjectCategories, setSubjectCategories] = useState([]);
   const [selectedYear, setSelectedYear] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
+
+
+  {/* search */ }
+  const [filteredSubjects, setFilteredSubjects] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+
 
   useEffect(() => {
     axios
@@ -30,10 +37,6 @@ const Schedule = () => {
       });
   }, []);
 
-  const handleInputChange = (e) => {
-    setSearchInput(e.target.value);
-  };
-
   useEffect(() => {
     axios
       .get(apiurl + '/api/teacher/schedule')
@@ -45,6 +48,32 @@ const Schedule = () => {
         console.error('Error fetching data: ', error);
       });
   }, []);
+
+  const handleInputChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleYearChange = (e) => {
+    setSelectedYear(e.target.value);
+  };
+
+  const handleCategoryChange = (e) => {
+    setSelectedCategory(e.target.value);
+  };
+
+  const handleSearch = () => {
+    if (searchTerm.trim() === '' || selectedCategory.trim() === '') {
+      setFilteredSubjects(subjectAll);
+    } else {
+      const filtered = subjectAll.filter(subject =>
+        subject.id_subject.includes(searchTerm) ||
+        subject.SUBJECT.includes(searchTerm) ||
+        subject.NAME.includes(searchTerm) ||
+        subject.subject_category_id.includes(selectedCategory)
+      );
+      setFilteredSubjects(filtered);
+    }
+  };
 
   const showAlert = () => {
     Swal.fire({
@@ -94,35 +123,35 @@ const Schedule = () => {
       <div className="flex flex-row mt-10 mb-5">
         <div className="flex flex-col mr-3 w-48">
           <label className="text-midgreen mb-1">รหัส/วิชา/ผู้สอน</label>
-          <input className="focus:outline-none rounded-sm h-8" value={searchInput} onChange={handleInputChange}></input>
+          <input className="focus:outline-none rounded-sm h-8" value={searchTerm} onChange={handleInputChange}></input>
         </div>
 
         <div className="flex flex-col w-14 mr-3">
           <label className="text-midgreen mb-1">ชั้นปี</label>
-          <select className="focus:outline-none rounded-sm h-8">
+          <select className="focus:outline-none rounded-sm h-8" value={selectedYear} onChange={handleYearChange}>
             <option value="">เลือกชั้นปี</option>
             {years.map((year, index) => (
-              <option key={index} value={year.substring(3)}
-                checked={selectedYear === year.substring(3)}
-                onChange={() => setSelectedYear(year.substring(3))}>{year}</option>
+              <option key={index} value={year.substring(3)}>
+                {year}
+              </option>
             ))}
           </select>
         </div>
 
         <div className="flex flex-col mr-3">
           <label className="text-midgreen mb-1">หมวดวิชา</label>
-          <select className="focus:outline-none rounded-sm h-8 w-36">
+          <select className="focus:outline-none rounded-sm h-8 w-36" value={selectedCategory} onChange={handleCategoryChange}>
             <option value="">เลือกหมวดวิชา</option>
             {subjectCategories.map((category, index) => (
-              <option key={index} value={category.name}
-                checked={selectedCategory === category.id}
-                onChange={() => setSelectedCategory(category.id)}>{category.name}</option>
+              <option key={index} value={category.id}>
+                {category.name}
+              </option>
             ))}
           </select>
         </div>
 
         <div className="flex mt-2 items-end cursor-pointer ml-8">
-          <button className="transition-all bg-green-600 rounded-3xl w-24 h-10 justify-center items-center flex flex-row shadow-lg">
+          <button className="transition-all bg-green-600 rounded-3xl w-24 h-10 justify-center items-center flex flex-row shadow-lg" onClick={handleSearch}>
             <label className="text-white text-base cursor-pointer">ค้นหา</label>
             <Search size={21} color="white" />
           </button>
@@ -148,8 +177,6 @@ const Schedule = () => {
           <label className="ml-2 font-bold ptext-shadow cursor-pointer">MY SCHEDULE</label>
         </div>
       </div>
-
-
 
       <div className='flex'>
         <table className=" mt-0 border-collapse border border-gray-400 shadow-md">
@@ -219,7 +246,7 @@ const Schedule = () => {
             </tr>
           </thead>
           <tbody>
-            {subjectAll.map((subject, index) => (
+            {filteredSubjects.map((subject, index) => (
               <tr key={index} className="bg-white ptext-shadow">
                 <td className="border border-gray-400 py-2 px-4 border-opacity-10">{index + 1}</td>
                 <td className="border border-gray-400 py-2 px-4 border-opacity-10">{subject.id_subject}-{subject.ySubject.substring(2)}</td>

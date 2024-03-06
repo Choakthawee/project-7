@@ -23,6 +23,7 @@ const RegCourseEdit = () => {
   const [branch, setBranch] = useState([{ subbranch: "" }]);
   const [subject, setSubject] = useState({});
   const [errormsg, setErrorMsg] = useState({});
+
   useEffect(() => {
     const getdataApi = async () => {
       try {
@@ -40,6 +41,7 @@ const RegCourseEdit = () => {
     }
     getdataApi();
   }, [])
+
   const addbox = () => {
     setData([...data, { subhour: "" }]);
   };
@@ -100,6 +102,10 @@ const RegCourseEdit = () => {
 
   const handleClearAll = () => {
     setSelectedOptions([]);
+  };
+
+  const handleCommit = () => {
+    console.log(subject);
   };
 
   const BranchCheckbox = ({ id, checked, onChange }) => {
@@ -297,7 +303,7 @@ const RegCourseEdit = () => {
               type="text"
               id="sub_hour"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-400 dark:placeholder-gray-200 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder={`โปรดระบุจำนวนชั่วโมงที่ใช้สอน ${lecture_t !==  0? "บรรยาย " + lecture_t + " ชั่วโมง" : ""} ${practice_t !==0 ? "ปฏิบัติ " + practice_t : ""}`}
+              placeholder={`โปรดระบุจำนวนชั่วโมงที่ใช้สอน ${lecture_t !== 0 ? "บรรยาย " + lecture_t + " ชั่วโมง" : ""} ${practice_t !== 0 ? "ปฏิบัติ " + practice_t : ""}`}
               required
             />
           </div>
@@ -451,6 +457,11 @@ const RegCourseEdit = () => {
                 </button>
                 {data.map((val, i) => GrayBox(i, subject.practice_t, subject.lecture_t, subject.exsub))}
               </div>
+            </div>
+            <div className="flex cursor-pointer justify-center" onClick={handleCommit}>
+              <button className="transition-all bg-green-600 rounded-3xl w-24 h-10 justify-center items-center flex flex-row shadow-lg">
+                <label className="text-white text-base cursor-pointer">ยืนยัน</label>
+              </button>
             </div>
           </div>
         </div>
