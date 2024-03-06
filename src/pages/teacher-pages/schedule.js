@@ -77,6 +77,7 @@ const Schedule = () => {
       .get(apiurl + '/api/teacher/schedule')
       .then((response) => {
         setSubjectAll(response.data);
+        setFilteredSubjects(response.data);
       })
       .catch((error) => {
         console.error('Error fetching data: ', error);
@@ -111,7 +112,6 @@ const Schedule = () => {
       setFilteredSubjects(filtered);
     }
   };
-
 
 
   const showAlert = () => {
