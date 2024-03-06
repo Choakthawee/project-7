@@ -9,22 +9,15 @@ import { apiurl } from "../../config";
 import SearchTab from "./searchtab";
 
 const Schedule = () => {
-  const userRole = localStorage.getItem("role_id");
+  const userRole = localStorage.getItem('role_id');
+  const userID = localStorage.getItem('userid');
   const navigate = useNavigate();
   const [isTeacher, setIsTeacher] = useState(false);
   const [subjectAll, setSubjectAll] = useState([]);
   const [searchInput, setSearchInput] = useState("");
 
-  {
-    /* option */
-  }
-  const [years, setYears] = useState([
-    "ปี 1",
-    "ปี 2",
-    "ปี 3",
-    "ปี 4",
-    "ปี 4 ขึ้นไป",
-  ]);
+  {/* option */ }
+  const [years, setYears] = useState(["1", "2", "3", "4", "5"]);
   const [subjectCategories, setSubjectCategories] = useState([]);
   const [selectedYear, setSelectedYear] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -46,6 +39,10 @@ const Schedule = () => {
         console.error("Error fetching data: ", error);
       });
   }, []);
+
+  useEffect(() => {
+
+  })
 
   const handleInputChange = (e) => {
     setSearchInput(e.target.value);
@@ -90,25 +87,33 @@ const Schedule = () => {
 
   const handleYearChange = (e) => {
     setSelectedYear(e.target.value);
+    console.log(selectedYear)
   };
 
   const handleCategoryChange = (e) => {
     setSelectedCategory(e.target.value);
+    console.log(selectedCategory)
   };
 
   const handleSearch = () => {
-    if (searchInput.trim() === "") {
-      setFilteredSubjects(subjectAll);
+    if (searchInput.trim() === '') {
+      setFilteredSubjects(subjectAll.filter(subject =>
+        (selectedCategory === '' || subject.subject_category === selectedCategory) &&
+        (selectedYear === '' || subject.branch.t12.includes(Number(selectedYear)))
+      ));
     } else {
-      const filtered = subjectAll.filter(
-        (subject) =>
-          subject.id_subject.includes(searchInput) ||
+      const filtered = subjectAll.filter(subject =>
+        ((subject.id_subject.includes(searchInput) ||
           subject.SUBJECT.includes(searchInput) ||
-          subject.NAME.includes(searchInput)
+          subject.NAME.includes(searchInput)) &&
+          (selectedCategory === '' || subject.subject_category === selectedCategory)) &&
+        (selectedYear === '' || subject.branch.t12.includes(Number(selectedYear)))
       );
       setFilteredSubjects(filtered);
     }
   };
+
+
 
   const showAlert = () => {
     Swal.fire({
@@ -215,8 +220,8 @@ const Schedule = () => {
           >
             <option value="">เลือกชั้นปี</option>
             {years.map((year, index) => (
-              <option key={index} value={year.substring(3)}>
-                {year}
+              <option key={index} value={year}>
+                {year === '5' ? 'ชั้นปี 4 ขึ้นไป' : `ชั้นปี ${year}`}
               </option>
             ))}
           </select>
@@ -231,7 +236,7 @@ const Schedule = () => {
           >
             <option value="">เลือกหมวดวิชา</option>
             {subjectCategories.map((category, index) => (
-              <option key={index} value={category.id}>
+              <option key={index} value={category.name}>
                 {category.name}
               </option>
             ))}
@@ -300,7 +305,7 @@ const Schedule = () => {
       <div className="flex">
         <table className=" mt-0 border-collapse border border-gray-400 shadow-md">
           <thead>
-            <tr className="bg-gray-200">
+            <tr classNa me="bg-gray-200">
               <th className="border border-gray-400 py-2 px-4"></th>
               {times.map((time, index) => (
                 <th key={index} className="border border-gray-400 py-2 px-2">
