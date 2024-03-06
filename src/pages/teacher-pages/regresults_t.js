@@ -4,16 +4,19 @@ import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FaCircleLeft, FaCircleRight } from "react-icons/fa6";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SearchingBar from "../component/searchBar";
 import CourseYears from "../component/courseyear";
 import Category_sub from "../component/category_sub";
 import ButtonSeaching from "../component/buttonSearching";
 import SortBar from "../component/sortBar";
+import axios from "axios";
+import { apiurl } from "../../config";
 const RegResultT = () => {
   const userRole = localStorage.getItem("role_id");
+  const userID = localStorage.getItem("userid");
   const navigate = useNavigate();
-  const [subjects, setSubjects] = useState([{}])
+  const [subjects, setSubjects] = useState([{}]);
   const showAlert = () => {
     Swal.fire({
       icon: "error",
@@ -31,6 +34,22 @@ const RegResultT = () => {
       }
     });
   };
+  useEffect(() => {
+    const showSubject = async () => {
+      try {
+        const response = await axios.get(
+          apiurl + "/api/statusRegisteredpro1/" + userID
+        );
+        const datasubject = response.data;
+        console.log(datasubject);
+
+        // Now you can use datasubject in the rest of your code
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    showSubject();
+  }, []);
 
   const showSweetAlertWithInput = async () => {
     const { value: day } = await Swal.fire({
@@ -47,6 +66,10 @@ const RegResultT = () => {
       },
       inputPlaceholder: "เลือกวันที่จะสอน",
       showCancelButton: true,
+      confirmButtonColor: "green",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonColor: "red",
+      cancelButtonText: "ยกเลิก",
       inputValidator: (value) => {
         return new Promise((resolve) => {
           if (value !== "") {
@@ -64,6 +87,10 @@ const RegResultT = () => {
         input: "time",
         inputPlaceholder: "Select a time",
         showCancelButton: true,
+        confirmButtonColor: "green",
+        confirmButtonText: "ยืนยัน",
+        cancelButtonColor: "red",
+        cancelButtonText: "ยกเลิก",
         inputValidator: (value) => {
           return new Promise((resolve) => {
             if (value !== "") {
@@ -82,6 +109,10 @@ const RegResultT = () => {
           input: "time",
           inputPlaceholder: "Select a time",
           showCancelButton: true,
+          confirmButtonColor: "green",
+          confirmButtonText: "ยืนยัน",
+          cancelButtonColor: "red",
+          cancelButtonText: "ยกเลิก",
           inputValidator: (value) => {
             return new Promise((resolve) => {
               if (value !== "") {
@@ -102,12 +133,14 @@ const RegResultT = () => {
           Swal.fire({
             title: "สรุปการเปลี่ยนวันเวลา",
             html: message,
+            confirmButtonColor: "green",
+            confirmButtonText: "ยืนยัน",
           });
         }
       }
     }
   };
-  const [searchInput, setSearchInput] = useState('');
+  const [searchInput, setSearchInput] = useState("");
   if (userRole !== "1") {
     showAlert();
     return null;
@@ -121,7 +154,12 @@ const RegResultT = () => {
           </p>
         </div>
         <div className="flex flex-col lg:flex-row gap-3">
-        <SortBar url="/api/Searchsubjectopen/" url1="/api/searchingbar" setCurrent={setSubjects} data={subjects}/>
+          <SortBar
+            url="/api/Searchsubjectopen/"
+            url1="/api/searchingbar"
+            setCurrent={setSubjects}
+            data={subjects}
+          />
         </div>
 
         <div className="flex flex-col">
@@ -192,9 +230,6 @@ const RegResultT = () => {
                     </div>
                   </td>
                 </tbody>
-
-
-
               </table>
             </div>
           </div>
