@@ -52,12 +52,12 @@ const RegStatus = () => {
     if (subject.status_id === 2) {
       const branchNames = subject.branch.t12.map(item => `T12-${item}`).join(", ");
       Swal.fire({
-        title: `<span style="color: #246705;"> วิชา </span> <span style="color: red;">${subject.SUBJECTNAME}</span> <span style="color: #246705;"> รหัสวิชา </span> <span style="color: red;">${subject.Subjects_id}</span>`,
+        title: `<span style="color: #246705;font-size: 20px;"> วิชา </span> <span style="color: red;font-size: 20px;">${subject.SUBJECTNAME}</span> <span style="color: #246705;font-size: 20px;"> รหัสวิชา </span> <span style="color: red;font-size: 20px;">${subject.Subjects_id}</span>`,
         html: `
           <div>
             <p><strong>อาจารย์ผู้สอน :</strong> ${subject.USERNAME}</p>
             <p><strong>หมู่เรียน :</strong> ${subject.sec}</p>
-            <p><strong>จำนวนหน่วยกิต :</strong> ${subject.credit}</p>
+            <p><strong>จำนวนหน่วยกิต :</strong> ${subject.credit}</p>  
             <p><strong>จำนวนนิสิต :</strong> ${subject.N_people}</p>
             <p><strong>สาขาที่เปิดรับ :</strong> ${branchNames}</p>
             <p><strong>สอนวัน :</strong> ${subject.DAYNAME}</p>
@@ -71,10 +71,30 @@ const RegStatus = () => {
         cancelButtonColor: "#d33",
       }).then((result) => {
         if (result.isConfirmed) {
+          axios.post(apiurl + '/api/eu/ubdatestatusregister', {
+            id: subject.id,
+            status_id: 1
+          })
+            .then((response) => {
+              console.log(response.data);
+              Swal.fire({
+                icon: 'success',
+                title: 'ยืนยันสำเร็จ',
+                confirmButtonColor: "#4C956C",
+                confirmButtonText: "ตกลง",
+              });
+              setTimeout(() => {
+                window.location.reload();
+              }, 2000); // รอ 2 วินาทีก่อน reload หน้า
+            })
+            .catch((error) => {
+              console.error('Error updating subject register: ', error);
+            });
         }
       });
     }
   };
+
 
   const showAlert = () => {
     Swal.fire({
