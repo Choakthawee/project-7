@@ -57,40 +57,7 @@ function Secadd() {
   };
 
   return (
-    <div className="flex flex-col border-4 border-red-500 rounded-3xl bg-gray-200 p-2">
-      <div className="flex flex-col text-midgreen">
-        <p style={{ textAlign: "left" }}>
-          หมู่เรียน <span style={{ color: "red" }}>*</span> :
-        </p>
-        <fieldset className="flex flex-row mb-2" style={{ textAlign: "left" }}>
-          <div className="ml-2">
-            <input type="checkbox" id="lec"></input>
-            <label htmlFor="lec" className="ml-1 text-midgreen">
-              บรรยาย
-            </label>
-          </div>
-          <div className="ml-2">
-            <input type="checkbox" id="lab"></input>
-            <label htmlFor="lab" className="ml-1 text-midgreen">
-              ปฏิบัติ
-            </label>
-          </div>
-        </fieldset>
-      </div>
-
-      <div>
-        <label className="block mb-2 text-midgreen">
-          จำนวนชั่วโมง{" "}
-          <span style={{ color: "red", textAlign: "left" }}>*</span>
-        </label>
-        <input
-          type="text"
-          id="sub_hour"
-          className="bg-gray-50 border border-gray-300 text-midgreen text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-60 h-10 p-2.5 dark:bg-white dark:border-gray-400 dark:placeholder-gray-200 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="โปรดระบุจำนวนชั่วโมงที่ใช้สอน"
-          required
-        />
-      </div>
+    <div className="flex flex-col rounded-md bg-gray-200 p-2 -ml-1 mt-2">
       <div>
         <label className="block mb-2 mt-2 text-midgreen ">
           จำนวนนิสิตที่เปิดรับ
