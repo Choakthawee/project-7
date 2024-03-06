@@ -17,6 +17,7 @@ const RegResultT = () => {
   const userID = localStorage.getItem("userid");
   const navigate = useNavigate();
   const [subjects, setSubjects] = useState([{}]);
+  const [showsubject, setShowsubject] = useState("");
   const showAlert = () => {
     Swal.fire({
       icon: "error",
@@ -42,9 +43,11 @@ const RegResultT = () => {
         );
         const datasubject = response.data;
         console.log(datasubject);
+        setShowsubject(datasubject);
 
         // Now you can use datasubject in the rest of your code
       } catch (error) {
+        setShowsubject(error);
         console.error(error);
       }
     };
