@@ -407,7 +407,7 @@ const Schedule = () => {
                   {subject.st.substring(0, 5)}-{subject.et.substring(0, 5)} น.
                 </td>
                 <td className="border border-gray-400 py-2 px-4 border-opacity-10">
-                  <Link to={"/schedule_edit/" + subject.idreg}>
+                  <Link to={"/schedule_edit/" + subject.idre}>
                     <button className="bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded ml-3">
                       Edit
                     </button>
