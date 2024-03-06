@@ -52,7 +52,10 @@ function App() {
                 <Route path="/regcourse_edit/:id" element={<RegCourseEdit />} />
                 <Route path="/regresults_t" element={<RegResultT />} />
                 <Route path="/schedule" element={<Schedule />} />
-                <Route path="/schedule_edit" element={<ScheduleEdit />} />
+                <Route
+                  path="/schedule_edit/:idreg"
+                  element={<ScheduleEdit />}
+                />
 
                 {/* Education Pages */}
                 <Route path="/imcourse" element={<ImportCourse />} />
