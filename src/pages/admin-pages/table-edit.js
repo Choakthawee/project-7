@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
+import Pidbox from "./component/pidbox";
 const TableEdit = () => {
     const navigate = useNavigate();
     const userRole = localStorage.getItem("role_id");
@@ -29,13 +30,26 @@ const TableEdit = () => {
 
     return (
         <div
-            className="flex-col flex py-10 px-10 overflow-hidden flex-1 h-screen"
-            style={{ backgroundColor: "#cce3de" }}
-        >
-            <div className="flex">
+            className="flex-col flex w-full min-h-screen p-10" style={{ backgroundColor: "#cce3de" }}        >
+            <div className="flex flex-col gap-3">
                 <p className="text-4xl font-bold h1text-shadow text-midgreen">
                     ตั้งค่า Database
                 </p>
+
+                <Pidbox title={"PID"}>
+                    <div>
+                        sasdasd
+                    </div>
+                    <div>
+                        sasdasd
+                    </div>
+                    <div>
+                        sasdasd
+                    </div>
+                    <div>
+                        sasdasd
+                    </div>
+                </Pidbox>
             </div>
         </div>
     )
