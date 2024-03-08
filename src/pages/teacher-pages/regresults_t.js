@@ -17,7 +17,7 @@ const RegResultT = () => {
   const userID = localStorage.getItem("userid");
   const navigate = useNavigate();
   const [subjects, setSubjects] = useState([{}]);
-  const [showsubject, setShowsubject] = useState("");
+  const [showsubject, setShowsubject] = useState([{}]);
   const showAlert = () => {
     Swal.fire({
       icon: "error",
@@ -42,8 +42,8 @@ const RegResultT = () => {
           apiurl + "/api/statusRegisteredpro1/" + userID
         );
         const datasubject = response.data;
-        console.log(datasubject);
-        setShowsubject(datasubject);
+        console.log(datasubject.message);
+        setShowsubject(datasubject.message);
 
         // Now you can use datasubject in the rest of your code
       } catch (error) {
@@ -182,56 +182,38 @@ const RegResultT = () => {
                 </thead>
 
                 <tbody>
-                  <td className="py-2 font-light text-lg text-center">{"1"}</td>
-                  <td className="py-2 font-light text-lg text-center">
-                    {"Network Programming"}
-                  </td>
-                  <td className="py-2 font-light text-lg text-center">
-                    {"จันทร์"}
-                  </td>
-                  <td className="py-2 font-light text-lg text-center">
-                    {"21.00-24.00"}
-                  </td>
-                  <td className="py-2 font-light text-lg text-center">
-                    {"รอพิจารณา"}
-                  </td>
-                  <td className="py-2 font-light text-lg text-center">{"-"}</td>
-                  <td className="py-2 font-light text-lg text-center">
-                    <div className="flex items-center me-4 justify-center">
-                      <button
-                        className="bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded ml-3"
-                        onClick={showSweetAlertWithInput}
-                      >
-                        แก้ไขข้อมูล
-                      </button>
-                    </div>
-                  </td>
-                </tbody>
-                <tbody>
-                  <td className="py-2 font-light text-lg text-center">{"1"}</td>
-                  <td className="py-2 font-light text-lg text-center">
-                    {"Network Programming"}
-                  </td>
-                  <td className="py-2 font-light text-lg text-center">
-                    {"จันทร์"}
-                  </td>
-                  <td className="py-2 font-light text-lg text-center">
-                    {"21.00-24.00"}
-                  </td>
-                  <td className="py-2 font-light text-lg text-center">
-                    {"รอพิจารณา"}
-                  </td>
-                  <td className="py-2 font-light text-lg text-center">{"-"}</td>
-                  <td className="py-2 font-light text-lg text-center">
-                    <div className="flex items-center me-4 justify-center">
-                      <button
-                        className="bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded ml-3"
-                        onClick={showSweetAlertWithInput}
-                      >
-                        แก้ไขข้อมูล
-                      </button>
-                    </div>
-                  </td>
+                  {showsubject.map((value, index) => (
+                    <tr>
+                      <td className="py-2 font-light text-lg text-center">
+                        {index + 1}
+                      </td>
+                      <td className="py-2 font-light text-lg text-center">
+                        {value.name}
+                      </td>
+                      <td className="py-2 font-light text-lg text-center">
+                        {value.day_name}
+                      </td>
+                      <td className="py-2 font-light text-lg text-center">
+                        {value.st.slice(0, -3)}-{value.et.slice(0, -3)}
+                      </td>
+                      <td className="py-2 font-light text-lg text-center">
+                        {value.status_id}
+                      </td>
+                      <td className="py-2 font-light text-lg text-center">
+                        {value.status_id === 3 ? "" : "-"}
+                      </td>
+                      <td className="py-2 font-light text-lg text-center">
+                        <div className="flex items-center me-4 justify-center">
+                          <button
+                            className="bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded ml-3"
+                            onClick={showSweetAlertWithInput}
+                          >
+                            แก้ไขข้อมูล
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
