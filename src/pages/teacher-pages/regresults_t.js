@@ -18,6 +18,10 @@ const RegResultT = () => {
   const navigate = useNavigate();
   const [subjects, setSubjects] = useState([{}]);
   const [showsubject, setShowsubject] = useState([{}]);
+  const [noneSubject, setNoneSubject] = useState();
+  const [changed, setChanged] = useState("");
+  const [changest, setChangest] = useState("");
+  const [changeet, setChangeet] = useState("");
   const showAlert = () => {
     Swal.fire({
       icon: "error",
@@ -39,33 +43,35 @@ const RegResultT = () => {
     const showSubject = async () => {
       try {
         const response = await axios.get(
-          apiurl + "/api/statusRegisteredpro1/" + userID
+          apiurl + "/api/statusRegister/" + userID
         );
         const datasubject = response.data;
         console.log(datasubject.message);
         setShowsubject(datasubject.message);
-
-        // Now you can use datasubject in the rest of your code
       } catch (error) {
-        setShowsubject(error);
-        console.error(error);
+        setNoneSubject(error);
+        // console.error(error);
       }
     };
     showSubject();
   }, []);
-
+  // useEffect(() => {
+  //   console.log(changed);
+  //   console.log(changest);
+  //   console.log(changeet);
+  // }, [changed, changest, changeet]);
   const showSweetAlertWithInput = async () => {
     const { value: day } = await Swal.fire({
       title: "เปลี่ยนแปลงวัน",
       input: "select",
       inputOptions: {
-        จันทร์: "จันทร์",
-        อังคาร: "อังคาร",
-        พุธ: "พุธ",
-        พฤหัสบดี: "พฤหัสบดี",
-        ศุกร์: "ศุกร์",
-        เสาร์: "เสาร์",
-        อาทิตย์: "อาทิตย์",
+        1: "จันทร์",
+        2: "อังคาร",
+        3: "พุธ",
+        4: "พฤหัสบดี",
+        5: "ศุกร์",
+        6: "เสาร์",
+        7: "อาทิตย์",
       },
       inputPlaceholder: "เลือกวันที่จะสอน",
       showCancelButton: true,
@@ -83,7 +89,7 @@ const RegResultT = () => {
         });
       },
     });
-
+    setChanged(day);
     if (day) {
       const { value: startTime } = await Swal.fire({
         title: "เปลี่ยนแปลงเวลาเริ่มสอน",
@@ -104,7 +110,7 @@ const RegResultT = () => {
           });
         },
       });
-
+      setChangest(startTime);
       if (startTime) {
         // Prompt for the end time
         const { value: endTime } = await Swal.fire({
@@ -126,9 +132,24 @@ const RegResultT = () => {
             });
           },
         });
-
+        setChangeet(endTime);
         if (day && startTime && endTime) {
-          const message = `วันที่สอน: ${day} 
+          const dayNames = {
+            1: "จันทร์",
+            2: "อังคาร",
+            3: "พุธ",
+            4: "พฤหัสบดี",
+            5: "ศุกร์",
+            6: "เสาร์",
+            7: "อาทิตย์",
+          };
+
+          let selectedDayName;
+
+          if (day && dayNames[day]) {
+            selectedDayName = dayNames[day];
+          }
+          const message = `วันที่สอน: ${selectedDayName} 
           <br>เวลาเริ่มสอน: ${startTime} นาฬิกา
           <br>เวลาสิ้นสุดการสอน: ${endTime} นาฬิกา
           <br>`;
@@ -143,6 +164,7 @@ const RegResultT = () => {
       }
     }
   };
+
   const [searchInput, setSearchInput] = useState("");
   if (userRole !== "1") {
     showAlert();
@@ -166,57 +188,71 @@ const RegResultT = () => {
         </div>
 
         <div className="flex flex-col">
-          <div className="flex">
-            <div className="flex flex-1 bg-slate-200 rounded-lg overflow-x-auto shadow-xl h-full overflow-y-auto">
-              <table className=" w-full">
-                <thead>
-                  <tr className="column-color1 text-white">
-                    <th className="py-2 font-light text-xl">#</th>
-                    <th className="py-2 font-light text-xl">ชื่อวิชา</th>
-                    <th className="py-2 font-light text-xl">วันที่สอน</th>
-                    <th className="py-2 font-light text-xl">เวลาที่สอน</th>
-                    <th className="py-2 font-light text-xl">สถานะ</th>
-                    <th className="py-2 font-light text-xl">หมายเหตุ</th>
-                    <th className="py-2 font-light text-xl">แก้ไข</th>
-                  </tr>
-                </thead>
+          <div className="flex items-center justify-center content-center">
+            {showsubject &&
+              (noneSubject ? (
+                <p className="text-2xl text-red-700 text-center  underline">
+                  ไม่พบข้อมูลในระบบ
+                </p>
+              ) : showsubject.length > 0 ? (
+                <div className="flex flex-1 bg-slate-200 rounded-lg overflow-x-auto shadow-xl h-full overflow-y-auto">
+                  <table className=" w-full">
+                    <thead>
+                      <tr className="column-color1 text-white">
+                        <th className="py-2 font-light text-xl">#</th>
+                        <th className="py-2 font-light text-xl">ชื่อวิชา</th>
+                        <th className="py-2 font-light text-xl">วันที่สอน</th>
+                        <th className="py-2 font-light text-xl">เวลาที่สอน</th>
+                        <th className="py-2 font-light text-xl">สถานะ</th>
+                        <th className="py-2 font-light text-xl">หมายเหตุ</th>
+                        <th className="py-2 font-light text-xl">แก้ไข</th>
+                      </tr>
+                    </thead>
 
-                <tbody>
-                  {showsubject.map((value, index) => (
-                    <tr>
-                      <td className="py-2 font-light text-lg text-center">
-                        {index + 1}
-                      </td>
-                      <td className="py-2 font-light text-lg text-center">
-                        {value.name}
-                      </td>
-                      <td className="py-2 font-light text-lg text-center">
-                        {value.day_name}
-                      </td>
-                      <td className="py-2 font-light text-lg text-center">
-                        {value.st.slice(0, -3)}-{value.et.slice(0, -3)}
-                      </td>
-                      <td className="py-2 font-light text-lg text-center">
-                        {value.status_id}
-                      </td>
-                      <td className="py-2 font-light text-lg text-center">
-                        {value.status_id === 3 ? "" : "-"}
-                      </td>
-                      <td className="py-2 font-light text-lg text-center">
-                        <div className="flex items-center me-4 justify-center">
-                          <button
-                            className="bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded ml-3"
-                            onClick={showSweetAlertWithInput}
-                          >
-                            แก้ไขข้อมูล
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                    <tbody>
+                      {showsubject.map((value, index) => (
+                        <tr>
+                          <td className="py-2 font-light text-lg text-center">
+                            {index + 1}
+                          </td>
+                          <td className="py-2 font-light text-lg text-center">
+                            {value.SUBJECT}
+                          </td>
+                          <td className="py-2 font-light text-lg text-center">
+                            {value.day}
+                          </td>
+                          <td className="py-2 font-light text-lg text-center">
+                            {value.st && value.et
+                              ? `${value.st.slice(0, -3)}-${value.et.slice(
+                                  0,
+                                  -3
+                                )}`
+                              : ""}
+                          </td>
+                          <td className="py-2 font-light text-lg text-center">
+                            {value.status_name}
+                          </td>
+                          <td className="py-2 font-light text-lg text-center">
+                            {value.status_id === 3 ? "" : "-"}
+                          </td>
+                          <td className="py-2 font-light text-lg text-center">
+                            <div className="flex items-center me-4 justify-center">
+                              <button
+                                className="bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded ml-3"
+                                onClick={showSweetAlertWithInput}
+                              >
+                                แก้ไขข้อมูล
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                ""
+              ))}
           </div>
         </div>
         <div className=" flex h-full items-end">
