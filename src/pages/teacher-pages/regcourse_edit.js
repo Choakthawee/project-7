@@ -19,8 +19,7 @@ const RegCourseEdit = () => {
   const userRole = localStorage.getItem("role_id");
   const navigate = useNavigate();
   const { id } = useParams();
-  const [data, setData] = useState([{ subhour: "" }]);
-  const [branch, setBranch] = useState([{ subbranch: "" }]);
+
   const [subject, setSubject] = useState({});
   const [errormsg, setErrorMsg] = useState({});
 
@@ -41,12 +40,27 @@ const RegCourseEdit = () => {
     };
     getdataApi();
   }, []);
-  const addbox = () => {
-    setData([...data, { subhour: "" }]);
+
+  const showAlert = () => {
+    Swal.fire({
+      icon: "error",
+      title: "ข้อผิดพลาด",
+      text: "คุณไม่มีสิทธิ์เข้าถึงหน้านี้",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "ตกลง",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (userRole === "2") {
+          navigate("/userinfo");
+        } else if (userRole === "3") {
+          navigate("/imcourse");
+        }
+      }
+    });
   };
 
-  const addbox_branch = () => {
-    setBranch([...branch, { subbranch: "" }]);
+  const handleSwab = () => {
+    navigate("/regcourse");
   };
 
   const handleDelete = (i) => {
@@ -55,52 +69,12 @@ const RegCourseEdit = () => {
     setData(deleteData);
   };
 
-  const handleDeleteBranch = (i) => {
-    const deleteBranch = [...branch];
-    deleteBranch.splice(i, 1);
-    setBranch(deleteBranch);
-  };
-
-  //เลือกสาขา
-  const [selectedBranch, setSelectedBranch] = useState("");
-  const [selectedYears, setSelectedYears] = useState([]);
-  const [selectedOptions, setSelectedOptions] = useState([]);
-
-  const handleBranchChange = (event) => {
-    setSelectedBranch(event.target.value);
-    setSelectedYears([]);
-  };
-
-  const handleYearChange = (event, year) => {
-    const isChecked = event.target.checked;
-    if (isChecked) {
-      setSelectedYears([...selectedYears, year]);
-    } else {
-      setSelectedYears(selectedYears.filter((y) => y !== year));
-    }
-  };
-
-  const handleConfirm = () => {
-    if (selectedBranch && selectedYears.length > 0) {
-      const options = selectedYears.map((year) => `${selectedBranch}-${year}`);
-      const duplicateOptions = options.filter((option) =>
-        selectedOptions.includes(option)
-      );
-      if (duplicateOptions.length === 0) {
-        setSelectedOptions([...selectedOptions, ...options]);
-      } else {
-        alert("คุณได้เลือกสาขาและปีนี้ไว้แล้ว");
-      }
-      setSelectedYears([]);
-    }
-  };
-
-  const handleDeleteOption = (option) => {
-    setSelectedOptions(selectedOptions.filter((item) => item !== option));
-  };
-
-  const handleClearAll = () => {
-    setSelectedOptions([]);
+  const SectionRadio = ({ id, checked, onChange }) => {
+    return (
+      <div>
+        <input type="radio" name="default-radio" id={id} />
+      </div>
+    );
   };
 
   const handleCommit = () => {
@@ -122,6 +96,50 @@ const RegCourseEdit = () => {
   };
 
   const BranchBox = () => {
+    //เลือกสาขา
+    const [selectedOptions, setSelectedOptions] = useState([]);
+    const [selectedBranch, setSelectedBranch] = useState("");
+    const [selectedYears, setSelectedYears] = useState([]);
+
+    const handleBranchChange = (event) => {
+      setSelectedBranch(event.target.value);
+      setSelectedYears([]);
+    };
+
+    const handleYearChange = (event, year) => {
+      const isChecked = event.target.checked;
+      if (isChecked) {
+        setSelectedYears([...selectedYears, year]);
+      } else {
+        setSelectedYears(selectedYears.filter((y) => y !== year));
+      }
+    };
+
+    const handleConfirm = () => {
+      if (selectedBranch && selectedYears.length > 0) {
+        const options = selectedYears.map(
+          (year) => `${selectedBranch}-${year}`
+        );
+        const duplicateOptions = options.filter((option) =>
+          selectedOptions.includes(option)
+        );
+        if (duplicateOptions.length === 0) {
+          setSelectedOptions([...selectedOptions, ...options]);
+        } else {
+          alert("คุณได้เลือกสาขาและปีนี้ไว้แล้ว");
+        }
+        setSelectedYears([]);
+      }
+    };
+
+    const handleDeleteOption = (option) => {
+      setSelectedOptions(selectedOptions.filter((item) => item !== option));
+    };
+
+    const handleClearAll = () => {
+      setSelectedOptions([]);
+    };
+
     return (
       <div className="box-gray mt-1 mb-3">
         <div className="flex flex-col mt-2">
@@ -140,9 +158,12 @@ const RegCourseEdit = () => {
                   <option value="" disabled selected hidden>
                     ---
                   </option>
-                  <option>T01</option>
-                  <option>T02</option>
+                  <option>R22</option>
+                  <option>S20</option>
+                  <option>T05</option>
                   <option>T12</option>
+                  <option>T13</option>
+                  <option>T19</option>
                 </select>
                 <FontAwesomeIcon
                   icon={faArrowAltCircleDown}
@@ -240,7 +261,7 @@ const RegCourseEdit = () => {
         {selectedOptions.length > 0 && ( // Check if there are selected options
           <div className="flex flex-wrap mt-3">
             {selectedOptions.map((option) => (
-              <div key={option} className="flex items-center mr-4 mb-2">
+              <div key={option} className="flex items-center mr-4">
                 <p className="text-midgreen">{option}</p>
                 <FaTimes
                   className="ml-2 cursor-pointer text-red-500"
@@ -260,12 +281,32 @@ const RegCourseEdit = () => {
     );
   };
 
-  const GrayBox = (i, practice_t, lecture_t, exsub) => {
+  const GrayBox = ({ i, practice_t, lecture_t, exsub }) => {
+    const [ListSelect, setListSelect] = useState([]);
+    const [selectedRadio, setSelectedRadio] = useState(Number);
+    // const handleRadioChange = (event) => {
+    //   setListSelect(event.target.value == "0");
+    // };
+    useEffect(() => {
+      console.log(selectedRadio, i);
+    }, [selectedRadio]);
+    useEffect(() => {
+      axios
+        .get(apiurl + "/api/category")
+        .then((response) => {
+          console.log(response.data);
+          setListSelect(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching data: ", error);
+        });
+    }, []);
+
     return (
       <div className="box-gray p-2">
         <div className="flex flex-col gap-3">
           <div className="flex justify-between">
-            <h1 className="text-lg">หมู่เรียนที่ : {i + 1}</h1>
+            <h1 className="text-lg">หมู่เรียนที่ : {i}</h1>
             <button onClick={() => handleDelete(i)}>
               <TiDelete size={28} />
             </button>
@@ -286,11 +327,27 @@ const RegCourseEdit = () => {
             </p>
             <fieldset className="flex flex-row">
               <div className="ml-2">
-                <input
+                {ListSelect.map((item, index) => (
+                  <React.Fragment key={index}>
+                    <input
+                      className="mr-2"
+                      type="radio"
+                      name={i}
+                      value={item.id}
+                      onChange={(e) => setSelectedRadio(e.target.value)}
+                    />
+                    <label className="mr-2" htmlFor={item.id}>
+                      {item.name}
+                    </label>
+                  </React.Fragment>
+                ))}
+                {/* <input
                   disabled={lecture_t === 0 ? (exsub ? false : true) : false}
                   type="radio"
                   id="lec"
                   name="default-radio"
+                  value="1"
+                  onChange={handleRadioChange}
                 ></input>
                 <label
                   htmlFor="lec"
@@ -298,14 +355,16 @@ const RegCourseEdit = () => {
                     }`}
                 >
                   บรรยาย
-                </label>
+                </label> */}
               </div>
-              <div className="ml-2">
+              {/* <div className="ml-2">
                 <input
                   disabled={practice_t === 0 ? (exsub ? false : true) : false}
                   type="radio"
                   id="lab"
                   name="default-radio"
+                  value="0"
+                  onChange={handleRadioChange}
                 ></input>
                 <label
                   htmlFor="lab"
@@ -314,7 +373,7 @@ const RegCourseEdit = () => {
                 >
                   ปฏิบัติ
                 </label>
-              </div>
+              </div> */}
             </fieldset>
           </div>
           <div>
@@ -405,32 +464,20 @@ const RegCourseEdit = () => {
     );
   };
 
-  const showAlert = () => {
-    Swal.fire({
-      icon: "error",
-      title: "ข้อผิดพลาด",
-      text: "คุณไม่มีสิทธิ์เข้าถึงหน้านี้",
-      confirmButtonColor: "#3085d6",
-      confirmButtonText: "ตกลง",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        if (userRole === "2") {
-          navigate("/userinfo");
-        } else if (userRole === "3") {
-          navigate("/imcourse");
-        }
-      }
+  const [data, setData] = useState([1]);
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+  const addbox = () => {
+    setData((prevData) => {
+      const newData = [...prevData, prevData.length + 1];
+      return newData;
     });
   };
-
   if (userRole !== "1") {
     showAlert();
     return null;
   }
-
-  const handleSwab = () => {
-    navigate("/regcourse");
-  };
 
   return (
     <div className="background21 w-full">
@@ -487,23 +534,18 @@ const RegCourseEdit = () => {
                 </p>
               </div>
               <div className="gap-3 flex flex-col text-lightgreen">
-                <label htmlFor="add" className="">
-                  เพิ่มหมู่เรียน
+                <label htmlFor="add" for="add">
+                  เพิ่มหมู่เรียน <span style={{ color: "red" }}>*</span>
                 </label>
                 <button id="add" onClick={() => addbox()}>
                   <FaCirclePlus size={20} />
                 </button>
-                {data.map((val, i) =>
-                  GrayBox(
-                    i,
-                    subject.practice_t,
-                    subject.lecture_t,
-                    subject.exsub
-                  )
-                )}
+                {data.map((val, i) => (
+                  <GrayBox key={val} i={val}></GrayBox>
+                ))}
               </div>
-              <div className="items-center">
-                <button className="bg-lightgreen text-white hover:bg-white hover:text-gray-300 font-bold py-1 px-4 rounded mt-3 items-center">
+              <div className="flex flex-col items-center">
+                <button className="bg-lightgreen text-xl text-white hover:bg-white hover:text-gray-300 font-bold py-3 px-10 rounded mt-3 items-center">
                   บันทึก
                 </button>
               </div>

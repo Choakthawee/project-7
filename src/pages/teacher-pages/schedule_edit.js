@@ -15,17 +15,21 @@ const ScheduleEdit = () => {
   useEffect(() => {
     const getapi = async () => {
       const userid = localStorage.getItem("userid");
-      const dataRespone = await axios.get(
-        apiurl +
-          "/api/teacher/schedule_edit?user_id=" +
-          userid +
-          "&idreg=" +
-          idreg
-      );
-      const data = dataRespone.data;
-      console.log(data);
-      console.log(data);
-      setSubject(data);
+      try {
+        const dataRespone = await axios.get(
+          apiurl +
+            "/api/teacher/schedule_edit?user_id=" +
+            userid +
+            "&idreg=" +
+            idreg
+        );
+        const data = dataRespone.data;
+        console.log(data);
+        console.log(data);
+        setSubject(data);
+      } catch (err) {
+        alert(err.response.data.msg);
+      }
     };
     getapi();
   }, []);
@@ -69,7 +73,7 @@ const ScheduleEdit = () => {
 
   return (
     <div className="flex w-full h-full min-h-screen background21">
-      <div className="flex w-full relative border-4 border-solid border-green-500 items-center overflow-y-scroll justify-center px-40">
+      <div className="flex w-full relative  items-center overflow-y-scroll justify-center px-40">
         <div className="flex w-full rounded-3xl  bg-white p-2 ">
           <div
             style={{
@@ -107,14 +111,23 @@ const ScheduleEdit = () => {
                 <label className="text-midgreen mb-1">
                   ชื่อรายวิชาที่สอน *
                 </label>
-                <input
+                {/* <input
                   type="text"
                   id="sub_name"
                   class="bg-gray-50 border w-full  h-10 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-white dark:border-gray-400 dark:placeholder-gray-200 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="โปรดระบุวิชาหรือรหัสวิชา"
                   value={subject.name}
                   required
-                />
+                /> */}
+                <label
+                  type="text"
+                  id="sub_name"
+                  class="bg-gray-50 border w-full  h-10 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-white dark:border-gray-400 dark:placeholder-gray-200 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="โปรดระบุวิชาหรือรหัสวิชา"
+                  required
+                >
+                  {subject.name}
+                </label>
               </div>
               <div className="flex mr-3 mt-1">
                 <label className="text-midgreen mb-1">
