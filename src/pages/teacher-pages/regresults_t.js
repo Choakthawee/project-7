@@ -22,6 +22,9 @@ const RegResultT = () => {
   const [changed, setChanged] = useState("");
   const [changest, setChangest] = useState("");
   const [changeet, setChangeet] = useState("");
+  const [id, setid] = useState();
+  const [correctsubject, setCorrectsubject] = useState([{}]);
+
   const showAlert = () => {
     Swal.fire({
       icon: "error",
@@ -56,15 +59,72 @@ const RegResultT = () => {
     showSubject();
   }, []);
   // useEffect(() => {
+  //   console.log(id);
   //   console.log(changed);
   //   console.log(changest);
   //   console.log(changeet);
   // }, [changed, changest, changeet]);
-  const showSweetAlertWithInput = async () => {
-    const { value: day } = await Swal.fire({
-      title: "เปลี่ยนแปลงวัน",
-      input: "select",
-      inputOptions: {
+
+  const changeSubject = async (id, input) => {
+    try {
+      const response = await axios.put(apiurl + "/api/teacher/update_time", {
+        idSubject: id,
+        st: input.startTime,
+        et: input.endTime,
+        day: input.day,
+      });
+      console.log(response);
+      setCorrectsubject(response);
+    } catch (error) {
+      setCorrectsubject(error.message);
+    }
+  };
+
+  const showSweetAlertWithInput = async (value) => {
+    let idd = value;
+
+    const { value: userInput } = await Swal.fire({
+      title: "เปลี่ยนแปลงวันและเวลาสอน",
+      html: `
+      <label for="day">เลือกวันที่จะสอน:</label>
+      <select id="day" class="swal2-input">
+        <option value="1">จันทร์</option>
+        <option value="2">อังคาร</option>
+        <option value="3">พุธ</option>
+        <option value="4">พฤหัสบดี</option>
+        <option value="5">ศุกร์</option>
+        <option value="6">เสาร์</option>
+        <option value="7">อาทิตย์</option>
+      </select><br>
+      <label for="startTime">เลือกเวลาเริ่มสอน:</label>
+      <input id="startTime" class="swal2-input" type="time" placeholder="Select a time"><br>
+      <label for="endTime">เลือกเวลาสิ้นสุดการสอน:</label>
+      <input id="endTime" class="swal2-input" type="time" placeholder="Select a time">
+    `,
+      focusConfirm: true,
+      confirmButtonColor: "green",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+      cancelButtonColor: "red",
+      showCancelButton: true,
+      focusCancel: true,
+      preConfirm: () => {
+        const day = document.getElementById("day").value;
+        const startTime = document.getElementById("startTime").value;
+        const endTime = document.getElementById("endTime").value;
+
+        if (!day || !startTime || !endTime) {
+          Swal.showValidationMessage("กรุณากรอกข้อมูลให้ครบ");
+        }
+
+        return { day, startTime, endTime };
+      },
+    });
+
+    if (userInput) {
+      console.log(userInput);
+      const { day, startTime, endTime } = userInput;
+      const dayNames = {
         1: "จันทร์",
         2: "อังคาร",
         3: "พุธ",
@@ -72,96 +132,27 @@ const RegResultT = () => {
         5: "ศุกร์",
         6: "เสาร์",
         7: "อาทิตย์",
-      },
-      inputPlaceholder: "เลือกวันที่จะสอน",
-      showCancelButton: true,
-      confirmButtonColor: "green",
-      confirmButtonText: "ยืนยัน",
-      cancelButtonColor: "red",
-      cancelButtonText: "ยกเลิก",
-      inputValidator: (value) => {
-        return new Promise((resolve) => {
-          if (value !== "") {
-            resolve();
-          } else {
-            resolve("Please select a day.");
-          }
-        });
-      },
-    });
-    setChanged(day);
-    if (day) {
-      const { value: startTime } = await Swal.fire({
-        title: "เปลี่ยนแปลงเวลาเริ่มสอน",
-        input: "time",
-        inputPlaceholder: "Select a time",
-        showCancelButton: true,
-        confirmButtonColor: "green",
-        confirmButtonText: "ยืนยัน",
-        cancelButtonColor: "red",
-        cancelButtonText: "ยกเลิก",
-        inputValidator: (value) => {
-          return new Promise((resolve) => {
-            if (value !== "") {
-              resolve();
-            } else {
-              resolve("Please select a time.");
-            }
-          });
-        },
+      };
+
+      const selectedDayName = dayNames[day];
+
+      const message = `วันที่สอน: ${selectedDayName} 
+      <br>เวลาเริ่มสอน: ${startTime} นาฬิกา
+      <br>เวลาสิ้นสุดการสอน: ${endTime} นาฬิกา
+      <br>`;
+
+      Swal.fire({
+        title: "สรุปการเปลี่ยนวันเวลา",
+        html: message,
+        timer: 3000,
+        timerProgressBar: true,
+        showConfirmButton: false,
       });
-      setChangest(startTime);
-      if (startTime) {
-        // Prompt for the end time
-        const { value: endTime } = await Swal.fire({
-          title: "เปลี่ยนแปลงเวลาสิ้นสุดการสอน",
-          input: "time",
-          inputPlaceholder: "Select a time",
-          showCancelButton: true,
-          confirmButtonColor: "green",
-          confirmButtonText: "ยืนยัน",
-          cancelButtonColor: "red",
-          cancelButtonText: "ยกเลิก",
-          inputValidator: (value) => {
-            return new Promise((resolve) => {
-              if (value !== "") {
-                resolve();
-              } else {
-                resolve("Please select a time.");
-              }
-            });
-          },
-        });
-        setChangeet(endTime);
-        if (day && startTime && endTime) {
-          const dayNames = {
-            1: "จันทร์",
-            2: "อังคาร",
-            3: "พุธ",
-            4: "พฤหัสบดี",
-            5: "ศุกร์",
-            6: "เสาร์",
-            7: "อาทิตย์",
-          };
 
-          let selectedDayName;
-
-          if (day && dayNames[day]) {
-            selectedDayName = dayNames[day];
-          }
-          const message = `วันที่สอน: ${selectedDayName} 
-          <br>เวลาเริ่มสอน: ${startTime} นาฬิกา
-          <br>เวลาสิ้นสุดการสอน: ${endTime} นาฬิกา
-          <br>`;
-
-          Swal.fire({
-            title: "สรุปการเปลี่ยนวันเวลา",
-            html: message,
-            confirmButtonColor: "green",
-            confirmButtonText: "ยืนยัน",
-          });
-        }
-      }
+      changeSubject(idd, userInput);
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
     }
   };
 
@@ -239,7 +230,9 @@ const RegResultT = () => {
                             <div className="flex items-center me-4 justify-center">
                               <button
                                 className="bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded ml-3"
-                                onClick={showSweetAlertWithInput}
+                                onClick={() =>
+                                  showSweetAlertWithInput(value.id)
+                                }
                               >
                                 แก้ไขข้อมูล
                               </button>
