@@ -85,14 +85,18 @@ const Login = () => {
           <div className="flex md:grid md:col-span-1 ">
             <div className="flex h-full items-center w-full">
               <div className="flex w-full justify-center h-full items-center">
-                <div className="flex w-full justify-center z-40 -mt-6 md:-mt-28 mb-60 ">
-                  <div className="font-style text-6xl md:text-8xl ">Login</div>
-                  <div className="font-style2 text-6xl  md:text-8xl ">
+                <div className="flex w-full justify-center z-40 -mt-6 xl:-mt-28 md:-mt-20 lg:-mt-20 mb-60 ">
+                  <div className="font-style text-6xl xl:text-8xl lg:text-7xl md:text-7xl ">
                     Login
                   </div>
-                  <div className="font-style3 text-6xl md:text-8xl">Login</div>
+                  <div className="font-style2 text-6xl  xl:text-8xl lg:text-7xl md:text-7xl ">
+                    Login
+                  </div>
+                  <div className="font-style3 text-6xl xl:text-8xl lg:text-7xl md:text-7xl">
+                    Login
+                  </div>
                 </div>
-                <div className="absolute w-3/4 h-1/4 min-h-36 md:w-1/4 min-w-32 md:h-1/6 md:min-h-48 bg-custom rounded-2xl z-20 flex items-center justify-center ">
+                <div className="absolute w-3/4 h-1/4 min-h-36 md:w-1/4 min-w-64 md:h-1/6 md:min-h-48 bg-custom rounded-2xl z-20 flex items-center justify-center ">
                   <GoogleLogin
                     onSuccess={(credentialResponse) => {
                       const credentialResponseDecoded = jwtDecode(
@@ -114,15 +118,15 @@ const Login = () => {
                   />
                 </div>
 
-                <div className="absolute w-3/4 h-1/4 min-h-36 md:w-1/4 min-w-32 md:h-1/6 md:min-h-48 bg-white rounded-2xl z-0 -mt-3 ml-4"></div>
+                <div className="absolute w-3/4 h-1/4 min-h-36 md:w-1/4 min-w-64 md:h-1/6 md:min-h-48 bg-white rounded-2xl z-0 -mt-3 ml-4"></div>
               </div>
             </div>
           </div>
         </div>
         <div className="w-full bg-custom">
           <div className="text-white text-center text-lg leading-5 p-12">
-            ติดต่อผ่ายเทคนิค แจ้งเหตุขัดข้อง: โทร 064-590-6613 อาคารหอใน
-            มหาวิทยาลัยเกษตรศาสตร์ วิทยาเขตศรีราชา
+            ติดต่อฝ่ายเทคนิค แจ้งเหตุขัดข้อง: โทร 064-590-6613 อาคาร 1
+            บริการวิทยาการ มหาวิทยาลัยเกษตรศาสตร์ วิทยาเขตศรีราชา
           </div>
         </div>
       </div>
