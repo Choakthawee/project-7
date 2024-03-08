@@ -41,26 +41,22 @@ const RegResultT = () => {
   useEffect(() => {
     const showSubject = async () => {
       try {
-        const response = await axios.get(
-          apiurl + "/api/statusRegisteredpro1/" + userID
-        );
+        const response = await axios.get(apiurl + "/api/statusRegister");
         const datasubject = response.data;
         // console.log(datasubject.message);
         setShowsubject(datasubject.message);
-
-        // Now you can use datasubject in the rest of your code
       } catch (error) {
         setShowsubject(error);
-        console.error(error);
+        // console.error(error);
       }
     };
     showSubject();
   }, []);
-  // useEffect(() => {
-  //   console.log(changed);
-  //   console.log(changest);
-  //   console.log(changeet);
-  // }, [changed, changest, changeet]);
+  useEffect(() => {
+    console.log(changed);
+    console.log(changest);
+    console.log(changeet);
+  }, [changed, changest, changeet]);
   const showSweetAlertWithInput = async () => {
     const { value: day } = await Swal.fire({
       title: "เปลี่ยนแปลงวัน",
@@ -190,40 +186,44 @@ const RegResultT = () => {
                 </thead>
 
                 <tbody>
-                  {showsubject.map((value, index) => (
-                    <tr>
-                      <td className="py-2 font-light text-lg text-center">
-                        {index + 1}
-                      </td>
-                      <td className="py-2 font-light text-lg text-center">
-                        {value.name}
-                      </td>
-                      <td className="py-2 font-light text-lg text-center">
-                        {value.day_name}
-                      </td>
-                      <td className="py-2 font-light text-lg text-center">
-                        {value.st && value.et
-                          ? `${value.st.slice(0, -3)}-${value.et.slice(0, -3)}`
-                          : "รอสักครู่"}
-                      </td>
-                      <td className="py-2 font-light text-lg text-center">
-                        {value.status_id}
-                      </td>
-                      <td className="py-2 font-light text-lg text-center">
-                        {value.status_id === 3 ? "" : "-"}
-                      </td>
-                      <td className="py-2 font-light text-lg text-center">
-                        <div className="flex items-center me-4 justify-center">
-                          <button
-                            className="bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded ml-3"
-                            onClick={showSweetAlertWithInput}
-                          >
-                            แก้ไขข้อมูล
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                  {showsubject &&
+                    showsubject.map((value, index) => (
+                      <tr>
+                        <td className="py-2 font-light text-lg text-center">
+                          {index + 1}
+                        </td>
+                        <td className="py-2 font-light text-lg text-center">
+                          {value.SUBJECT}
+                        </td>
+                        <td className="py-2 font-light text-lg text-center">
+                          {value.day}
+                        </td>
+                        <td className="py-2 font-light text-lg text-center">
+                          {value.st && value.et
+                            ? `${value.st.slice(0, -3)}-${value.et.slice(
+                                0,
+                                -3
+                              )}`
+                            : "รอสักครู่"}
+                        </td>
+                        <td className="py-2 font-light text-lg text-center">
+                          {value.status_name}
+                        </td>
+                        <td className="py-2 font-light text-lg text-center">
+                          {value.status_id === 3 ? "" : "-"}
+                        </td>
+                        <td className="py-2 font-light text-lg text-center">
+                          <div className="flex items-center me-4 justify-center">
+                            <button
+                              className="bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded ml-3"
+                              onClick={showSweetAlertWithInput}
+                            >
+                              แก้ไขข้อมูล
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>
