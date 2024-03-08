@@ -59,6 +59,78 @@ const RegCourseEdit = () => {
     });
   };
 
+  // const updateData = async () => {
+  //   try {
+  //     const getdata = await axios.post(
+  //       apiurl + "/api/teacher/subjectsRegister",
+  //       {
+  //         id: ID,
+  //         User_id: uid,
+  //         st: st,
+  //         et: et,
+  //         day_id: day,
+  //         sec: sec,
+  //         status_id: status_id,
+  //         N_people: N_people,
+  //         branch: branch,
+  //         category_id: category_id,
+  //         Subjects_id: Subjects_id,
+  //         realcredit: realcredit,
+  //       }
+  //     );
+  //     const data = getdata.data;
+  //     Swal.fire({
+  //       icon: "success",
+  //       title: "สำเร็จ",
+  //       text: data.msg,
+  //     });
+  //   } catch (error) {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "ไม่สำเร็จ",
+  //       text: error.response.data.msgerror,
+  //     });
+  //   }
+  // };
+
+  // const updateData = (data) => {
+  //   try {
+  //     setID((prevData) => [...prevData, data]);
+  //     Swal.fire({
+  //       icon: "success",
+  //       title: "สำเร็จ",
+  //       text: data.msg,
+  //     });
+  //   } catch (error) {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "ไม่สำเร็จ",
+  //       text: error.response.data.msgerror,
+  //     });
+  //   }
+  // };
+
+  const updateData = async (data) => {
+    try {
+      const getdata = await axios.post(
+        apiurl + "/api/teacher/subjectsRegister",
+        data
+      );
+      const responseData = getdata.data;
+      Swal.fire({
+        icon: "success",
+        title: "สำเร็จ",
+        text: responseData.msg,
+      });
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "ไม่สำเร็จ",
+        text: error.response.data.msgerror,
+      });
+    }
+  };
+
   const handleSwab = () => {
     navigate("/regcourse");
   };
@@ -95,11 +167,12 @@ const RegCourseEdit = () => {
     );
   };
 
-  const BranchBox = () => {
+  const BranchBox = ({ setall, handleUpdateData }) => {
     //เลือกสาขา
     const [selectedOptions, setSelectedOptions] = useState([]);
     const [selectedBranch, setSelectedBranch] = useState("");
     const [selectedYears, setSelectedYears] = useState([]);
+    const [selectedAll, setSelectedAll] = useState({});
 
     const handleBranchChange = (event) => {
       setSelectedBranch(event.target.value);
@@ -120,10 +193,32 @@ const RegCourseEdit = () => {
         const options = selectedYears.map(
           (year) => `${selectedBranch}-${year}`
         );
+        const options1 = selectedYears.map((year) => Number(year));
+        const newData = {
+          [selectedBranch]: options1,
+        };
+
         const duplicateOptions = options.filter((option) =>
           selectedOptions.includes(option)
         );
         if (duplicateOptions.length === 0) {
+          setall((prevData) => {
+            let newData = {};
+            if (prevData[selectedBranch]) {
+              // ถ้า key มีอยู่แล้วใน object ให้เพิ่มข้อมูลเข้าไปใน array ที่มีอยู่แล้ว
+              newData = {
+                ...prevData,
+                [selectedBranch]: [...prevData[selectedBranch], ...options1],
+              };
+            } else {
+              // ถ้า key ยังไม่มีอยู่ใน object ให้สร้าง key ใหม่พร้อมกับเพิ่มข้อมูลเข้าไปใน array
+              newData = {
+                ...prevData,
+                [selectedBranch]: options1,
+              };
+            }
+            return newData;
+          });
           setSelectedOptions([...selectedOptions, ...options]);
         } else {
           alert("คุณได้เลือกสาขาและปีนี้ไว้แล้ว");
@@ -134,11 +229,40 @@ const RegCourseEdit = () => {
 
     const handleDeleteOption = (option) => {
       setSelectedOptions(selectedOptions.filter((item) => item !== option));
+      console.log(option);
+      setall((prevData) => {
+        const [branch, year] = option.split("-");
+        if (prevData[branch]) {
+          const updatedData = {
+            ...prevData,
+            [branch]: prevData[branch].filter((item) => item !== Number(year)),
+          };
+          return updatedData;
+        }
+        return prevData;
+      });
     };
 
     const handleClearAll = () => {
       setSelectedOptions([]);
+      setall((prevData) => {
+        const [branch] = selectedBranch.split("-");
+        return { ...prevData, [branch]: [] };
+      });
     };
+
+    // const handleUpdateBranch = () => {
+    //   const selectedData = {};
+    //   for (const option of selectedOptions) {
+    //     const [branch, year] = option.split("-");
+    //     if (!selectedData[branch]) {
+    //       selectedData[branch] = [];
+    //     }
+    //     selectedData[branch].push(Number(year));
+    //   }
+    //   handleUpdateData();
+    //   console.log(selectedData);
+    // };
 
     return (
       <div className="box-gray mt-1 mb-3">
@@ -153,17 +277,25 @@ const RegCourseEdit = () => {
                   className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                   style={{ width: 120, height: 40 }}
                   value={selectedBranch}
+                  // onChange={(e) => {
+                  //   handleBranchChange(e.target.value);
+                  // }}
                   onChange={handleBranchChange}
                 >
                   <option value="" disabled selected hidden>
                     ---
                   </option>
-                  <option>R22</option>
-                  <option>S20</option>
                   <option>T05</option>
                   <option>T12</option>
                   <option>T13</option>
+                  <option>T14</option>
+                  <option>T17</option>
+                  <option>T18</option>
                   <option>T19</option>
+                  <option>T20</option>
+                  <option>T21</option>
+                  <option>T22</option>
+                  <option>T23</option>
                 </select>
                 <FontAwesomeIcon
                   icon={faArrowAltCircleDown}
@@ -175,7 +307,7 @@ const RegCourseEdit = () => {
               </div>
             </div>
           </div>
-          <div className="mt-3">
+          <div className="mt-5">
             <p>
               ชั้นปีที่เปิดรับ(เลือกได้มากกว่า 1)
               <span style={{ color: "red" }}>*</span>
@@ -258,7 +390,7 @@ const RegCourseEdit = () => {
             </button>
           </div>
         </div>
-        {selectedOptions.length > 0 && ( // Check if there are selected options
+        {selectedOptions.length > 0 && (
           <div className="flex flex-wrap mt-3">
             {selectedOptions.map((option) => (
               <div key={option} className="flex items-center mr-4">
@@ -277,19 +409,72 @@ const RegCourseEdit = () => {
             </button>
           </div>
         )}
+        {/* <div>
+          <button onClick={handleUpdateBranch}>Test_Branch</button>
+        </div> */}
       </div>
     );
   };
 
-  const GrayBox = ({ i, practice_t, lecture_t, exsub }) => {
+  const GrayBox = ({ i, practice_t, lecture_t, exsub, sub_id }) => {
     const [ListSelect, setListSelect] = useState([]);
     const [selectedRadio, setSelectedRadio] = useState(Number);
+    const [all, setall] = useState({});
+    const [ID, setID] = useState([]);
+    const [uid, setUid] = useState([]);
+    const [st, setSt] = useState([]);
+    const [et, setEt] = useState([]);
+    const [day, setDay] = useState([]);
+    const [status_id, setStatusId] = useState([]);
+    const [N_people, setNPeople] = useState([]);
+    const [branch, setBranch] = useState({});
+    const [category_id, setCategoryId] = useState([]);
+    const [Subjects_id, setSubjectsId] = useState([]);
+    const [realcredit, setRealCredit] = useState([]);
+
+    const jsonBranch = JSON.stringify(data);
+
     // const handleRadioChange = (event) => {
     //   setListSelect(event.target.value == "0");
     // };
+
+    // const [subjectData, setSubjectData] = useState({
+    //   // เพิ่ม state สำหรับเก็บข้อมูลทั้งหมดของหน่วยกิต
+    //   credit: "",
+    //   lecture_t: "",
+    //   practice_t: "",
+    //   exsub: "",
+    //   sub_hour: "",
+    //   selectedBranch: "",
+    //   selectedYears: [],
+    //   selectedOptions: [],
+    //   teachingSchedule: [], // เพิ่ม state สำหรับเก็บข้อมูลตารางสอน
+    // });
+
+    // useEffect(() => {
+    //   const handleUpdateData = () => {
+    //     const data = {
+    //       ID: ID,
+    //       uid: uid,
+    //       st: st,
+    //       et: et,
+    //       day: day,
+    //       sec: sec,
+    //       status_id: 2,
+    //       N_people: N_people,
+    //       branch: branch,
+    //       category_id: item.id,
+    //       Subjects_id: subject.id,
+    //       realcredit: realcredit,
+    //     };
+    //     updateData(data);
+    //   };
+    // });
+
     useEffect(() => {
-      console.log(selectedRadio, i);
-    }, [selectedRadio]);
+      console.log(all);
+    }, [selectedRadio, all]);
+
     useEffect(() => {
       axios
         .get(apiurl + "/api/category")
@@ -301,6 +486,47 @@ const RegCourseEdit = () => {
           console.error("Error fetching data: ", error);
         });
     }, []);
+
+    // useEffect(() => {
+    //   const fetchData = async () => {
+    //     try {
+    //       const response = await axios.get(
+    //         apiurl + "/api/teacher/subjectsRegister" + id
+    //       );
+    //       const subjectData = response.data[0]; // สมมติว่าข้อมูลจาก API คือ object ของรายวิชาเดียว
+    //       setSubjectData({
+    //         credit: subjectData.credit,
+    //         lecture_t: subjectData.lecture_t,
+    //         practice_t: subjectData.practice_t,
+    //         exsub: subjectData.exsub,
+    //         sub_hour: "", // ต้องเพิ่มข้อมูลจำนวนชั่วโมงที่ต้องการเรียน
+    //         selectedBranch: "", // ต้องเพิ่มข้อมูลสาขาที่เลือก
+    //         selectedYears: [], // ต้องเพิ่มข้อมูลชั้นปีที่เลือก
+    //         selectedOptions: [], // ต้องเพิ่มข้อมูลหมู่เรียนที่เลือก
+    //         teachingSchedule: [], // ต้องเพิ่มข้อมูลตารางสอน
+    //       });
+    //     } catch (error) {
+    //       console.error("Error fetching subject data: ", error);
+    //     }
+    //   };
+
+    //   fetchData();
+    // }, []);
+
+    const handleUpdateData = () => {
+      const data = {
+        uid: localStorage.getItem("userid"),
+        st: st,
+        et: et,
+        day_id: day,
+        status_id: 2,
+        N_people: N_people,
+        branch: {},
+        category_id: selectedRadio,
+        Subjects_id: sub_id,
+      };
+      console.log(data);
+    };
 
     return (
       <div className="box-gray p-2">
@@ -314,10 +540,13 @@ const RegCourseEdit = () => {
 
           {exsub === 1 && (
             <div>
-              <p>หน่วยกิต</p>
+              <p>
+                หน่วยกิต <span style={{ color: "red" }}>*</span>
+              </p>
               <input
                 placeholder="กรอกหน่วยกิตที่ต้องการ"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-400 dark:placeholder-gray-200 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required
               ></input>
             </div>
           )}
@@ -341,39 +570,7 @@ const RegCourseEdit = () => {
                     </label>
                   </React.Fragment>
                 ))}
-                {/* <input
-                  disabled={lecture_t === 0 ? (exsub ? false : true) : false}
-                  type="radio"
-                  id="lec"
-                  name="default-radio"
-                  value="1"
-                  onChange={handleRadioChange}
-                ></input>
-                <label
-                  htmlFor="lec"
-                  className={`ml-1 ${lecture_t === 0 ? (exsub ? "" : " line-through") : ""
-                    }`}
-                >
-                  บรรยาย
-                </label> */}
               </div>
-              {/* <div className="ml-2">
-                <input
-                  disabled={practice_t === 0 ? (exsub ? false : true) : false}
-                  type="radio"
-                  id="lab"
-                  name="default-radio"
-                  value="0"
-                  onChange={handleRadioChange}
-                ></input>
-                <label
-                  htmlFor="lab"
-                  className={`ml-1 ${practice_t === 0 ? (exsub ? "" : " line-through") : ""
-                    }`}
-                >
-                  ปฏิบัติ
-                </label>
-              </div> */}
             </fieldset>
           </div>
           <div>
@@ -384,8 +581,9 @@ const RegCourseEdit = () => {
               type="text"
               id="sub_hour"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-400 dark:placeholder-gray-200 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder={`โปรดระบุจำนวนชั่วโมงที่ใช้สอน ${lecture_t !== 0 ? "บรรยาย " + lecture_t + " ชั่วโมง" : ""
-                } ${practice_t !== 0 ? "ปฏิบัติ " + practice_t : ""}`}
+              placeholder={`โปรดระบุจำนวนชั่วโมงที่ใช้สอน ${
+                lecture_t !== 0 ? "บรรยาย " + lecture_t + " ชั่วโมง" : ""
+              } ${practice_t !== 0 ? "ปฏิบัติ " + practice_t : ""}`}
               required
             />
           </div>
@@ -399,19 +597,21 @@ const RegCourseEdit = () => {
                 <select
                   className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                   style={{ width: 120, height: 40 }}
-                // value={statusSem}
-                // onChange={handleSemStatusChange}
+                  // value={statusSem}
+                  onChange={(e) => {
+                    setDay(e.target.value);
+                  }}
                 >
                   <option value="" disabled selected hidden>
                     ---
                   </option>
-                  <option>อาทิตย์</option>
-                  <option>จันทร์</option>
-                  <option>อังคาร</option>
-                  <option>พุธ</option>
-                  <option>พฤหัส</option>
-                  <option>ศุกร์</option>
-                  <option>เสาร์</option>
+                  <option value={7}>อาทิตย์</option>
+                  <option value={1}>จันทร์</option>
+                  <option value={2}>อังคาร</option>
+                  <option value={3}>พุธ</option>
+                  <option value={4}>พฤหัส</option>
+                  <option value={5}>ศุกร์</option>
+                  <option value={6}>เสาร์</option>
                 </select>
                 <FontAwesomeIcon
                   icon={faArrowAltCircleDown}
@@ -431,6 +631,10 @@ const RegCourseEdit = () => {
               <input
                 className="w-32 p-1 rounded-md font-medium"
                 type="time"
+                value={st}
+                onChange={(e) => {
+                  setSt(e.target.value);
+                }}
               ></input>
             </div>
             <div className="ml-5">
@@ -441,6 +645,10 @@ const RegCourseEdit = () => {
               <input
                 className="w-32 p-1 rounded-md font-medium"
                 type="time"
+                value={et}
+                onChange={(e) => {
+                  setEt(e.target.value);
+                }}
               ></input>
             </div>
           </div>
@@ -453,11 +661,18 @@ const RegCourseEdit = () => {
               type="text"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-400 dark:placeholder-gray-200 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="โปรดระบุจำนวนนิสิตที่ต้องการเปิดรับ"
+              value={N_people}
               required
+              onChange={(e) => {
+                setNPeople(e.target.value);
+              }}
             />
           </div>
           <div className="flex flex-col">
-            <BranchBox />
+            <BranchBox setall={setall} handleUpdateData={handleUpdateData} />
+          </div>
+          <div>
+            <button onClick={handleUpdateData}>Test</button>
           </div>
         </div>
       </div>
@@ -465,15 +680,18 @@ const RegCourseEdit = () => {
   };
 
   const [data, setData] = useState([1]);
+
   useEffect(() => {
     console.log(data);
   }, [data]);
+
   const addbox = () => {
     setData((prevData) => {
       const newData = [...prevData, prevData.length + 1];
       return newData;
     });
   };
+
   if (userRole !== "1") {
     showAlert();
     return null;
@@ -541,20 +759,28 @@ const RegCourseEdit = () => {
                   <FaCirclePlus size={20} />
                 </button>
                 {data.map((val, i) => (
-                  <GrayBox key={val} i={val}></GrayBox>
+                  <GrayBox
+                    key={val}
+                    i={val}
+                    exsub={subject.exsub}
+                    sub_id={subject.id}
+                  ></GrayBox>
                 ))}
               </div>
               <div className="flex flex-col items-center">
-                <button className="bg-lightgreen text-xl text-white hover:bg-white hover:text-gray-300 font-bold py-3 px-10 rounded mt-3 items-center">
+                <button
+                  className="bg-lightgreen text-xl text-white hover:bg-white hover:text-gray-300 font-bold py-3 px-10 rounded mt-3 items-center"
+                  onClick={updateData}
+                >
                   บันทึก
                 </button>
               </div>
             </div>
-            <div className="flex cursor-pointer justify-center" onClick={handleCommit}>
+            {/* <div className="flex cursor-pointer justify-center" onClick={handleCommit}>
               <button className="transition-all bg-green-600 rounded-3xl w-24 h-10 justify-center items-center flex flex-row shadow-lg">
                 <label className="text-white text-base cursor-pointer">ยืนยัน</label>
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
