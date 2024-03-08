@@ -72,6 +72,9 @@ const InsertUser = () => {
         icon: "success",
         confirmButtonColor: "#134e4a",
       });
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     } catch (error) {
       Swal.fire({
         title: "กรอกข้อมูลผิดพลาด!",
@@ -79,6 +82,9 @@ const InsertUser = () => {
         icon: "error",
         confirmButtonColor: "#134e4a",
       });
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     }
   };
 
