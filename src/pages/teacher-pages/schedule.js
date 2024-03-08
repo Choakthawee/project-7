@@ -136,12 +136,12 @@ const Schedule = () => {
       html: `<div>รหัสวิชา: ${subject.id_subject}-${subject.ySubject.substring(
         2
       )}</div>
-             <div>หน่วยกิต: ${subject.credit}</div>
-             <div>อาจารย์ผู้สอน: ${subject.NAME}</div>
-             <div>จำนวนนิสิต: ${subject.N_people}</div>
-             <div>ชั้นปีที่เปิดรับ: ${subject.branch.t12.join(", ")}</div>
-             <div>วัน: ${subject.day}</div>
-             <div>เวลา: ${subject.st.substring(0, 5)}-${subject.et.substring(
+           <div>หน่วยกิต: ${subject.credit}</div>
+           <div>อาจารย์ผู้สอน: ${subject.NAME}</div>
+           <div>จำนวนนิสิต: ${subject.N_people}</div>
+           <div>ชั้นปีที่เปิดรับ: ${subject.branch.t12.join(", ")}</div>
+           <div>วัน: ${subject.day}</div>
+           <div>เวลา: ${subject.st.substring(0, 5)}-${subject.et.substring(
         0,
         5
       )} น.</div>`,
@@ -439,12 +439,12 @@ const Schedule = () => {
                     return (
                       <td
                         key={timeIndex}
-                        className={`border border-gray-400 py-2 px-2 ${
+                        className={`border border-gray-400 py-2 px-2 text-xs ${
                           subject ? "border-0 cursor-pointer" : "border"
                         } ${colorClass}`}
                         onClick={() => subject && showAlert(subject)}
                       >
-                        {timeIndex === Math.floor(times.length / 2) && subject
+                        {subject
                           ? `${subject.id_subject}-${subject.ySubject.substring(
                               2
                             )}`
