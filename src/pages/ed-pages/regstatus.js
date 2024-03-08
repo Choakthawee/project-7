@@ -50,20 +50,20 @@ const RegStatus = () => {
 
   const handleEdit = (subject) => {
     if (subject.status_id === 2) {
-      const branchNames = subject.branch.t12.map(item => `T12-${item}`).join(", ");
+      const branchNames = subject.branch.t12.map((item) => `T12-${item}`).join(", ");
       Swal.fire({
         title: `<span style="color: #246705;font-size: 20px;"> วิชา </span> <span style="color: red;font-size: 20px;">${subject.SUBJECTNAME}</span> <span style="color: #246705;font-size: 20px;"> รหัสวิชา </span> <span style="color: red;font-size: 20px;">${subject.Subjects_id}</span>`,
         html: `
-          <div>
-            <p><strong>อาจารย์ผู้สอน :</strong> ${subject.USERNAME}</p>
-            <p><strong>หมู่เรียน :</strong> ${subject.sec}</p>
-            <p><strong>จำนวนหน่วยกิต :</strong> ${subject.credit}</p>  
-            <p><strong>จำนวนนิสิต :</strong> ${subject.N_people}</p>
-            <p><strong>สาขาที่เปิดรับ :</strong> ${branchNames}</p>
-            <p><strong>สอนวัน :</strong> ${subject.DAYNAME}</p>
-            <p><strong>เวลา :</strong> ${subject.st} - ${subject.et}</p>
-          </div>
-        `,
+            <div>
+              <p><strong>อาจารย์ผู้สอน :</strong> ${subject.USERNAME}</p>
+              <p><strong>หมู่เรียน :</strong> ${subject.sec}</p>
+              <p><strong>จำนวนหน่วยกิต :</strong> ${subject.credit}</p>  
+              <p><strong>จำนวนนิสิต :</strong> ${subject.N_people}</p>
+              <p><strong>สาขาที่เปิดรับ :</strong> ${branchNames}</p>
+              <p><strong>สอนวัน :</strong> ${subject.DAYNAME}</p>
+              <p><strong>เวลา :</strong> ${subject.st} - ${subject.et}</p>
+            </div>
+          `,
         showCancelButton: true,
         confirmButtonText: "ยืนยัน",
         cancelButtonText: "ยกเลิก",
@@ -92,8 +92,66 @@ const RegStatus = () => {
             });
         }
       });
+    } else if (subject.status_id === 3) {
+      const subjectsWithSameDateTime = subjectReg.filter(
+        (sub) =>
+          sub.st === subject.st &&
+          sub.et === subject.et &&
+          sub.DAYNAME === subject.DAYNAME
+      );
+
+      const tableRows = subjectsWithSameDateTime.map(
+        (sub) => `
+            <tr>
+              <td>${sub.idsubject}-${sub.years.substring(2)}</td>
+              <td>${sub.SUBJECTNAME}</td>
+              <td>${sub.credit}</td>
+              <td>${sub.CATEGORYNAME}</td>
+              <td>${sub.USERNAME}</td>
+              <td>${sub.N_people}</td>
+              <td>${sub.branch.t12.map((branch) => `T12-${branch}`).join(", ")}</td>
+              <td>${sub.DAYNAME}</td>
+              <td>${subject.st.substring(0, 5)}-${subject.et.substring(0, 5)} น.</td>
+            </tr>`
+      ).join("");
+
+      const tableHTML = `
+          <table>
+            <thead>
+              <tr style='font-size:13px;font-weight:'bold';>
+                <th>รหัส</th>
+                <th>วิชา</th>
+                <th>หน่วยกิต</th>
+                <th>lec/lab</th>
+                <th>อาจารย์ผู้สอน</th>
+                <th>จำนวนนิสิต</th>
+                <th>ชั้นปีที่เปิดรับ</th>
+                <th>วัน</th>
+                <th>เวลา</th>
+                <th>แก้ไข</th>
+              </tr>
+            </thead>
+            <tbody style="font-size: 13px;">
+              ${tableRows}
+            </tbody>
+          </table>`;
+
+      const numRows = subjectsWithSameDateTime.length;
+      const popupHeight = numRows > 5 ? `${numRows * 30}px` : 'auto';
+      const popupWidth = '960px';
+
+      Swal.fire({
+        title: `<span style="color: #246705;font-size: 20px;"> แก้ไขรายวิชา </span>`,
+        html: tableHTML,
+        showCancelButton: false,
+        confirmButtonText: "ยืนยัน",
+        confirmButtonColor: "#4C956C",
+        width: popupWidth,
+        height: popupHeight,
+      });
     }
   };
+
 
 
   const showAlert = () => {
@@ -277,7 +335,7 @@ const RegStatus = () => {
                           <td rowSpan={group.data.length}>
                             <EditIcon
                               size={24}
-                              className="cursor-pointer self-center"
+                              className={`cursor-pointer self-center ${subject.status_id === 1 ? "opacity-0 cursor-default" : ""}`}
                               onClick={() => handleEdit(subject)}
                             />
                           </td>

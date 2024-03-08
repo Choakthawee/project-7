@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { apiurl } from "../../config";
 import SearchTab from "./searchtab";
+import { TimerResetIcon } from "lucide-react";
 
 const Schedule = () => {
   const userRole = localStorage.getItem('role_id');
@@ -14,6 +15,7 @@ const Schedule = () => {
   const navigate = useNavigate();
   const [isTeacher, setIsTeacher] = useState(false);
   const [subjectAll, setSubjectAll] = useState([]);
+  const [subjectUser, setSubjectUser] = useState([]);
   const [searchInput, setSearchInput] = useState("");
 
   {/* option */ }
@@ -26,7 +28,6 @@ const Schedule = () => {
     /* search */
   }
   const [filteredSubjects, setFilteredSubjects] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     axios
@@ -41,8 +42,15 @@ const Schedule = () => {
   }, []);
 
   useEffect(() => {
-
-  })
+    axios.get(apiurl + "/api/teacher/schedule_single/" + userID)
+      .then((response) => {
+        setSubjectUser(response.data);
+        console.log(response.data)
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+      })
+  }, [])
 
   const handleInputChange = (e) => {
     setSearchInput(e.target.value);
@@ -131,6 +139,13 @@ const Schedule = () => {
         }
       }
     });
+  };
+
+  const handleReset = () => {
+    setSearchInput("");
+    setSelectedYear("");
+    setSelectedCategory("");
+    setFilteredSubjects(subjectAll);
   };
 
   if (userRole !== "1") {
@@ -243,21 +258,30 @@ const Schedule = () => {
           </select>
         </div>
 
-        <div className="flex mt-2 items-end cursor-pointer ml-8">
+        <div className="flex mt-2 items-end cursor-pointer ml-1">
           <button
             className="transition-all bg-green-600 rounded-3xl w-24 h-10 justify-center items-center flex flex-row shadow-lg"
             onClick={handleSearch}
           >
             <label className="text-white text-base cursor-pointer">ค้นหา</label>
-            <Search size={21} color="white" />
+            <Search size={21} color="white" className="ml-1" />
+          </button>
+        </div>
+
+        <div className="flex mt-2 items-end cursor-pointer ml-2 mr-2">
+          <button
+            className="transition-all bg-yellow-400 rounded-3xl w-24 h-10 justify-center items-center flex flex-row shadow-lg"
+            onClick={handleReset}
+          >
+            <label className="text-white text-base cursor-pointer">รีเซ็ต</label>
+            <TimerResetIcon size={21} color="white" className="ml-1" />
           </button>
         </div>
 
         <div className="flex-row flex mt-2 ml-2 items-end">
           <div
-            className={`transition-all w-8 h-8 mr-2 ${
-              isTeacher ? "bg-green-400" : "bg-pink-400"
-            }`}
+            className={`transition-all w-8 h-8 mr-2 ${isTeacher ? "bg-green-400" : "bg-pink-400"
+              }`}
           ></div>
           <label className="ptext-shadow mb-1">
             {isTeacher ? "ผ่าน" : "บังคับ"}
@@ -266,9 +290,8 @@ const Schedule = () => {
 
         <div className="flex flex-row ml-2 items-end">
           <div
-            className={`transition-all w-8 h-8 mr-2 ${
-              isTeacher ? "bg-red-500" : "bg-yellow-400"
-            }`}
+            className={`transition-all w-8 h-8 mr-2 ${isTeacher ? "bg-red-500" : "bg-yellow-400"
+              }`}
           ></div>
           <label className="ptext-shadow mb-1">
             {isTeacher ? "ไม่ผ่าน" : "เฉพาะเลือก"}
@@ -277,9 +300,8 @@ const Schedule = () => {
 
         <div className="flex flex-row ml-2 items-end">
           <div
-            className={`transition-all w-8 h-8 mr-2 ${
-              isTeacher ? "bg-orange-500" : "bg-cyan-400"
-            }`}
+            className={`transition-all w-8 h-8 mr-2 ${isTeacher ? "bg-orange-500" : "bg-cyan-400"
+              }`}
           ></div>
           <label className="ptext-shadow mb-1">
             {isTeacher ? "รอพิจารณา" : "เลือก"}
@@ -296,8 +318,8 @@ const Schedule = () => {
             size={21}
             className="border-white cursor-pointer"
           />
-          <label className="ml-2 font-bold ptext-shadow cursor-pointer">
-            MY SCHEDULE
+          <label className="ml-2 font-bold ptext-shadow cursor-pointer transition-all">
+            {isTeacher ? 'MY SCHEDULE' : 'GLOBAL SCHEDULE'}
           </label>
         </div>
       </div>
