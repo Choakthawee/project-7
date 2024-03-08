@@ -18,6 +18,9 @@ const RegResultT = () => {
   const navigate = useNavigate();
   const [subjects, setSubjects] = useState([{}]);
   const [showsubject, setShowsubject] = useState([{}]);
+  const [changed, setChanged] = useState("");
+  const [changest, setChangest] = useState("");
+  const [changeet, setChangeet] = useState("");
   const showAlert = () => {
     Swal.fire({
       icon: "error",
@@ -42,7 +45,7 @@ const RegResultT = () => {
           apiurl + "/api/statusRegisteredpro1/" + userID
         );
         const datasubject = response.data;
-        console.log(datasubject.message);
+        // console.log(datasubject.message);
         setShowsubject(datasubject.message);
 
         // Now you can use datasubject in the rest of your code
@@ -53,7 +56,11 @@ const RegResultT = () => {
     };
     showSubject();
   }, []);
-
+  // useEffect(() => {
+  //   console.log(changed);
+  //   console.log(changest);
+  //   console.log(changeet);
+  // }, [changed, changest, changeet]);
   const showSweetAlertWithInput = async () => {
     const { value: day } = await Swal.fire({
       title: "เปลี่ยนแปลงวัน",
@@ -83,7 +90,7 @@ const RegResultT = () => {
         });
       },
     });
-
+    setChanged(day);
     if (day) {
       const { value: startTime } = await Swal.fire({
         title: "เปลี่ยนแปลงเวลาเริ่มสอน",
@@ -104,7 +111,7 @@ const RegResultT = () => {
           });
         },
       });
-
+      setChangest(startTime);
       if (startTime) {
         // Prompt for the end time
         const { value: endTime } = await Swal.fire({
@@ -126,7 +133,7 @@ const RegResultT = () => {
             });
           },
         });
-
+        setChangeet(endTime);
         if (day && startTime && endTime) {
           const message = `วันที่สอน: ${day} 
           <br>เวลาเริ่มสอน: ${startTime} นาฬิกา
@@ -143,6 +150,7 @@ const RegResultT = () => {
       }
     }
   };
+
   const [searchInput, setSearchInput] = useState("");
   if (userRole !== "1") {
     showAlert();
@@ -194,7 +202,9 @@ const RegResultT = () => {
                         {value.day_name}
                       </td>
                       <td className="py-2 font-light text-lg text-center">
-                        {value.st.slice(0, -3)}-{value.et.slice(0, -3)}
+                        {value.st && value.et
+                          ? `${value.st.slice(0, -3)}-${value.et.slice(0, -3)}`
+                          : "รอสักครู่"}
                       </td>
                       <td className="py-2 font-light text-lg text-center">
                         {value.status_id}
