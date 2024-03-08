@@ -11,117 +11,113 @@ import { TimerResetIcon } from "lucide-react";
 
 const Schedule = () => {
   const userRole = localStorage.getItem('role_id');
+  const userName = localStorage.getItem('name');
   const userID = localStorage.getItem('userid');
   const navigate = useNavigate();
   const [isTeacher, setIsTeacher] = useState(false);
-  const [subjectAll, setSubjectAll] = useState([]);
   const [subjectUser, setSubjectUser] = useState([]);
+  const [subjectAll, setSubjectAll] = useState([]);
   const [searchInput, setSearchInput] = useState("");
-
-  {/* option */ }
-  const [years, setYears] = useState(["1", "2", "3", "4", "5"]);
   const [subjectCategories, setSubjectCategories] = useState([]);
   const [selectedYear, setSelectedYear] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
-
-  {
-    /* search */
-  }
   const [filteredSubjects, setFilteredSubjects] = useState([]);
+  const [searching, setSearching] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [years, setYears] = useState(["1", "2", "3", "4", "5"]);
 
   useEffect(() => {
-    axios
-      .get(apiurl + "/api/subject_category")
-      .then((response) => {
+    const fetchSubjectCategories = async () => {
+      try {
+        const response = await axios.get(apiurl + "/api/subject_category");
         setSubjectCategories(response.data);
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-      });
+      } catch (error) {
+        console.error("Error fetching subject categories: ", error);
+      }
+    };
+
+    fetchSubjectCategories();
   }, []);
 
   useEffect(() => {
-    axios.get(apiurl + "/api/teacher/schedule_single/" + userID)
-      .then((response) => {
-        setSubjectUser(response.data);
-        console.log(response.data)
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-      })
-  }, [])
+    const fetchScheduleData = async () => {
+      try {
+        let response;
+        if (isTeacher) {
+          response = await axios.get(apiurl + "/api/teacher/schedule_single/" + userID);
+        } else {
+          response = await axios.get(apiurl + "/api/teacher/schedule");
+        }
+        const data = response.data;
+        if (isTeacher) {
+          setSubjectUser(data);
+          setFilteredSubjects(data);
+        } else {
+          setSubjectAll(data);
+          setFilteredSubjects(data);
+        }
+      } catch (error) {
+        console.error("Error fetching schedule data: ", error);
+      }
+    };
+
+    fetchScheduleData();
+  }, [userID, isTeacher]);
+
+  const handleYearChange = (e) => {
+    setSelectedYear(e.target.value);
+  };
+
+  const handleCategoryChange = (e) => {
+    setSelectedCategory(e.target.value);
+  };
 
   const handleInputChange = (e) => {
     setSearchInput(e.target.value);
   };
 
-  const [searching, setSearching] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const getapiSearch = async () => {
-      try {
-        setLoading(true);
-        const dataresponse = await axios.get(
-          apiurl + "/api/searchregister/" + searchInput
-        );
-        const data = dataresponse.data;
-        setSearching(data.message);
-      } catch (err) {
-        setSearching({ error: err.response.data.error });
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (searchInput && searching) {
-      getapiSearch();
-    } else {
-      setSearching([]);
-    }
-  }, [searchInput]);
-
-  useEffect(() => {
-    axios
-      .get(apiurl + "/api/teacher/schedule")
-      .then((response) => {
-        setSubjectAll(response.data);
-        setFilteredSubjects(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-      });
-  }, []);
-
-  const handleYearChange = (e) => {
-    setSelectedYear(e.target.value);
-    console.log(selectedYear)
-  };
-
-  const handleCategoryChange = (e) => {
-    setSelectedCategory(e.target.value);
-    console.log(selectedCategory)
-  };
-
   const handleSearch = () => {
-    if (searchInput.trim() === '') {
-      setFilteredSubjects(subjectAll.filter(subject =>
-        (selectedCategory === '' || subject.subject_category === selectedCategory) &&
-        (selectedYear === '' || subject.branch.t12.includes(Number(selectedYear)))
-      ));
+    const filteredSubjects = searchAndFilterSubjects(searchInput, selectedCategory, selectedYear, isTeacher);
+    setFilteredSubjects(filteredSubjects);
+  };
+
+  const searchAndFilterSubjects = (input, category, year, isTeacher) => {
+    if (!input.trim()) {
+      return isTeacher
+        ? subjectUser.filter(subject =>
+          (!category || subject.subject_category === category) &&
+          (!year || subject.branch.t12.includes(Number(year)))
+        )
+        : subjectAll.filter(subject =>
+          (!category || subject.subject_category === category) &&
+          (!year || subject.branch.t12.includes(Number(year)))
+        );
     } else {
-      const filtered = subjectAll.filter(subject =>
-        ((subject.id_subject.includes(searchInput) ||
-          subject.SUBJECT.includes(searchInput) ||
-          subject.NAME.includes(searchInput)) &&
-          (selectedCategory === '' || subject.subject_category === selectedCategory)) &&
-        (selectedYear === '' || subject.branch.t12.includes(Number(selectedYear)))
-      );
-      setFilteredSubjects(filtered);
+      const filtered = isTeacher
+        ? subjectUser.filter(subject =>
+          ((subject.id_subject.includes(input) ||
+            subject.SUBJECT.includes(input) ||
+            subject.NAME.includes(input)) &&
+            (!category || subject.subject_category === category)) &&
+          (!year || subject.branch.t12.includes(Number(year)))
+        )
+        : subjectAll.filter(subject =>
+          ((subject.id_subject.includes(input) ||
+            subject.SUBJECT.includes(input) ||
+            subject.NAME.includes(input)) &&
+            (!category || subject.subject_category === category)) &&
+          (!year || subject.branch.t12.includes(Number(year)))
+        );
+      return filtered;
     }
   };
 
+  const handleReset = () => {
+    setSearchInput("");
+    setSelectedYear("");
+    setSelectedCategory("");
+    setFilteredSubjects(isTeacher ? subjectUser : subjectAll);
+  };
 
   const showAlert = () => {
     Swal.fire({
@@ -141,61 +137,21 @@ const Schedule = () => {
     });
   };
 
-  const handleReset = () => {
-    setSearchInput("");
-    setSelectedYear("");
-    setSelectedCategory("");
-    setFilteredSubjects(subjectAll);
-  };
-
   if (userRole !== "1") {
     showAlert();
     return null;
   }
 
   const times = [
-    "7.00-7.30",
-    "7.30-8.00",
-    "8.00-8.30",
-    "8.30-9.00",
-    "9.00-9.30",
-    "9.30-10.00",
-    "10.00-10.30",
-    "10.30-11.00",
-    "11.00-11.30",
-    "11.30-12.00",
-    "12.00-12.30",
-    "12.30-13.00",
-    "13.00-13.30",
-    "13.30-14.00",
-    "14.00-14.30",
-    "14.30-15.00",
-    "15.00-15.30",
-    "15.30-16.00",
-    "16.00-16.30",
-    "16.30-17.00",
-    "17.00-17.30",
-    "17.30-18.00",
-    "18.00-18.30",
-    "18.30-19.00",
-    "19.00-19.30",
-    "19.30-20.00",
-    "20.00-20.30",
-    "20.30-21.00",
-    "21.00-21.30",
-    "21.30-22.00",
+    "7.00-7.30", "7.30-8.00", "8.00-8.30", "8.30-9.00", "9.00-9.30",
+    "9.30-10.00", "10:00:00", "10.30-11.00", "11.00-11.30", "11.30-12.00",
+    "12.00-12.30", "12.30-13.00", "13.00-13.30", "13.30-14.00", "14.00-14.30",
+    "14.30-15.00", "15.00-15.30", "15.30-16.00", "16.00-16.30", "16.30-17.00",
+    "17.00-17.30", "17.30-18.00", "18.00-18.30", "18.30-19.00", "19.00-19.30",
+    "19.30-20.00", "20.00-20.30", "20.30-21.00", "21.00-21.30", "21.30-22.00",
   ];
 
-  const days = [
-    "จันทร์",
-    "อังคาร",
-    "พุธ",
-    "พฤหัสบดี",
-    "ศุกร์",
-    "เสาร์",
-    "อาทิตย์",
-  ];
-
+  const days = ["วันจันทร์", "วันอังคาร", "วันพุธ", "วันพฤหัสบดี", "วันศุกร์", "วันเสาร์", "วันอาทิตย์"];
   return (
     <div
       className="flex-col flex py-10 px-10 bg-white flex-1 h-screen"
@@ -327,7 +283,7 @@ const Schedule = () => {
       <div className="flex">
         <table className=" mt-0 border-collapse border border-gray-400 shadow-md">
           <thead>
-            <tr classNa me="bg-gray-200">
+            <tr className="bg-gray-200">
               <th className="border border-gray-400 py-2 px-4"></th>
               {times.map((time, index) => (
                 <th key={index} className="border border-gray-400 py-2 px-2">
@@ -346,12 +302,35 @@ const Schedule = () => {
                 <td className="border border-gray-400 py-2 px-4 font-semibold">
                   {day}
                 </td>
-                {times.map((_, timeIndex) => (
-                  <td
-                    key={timeIndex}
-                    className="border border-gray-400 py-2 px-2"
-                  ></td>
-                ))}
+                {times.map((time, timeIndex) => {
+                  const subject = filteredSubjects.find(subject =>
+                    subject.day === day && subject.st === time
+                  );
+                  let colorClass = '';
+                  if (subject) {
+                    switch (subject.subject_category) {
+                      case 'วิชาบังคับ':
+                        colorClass = 'bg-pink-400';
+                        break;
+                      case 'วิชาเอก':
+                        colorClass = 'bg-yellow-400';
+                        break;
+                      case 'วิชาเลือก':
+                        colorClass = 'bg-blue-400';
+                        break;
+                      default:
+                        colorClass = 'bg-white';
+                        break;
+                    }
+                  }
+                  return (
+                    <td
+                      key={timeIndex}
+                      className={`border border-gray-400 py-2 px-2 ${colorClass}`}
+                    >
+                    </td>
+                  );
+                })}
               </tr>
             ))}
           </tbody>
@@ -421,7 +400,7 @@ const Schedule = () => {
                 </td>
                 <td className="border border-gray-400 py-2 px-4 border-opacity-10">
                   {subject.branch.t12.map((item, index) => (
-                    <span>
+                    <span key={index}>
                       {index > 0 && ", "}
                       ชั้นปี {item}
                     </span>
@@ -435,7 +414,7 @@ const Schedule = () => {
                 </td>
                 <td className="border border-gray-400 py-2 px-4 border-opacity-10">
                   <Link to={"/schedule_edit/" + subject.idre}>
-                    <button className="bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded ml-3">
+                    <button className={`bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded ml-3 ${subject.NAME != userName ? 'hidden opacity-0 cursor-default' : ''}`}>
                       Edit
                     </button>
                   </Link>
