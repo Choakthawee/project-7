@@ -57,7 +57,7 @@ function Secadd() {
   };
 
   return (
-    <div className="flex flex-col rounded-md bg-gray-200 p-2 -ml-1 mt-2">
+    <div className="flex flex-col w-full sm:w-80 rounded-md bg-gray-200 p-2 -ml-1 mt-2">
       <div>
         <label className="block mb-2 mt-2 text-midgreen ">
           จำนวนนิสิตที่เปิดรับ
@@ -71,7 +71,7 @@ function Secadd() {
         />
       </div>
 
-      <div className="flex flex-col mr-3 mt-1 justify-start items-start">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mr-3 mt-1">
         <label className="text-midgreen mb-1">
           สาขาที่เปิดรับ :
           <FontAwesomeIcon
@@ -97,7 +97,7 @@ function Secadd() {
               </select>
               <button
                 onClick={handleConfirm}
-                className=" w-16 h-7 ml-10 bg-green-500 text-white px-3 py-1 rounded mt-2 items-center"
+                className=" w-16 h-7 ml-2 sm:ml-10 bg-green-500 text-white px-3 py-1 rounded mt-2 sm:mt-0"
               >
                 ยืนยัน
               </button>
@@ -123,7 +123,7 @@ function Secadd() {
         )}
       </div>
 
-      {selectedOptions.length > 0 && ( // Check if there are selected options
+      {selectedOptions.length > 0 && (
         <div className="flex flex-wrap">
           {selectedOptions.map((option) => (
             <div key={option} className="flex items-center mr-4 mb-2">

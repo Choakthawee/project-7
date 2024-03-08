@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faPlusSquare } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import Secadd from "./secadd";
 import axios from "axios";
 import { apiurl } from "../../config";
@@ -12,6 +12,7 @@ const ScheduleEdit = () => {
   const navigate = useNavigate();
   const { idreg } = useParams();
   const [subject, setSubject] = useState({});
+
   useEffect(() => {
     const getapi = async () => {
       const userid = localStorage.getItem("userid");
@@ -25,7 +26,6 @@ const ScheduleEdit = () => {
         );
         const data = dataRespone.data;
         console.log(data);
-        console.log(data);
         setSubject(data);
       } catch (err) {
         alert(err.response.data.msg);
@@ -34,7 +34,9 @@ const ScheduleEdit = () => {
     getapi();
   }, []);
 
-  const [redBoxes, setRedBoxes] = useState([]);
+  const handleSwab = () => {
+    navigate("/schedule");
+  };
 
   const showAlert = () => {
     Swal.fire({
@@ -59,134 +61,76 @@ const ScheduleEdit = () => {
     return null;
   }
 
-  const handleSwab = () => {
-    navigate("/schedule");
-  };
-
-  const addRedBox = () => {
-    setRedBoxes([...redBoxes, {}]);
-  };
-
-  const removeRedBox = (index) => {
-    setRedBoxes(redBoxes.filter((_, i) => i !== index));
-  };
-
   return (
     <div className="flex w-full h-full min-h-screen background21">
-      <div className="flex w-full relative  items-center overflow-y-scroll justify-center px-40">
-        <div className="flex w-full rounded-3xl  bg-white p-2 ">
-          <div
-            style={{
-              flex: 1,
-              height: 50,
-            }}
-            className="flex flex-col font-family mt-7 ml-5"
-          >
-            <button
-              type="button"
-              className="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-4 py-2.5 me-1 mb-2   dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-              style={{
-                backgroundColor: "#134e4a",
-                width: 90,
-                height: 40,
-              }}
-              onClick={() => handleSwab()}
-            >
-              <FontAwesomeIcon
-                icon={faArrowLeft}
-                className="mr-1"
-                style={{ fontSize: "16px" }}
-              />
-              <p className="text-lg text-center"> back </p>
-            </button>
-          </div>
-          <div className="flex flex-col w-full relative  ">
-            <div className="ml-14 mr-80 mt-6">
-              <div className="flex">
-                <p className="text-2xl font-bold text-midgreen mt-1">
-                  แก้ไขรายวิชา
-                </p>
-              </div>
-              <div className="flex flex-col mt-3 ">
-                <label className="text-midgreen mb-1">
-                  ชื่อรายวิชาที่สอน *
-                </label>
-                {/* <input
-                  type="text"
-                  id="sub_name"
-                  class="bg-gray-50 border w-full  h-10 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-white dark:border-gray-400 dark:placeholder-gray-200 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="โปรดระบุวิชาหรือรหัสวิชา"
-                  value={subject.name}
-                  required
-                /> */}
-                <label
-                  type="text"
-                  id="sub_name"
-                  class="bg-gray-50 border w-full  h-10 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-white dark:border-gray-400 dark:placeholder-gray-200 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="โปรดระบุวิชาหรือรหัสวิชา"
-                  required
-                >
-                  {subject.name}
-                </label>
-              </div>
-              <div className="flex mr-3 mt-1">
-                <label className="text-midgreen mb-1">
-                  รหัสวิชา : {subject.idsubject}
-                </label>
-              </div>
-              <div className="flex mr-3 mt-1">
-                <label className="text-midgreen mb-1">
-                  {" "}
-                  จำนวนหน่วยกิต : {subject.credit}
-                </label>
-              </div>
-              <div className="flex mr-3 mt-1">
-                <label className="text-midgreen mb-1">
-                  หมวดวิชา : {subject.subc}
-                </label>
-              </div>
-              <div className="flex mr-3 mt-1">
-                <label className="text-midgreen mb-1">
-                  หมู่เรียน : {subject.category}
-                </label>
-              </div>
-              <div className="flex mr-3 mt-1">
-                <label className="text-midgreen mb-1">
-                  จำนวนชั่วโมง : {subject.lecture_t}
-                </label>
-              </div>
-              <Secadd />
-              <div
-                style={{
-                  flex: 1,
-                  height: 50,
-                }}
-                className="flex flex-col font-family mt-7 ml-5"
-              >
+      <div className="flex w-full items-center overflow-y-scroll justify-center p-2 lg:p-10">
+        <div className="flex w-full md:w-3/4 rounded-3xl bg-white h-full p-5 sm:p-10  ">
+          <div className="flex flex-col lg:flex-col w-full">
+            <div className="flex">
+              <div className="">
                 <button
                   type="button"
-                  className="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-4 py-2.5 me-1 mb-2 -ml-6 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                  className="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-4 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                   style={{
                     backgroundColor: "#134e4a",
-                    width: 75,
-                    height: 25,
+                    width: 90,
                   }}
-                  onClick={() => handleSwab()}
+                  onClick={handleSwab}
                 >
-                  <p className=" text-base text-center"> ตกลง </p>
+                  <FontAwesomeIcon
+                    icon={faArrowLeft}
+                    className="mr-1"
+                    style={{ fontSize: "16px" }}
+                  />
+                  <p className="text-lg text-center"> Back </p>
                 </button>
               </div>
-              {/* {redBoxes.map((_, index) => (
-                <div className="flex mr-3 mt-1" key={index}>
-                  <Secadd />
+            </div>
+            <div className="w-full flex">
+              <div>
+                <p className="text-2xl font-bold text-midgreen mt-2 p-2">
+                  แก้ไขรายวิชา
+                </p>
+                <div className="flex flex-col ">
+                  <label className="text-midgreen mb-1">
+                    ชื่อรายวิชาที่สอน *
+                  </label>
+                  <p className="bg-gray-50  text-wrap border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 flex p-2.5">
+                    {subject.name}
+                  </p>
+                </div>
+                <div className="flex flex-col mt-1">
+                  <label className="text-midgreen mb-1">
+                    รหัสวิชา : {subject.idsubject}
+                  </label>
+                  <label className="text-midgreen mb-1">
+                    จำนวนหน่วยกิต : {subject.credit}
+                  </label>
+                  <label className="text-midgreen mb-1">
+                    หมวดวิชา : {subject.subc}
+                  </label>
+                  <label className="text-midgreen mb-1">
+                    หมู่เรียน : {subject.category}
+                  </label>
+                  <label className="text-midgreen mb-1">
+                    จำนวนชั่วโมง : {subject.lecture_t}
+                  </label>
+                </div>
+                <Secadd />
+                <div className="flex items-center mt-4">
                   <button
-                    className="ml-2 text-red-500 focus:outline-none"
-                    onClick={() => removeRedBox(index)}
+                    type="button"
+                    className="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-4 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                    style={{
+                      backgroundColor: "#134e4a",
+                      width: 80,
+                    }}
+                    onClick={handleSwab}
                   >
-                    Delete
+                    <p className="text-lg text-center"> ตกลง </p>
                   </button>
                 </div>
-              ))} */}
+              </div>
             </div>
           </div>
         </div>
