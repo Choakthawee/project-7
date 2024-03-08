@@ -18,7 +18,7 @@ const RegResultT = () => {
   const navigate = useNavigate();
   const [subjects, setSubjects] = useState([{}]);
   const [showsubject, setShowsubject] = useState([{}]);
-  const [noneSubject, setNoneSubject] = useState([{}]);
+  const [noneSubject, setNoneSubject] = useState();
   const [changed, setChanged] = useState("");
   const [changest, setChangest] = useState("");
   const [changeet, setChangeet] = useState("");
