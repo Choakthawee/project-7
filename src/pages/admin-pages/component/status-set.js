@@ -3,13 +3,13 @@ import { apiurl } from "../../../config";
 import axios from "axios";
 import openInputAlert from "./SwalInputeditname";
 
-export default function Status_set(){
+export default function Status_set({geturl,table,renameurl="/api/setting/rename"}){
     const [data, setData] = useState([{}]);
     const [Errormsg, setErrormsg] = useState([{}]);
     useEffect(() => {
         const getapi = async () => {
             try {
-                const dataresponse = await axios.get(apiurl + "/api/setting/status");
+                const dataresponse = await axios.get(apiurl + geturl);
                 const data = dataresponse.data;
                 setData(data);
             } catch (err) {
@@ -35,7 +35,7 @@ export default function Status_set(){
                             <tr className=" bg-slate-100">
                                 <td className=" text-center p-2 ">{v.id}</td>
                                 <td className=" text-center p-2 ">{v.name}</td>
-                                <td className=" text-center p-2 " onClick={() => openInputAlert("แก้ชื่อหมวดวิชา", "กรอกชื่อใหม่ที่จะแก้ไข", v.name)}>แก้</td>
+                                <td className=" text-center p-2 " onClick={() => openInputAlert("แก้ชื่อหมวดวิชา", "กรอกชื่อใหม่ที่จะแก้ไข", v.name,v.id,table,renameurl)}>แก้</td>
                             </tr>
                         ))}
                     </tbody>
