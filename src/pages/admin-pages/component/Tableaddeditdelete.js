@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 import { SlReload } from "react-icons/sl";
 import insertBox from "./insertDB";
 
-export default function Tableaddeditdelete({ geturl, table, deleteurl, foredeleteurl,title,inserturl, remainder = "", renameurl = "/api/setting/rename" 
+export default function Tableaddeditdelete({ geturl, table, deleteurl, foredeleteurl,title,inserturl='/api/setting/insert', remainder = "", renameurl = "/api/setting/rename" 
 
 }) {
     const [data, setData] = useState([{}]);
@@ -108,7 +108,7 @@ export default function Tableaddeditdelete({ geturl, table, deleteurl, foredelet
                 </table>
                 {Errormsg}
             </div>
-            <div> <button className="p-2 text-white rounded-lg min-w-36 w-full lg:w-fit bg-midgreen" onClick={()=>insertBox(title,inserturl)}>เพิ่ม</button></div>
+            <div> <button className="p-2 text-white rounded-lg min-w-36 w-full lg:w-fit bg-midgreen" onClick={()=>insertBox(title,table,inserturl)}>เพิ่ม</button></div>
         </div>
     );
 }
