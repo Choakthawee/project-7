@@ -32,7 +32,7 @@ const Login = () => {
       await localStorage.setItem("email", responseData.data.email);
       await localStorage.setItem("name", responseData.data.name);
       await localStorage.setItem("role", responseData.data.role);
-      await localStorage.setItem("role_id", responseData.data.id);
+      await localStorage.setItem("role_id", responseData.data.role_id);
       Swal.fire({
         title: "Login Successful",
         text: "ล็อคอินสำเร็จ",
@@ -43,11 +43,11 @@ const Login = () => {
       });
 
       setTimeout(() => {
-        if (responseData.data.id === 3) {
+        if (responseData.data.role_id === 3) {
           navigate("/imcourse");
-        } else if (responseData.data.id === 2) {
+        } else if (responseData.data.role_id === 2) {
           navigate("/userinfo");
-        } else if (responseData.data.id === 1) {
+        } else if (responseData.data.role_id === 1) {
           navigate("/regcourse");
         }
       }, 2000);
