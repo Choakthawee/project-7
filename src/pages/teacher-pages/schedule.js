@@ -10,9 +10,9 @@ import SearchTab from "./searchtab";
 import { TimerResetIcon } from "lucide-react";
 
 const Schedule = () => {
-  const userRole = localStorage.getItem('role_id');
-  const userName = localStorage.getItem('name');
-  const userID = localStorage.getItem('userid');
+  const userRole = localStorage.getItem("role_id");
+  const userName = localStorage.getItem("name");
+  const userID = localStorage.getItem("userid");
   const navigate = useNavigate();
   const [isTeacher, setIsTeacher] = useState(false);
   const [subjectUser, setSubjectUser] = useState([]);
@@ -44,7 +44,9 @@ const Schedule = () => {
       try {
         let response;
         if (isTeacher) {
-          response = await axios.get(apiurl + "/api/teacher/schedule_single/" + userID);
+          response = await axios.get(
+            apiurl + "/api/teacher/schedule_single/" + userID
+          );
         } else {
           response = await axios.get(apiurl + "/api/teacher/schedule");
         }
@@ -77,37 +79,46 @@ const Schedule = () => {
   };
 
   const handleSearch = () => {
-    const filteredSubjects = searchAndFilterSubjects(searchInput, selectedCategory, selectedYear, isTeacher);
+    const filteredSubjects = searchAndFilterSubjects(
+      searchInput,
+      selectedCategory,
+      selectedYear,
+      isTeacher
+    );
     setFilteredSubjects(filteredSubjects);
   };
 
   const searchAndFilterSubjects = (input, category, year, isTeacher) => {
     if (!input.trim()) {
       return isTeacher
-        ? subjectUser.filter(subject =>
-          (!category || subject.subject_category === category) &&
-          (!year || subject.branch.t12.includes(Number(year)))
-        )
-        : subjectAll.filter(subject =>
-          (!category || subject.subject_category === category) &&
-          (!year || subject.branch.t12.includes(Number(year)))
-        );
+        ? subjectUser.filter(
+            (subject) =>
+              (!category || subject.subject_category === category) &&
+              (!year || subject.branch.t12.includes(Number(year)))
+          )
+        : subjectAll.filter(
+            (subject) =>
+              (!category || subject.subject_category === category) &&
+              (!year || subject.branch.t12.includes(Number(year)))
+          );
     } else {
       const filtered = isTeacher
-        ? subjectUser.filter(subject =>
-          ((subject.id_subject.includes(input) ||
-            subject.SUBJECT.includes(input) ||
-            subject.NAME.includes(input)) &&
-            (!category || subject.subject_category === category)) &&
-          (!year || subject.branch.t12.includes(Number(year)))
-        )
-        : subjectAll.filter(subject =>
-          ((subject.id_subject.includes(input) ||
-            subject.SUBJECT.includes(input) ||
-            subject.NAME.includes(input)) &&
-            (!category || subject.subject_category === category)) &&
-          (!year || subject.branch.t12.includes(Number(year)))
-        );
+        ? subjectUser.filter(
+            (subject) =>
+              (subject.id_subject.includes(input) ||
+                subject.SUBJECT.includes(input) ||
+                subject.NAME.includes(input)) &&
+              (!category || subject.subject_category === category) &&
+              (!year || subject.branch.t12.includes(Number(year)))
+          )
+        : subjectAll.filter(
+            (subject) =>
+              (subject.id_subject.includes(input) ||
+                subject.SUBJECT.includes(input) ||
+                subject.NAME.includes(input)) &&
+              (!category || subject.subject_category === category) &&
+              (!year || subject.branch.t12.includes(Number(year)))
+          );
       return filtered;
     }
   };
@@ -119,7 +130,28 @@ const Schedule = () => {
     setFilteredSubjects(isTeacher ? subjectUser : subjectAll);
   };
 
-  const showAlert = () => {
+  const showAlert = (subject) => {
+    Swal.fire({
+      title: subject.SUBJECT,
+      html: `<div>รหัสวิชา: ${subject.id_subject}-${subject.ySubject.substring(
+        2
+      )}</div>
+             <div>หน่วยกิต: ${subject.credit}</div>
+             <div>อาจารย์ผู้สอน: ${subject.NAME}</div>
+             <div>จำนวนนิสิต: ${subject.N_people}</div>
+             <div>ชั้นปีที่เปิดรับ: ${subject.branch.t12.join(", ")}</div>
+             <div>วัน: ${subject.day}</div>
+             <div>เวลา: ${subject.st.substring(0, 5)}-${subject.et.substring(
+        0,
+        5
+      )} น.</div>`,
+      icon: "info",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "ตกลง",
+    });
+  };
+
+  const showAlertPermission = () => {
     Swal.fire({
       icon: "error",
       title: "ข้อผิดพลาด",
@@ -138,20 +170,52 @@ const Schedule = () => {
   };
 
   if (userRole !== "1") {
-    showAlert();
+    showAlertPermission();
     return null;
   }
 
   const times = [
-    "7.00-7.30", "7.30-8.00", "8.00-8.30", "8.30-9.00", "9.00-9.30",
-    "9.30-10.00", "10:00:00", "10.30-11.00", "11.00-11.30", "11.30-12.00",
-    "12.00-12.30", "12.30-13.00", "13.00-13.30", "13.30-14.00", "14.00-14.30",
-    "14.30-15.00", "15.00-15.30", "15.30-16.00", "16.00-16.30", "16.30-17.00",
-    "17.00-17.30", "17.30-18.00", "18.00-18.30", "18.30-19.00", "19.00-19.30",
-    "19.30-20.00", "20.00-20.30", "20.30-21.00", "21.00-21.30", "21.30-22.00",
+    { start: "7:00", end: "7:30" },
+    { start: "7:30", end: "8:00" },
+    { start: "8:00", end: "8:30" },
+    { start: "8:30", end: "9:00" },
+    { start: "9:00", end: "9:30" },
+    { start: "9:30", end: "10:00" },
+    { start: "10:00", end: "10:30" },
+    { start: "10:30", end: "11:00" },
+    { start: "11:00", end: "11:30" },
+    { start: "11:30", end: "12:00" },
+    { start: "12:00", end: "12:30" },
+    { start: "12:30", end: "13:00" },
+    { start: "13:00", end: "13:30" },
+    { start: "13:30", end: "14:00" },
+    { start: "14:00", end: "14:30" },
+    { start: "14:30", end: "15:00" },
+    { start: "15:00", end: "15:30" },
+    { start: "15:30", end: "16:00" },
+    { start: "16:00", end: "16:30" },
+    { start: "16:30", end: "17:00" },
+    { start: "17:00", end: "17:30" },
+    { start: "17:30", end: "18:00" },
+    { start: "18:00", end: "18:30" },
+    { start: "18:30", end: "19:00" },
+    { start: "19:00", end: "19:30" },
+    { start: "19:30", end: "20:00" },
+    { start: "20:00", end: "20:30" },
+    { start: "20:30", end: "21:00" },
+    { start: "21:00", end: "21:30" },
+    { start: "21:30", end: "22:00" },
   ];
 
-  const days = ["วันจันทร์", "วันอังคาร", "วันพุธ", "วันพฤหัสบดี", "วันศุกร์", "วันเสาร์", "วันอาทิตย์"];
+  const days = [
+    "วันจันทร์",
+    "วันอังคาร",
+    "วันพุธ",
+    "วันพฤหัสบดี",
+    "วันศุกร์",
+    "วันเสาร์",
+    "วันอาทิตย์",
+  ];
   return (
     <div
       className="flex-col flex py-10 px-10 bg-white flex-1 h-screen"
@@ -192,7 +256,7 @@ const Schedule = () => {
             <option value="">เลือกชั้นปี</option>
             {years.map((year, index) => (
               <option key={index} value={year}>
-                {year === '5' ? 'ชั้นปี 4 ขึ้นไป' : `ชั้นปี ${year}`}
+                {year === "5" ? "ชั้นปี 4 ขึ้นไป" : `ชั้นปี ${year}`}
               </option>
             ))}
           </select>
@@ -229,15 +293,18 @@ const Schedule = () => {
             className="transition-all bg-yellow-400 rounded-3xl w-24 h-10 justify-center items-center flex flex-row shadow-lg"
             onClick={handleReset}
           >
-            <label className="text-white text-base cursor-pointer">รีเซ็ต</label>
+            <label className="text-white text-base cursor-pointer">
+              รีเซ็ต
+            </label>
             <TimerResetIcon size={21} color="white" className="ml-1" />
           </button>
         </div>
 
         <div className="flex-row flex mt-2 ml-2 items-end">
           <div
-            className={`transition-all w-8 h-8 mr-2 ${isTeacher ? "bg-green-400" : "bg-pink-400"
-              }`}
+            className={`transition-all w-8 h-8 mr-2 ${
+              isTeacher ? "bg-green-400" : "bg-pink-400"
+            }`}
           ></div>
           <label className="ptext-shadow mb-1">
             {isTeacher ? "ผ่าน" : "บังคับ"}
@@ -246,8 +313,9 @@ const Schedule = () => {
 
         <div className="flex flex-row ml-2 items-end">
           <div
-            className={`transition-all w-8 h-8 mr-2 ${isTeacher ? "bg-red-500" : "bg-yellow-400"
-              }`}
+            className={`transition-all w-8 h-8 mr-2 ${
+              isTeacher ? "bg-red-500" : "bg-yellow-400"
+            }`}
           ></div>
           <label className="ptext-shadow mb-1">
             {isTeacher ? "ไม่ผ่าน" : "เฉพาะเลือก"}
@@ -256,11 +324,12 @@ const Schedule = () => {
 
         <div className="flex flex-row ml-2 items-end">
           <div
-            className={`transition-all w-8 h-8 mr-2 ${isTeacher ? "bg-orange-500" : "bg-cyan-400"
-              }`}
+            className={`transition-all w-8 h-8 mr-2 ${
+              isTeacher ? "bg-orange-500" : "bg-cyan-400"
+            }`}
           ></div>
           <label className="ptext-shadow mb-1">
-            {isTeacher ? "รอพิจารณา" : "เลือก"}
+            {isTeacher ? "รอ" : "เลือก"}
           </label>
         </div>
 
@@ -275,66 +344,119 @@ const Schedule = () => {
             className="border-white cursor-pointer"
           />
           <label className="ml-2 font-bold ptext-shadow cursor-pointer transition-all">
-            {isTeacher ? 'MY SCHEDULE' : 'GLOBAL SCHEDULE'}
+            {isTeacher ? "MY SCHEDULE" : "GLOBAL SCHEDULE"}
           </label>
         </div>
       </div>
 
       <div className="flex">
-        <table className=" mt-0 border-collapse border border-gray-400 shadow-md">
-          <thead>
-            <tr className="bg-gray-200">
-              <th className="border border-gray-400 py-2 px-4"></th>
-              {times.map((time, index) => (
-                <th key={index} className="border border-gray-400 py-2 px-2">
-                  <div className="text-xs">
-                    {time.split("-").map((part, idx) => (
-                      <div key={idx}>{part}</div>
-                    ))}
-                  </div>
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {days.map((day, dayIndex) => (
-              <tr key={dayIndex} className="bg-white">
-                <td className="border border-gray-400 py-2 px-4 font-semibold">
-                  {day}
-                </td>
-                {times.map((time, timeIndex) => {
-                  const subject = filteredSubjects.find(subject =>
-                    subject.day === day && subject.st === time
-                  );
-                  let colorClass = '';
-                  if (subject) {
-                    switch (subject.subject_category) {
-                      case 'วิชาบังคับ':
-                        colorClass = 'bg-pink-400';
-                        break;
-                      case 'วิชาเอก':
-                        colorClass = 'bg-yellow-400';
-                        break;
-                      case 'วิชาเลือก':
-                        colorClass = 'bg-blue-400';
-                        break;
-                      default:
-                        colorClass = 'bg-white';
-                        break;
-                    }
-                  }
-                  return (
+        {filteredSubjects.length === 0 ? (
+          <table className="mt-0 border-collapse border border-gray-400 shadow-md">
+            <thead>
+              <tr className="bg-gray-200">
+                <th className="border border-gray-400 py-2 px-4"></th>
+                {times.map((time, index) => (
+                  <th key={index} className="border border-gray-400 py-2 px-2">
+                    <div className="text-xs">{`${time.start}-${time.end}`}</div>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {days.map((day, dayIndex) => (
+                <tr key={dayIndex} className="bg-white">
+                  <td className="border border-gray-400 py-2 px-4 font-semibold">
+                    {day}
+                  </td>
+                  {times.map((time, timeIndex) => (
                     <td
                       key={timeIndex}
-                      className={`border border-gray-400 py-2 px-2 ${colorClass}`}
-                    >
-                    </td>
-                  );
-                })}
+                      className="border border-gray-400 py-2 px-2 bg-white"
+                    ></td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <table className="mt-0 border-collapse border border-gray-400 shadow-md">
+            <thead>
+              <tr className="bg-gray-200">
+                <th className="border border-gray-400 py-2 px-4"></th>
+                {times.map((time, index) => (
+                  <th key={index} className="border border-gray-400 py-2 px-2">
+                    <div className="text-xs">{`${time.start}-${time.end}`}</div>
+                  </th>
+                ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {days.map((day, dayIndex) => (
+                <tr key={dayIndex} className="bg-white">
+                  <td className="border border-gray-400 py-2 px-4 font-semibold">
+                    {day}
+                  </td>
+                  {times.map((time, timeIndex) => {
+                    const subject = filteredSubjects.find(
+                      (sub) =>
+                        sub.day === day &&
+                        sub.st <= time.end &&
+                        sub.et >= time.start &&
+                        sub.et >= time.end
+                    );
+                    let colorClass = "";
+                    if (!isTeacher && subject) {
+                      switch (subject.subject_category) {
+                        case "วิชาบังคับ":
+                          colorClass = "bg-pink-400";
+                          break;
+                        case "วิชาเอก":
+                          colorClass = "bg-yellow-400";
+                          break;
+                        case "วิชาเลือก":
+                          colorClass = "bg-cyan-400";
+                          break;
+                        default:
+                          colorClass = "bg-white";
+                          break;
+                      }
+                    } else if (isTeacher && subject) {
+                      switch (subject.status) {
+                        case "รอ":
+                          colorClass = "bg-orange-500";
+                          break;
+                        case "ผ่าน":
+                          colorClass = "bg-green-400";
+                          break;
+                        case "ไม่ผ่าน":
+                          colorClass = "bg-red-500";
+                          break;
+                        default:
+                          colorClass = "bg-white";
+                          break;
+                      }
+                    }
+                    return (
+                      <td
+                        key={timeIndex}
+                        className={`border border-gray-400 py-2 px-2 ${
+                          subject ? "border-0 cursor-pointer" : "border"
+                        } ${colorClass}`}
+                        onClick={() => subject && showAlert(subject)}
+                      >
+                        {timeIndex === Math.floor(times.length / 2) && subject
+                          ? `${subject.id_subject}-${subject.ySubject.substring(
+                              2
+                            )}`
+                          : ""}
+                      </td>
+                    );
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
 
       <div className="flex bg-slate-200 mt-10 rounded-lg overflow-x-auto shadow-xl text-center">
@@ -371,56 +493,77 @@ const Schedule = () => {
               <th className="py-2 font-light text-base border-r-black border-x-2 border-opacity-10">
                 เวลา
               </th>
-              <th className="py-2 font-light text-base">แก้ไข</th>
+              <th
+                className={`py-2 font-light text-base border-r-black border-x-2 border-opacity-10`}
+              >
+                แก้ไข
+              </th>
             </tr>
           </thead>
           <tbody>
-            {filteredSubjects.map((subject, index) => (
-              <tr key={index} className="bg-white ptext-shadow">
-                <td className="border border-gray-400 py-2 px-4 border-opacity-10">
-                  {index + 1}
-                </td>
-                <td className="border border-gray-400 py-2 px-4 border-opacity-10">
-                  {subject.id_subject}-{subject.ySubject.substring(2)}
-                </td>
-                <td className="border border-gray-400 py-2 px-4 border-opacity-10">
-                  {subject.SUBJECT}
-                </td>
-                <td className="border border-gray-400 py-2 px-4 border-opacity-10">
-                  {subject.credit}
-                </td>
-                <td className="border border-gray-400 py-2 px-4 border-opacity-10">
-                  {subject.Moo}
-                </td>
-                <td className="border border-gray-400 py-2 px-4 border-opacity-10">
-                  {subject.NAME}
-                </td>
-                <td className="border border-gray-400 py-2 px-4 border-opacity-10">
-                  {subject.N_people}
-                </td>
-                <td className="border border-gray-400 py-2 px-4 border-opacity-10">
-                  {subject.branch.t12.map((item, index) => (
-                    <span key={index}>
-                      {index > 0 && ", "}
-                      ชั้นปี {item}
-                    </span>
-                  ))}
-                </td>
-                <td className="border border-gray-400 py-2 px-4 border-opacity-10">
-                  {subject.day}
-                </td>
-                <td className="border border-gray-400 py-2 px-4 border-opacity-10">
-                  {subject.st.substring(0, 5)}-{subject.et.substring(0, 5)} น.
-                </td>
-                <td className="border border-gray-400 py-2 px-4 border-opacity-10">
-                  <Link to={"/schedule_edit/" + subject.idre}>
-                    <button className={`bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded ml-3 ${subject.NAME != userName ? 'hidden opacity-0 cursor-default' : ''}`}>
-                      Edit
-                    </button>
-                  </Link>
+            {filteredSubjects.length === 0 ? (
+              <tr>
+                <td
+                  className="border border-gray-400 py-2 px-4 text-red-600"
+                  colSpan="11"
+                >
+                  ไม่พบข้อมูลที่ท่านค้นหา
                 </td>
               </tr>
-            ))}
+            ) : (
+              filteredSubjects.map((subject, index) => (
+                <tr key={index} className="bg-white ptext-shadow">
+                  <td className="border border-gray-400 py-2 px-4 border-opacity-10">
+                    {index + 1}
+                  </td>
+                  <td className="border border-gray-400 py-2 px-4 border-opacity-10">
+                    {subject.id_subject}-{subject.ySubject.substring(2)}
+                  </td>
+                  <td className="border border-gray-400 py-2 px-4 border-opacity-10">
+                    {subject.SUBJECT}
+                  </td>
+                  <td className="border border-gray-400 py-2 px-4 border-opacity-10">
+                    {subject.credit}
+                  </td>
+                  <td className="border border-gray-400 py-2 px-4 border-opacity-10">
+                    {subject.Moo}
+                  </td>
+                  <td className="border border-gray-400 py-2 px-4 border-opacity-10">
+                    {subject.NAME}
+                  </td>
+                  <td className="border border-gray-400 py-2 px-4 border-opacity-10">
+                    {subject.N_people}
+                  </td>
+                  <td className="border border-gray-400 py-2 px-4 border-opacity-10">
+                    {subject.branch.t12.map((item, index) => (
+                      <span key={index}>
+                        {index > 0 && ", "}
+                        ชั้นปี {item}
+                      </span>
+                    ))}
+                  </td>
+                  <td className="border border-gray-400 py-2 px-4 border-opacity-10">
+                    {subject.day}
+                  </td>
+                  <td className="border border-gray-400 py-2 px-4 border-opacity-10">
+                    {subject.st.substring(0, 5)}-{subject.et.substring(0, 5)} น.
+                  </td>
+                  <td className="border border-gray-400 py-2 px-4 border-opacity-10">
+                    <Link to={"/schedule_edit/" + subject.idre}>
+                      <button
+                        className={`bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded ml-3 ${
+                          subject.NAME !== userName
+                            ? "hidden opacity-0 cursor-default"
+                            : ""
+                        }`}
+                      >
+                        Edit
+                      </button>
+                    </Link>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
