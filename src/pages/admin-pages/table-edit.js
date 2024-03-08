@@ -4,9 +4,23 @@ import BoxSetDB from "./component/Boxdb";
 import Status_set from "./component/status-set";
 import Tableaddeditdelete from "./component/Tableaddeditdelete";
 import PIDbox from "./component/pid";
+import { useEffect, useState } from "react";
+import { apiurl } from "../../config";
+import openInputAlert from "./component/SwalInputeditname";
+import axios from "axios";
 const TableEdit = () => {
     const navigate = useNavigate();
     const userRole = localStorage.getItem("role_id");
+    const [data, setData] = useState([{}])
+    useEffect(() => {
+        const getapi = async () => {
+            const dataResponse = await axios.get(apiurl + "/api/setting/autoday");
+            const data = dataResponse.data;
+            setData(data)
+        }
+        getapi();
+    }, [])
+
     const showAlert = () => {
         Swal.fire({
             icon: "error",
@@ -39,26 +53,29 @@ const TableEdit = () => {
 
                 <BoxSetDB title={"ดาต้าเบส"} keys={"database-set"}>
                     <BoxSetDB title={"หมวดวิชา"} keys={"course-set"}>
-                        <Tableaddeditdelete geturl={"/api/setting/subject_category"} remainder={"*คำเตือนอัปโหลดไฟล์หลักสูตรจะเกี่ยวข้องตรงนี้ด้วย"} />
+                        <Tableaddeditdelete geturl={"/api/setting/subject_category"} table="subject_category" remainder={"*คำเตือนอัปโหลดไฟล์หลักสูตรจะเกี่ยวข้องตรงนี้ด้วย"} 
+                            deleteurl="/api/setting/deletesubject_category" foredeleteurl={"/api/setting/deleteforesubject_category" }
+                            title="หมวดวิชา"
+                        />
                     </BoxSetDB>
                     <BoxSetDB title={"หมวดวิชาห้ามทับเวลากัน"} keys={"coursetub-set"}>
                         <Tableaddeditdelete geturl={"/api/setting/focus_sub_cat"} />
                     </BoxSetDB>
                     <BoxSetDB title={"ค่าสถานนะ"} keys={"status-set"}>
-                        <Status_set />
+                        <Status_set geturl="/api/setting/status" table="status"/>
                     </BoxSetDB>
-                    <BoxSetDB title={"สถานะผู้ใช้"} keys={"role-set"}>
-                        <Tableaddeditdelete geturl={"/api/setting/role"} />
+                    <BoxSetDB title={"ตำแหน่งผู้ใช้"} keys={"role-set"}>
+                        <Tableaddeditdelete geturl={"/api/setting/role"} remainder="*ไม่สามารถลบตำแหน่งแอดมินได้ หรือ id 2 ได้" table="role"/>
                     </BoxSetDB>
-                    <BoxSetDB title={"สถานะผู้ใช้ เข้าถึงลิ้งค์"} keys={"rolelink-set"}>
+                    <BoxSetDB title={"ตำแหน่งผู้ใช้ เข้าถึงลิ้งค์"} keys={"rolelink-set"}>
                     </BoxSetDB>
                     <BoxSetDB title={"หมวดเรียน"} keys={"course-set"}>
-                        <Tableaddeditdelete geturl={"/api/setting/category"} />
+                        <Tableaddeditdelete geturl={"/api/setting/category"} table={"category"}/>
                     </BoxSetDB>
                 </BoxSetDB>
                 <BoxSetDB title={"ออโต้ ตรวจสอบวิชา"} keys={"auto-set"}>
                     <BoxSetDB title={"วันที่ตรวจสอบ"}>
-
+                        <Tableaddeditdelete geturl={"/api/setting/autoday"} />
                     </BoxSetDB>
                     <BoxSetDB title={"เวลาที่ตรวจสอบ"}>
 
@@ -73,7 +90,7 @@ const TableEdit = () => {
                     </BoxSetDB>
                 </BoxSetDB>
                 <BoxSetDB title={"Bankend run on PID"} keys={"pid-set"}>
-                   <PIDbox/>
+                    <PIDbox />
                 </BoxSetDB>
             </div>
         </div>
