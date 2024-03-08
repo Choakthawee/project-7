@@ -23,6 +23,9 @@ const RegCourseEdit = () => {
   const [subject, setSubject] = useState({});
   const [errormsg, setErrorMsg] = useState({});
 
+  const [collectData, setCollectData] = useState({});
+  const [grayBoxData, setGrayBoxData] = useState([]);
+
   useEffect(() => {
     const getdataApi = async () => {
       try {
@@ -93,23 +96,6 @@ const RegCourseEdit = () => {
   //   }
   // };
 
-  // const updateData = (data) => {
-  //   try {
-  //     setID((prevData) => [...prevData, data]);
-  //     Swal.fire({
-  //       icon: "success",
-  //       title: "สำเร็จ",
-  //       text: data.msg,
-  //     });
-  //   } catch (error) {
-  //     Swal.fire({
-  //       icon: "error",
-  //       title: "ไม่สำเร็จ",
-  //       text: error.response.data.msgerror,
-  //     });
-  //   }
-  // };
-
   const updateData = async (data) => {
     try {
       const getdata = await axios.post(
@@ -136,9 +122,11 @@ const RegCourseEdit = () => {
   };
 
   const handleDelete = (i) => {
-    const deleteData = [...data];
-    deleteData.splice(i, 1);
-    setData(deleteData);
+    setGrayBoxData((prevData) => {
+      const newData = [...prevData];
+      newData.splice(i, 1);
+      return newData;
+    });
   };
 
   const SectionRadio = ({ id, checked, onChange }) => {
@@ -167,7 +155,7 @@ const RegCourseEdit = () => {
     );
   };
 
-  const BranchBox = ({ setall, handleUpdateData }) => {
+  const BranchBox = ({ setall }) => {
     //เลือกสาขา
     const [selectedOptions, setSelectedOptions] = useState([]);
     const [selectedBranch, setSelectedBranch] = useState("");
@@ -260,7 +248,6 @@ const RegCourseEdit = () => {
     //     }
     //     selectedData[branch].push(Number(year));
     //   }
-    //   handleUpdateData();
     //   console.log(selectedData);
     // };
 
@@ -409,9 +396,6 @@ const RegCourseEdit = () => {
             </button>
           </div>
         )}
-        {/* <div>
-          <button onClick={handleUpdateBranch}>Test_Branch</button>
-        </div> */}
       </div>
     );
   };
@@ -420,8 +404,7 @@ const RegCourseEdit = () => {
     const [ListSelect, setListSelect] = useState([]);
     const [selectedRadio, setSelectedRadio] = useState(Number);
     const [all, setall] = useState({});
-    const [ID, setID] = useState([]);
-    const [uid, setUid] = useState([]);
+
     const [st, setSt] = useState([]);
     const [et, setEt] = useState([]);
     const [day, setDay] = useState([]);
@@ -431,45 +414,6 @@ const RegCourseEdit = () => {
     const [category_id, setCategoryId] = useState([]);
     const [Subjects_id, setSubjectsId] = useState([]);
     const [realcredit, setRealCredit] = useState([]);
-
-    const jsonBranch = JSON.stringify(data);
-
-    // const handleRadioChange = (event) => {
-    //   setListSelect(event.target.value == "0");
-    // };
-
-    // const [subjectData, setSubjectData] = useState({
-    //   // เพิ่ม state สำหรับเก็บข้อมูลทั้งหมดของหน่วยกิต
-    //   credit: "",
-    //   lecture_t: "",
-    //   practice_t: "",
-    //   exsub: "",
-    //   sub_hour: "",
-    //   selectedBranch: "",
-    //   selectedYears: [],
-    //   selectedOptions: [],
-    //   teachingSchedule: [], // เพิ่ม state สำหรับเก็บข้อมูลตารางสอน
-    // });
-
-    // useEffect(() => {
-    //   const handleUpdateData = () => {
-    //     const data = {
-    //       ID: ID,
-    //       uid: uid,
-    //       st: st,
-    //       et: et,
-    //       day: day,
-    //       sec: sec,
-    //       status_id: 2,
-    //       N_people: N_people,
-    //       branch: branch,
-    //       category_id: item.id,
-    //       Subjects_id: subject.id,
-    //       realcredit: realcredit,
-    //     };
-    //     updateData(data);
-    //   };
-    // });
 
     useEffect(() => {
       console.log(all);
@@ -521,18 +465,19 @@ const RegCourseEdit = () => {
         day_id: day,
         status_id: 2,
         N_people: N_people,
-        branch: {},
+        branch: all,
         category_id: selectedRadio,
         Subjects_id: sub_id,
       };
       console.log(data);
+      setGrayBoxData((prevData) => [...prevData, data]);
     };
 
     return (
       <div className="box-gray p-2">
         <div className="flex flex-col gap-3">
           <div className="flex justify-between">
-            <h1 className="text-lg">หมู่เรียนที่ : {i}</h1>
+            <h1 className="text-lg">หมู่เรียนที่ : {i + 1}</h1>
             <button onClick={() => handleDelete(i)}>
               <TiDelete size={28} />
             </button>
@@ -669,7 +614,7 @@ const RegCourseEdit = () => {
             />
           </div>
           <div className="flex flex-col">
-            <BranchBox setall={setall} handleUpdateData={handleUpdateData} />
+            <BranchBox setall={setall} />
           </div>
           <div>
             <button onClick={handleUpdateData}>Test</button>
@@ -686,8 +631,8 @@ const RegCourseEdit = () => {
   }, [data]);
 
   const addbox = () => {
-    setData((prevData) => {
-      const newData = [...prevData, prevData.length + 1];
+    setGrayBoxData((prevData) => {
+      const newData = [...prevData, { grayBoxData }];
       return newData;
     });
   };
@@ -758,12 +703,12 @@ const RegCourseEdit = () => {
                 <button id="add" onClick={() => addbox()}>
                   <FaCirclePlus size={20} />
                 </button>
-                {data.map((val, i) => (
+                {grayBoxData.map((val, i) => (
                   <GrayBox
                     key={val}
-                    i={val}
+                    i={i}
                     exsub={subject.exsub}
-                    sub_id={subject.id}
+                    sub_id={id}
                   ></GrayBox>
                 ))}
               </div>
@@ -776,11 +721,6 @@ const RegCourseEdit = () => {
                 </button>
               </div>
             </div>
-            {/* <div className="flex cursor-pointer justify-center" onClick={handleCommit}>
-              <button className="transition-all bg-green-600 rounded-3xl w-24 h-10 justify-center items-center flex flex-row shadow-lg">
-                <label className="text-white text-base cursor-pointer">ยืนยัน</label>
-              </button>
-            </div> */}
           </div>
         </div>
       </div>
