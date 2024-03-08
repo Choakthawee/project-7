@@ -114,6 +114,18 @@ const RegStatus = () => {
     });
   };
 
+  const groupAndMerge = (data) => {
+    const groupedData = {};
+    data.forEach((subject) => {
+      const key = `${subject.st}-${subject.et}-${subject.DAYNAME}`;
+      if (!groupedData[key]) {
+        groupedData[key] = [];
+      }
+      groupedData[key].push(subject);
+    });
+    return Object.values(groupedData);
+  };
+
   if (userRole !== "3") {
     showAlert();
     return null;
@@ -207,43 +219,73 @@ const RegStatus = () => {
             </tr>
           </thead>
           <tbody>
-            {subjectReg.length > 0 && subjectReg
-              .filter(subject =>
-                (selectedCategory === "" || subject.category_id === selectedCategory) &&
-                (selectedStatus === "" || subject.status_id === selectedStatus)
-              )
-              .map((subject, index) => (
-                <tr key={index} className={
-                  (index) % 2 === 0 ? "bg-gray-100" : "bg-white"
-                }>
-                  <td className="py-2 font-normal text-lg text-center">{index + 1}</td>
-                  <td className="py-2 font-normal text-lg text-center">{subject.idsubject}-{subject.years.substring(2)}</td>
-                  <td className="py-2 font-normal text-lg text-center">{subject.SUBJECTNAME}</td>
-                  <td className="py-2 font-normal text-lg text-center">{subject.credit}</td>
-                  <td className="py-2 font-normal text-lg text-center">{subject.CATEGORYNAME}</td>
-                  <td className="py-2 font-normal text-lg text-center">{subject.USERNAME}</td>
+            {subjectReg.length > 0
+              && subjectReg
+                .filter(subject =>
+                  (selectedCategory === "" || subject.category_id === selectedCategory) &&
+                  (selectedStatus === "" || subject.status_id === selectedStatus)
+                )
+                .reduce((acc, curr) => {
+                  const isStatusThree = curr.status_id === 3;
+                  const key = `${curr.st}-${curr.et}-${curr.DAYNAME}`;
 
-                  <td className="py-2 font-normal text-lg text-center">{subject.N_people}</td>
-                  <td className="py-2 font-normal text-lg text-center">
-                    {subject.branch.t12.map((item, index) => (
-                      <span>
-                        {index > 0 && ", "}
-                        T12-{item}
-                      </span>
+                  if (isStatusThree) {
+                    const existingSubjectIndex = acc.findIndex(item =>
+                      item.key === key
+                    );
+
+                    if (existingSubjectIndex !== -1) {
+                      acc[existingSubjectIndex].data.push(curr);
+                    } else {
+                      acc.push({
+                        key: key,
+                        data: [curr]
+                      });
+                    }
+                  } else {
+                    acc.push({
+                      key: key,
+                      data: [curr]
+                    });
+                  }
+
+                  return acc;
+                }, [])
+                .map((group, index) => (
+                  <React.Fragment key={index}>
+                    {group.data.map((subject, subIndex) => (
+                      <tr key={`${group.key}-${subIndex}`} className={(index) % 2 === 0 ? "bg-gray-100" : "bg-white"}>
+                        <td className="py-2 font-normal text-sm text-center">{index + 1}</td>
+                        <td className="py-2 font-normal text-sm text-center">{subject.idsubject}-{subject.years.substring(2)}</td>
+                        <td className="py-2 font-normal text-sm text-center">{subject.SUBJECTNAME}</td>
+                        <td className="py-2 font-normal text-sm text-center">{subject.credit}</td>
+                        <td className="py-2 font-normal text-sm text-center">{subject.CATEGORYNAME}</td>
+                        <td className="py-2 font-normal text-sm text-center">{subject.USERNAME}</td>
+                        <td className="py-2 font-normal text-sm text-center">{subject.N_people}</td>
+                        <td className="py-2 font-normal text-sm text-center">
+                          {subject.branch.t12.map((item, index) => (
+                            <span key={index}>
+                              {index > 0 && ", "}
+                              T12-{item}
+                            </span>
+                          ))}
+                        </td>
+                        <td className="py-2 font-normal text-sm text-center">{subject.DAYNAME}</td>
+                        <td className="py-2 font-normal text-sm text-center">{subject.st.substring(0, 5)}-{subject.et.substring(0, 5)} น.</td>
+                        <td className={`py-2 font-normal text-sm text-center ${subject.STATUSNAME === "รอ" ? "text-orange-400" : subject.STATUSNAME === "ไม่ผ่าน" ? "text-red-500" : "text-green-400"}`}>{subject.STATUSNAME}</td>
+                        {subIndex === 0 && (
+                          <td rowSpan={group.data.length}>
+                            <EditIcon
+                              size={24}
+                              className="cursor-pointer self-center"
+                              onClick={() => handleEdit(subject)}
+                            />
+                          </td>
+                        )}
+                      </tr>
                     ))}
-                  </td>
-                  <td className="py-2 font-normal text-lg text-center">{subject.DAYNAME}</td>
-                  <td className="py-2 font-normal text-lg text-center">{subject.st.substring(0, 5)}-{subject.et.substring(0, 5)} น.</td>
-                  <td className={`py-2 font-normal text-lg text-center ${subject.STATUSNAME === "รอ" ? "text-orange-400" : subject.STATUSNAME === "ไม่ผ่าน" ? "text-red-500" : "text-green-400"}`}>{subject.STATUSNAME}</td>
-                  <td >
-                    <EditIcon
-                      size={24}
-                      className="cursor-pointer self-center"
-                      onClick={() => handleEdit(subject)}
-                    />
-                  </td>
-                </tr>
-              ))}
+                  </React.Fragment>
+                ))}
           </tbody>
         </table>
       </div>
