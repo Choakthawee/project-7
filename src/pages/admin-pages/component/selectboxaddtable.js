@@ -36,7 +36,7 @@ export default function Selectboxtable({ geturl, table,remainder, title, col, ge
             }
         }
         getapi2();
-    }, [reload, reload2])
+    }, [reload, reload2,geturl,geturlInsert])
     const insertapi = async (id) => {
         try {
             const dataresponse = await axios.post(apiurl + inserturl, { col: col, table: table, id: id })
@@ -102,7 +102,7 @@ export default function Selectboxtable({ geturl, table,remainder, title, col, ge
                                 </thead>
                                 <tbody>
                                     {data.map((v, i) => (
-                                        <tr key={i} className=" bg-slate-100">
+                                        <tr key={i} className=" hover:bg-slate-200 bg-slate-100">
                                             <td className=" text-center p-2 ">{i + 1}</td>
                                             <td className=" text-center p-2 ">{v.name}</td>
                                             <td className=" hover:bg-slate-400 cursor-pointer text-center p-2 " onClick={() => {
@@ -134,7 +134,7 @@ export default function Selectboxtable({ geturl, table,remainder, title, col, ge
                         }
                     </div>
                     <div>
-                        <button className="p-2 text-white rounded-lg min-w-36 w-full lg:w-fit bg-midgreen" onClick={() => { setOpenInsert(!openinsert) }}>{openinsert == true ? "ปิด" : "เพิ่ม"}</button>
+                        <button className="p-2 text-white rounded-lg min-w-36 w-full lg:w-fit bg-midgreen" onClick={() => { setOpenInsert(!openinsert) }}>{openinsert === true ? "ปิด" : "เพิ่ม"}</button>
                     </div>
                 </div>
             }

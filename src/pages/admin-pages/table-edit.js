@@ -4,16 +4,13 @@ import BoxSetDB from "./component/Boxdb";
 import Onlyrename from "./component/onlyrename";
 import Tableaddeditdelete from "./component/Tableaddeditdelete";
 import PIDbox from "./component/pid";
-import { useEffect, useState } from "react";
-import { apiurl } from "../../config";
-import openInputAlert from "./component/SwalInputeditname";
-import axios from "axios";
+import { useState } from "react";
 import Selectboxtable from "./component/selectboxaddtable";
 import { AlertCircleIcon } from "lucide-react";
 const TableEdit = () => {
     const navigate = useNavigate();
     const userRole = localStorage.getItem("role_id");
-    const [readed,setReaded] = useState(false);
+    const [readed, setReaded] = useState(false);
     const showAlert = () => {
         Swal.fire({
             icon: "error",
@@ -71,24 +68,33 @@ const TableEdit = () => {
                         <Tableaddeditdelete geturl={"/api/setting/day"} table={"day"} title={"วัน"} />
                     </BoxSetDB>
                 </BoxSetDB>
+                <BoxSetDB title={"ล้างและคืนค่าดาต้าเบส"} keys={"cleardb-set"}>
+                    <BoxSetDB title={"ล้างวิชาที่ลงทะเบียน"} keys={"cleardbsubregit-set"}>
+
+                    </BoxSetDB>
+                    <BoxSetDB title={"ล้างวิชา"} keys={"cleardbsubregit-set"}>
+
+                    </BoxSetDB>
+                    <BoxSetDB  title={"คืนค่าจากโรงงาน"} keys={"cleardbsubregit-set"}>
+
+                    </BoxSetDB>
+                </BoxSetDB>
                 <BoxSetDB title={"ออโต้ ตรวจสอบวิชา"} keys={"auto-set"}>
-                    <div className="flex flex-col w-full justify-center items-center" onClick={()=>setReaded(true)} >
-                        <div className={`  ${readed?"":"blur-[2px]"} w-full`}>
+                    <div className="flex flex-col w-full justify-center items-center" onClick={() => setReaded(true)} >
+                        <div className={`  ${readed ? "" : "blur-[2px]"} w-full`}>
                             <BoxSetDB title={"วันที่ตรวจสอบ"} keys={"autoday-set"}>
                                 <Selectboxtable remainder="*คำเตือนระบบจะดำเนินการเมื่อทำการเริ่มระบบใหม่" col="day_id" geturl={"/api/setting/autoday"} geturlInsert={"/api/setting/daywithout"} table="autoday" title={"วันที่ตรวจสอบ"} />
                             </BoxSetDB>
                             <BoxSetDB title={"เวลาที่ตรวจสอบ"}>
                             </BoxSetDB>
                         </div>
-                        <div className={`${readed?" hidden":"absolute"} w-1/2 bg-opacity-60 bg-red-300 flex p-2 flex-col justify-center items-center rounded-2xl `}>
-                            <AlertCircleIcon size={50}/>
+                        <div className={`${readed ? " hidden" : "absolute w-1/2"}  transition-all bg-opacity-60 bg-red-300 flex p-2 flex-col justify-center items-center rounded-2xl `}>
+                            <AlertCircleIcon size={50} />
                             <p>ระบบนี้จะทำงาน</p>
                             <p>ก็ต่อเมื่อทำการกดรีระบบ</p>
-                            
+
                         </div>
                     </div>
-
-
                 </BoxSetDB>
                 <BoxSetDB title={"Log ข้อความ"} keys={"msg-set"}>
                     <BoxSetDB title={"ข้อความการลงทะเบียน"} keys={"register-msg"}>
@@ -98,8 +104,13 @@ const TableEdit = () => {
 
                     </BoxSetDB>
                 </BoxSetDB>
-                <BoxSetDB title={"Bankend run on PID"} keys={"pid-set"}>
-                    <PIDbox />
+                <BoxSetDB title={"Backend Run"} keys={"Backend-set"}>
+                    <BoxSetDB title={"Run on PID"} keys={"pid-set"}>
+                        <PIDbox />
+                    </BoxSetDB>
+                    <BoxSetDB  title={"Restart Backend"} keys={"Restartb-set"}>
+
+                    </BoxSetDB>
                 </BoxSetDB>
             </div>
         </div>
