@@ -59,11 +59,4 @@
   border-style: solid;
   border-color: red; */
 }
-.inDBox3 {
-  display: flex;
-  flex: 1;
-  justify-content: end;
-  /* border-width: 5px;
-  border-style: solid;
-  border-color: red; */
-}
+

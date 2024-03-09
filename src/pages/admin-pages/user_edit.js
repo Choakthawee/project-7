@@ -50,7 +50,7 @@ const User_edit = () => {
       }
     }
     getapi();
-  }, [])
+  }, [Nev,id])
   const showAlert = () => {
     Swal.fire({
       icon: "error",
