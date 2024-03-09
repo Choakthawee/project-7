@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { apiurl } from "../../config";
 import openInputAlert from "./component/SwalInputeditname";
 import axios from "axios";
+import Selectboxtable from "./component/selectboxaddtable";
 const TableEdit = () => {
     const navigate = useNavigate();
     const userRole = localStorage.getItem("role_id");
@@ -49,7 +50,7 @@ const TableEdit = () => {
                         />
                     </BoxSetDB>
                     <BoxSetDB title={"หมวดวิชาห้ามทับเวลากัน"} keys={"coursetub-set"}>
-                        <Tableaddeditdelete geturl={"/api/setting/focus_sub_cat"} table="" title="" />
+                        <Selectboxtable geturl={"/api/setting/focus_sub_cat"} table="focus_sub_cat" title="หมวดวิชาห้ามทับเวลากัน" />
                     </BoxSetDB>
                     <BoxSetDB title={"ค่าสถานะ"} keys={"status-set"}>
                         <Onlyrename geturl="/api/setting/status" table="status" title={"สถานะ"}/>

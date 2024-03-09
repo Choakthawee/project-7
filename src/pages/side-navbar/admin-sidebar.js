@@ -132,7 +132,7 @@ const Sidebar = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth <= 600) {
+      if (window.innerWidth <= 800) {
         setSidebarCollapsed(true);
       } else {
         setSidebarCollapsed(false);
