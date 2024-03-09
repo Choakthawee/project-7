@@ -82,25 +82,25 @@ export default function Tableaddeditdelete({ geturl, table, foredeleteurl, title
     return (
         <div className=" flex gap-2 flex-col p-2">
             {Errormsg ? Errormsg :
-                <div>
+                <div className="flex gap-2 flex-col">
                     <p className=" text-red-600 font-semibold">{remainder}</p>
-                    <div className=" overflow-x-auto shadow-xl">
+                    <div className=" overflow-x-auto shadow-2xl">
                         <table className="border-separate w-full">
                             <thead className="column-color1 text-white ">
                                 <tr>
                                     <th className="p-2 w-1/12">id</th>
-                                    <th className="p-2 w-9/12">ชื่อ{title}</th>
-                                    <th className="p-2 w-1/12">แก้ไข</th>
+                                    <th className="p-2 w-8/12">ชื่อ{title}</th>
+                                    <th className="p-2 w-2/12">เปลี่ยนชื่อ</th>
                                     <th className="p-2 w-1/12">ลบ</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {data.map((v, i) => (
-                                    <tr key={i} className=" bg-slate-100">
+                                    <tr key={i} className=" bg-slate-100 hover:bg-slate-200">
                                         <td className=" text-center p-2 ">{v.id}</td>
                                         <td className=" text-center p-2 ">{v.name}</td>
-                                        <td className=" text-center p-2 " onClick={() => openInputAlert("แก้ชื่อ" + title, "กรอกชื่อใหม่ที่จะแก้ไข", v.name, v.id, table, renameurl)}>แก้</td>
-                                        <td className=" text-center p-2 " onClick={() => {
+                                        <td className=" text-center p-2 hover:bg-slate-400 cursor-pointer " onClick={() => openInputAlert("แก้ชื่อ" + title, "กรอกชื่อใหม่ที่จะแก้ไข", v.name, v.id, table, renameurl)}>เปลี่ยนชื่อ</td>
+                                        <td className=" text-center p-2  hover:bg-slate-400 cursor-pointer" onClick={() => {
                                             Swal.fire({
                                                 icon: "info",
                                                 text: "ยืนยันที่จะลบ",

@@ -1,12 +1,15 @@
 import axios from "axios";
 import { apiurl } from "../../../config";
 import Swal from "sweetalert2";
-
-export default async function DeleteMode(id,table,foredeleteurl,deleteurl = '/api/setting/deleteall'){
+export default async function DeleteMode2(id,table,reload,foredeleteurl,deleteurl = '/api/setting/deleteall'){
     try {
         const dataResponse = await axios.delete(apiurl + deleteurl + "?id=" + id + "&table=" + table)
         const data = dataResponse.data;
-        Swal.fire({ icon: "success", text: data.msg, showCloseButton: true, confirmButtonText: "หมุนเว็บ", preConfirm: () => { window.location.reload() } })
+        Swal.fire({ icon: "success", text: data.msg,preConfirm:()=>{
+            if(reload){
+                reload();
+            }
+        }})
     } catch (error) {
         if (error.response.data.msgerror) {
             if (foredeleteurl) {
@@ -19,7 +22,7 @@ export default async function DeleteMode(id,table,foredeleteurl,deleteurl = '/ap
                         try {
                             const dataResponse = await axios.delete(apiurl + foredeleteurl + "/" + id)
                             const data = dataResponse.data;
-                            Swal.fire({ icon: "success", text: data.msg, showCloseButton: true, confirmButtonText: "หมุนเว็บ", preConfirm: () => { window.location.reload() } })
+                            Swal.fire({ icon: "success", text: data.msg})
                         } catch (error) {
                             if (error.response.data.msgerror) {
 
@@ -56,4 +59,3 @@ export default async function DeleteMode(id,table,foredeleteurl,deleteurl = '/ap
     }
 
 }
-
