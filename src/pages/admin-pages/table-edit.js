@@ -9,9 +9,11 @@ import { apiurl } from "../../config";
 import openInputAlert from "./component/SwalInputeditname";
 import axios from "axios";
 import Selectboxtable from "./component/selectboxaddtable";
+import { AlertCircleIcon } from "lucide-react";
 const TableEdit = () => {
     const navigate = useNavigate();
     const userRole = localStorage.getItem("role_id");
+    const [readed,setReaded] = useState(false);
     const showAlert = () => {
         Swal.fire({
             icon: "error",
@@ -50,10 +52,10 @@ const TableEdit = () => {
                         />
                     </BoxSetDB>
                     <BoxSetDB title={"หมวดวิชาห้ามทับเวลากัน"} keys={"coursetub-set"}>
-                        <Selectboxtable geturl={"/api/setting/focus_sub_cat"} table="focus_sub_cat" title="หมวดวิชาห้ามทับเวลากัน" />
+                        <Selectboxtable remainder="*คำเตือนระบบจะดำเนินการเมื่อวันและเวลา auto ตรวจสอบ" col="subject_category_id" geturl={"/api/setting/focus_sub_cat"} geturlInsert={"/api/setting/subject_categorywithout"} table="focus_sub_cat" title="หมวดวิชาห้ามทับเวลากัน" />
                     </BoxSetDB>
                     <BoxSetDB title={"ค่าสถานะ"} keys={"status-set"}>
-                        <Onlyrename geturl="/api/setting/status" table="status" title={"สถานะ"}/>
+                        <Onlyrename geturl="/api/setting/status" table="status" title={"สถานะ"} />
                     </BoxSetDB>
                     <BoxSetDB title={"ตำแหน่งผู้ใช้"} keys={"role-set"}>
                         <Tableaddeditdelete geturl={"/api/setting/role"} remainder="*ไม่สามารถลบตำแหน่งแอดมินได้ หรือ id 2 ได้" table="role"
@@ -70,12 +72,23 @@ const TableEdit = () => {
                     </BoxSetDB>
                 </BoxSetDB>
                 <BoxSetDB title={"ออโต้ ตรวจสอบวิชา"} keys={"auto-set"}>
-                    <BoxSetDB title={"วันที่ตรวจสอบ"}>
-                        <Tableaddeditdelete geturl={"/api/setting/autoday"} />
-                    </BoxSetDB>
-                    <BoxSetDB title={"เวลาที่ตรวจสอบ"}>
+                    <div className="flex flex-col w-full justify-center items-center" onClick={()=>setReaded(true)} >
+                        <div className={`  ${readed?"":"blur-[2px]"} w-full`}>
+                            <BoxSetDB title={"วันที่ตรวจสอบ"} keys={"autoday-set"}>
+                                <Selectboxtable remainder="*คำเตือนระบบจะดำเนินการเมื่อทำการเริ่มระบบใหม่" col="day_id" geturl={"/api/setting/autoday"} geturlInsert={"/api/setting/daywithout"} table="autoday" title={"วันที่ตรวจสอบ"} />
+                            </BoxSetDB>
+                            <BoxSetDB title={"เวลาที่ตรวจสอบ"}>
+                            </BoxSetDB>
+                        </div>
+                        <div className={`${readed?" hidden":"absolute"} w-1/2 bg-opacity-60 bg-red-300 flex p-2 flex-col justify-center items-center rounded-2xl `}>
+                            <AlertCircleIcon size={50}/>
+                            <p>ระบบนี้จะทำงาน</p>
+                            <p>ก็ต่อเมื่อทำการกดรีระบบ</p>
+                            
+                        </div>
+                    </div>
 
-                    </BoxSetDB>
+
                 </BoxSetDB>
                 <BoxSetDB title={"Log ข้อความ"} keys={"msg-set"}>
                     <BoxSetDB title={"ข้อความการลงทะเบียน"} keys={"register-msg"}>
