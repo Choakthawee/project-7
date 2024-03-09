@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import BoxSetDB from "./component/Boxdb";
-import Status_set from "./component/status-set";
+import Onlyrename from "./component/onlyrename";
 import Tableaddeditdelete from "./component/Tableaddeditdelete";
 import PIDbox from "./component/pid";
 import { useEffect, useState } from "react";
@@ -11,16 +11,6 @@ import axios from "axios";
 const TableEdit = () => {
     const navigate = useNavigate();
     const userRole = localStorage.getItem("role_id");
-    const [data, setData] = useState([{}])
-    useEffect(() => {
-        const getapi = async () => {
-            const dataResponse = await axios.get(apiurl + "/api/setting/autoday");
-            const data = dataResponse.data;
-            setData(data)
-        }
-        getapi();
-    }, [])
-
     const showAlert = () => {
         Swal.fire({
             icon: "error",
@@ -45,7 +35,7 @@ const TableEdit = () => {
 
     return (
         <div
-            className="flex-col flex w-full min-h-screen p-10" style={{ backgroundColor: "#cce3de" }}        >
+            className="flex-col flex w-full min-h-screen p-2 md:p-10" style={{ backgroundColor: "#cce3de" }}        >
             <div className="flex flex-col gap-3">
                 <p className="text-4xl font-bold h1text-shadow text-midgreen">
                     ตั้งค่า Database
@@ -53,24 +43,29 @@ const TableEdit = () => {
 
                 <BoxSetDB title={"ดาต้าเบส"} keys={"database-set"}>
                     <BoxSetDB title={"หมวดวิชา"} keys={"course-set"}>
-                        <Tableaddeditdelete geturl={"/api/setting/subject_category"} table="subject_category" remainder={"*คำเตือนอัปโหลดไฟล์หลักสูตรจะเกี่ยวข้องตรงนี้ด้วย"} 
-                            deleteurl="/api/setting/deletesubject_category" foredeleteurl={"/api/setting/deleteforesubject_category" }
+                        <Tableaddeditdelete geturl={"/api/setting/subject_category"} table="subject_category" remainder={"*คำเตือนอัปโหลดไฟล์หลักสูตรจะเกี่ยวข้องตรงนี้ด้วย"}
+                            foredeleteurl={"/api/setting/deleteforesubject_category"}
                             title="หมวดวิชา"
                         />
                     </BoxSetDB>
                     <BoxSetDB title={"หมวดวิชาห้ามทับเวลากัน"} keys={"coursetub-set"}>
-                        <Tableaddeditdelete geturl={"/api/setting/focus_sub_cat"} />
+                        <Tableaddeditdelete geturl={"/api/setting/focus_sub_cat"} table="" title="" />
                     </BoxSetDB>
-                    <BoxSetDB title={"ค่าสถานนะ"} keys={"status-set"}>
-                        <Status_set geturl="/api/setting/status" table="status"/>
+                    <BoxSetDB title={"ค่าสถานะ"} keys={"status-set"}>
+                        <Onlyrename geturl="/api/setting/status" table="status" title={"สถานะ"}/>
                     </BoxSetDB>
                     <BoxSetDB title={"ตำแหน่งผู้ใช้"} keys={"role-set"}>
-                        <Tableaddeditdelete geturl={"/api/setting/role"} remainder="*ไม่สามารถลบตำแหน่งแอดมินได้ หรือ id 2 ได้" table="role"/>
+                        <Tableaddeditdelete geturl={"/api/setting/role"} remainder="*ไม่สามารถลบตำแหน่งแอดมินได้ หรือ id 2 ได้" table="role"
+                            title="ตำแหน่งผู้ใช้"
+                        />
                     </BoxSetDB>
                     <BoxSetDB title={"ตำแหน่งผู้ใช้ เข้าถึงลิ้งค์"} keys={"rolelink-set"}>
                     </BoxSetDB>
                     <BoxSetDB title={"หมวดเรียน"} keys={"course-set"}>
-                        <Tableaddeditdelete geturl={"/api/setting/category"} table={"category"}/>
+                        <Onlyrename geturl={"/api/setting/category"} table={"category"} title={"หมวดเรียน"} />
+                    </BoxSetDB>
+                    <BoxSetDB title={"วัน"} keys={"day-set"}>
+                        <Tableaddeditdelete geturl={"/api/setting/day"} table={"day"} title={"วัน"} />
                     </BoxSetDB>
                 </BoxSetDB>
                 <BoxSetDB title={"ออโต้ ตรวจสอบวิชา"} keys={"auto-set"}>
