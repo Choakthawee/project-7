@@ -1,14 +1,14 @@
-import { KeySquareIcon } from "lucide-react";
+
 import { useEffect, useState } from "react";
 import { SlArrowDown, SlArrowUp } from "react-icons/sl";
 export default function BoxSetDB({keys, title, children }) {
     const [IsMin, setIsMin] = useState(keys?localStorage.getItem(keys)?localStorage.getItem(keys)==="true"?true:false:true:true);
     useEffect(()=>{
         localStorage.setItem(keys,IsMin)
-    },[IsMin])
+    },[IsMin,keys])
     return (
         <div className=" flex flex-col shadow-xl bg-white rounded-lg overflow-hidden box-border">
-            <div className="flex justify-between items-center rounded-lg hover:bg-slate-200" onClick={() => {setIsMin(!IsMin);}}>
+            <div className="flex justify-between items-center rounded-lg hover:bg-slate-200" onClick={() => {setIsMin(!IsMin)}}>
                 <div className=" text-lg p-3">
                     {title}
                 </div>
@@ -16,7 +16,7 @@ export default function BoxSetDB({keys, title, children }) {
                     {IsMin === true ?  <SlArrowDown />:<SlArrowUp />}
                 </div>
             </div>
-            <div className={`pl-4 pr-4 pt-1 pb-4 flex flex-col gap-2 transition-all duration-300  ${IsMin === true ? " -translate-y-2 opacity-0 max-h-0" : "ease-out"}`}>
+            <div className={`pl-4 pr-4 pt-1 pb-4 flex flex-col gap-2 transition-all duration-300  ${IsMin === true ? " -translate-y-2 opacity-0 max-h-0" : " ease-in"}`}>
                 {children}
             </div>
 

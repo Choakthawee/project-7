@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./insertuser.css";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -23,6 +23,21 @@ const InsertUser = () => {
   const navigate = useNavigate();
 
   const [selectedFileName, setSelectedFileName] = useState(null);
+  const [datas,setData] = useState([]);
+
+  useEffect(() => {
+    const getapi = async () => {
+      try {
+        const getdata1 = await axios.get(apiurl + "/api/setting/role");
+        const data1 = getdata1.data;
+        console.log(data1);
+        setData(data1);
+      } catch (error) {
+        setData(error.response.data.msg);
+      }
+    }
+    getapi();
+  }, [])
   const showAlert = () => {
     Swal.fire({
       icon: "error",
@@ -62,7 +77,7 @@ const InsertUser = () => {
       const responsedata = await axios.post(apiurl + "/api/user1", {
         email: email,
         name: name,
-        id: Sstatus,
+        id: status,
       });
       const data = responsedata.data;
 
@@ -248,9 +263,9 @@ const InsertUser = () => {
                 value={status}
                 onChange={handleStatusChange}
               >
-                <option>แอดมิน</option>
-                <option>ฝ่ายการศึกษา</option>
-                <option>อาจารย์</option>
+                {datas.map((v,i)=>(
+                  <option value={v.id}>{v.name}</option>
+                ))}
               </select>
               <FontAwesomeIcon
                 icon={faArrowAltCircleDown}

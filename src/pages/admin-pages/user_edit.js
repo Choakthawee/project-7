@@ -1,30 +1,25 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./insertuser.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFileImport, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
 import { faCircleArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { faArrowAltCircleDown } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { apiurl } from "../../config";
-import * as XLSX from "xlsx";
 import { LockIcon } from "lucide-react";
 
 const User_edit = () => {
-  const fileInputRef = useRef(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState(2);
-  const [Sstatus, setSStatus] = useState(2);
-  const [fileData, setFileData] = useState([]);
   const { id } = useParams();
   const userRole = localStorage.getItem("role_id");
   const navigate = useNavigate();
-  const [selectedFileName, setSelectedFileName] = useState(null);
   const Nev = useNavigate()
   const [Lock,setLock] = useState(0);
+  const [datas,setData] = useState([]);
   useEffect(() => {
     const getapi = async () => {
       try {
@@ -32,12 +27,15 @@ const User_edit = () => {
         const data = getdata.data[0];
         setName(data.name);
         setEmail(data.email);
-        setStatus(data.role);
-        setSStatus(data.role_id)
+        setStatus(data.role_id);
         if(localStorage.getItem("email")===data.email){
           setLock(1);
           alert("ไม่สามารถแก้ไขตัวเองได้")
         }
+        const getdata1 = await axios.get(apiurl + "/api/setting/role");
+        const data1 = getdata1.data;
+        console.log(data1);
+        setData(data1);
       } catch (error) {
         Swal.fire({
           icon: "error",
@@ -50,10 +48,9 @@ const User_edit = () => {
           Nev(-1);
         })
       }
-
     }
     getapi();
-  }, [])
+  }, [Nev,id])
   const showAlert = () => {
     Swal.fire({
       icon: "error",
@@ -79,7 +76,7 @@ const User_edit = () => {
 
   const updateData = async () => {
     try {
-      const getdate = await axios.post(apiurl + "/api/admin/userupdate", { id: id, email: email, name: name, role_id: Sstatus })
+      const getdate = await axios.post(apiurl + "/api/admin/userupdate", { id: id, email: email, name: name, role_id: status })
       const data = getdate.data;
       Swal.fire({
         icon: "success",
@@ -107,11 +104,6 @@ const User_edit = () => {
 
   const handleStatusChange = (e) => {
     setStatus(e.target.value);
-    if (e.target.value === "แอดมิน") {
-      setSStatus(2);
-    } else if (e.target.value === "ฝ่ายการศึกษา") {
-      setSStatus(3);
-    } else if (e.target.value === "อาจารย์") setSStatus(1);
   };
 
   return (
@@ -180,9 +172,10 @@ const User_edit = () => {
                 value={status}
                 onChange={handleStatusChange}
               >
-                <option>แอดมิน</option>
-                <option>ฝ่ายการศึกษา</option>
-                <option>อาจารย์</option>
+                {datas.map((v,i)=>(
+                  <option key={i} value={v.id}>{v.name}</option>
+                ))}
+               
               </select>
               <FontAwesomeIcon
                 icon={faArrowAltCircleDown}
