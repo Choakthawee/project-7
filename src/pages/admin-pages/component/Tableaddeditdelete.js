@@ -11,8 +11,9 @@ export default function Tableaddeditdelete({ geturl, table, foredeleteurl, title
     const [data, setData] = useState([{}]);
     const [Errormsg, setErrormsg] = useState();
     const deleteMode = async (id) => {
+        const email = await localStorage.getItem("email");
         try {
-            const dataResponse = await axios.delete(apiurl + deleteurl + "?id=" + id + "&table=" + table)
+            const dataResponse = await axios.delete(apiurl + deleteurl + "?id=" + id + "&table=" + table+"&email="+email)
             const data = dataResponse.data;
             Swal.fire({ icon: "success", text: data.msg, showCloseButton: true, confirmButtonText: "ตกลง", preConfirm: () => {  setReload(!reload); } })
         } catch (error) {
@@ -25,7 +26,7 @@ export default function Tableaddeditdelete({ geturl, table, foredeleteurl, title
                         showCancelButton: true,
                         preConfirm: async () => {
                             try {
-                                const dataResponse = await axios.delete(apiurl + foredeleteurl + "/" + id)
+                                const dataResponse = await axios.delete(apiurl + foredeleteurl + "/" + id+"/"+email)
                                 const data = dataResponse.data;
                                 Swal.fire({ icon: "success", text: data.msg, showCloseButton: true, confirmButtonText: "ตกลง", preConfirm: () => {  setReload(!reload); } })
                             } catch (error) {

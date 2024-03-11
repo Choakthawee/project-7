@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 
 export default function Openlogbox() {
     const[data1,setData1] = useState(false);
+    const[data2,setData2] = useState(false);
     useEffect(()=>{
         const getapi=async(setdata,url)=>{
             try{
@@ -17,13 +18,16 @@ export default function Openlogbox() {
                 console.log(err);
             }
         }
-        getapi(setData1,"/api/setting/logopen/1")
+        const email = localStorage.getItem("email")
+        getapi(setData1,"/api/setting/logopen/1/"+email)
+        getapi(setData2,"/api/setting/logopen/2/"+email)
     },[setData1])
 
-    const onChangehandle=async(id,value,url="/api/setting/setlogopen")=>{
-        setData1(value);
+    const onChangehandle=async(id,value, setdata,url="/api/setting/setlogopen")=>{
+        setdata(value);
         try{
-            const dataresponse = await axios.post(apiurl+url,{id:id,value:value});
+            const email = await localStorage.getItem("email")
+            const dataresponse = await axios.post(apiurl+url,{id:id,value:value,email:email});
             const data = dataresponse.data;
             Swal.fire({
                 icon:"success",
@@ -38,11 +42,14 @@ export default function Openlogbox() {
     }
     return (
         <div className="flex flex-col">
-            <div className="flex items-center">
-               <CheckboxTailwind checked={data1} onChange={(e)=>{onChangehandle(1,!data1)}}>
-                เปิดบันทึกระบบlogตรวจสอบออโต้
+          
+               <CheckboxTailwind checked={data1} onChange={(e)=>{onChangehandle(1,!data1,setData1)}}>
+                เปิดบันทึกระบบlogตรวจสอบออโต้ (id=1)
                </CheckboxTailwind>
-            </div>
+               <CheckboxTailwind checked={data2} onChange={(e)=>{onChangehandle(2,!data2,setData2)}}>
+                เปิดบันทึกระบบlogตั้งค่า database (id=2)
+               </CheckboxTailwind>
+          
 
         </div>
     );

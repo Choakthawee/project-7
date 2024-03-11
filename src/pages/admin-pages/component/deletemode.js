@@ -3,8 +3,9 @@ import { apiurl } from "../../../config";
 import Swal from "sweetalert2";
 
 export default async function DeleteMode(id,table,foredeleteurl,deleteurl = '/api/setting/deleteall'){
+    const email = await localStorage.getItem("email")
     try {
-        const dataResponse = await axios.delete(apiurl + deleteurl + "?id=" + id + "&table=" + table)
+        const dataResponse = await axios.delete(apiurl + deleteurl + "?id=" + id + "&table=" + table+"&email="+email)
         const data = dataResponse.data;
         Swal.fire({ icon: "success", text: data.msg, showCloseButton: true, confirmButtonText: "หมุนเว็บ", preConfirm: () => { window.location.reload() } })
     } catch (error) {

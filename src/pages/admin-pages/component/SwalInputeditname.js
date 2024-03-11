@@ -3,9 +3,10 @@ import Swal from "sweetalert2";
 import { apiurl } from "../../../config";
 
 export default async function openInputAlert(title = "", lable = "", data = "", id, table, url) {
+  const email = await localStorage.getItem("email")
   const getapi = async (input) => {
     try {
-      const dataresponse = await axios.post(apiurl + url, { table: table, newname: input, id: id });
+      const dataresponse = await axios.post(apiurl + url, { table: table, newname: input, id: id,email:email });
       const data = dataresponse.data;
       Swal.fire({icon:"success",text:data.msg,showCancelButton:true,confirmButtonText:"หมุนเว็บ",preConfirm:()=>window.location.reload()});
     } catch (error) {

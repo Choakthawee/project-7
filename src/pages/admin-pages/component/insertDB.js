@@ -4,8 +4,9 @@ import { apiurl } from "../../../config";
 
 export default async function insertBox(title, table, url,setreload) {
     const getapi = async (id, name) => {
+        const email =await localStorage.getItem("email")
         try {
-            const dataresponse = await axios.post(apiurl + url, { id: id, name: name, table: table });
+            const dataresponse = await axios.post(apiurl + url, { id: id, name: name, table: table,email:email });
             const data = dataresponse.data;
             Swal.fire({
                 icon: "success",

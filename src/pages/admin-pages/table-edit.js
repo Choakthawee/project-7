@@ -43,29 +43,29 @@ const TableEdit = () => {
                 </p>
 
                 <BoxSetDB title={"ดาต้าเบส"} keys={"database-set"}>
-                    <BoxSetDB title={"หมวดวิชา"} keys={"course-set"}>
+                    <BoxSetDB title={"หมวดวิชา (subject_category)"} keys={"course-set"}>
                         <Tableaddeditdelete geturl={"/api/setting/subject_category"} table="subject_category" remainder={"*คำเตือนอัปโหลดไฟล์หลักสูตรจะเกี่ยวข้องตรงนี้ด้วย"}
                             foredeleteurl={"/api/setting/deleteforesubject_category"}
                             title="หมวดวิชา"
                         />
                     </BoxSetDB>
-                    <BoxSetDB title={"หมวดวิชาห้ามทับเวลากัน"} keys={"coursetub-set"}>
+                    <BoxSetDB title={"หมวดวิชาห้ามทับเวลากัน (focus_sub_cat)"} keys={"coursetub-set"}>
                         <Selectboxtable remainder="*คำเตือนระบบจะดำเนินการเมื่อวันและเวลา auto ตรวจสอบ" col="subject_category_id" geturl={"/api/setting/focus_sub_cat"} geturlInsert={"/api/setting/subject_categorywithout"} table="focus_sub_cat" title="หมวดวิชาห้ามทับเวลากัน" />
                     </BoxSetDB>
-                    <BoxSetDB title={"ค่าสถานะ"} keys={"status-set"}>
+                    <BoxSetDB title={"ค่าสถานะ (status)"} keys={"status-set"}>
                         <Onlyrename geturl="/api/setting/status" table="status" title={"สถานะ"} />
                     </BoxSetDB>
-                    <BoxSetDB title={"ตำแหน่งผู้ใช้"} keys={"role-set"}>
+                    <BoxSetDB title={"ตำแหน่งผู้ใช้ (role)"} keys={"role-set"}>
                         <Tableaddeditdelete geturl={"/api/setting/role"} remainder="*ไม่สามารถลบตำแหน่งแอดมินได้ หรือ id 2 ได้" table="role"
                             title="ตำแหน่งผู้ใช้"
                         />
                     </BoxSetDB>
                     <BoxSetDB title={"ตำแหน่งผู้ใช้ เข้าถึงลิ้งค์"} keys={"rolelink-set"}>
                     </BoxSetDB>
-                    <BoxSetDB title={"หมวดเรียน"} keys={"course-set"}>
+                    <BoxSetDB title={"หมวดเรียน (category)"} keys={"course-set"}>
                         <Onlyrename geturl={"/api/setting/category"} table={"category"} title={"หมวดเรียน"} />
                     </BoxSetDB>
-                    <BoxSetDB title={"วัน"} keys={"day-set"}>
+                    <BoxSetDB title={"วัน (day)"} keys={"day-set"}>
                         <Tableaddeditdelete geturl={"/api/setting/day"} table={"day"} title={"วัน"} />
                     </BoxSetDB>
                 </BoxSetDB>
@@ -83,7 +83,7 @@ const TableEdit = () => {
                 <BoxSetDB title={"ออโต้ ตรวจสอบวิชา"} keys={"auto-set"}>
                     <div className="flex flex-col w-full justify-center items-center" onClick={() => setReaded(true)} >
                         <div className={`  ${readed ? "" : "blur-[2px]"} flex-col flex gap-2 w-full`}>
-                            <BoxSetDB title={"วันที่ตรวจสอบ"} keys={"autoday-set"}>
+                            <BoxSetDB title={"วันที่ตรวจสอบ (autoday)"} keys={"autoday-set"}>
                                 <Selectboxtable remainder="*คำเตือนระบบจะดำเนินการเมื่อทำการเริ่มระบบใหม่" col="day_id" geturl={"/api/setting/autoday"} geturlInsert={"/api/setting/daywithout"} table="autoday" title={"วันที่ตรวจสอบ"} />
                             </BoxSetDB>
                             <BoxSetDB title={"เวลาที่ตรวจสอบ"}>
@@ -100,14 +100,18 @@ const TableEdit = () => {
                 </BoxSetDB>
                 <BoxSetDB title={"Log ข้อความ"} keys={"msg-set"}>
                     <BoxSetDB title={"เปิดการบันทึกLog"} keys={"autoopenlog-msg"}>
-                        <Openlogbox/>
-                    </BoxSetDB>
-                    <BoxSetDB title={"ข้อความการลงทะเบียน"} keys={"register-msg"}>
-
+                        <Openlogbox />
                     </BoxSetDB>
                     <BoxSetDB title={"ข้อความการตรวจสอบออโต้"} keys={"auto-msg"}>
 
                     </BoxSetDB>
+                    <BoxSetDB title={"ข้อความการตั้งค่า database"} keys={"settingtable-msg"}>
+
+                    </BoxSetDB>
+                    <BoxSetDB title={"ข้อความการลงทะเบียน"} keys={"register-msg"}>
+
+                    </BoxSetDB>
+
                 </BoxSetDB>
                 <BoxSetDB title={"Backend Run"} keys={"Backend-set"}>
                     <BoxSetDB title={"Run on PID"} keys={"pid-set"}>
