@@ -19,8 +19,8 @@ export default function Openlogbox() {
             }
         }
         const email = localStorage.getItem("email")
-        getapi(setData1,"/api/setting/logopen/1/"+email)
-        getapi(setData2,"/api/setting/logopen/2/"+email)
+        getapi(setData1,"/api/setting/logopen/1")
+        getapi(setData2,"/api/setting/logopen/2")
     },[setData1])
 
     const onChangehandle=async(id,value, setdata,url="/api/setting/setlogopen")=>{

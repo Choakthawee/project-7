@@ -9,6 +9,7 @@ import Selectboxtable from "./component/selectboxaddtable";
 import { AlertCircleIcon } from "lucide-react";
 import Timesetbox from "./component/timesetbox";
 import Openlogbox from "./component/openlogbox";
+import ViewTablelogbox from "./component/viewTablelogbox";
 const TableEdit = () => {
     const navigate = useNavigate();
     const userRole = localStorage.getItem("role_id");
@@ -106,7 +107,7 @@ const TableEdit = () => {
 
                     </BoxSetDB>
                     <BoxSetDB title={"ข้อความการตั้งค่า database"} keys={"settingtable-msg"}>
-
+                        <ViewTablelogbox/>
                     </BoxSetDB>
                     <BoxSetDB title={"ข้อความการลงทะเบียน"} keys={"register-msg"}>
 
