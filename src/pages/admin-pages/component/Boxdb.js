@@ -8,11 +8,11 @@ export default function BoxSetDB({keys, title, children }) {
     },[IsMin,keys])
     return (
         <div className=" flex flex-col shadow-xl bg-white rounded-lg overflow-hidden box-border">
-            <div className="flex justify-between items-center rounded-lg hover:bg-slate-200" onClick={() => {setIsMin(!IsMin)}}>
+            <div className="flex justify-between items-center rounded-lg hover:bg-slate-200 " onClick={() => {setIsMin(!IsMin)}}>
                 <div className=" text-lg p-3">
                     {title}
                 </div>
-                <div className="flex justify-end p-4 rounded-lg cursor-pointer hover:bg-slate-300 active:bg-slate-400 " >
+                <div className="flex justify-end p-4 rounded-lg cursor-pointer hover:bg-slate-300 active:bg-slate-400" >
                     {IsMin === true ?  <SlArrowDown />:<SlArrowUp />}
                 </div>
             </div>

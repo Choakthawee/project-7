@@ -7,6 +7,8 @@ import PIDbox from "./component/pid";
 import { useState } from "react";
 import Selectboxtable from "./component/selectboxaddtable";
 import { AlertCircleIcon } from "lucide-react";
+import Timesetbox from "./component/timesetbox";
+import Openlogbox from "./component/openlogbox";
 const TableEdit = () => {
     const navigate = useNavigate();
     const userRole = localStorage.getItem("role_id");
@@ -32,7 +34,6 @@ const TableEdit = () => {
         showAlert();
         return null;
     }
-
     return (
         <div
             className="flex-col flex w-full min-h-screen p-2 md:p-10" style={{ backgroundColor: "#cce3de" }}        >
@@ -75,17 +76,18 @@ const TableEdit = () => {
                     <BoxSetDB title={"ล้างวิชา"} keys={"cleardbsubregit-set"}>
 
                     </BoxSetDB>
-                    <BoxSetDB  title={"คืนค่าจากโรงงาน"} keys={"cleardbsubregit-set"}>
+                    <BoxSetDB title={"คืนค่าจากโรงงาน"} keys={"cleardbsubregit-set"}>
 
                     </BoxSetDB>
                 </BoxSetDB>
                 <BoxSetDB title={"ออโต้ ตรวจสอบวิชา"} keys={"auto-set"}>
                     <div className="flex flex-col w-full justify-center items-center" onClick={() => setReaded(true)} >
-                        <div className={`  ${readed ? "" : "blur-[2px]"} w-full`}>
+                        <div className={`  ${readed ? "" : "blur-[2px]"} flex-col flex gap-2 w-full`}>
                             <BoxSetDB title={"วันที่ตรวจสอบ"} keys={"autoday-set"}>
                                 <Selectboxtable remainder="*คำเตือนระบบจะดำเนินการเมื่อทำการเริ่มระบบใหม่" col="day_id" geturl={"/api/setting/autoday"} geturlInsert={"/api/setting/daywithout"} table="autoday" title={"วันที่ตรวจสอบ"} />
                             </BoxSetDB>
                             <BoxSetDB title={"เวลาที่ตรวจสอบ"}>
+                                <Timesetbox />
                             </BoxSetDB>
                         </div>
                         <div className={`${readed ? " hidden" : "absolute w-1/2"}  transition-all bg-opacity-60 bg-red-300 flex p-2 flex-col justify-center items-center rounded-2xl `}>
@@ -97,6 +99,9 @@ const TableEdit = () => {
                     </div>
                 </BoxSetDB>
                 <BoxSetDB title={"Log ข้อความ"} keys={"msg-set"}>
+                    <BoxSetDB title={"เปิดการบันทึกLog"} keys={"autoopenlog-msg"}>
+                        <Openlogbox/>
+                    </BoxSetDB>
                     <BoxSetDB title={"ข้อความการลงทะเบียน"} keys={"register-msg"}>
 
                     </BoxSetDB>
@@ -108,7 +113,7 @@ const TableEdit = () => {
                     <BoxSetDB title={"Run on PID"} keys={"pid-set"}>
                         <PIDbox />
                     </BoxSetDB>
-                    <BoxSetDB  title={"Restart Backend"} keys={"Restartb-set"}>
+                    <BoxSetDB title={"Restart Backend"} keys={"Restartb-set"}>
 
                     </BoxSetDB>
                 </BoxSetDB>

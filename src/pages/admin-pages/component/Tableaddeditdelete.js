@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { apiurl } from "../../../config";
 import openInputAlert from "./SwalInputeditname";
 import Swal from "sweetalert2";
-import { SlReload } from "react-icons/sl";
 import insertBox from "./insertDB";
 
 export default function Tableaddeditdelete({ geturl, table, foredeleteurl, title, inserturl = '/api/setting/insert', remainder = "", renameurl = "/api/setting/rename",
@@ -15,7 +14,7 @@ export default function Tableaddeditdelete({ geturl, table, foredeleteurl, title
         try {
             const dataResponse = await axios.delete(apiurl + deleteurl + "?id=" + id + "&table=" + table)
             const data = dataResponse.data;
-            Swal.fire({ icon: "success", text: data.msg, showCloseButton: true, confirmButtonText: "หมุนเว็บ", preConfirm: () => { window.location.reload() } })
+            Swal.fire({ icon: "success", text: data.msg, showCloseButton: true, confirmButtonText: "ตกลง", preConfirm: () => {  setReload(!reload); } })
         } catch (error) {
             if (error.response.data.msgerror) {
                 if (foredeleteurl) {
@@ -28,7 +27,7 @@ export default function Tableaddeditdelete({ geturl, table, foredeleteurl, title
                             try {
                                 const dataResponse = await axios.delete(apiurl + foredeleteurl + "/" + id)
                                 const data = dataResponse.data;
-                                Swal.fire({ icon: "success", text: data.msg, showCloseButton: true, confirmButtonText: "หมุนเว็บ", preConfirm: () => { window.location.reload() } })
+                                Swal.fire({ icon: "success", text: data.msg, showCloseButton: true, confirmButtonText: "ตกลง", preConfirm: () => {  setReload(!reload); } })
                             } catch (error) {
                                 if (error.response.data.msgerror) {
 
@@ -42,6 +41,7 @@ export default function Tableaddeditdelete({ geturl, table, foredeleteurl, title
                                         text: error.response.data.msgerrorDB
                                     })
                                 }
+                                setReload(!reload);
 
                             }
                         }
@@ -118,7 +118,7 @@ export default function Tableaddeditdelete({ geturl, table, foredeleteurl, title
                         </table>
                         {Errormsg}
                     </div>
-                    <div> <button className="p-2 text-white rounded-lg min-w-36 w-full lg:w-fit bg-midgreen" onClick={() => insertBox(title, table, inserturl)}>เพิ่ม</button></div>
+                    <div> <button className="p-2 text-white rounded-lg min-w-36 w-full lg:w-fit bg-midgreen" onClick={() => insertBox(title, table, inserturl,setReload)}>เพิ่ม</button></div>
                 </div>
             }
 
