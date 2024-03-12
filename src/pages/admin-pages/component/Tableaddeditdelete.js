@@ -31,7 +31,6 @@ export default function Tableaddeditdelete({ geturl, table, foredeleteurl, title
                                 Swal.fire({ icon: "success", text: data.msg, showCloseButton: true, confirmButtonText: "ตกลง", preConfirm: () => {  setReload(!reload); } })
                             } catch (error) {
                                 if (error.response.data.msgerror) {
-
                                     Swal.fire({
                                         icon: "error",
                                         text: error.response.data.msgerror
@@ -43,7 +42,6 @@ export default function Tableaddeditdelete({ geturl, table, foredeleteurl, title
                                     })
                                 }
                                 setReload(!reload);
-
                             }
                         }
                     })
@@ -54,17 +52,13 @@ export default function Tableaddeditdelete({ geturl, table, foredeleteurl, title
                         confirmButtonText: error.response.data.msgerrorsubmit,
                     })
                 }
-
             } else {
                 Swal.fire({
                     icon: "error",
                     text: error.response.data.msgerrorDB
                 })
             }
-
-
         }
-
     }
     const [reload, setReload] = useState(false)
     useEffect(() => {
@@ -111,7 +105,6 @@ export default function Tableaddeditdelete({ geturl, table, foredeleteurl, title
                                                     deleteMode(v.id)
                                                 }
                                             })
-
                                         }}>ลบ</td>
                                     </tr>
                                 ))}
@@ -122,7 +115,6 @@ export default function Tableaddeditdelete({ geturl, table, foredeleteurl, title
                     <div> <button className="p-2 text-white rounded-lg min-w-36 w-full lg:w-fit bg-midgreen" onClick={() => insertBox(title, table, inserturl,setReload)}>เพิ่ม</button></div>
                 </div>
             }
-
         </div>
     );
 }

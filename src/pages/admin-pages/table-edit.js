@@ -13,6 +13,7 @@ import ViewTablelogbox from "./component/viewTablelogbox";
 import axios from "axios";
 import { apiurl } from "../../config";
 import { icon } from "@fortawesome/fontawesome-svg-core";
+import UrlboxIcon from "./component/urlboxicon";
 const TableEdit = () => {
     const navigate = useNavigate();
     const userRole = localStorage.getItem("role_id");
@@ -71,6 +72,9 @@ const TableEdit = () => {
                     </BoxSetDB>
                     <BoxSetDB title={"วัน (day)"} keys={"day-set"}>
                         <Tableaddeditdelete geturl={"/api/setting/day"} table={"day"} title={"วัน"} />
+                    </BoxSetDB>
+                    <BoxSetDB title={"ลิ้งไอคอน"} keys={"URL-ICON-set"}>
+                        <UrlboxIcon/>
                     </BoxSetDB>
                 </BoxSetDB>
                 <BoxSetDB title={"ล้างและคืนค่าดาต้าเบส"} keys={"cleardb-set"}>
