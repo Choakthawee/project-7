@@ -112,10 +112,6 @@ const TableEdit = () => {
                     <BoxSetDB title={"ข้อความการตั้งค่า database"} keys={"settingtable-msg"}>
                         <ViewTablelogbox table={"log_tablechange"} />
                     </BoxSetDB>
-                    <BoxSetDB title={"ข้อความการลงทะเบียน"} keys={"register-msg"}>
-
-                    </BoxSetDB>
-
                 </BoxSetDB>
                 <BoxSetDB title={"Backend Run"} keys={"Backend-set"}>
                     <BoxSetDB title={"Run on PID"} keys={"pid-set"}>

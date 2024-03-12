@@ -21,40 +21,48 @@ const Sidebar = () => {
   const { pathname } = location;
   const userName = localStorage.getItem("name");
   const userRole = localStorage.getItem("role");
-
+  const listicon = [
+    {icon:<FaInfo size={20} className="max-[600px]:size-5" />},
+    {icon:<FaClock size={20} className="max-[600px]:size-5" />},
+    {icon:<Settings size={20} className="max-[600px]:size-5" />},
+    {icon:<FaChalkboard size={24} />},
+    {icon:<FaBook size={24} />},
+    {icon:<FaUnlockAlt size={24} />},
+    {icon:<FaUsers size={24} />},
+]
   const sidebarItems = {
     admin: [
       {
         path: "/userinfo",
         label: "บัญชีผู้ใช้",
-        icon: <FaInfo size={20} className="max-[600px]:size-5" />,
+        icon: listicon[0].icon,
       },
       {
         path: "/time-set",
         label: "ตั้งค่าระบบ",
-        icon: <FaClock size={20} className="max-[600px]:size-5" />,
+        icon: listicon[1].icon,
       },
       {
         path: "/table_edit",
         label: "ตั้งค่า Database",
-        icon: <Settings size={20} className="max-[600px]:size-5" />,
+        icon: listicon[2].icon,
       },
     ],
     teacher: [
       {
         path: "/schedule",
         label: "ตารางสอน",
-        icon: <FaChalkboard size={24} />,
+        icon: listicon[3].icon,
       },
       {
         path: "/regcourse",
         label: "ลงทะเบียนรายวิชา",
-        icon: <FaBook size={24} />,
+        icon:  listicon[4].icon,
       },
       {
         path: "/regresults_t",
         label: "ผลการลงทะเบียน",
-        icon: <FaClipboard size={24} />,
+        icon: listicon[3].icon,
       },
     ],
     education: [
@@ -62,22 +70,22 @@ const Sidebar = () => {
       {
         path: "/imcourse",
         label: "เลือกรายวิชาที่เปิดสอน",
-        icon: <FaBook size={24} />,
+        icon: listicon[4].icon,
       },
       {
         path: "/sub-open",
         label: "รายวิชาที่เปิดสอน",
-        icon: <FaUnlockAlt size={24} />,
+        icon: listicon[5].icon,
       },
       {
         path: "/regstatus",
         label: "ตรวจสอบการลงทะเบียน",
-        icon: <FaUsers size={24} />,
+        icon: listicon[6].icon,
       },
       {
         path: "/regresults_ed",
         label: "ผลการลงทะเบียน",
-        icon: <FaClipboard size={24} />,
+        icon: listicon[3].icon,
       },
     ],
   };
