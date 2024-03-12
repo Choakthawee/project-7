@@ -10,6 +10,9 @@ import { AlertCircleIcon } from "lucide-react";
 import Timesetbox from "./component/timesetbox";
 import Openlogbox from "./component/openlogbox";
 import ViewTablelogbox from "./component/viewTablelogbox";
+import axios from "axios";
+import { apiurl } from "../../config";
+import { icon } from "@fortawesome/fontawesome-svg-core";
 const TableEdit = () => {
     const navigate = useNavigate();
     const userRole = localStorage.getItem("role_id");
@@ -104,10 +107,10 @@ const TableEdit = () => {
                         <Openlogbox />
                     </BoxSetDB>
                     <BoxSetDB title={"ข้อความการตรวจสอบออโต้"} keys={"auto-msg"}>
-
+                        <ViewTablelogbox table={"log_auto_detect"} />
                     </BoxSetDB>
                     <BoxSetDB title={"ข้อความการตั้งค่า database"} keys={"settingtable-msg"}>
-                        <ViewTablelogbox/>
+                        <ViewTablelogbox table={"log_tablechange"} />
                     </BoxSetDB>
                     <BoxSetDB title={"ข้อความการลงทะเบียน"} keys={"register-msg"}>
 
@@ -119,6 +122,20 @@ const TableEdit = () => {
                         <PIDbox />
                     </BoxSetDB>
                     <BoxSetDB title={"Restart Backend"} keys={"Restartb-set"}>
+                        <div className=" flex">
+                            <div className="flex flex-col bg-red-600 rounded-lg shadow-[5px_10px_25px_-10px]  p-2 transition-all duration-700 group/a text-white hover:bg-sky-400 hover:text-black">
+                               <p className=" underline text-xl">คำเตือน</p>
+                               <p>ถ้าเกิดระบบทำงานผิดพลาด</p>
+                               <p>ให้adminทำการรันระบบด้วยตัวเอง</p>
+                               <button className=" p-2 rounded-xl w-fit bg-gradient-to-tr transition-all from-red-500 group-hover/a:from-blue-100 hover:to-blue-500 active:bg-blue-600" onClick={()=>{
+                                axios.get(apiurl+"/restart-server").then((data)=>data.data)
+                                .then((data)=>{
+                                    Swal.fire({icon:"info",text:data})
+                                })
+                               }}>กดยืนยัน restart</button>
+                            </div>
+
+                        </div>
 
                     </BoxSetDB>
                 </BoxSetDB>

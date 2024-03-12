@@ -43,10 +43,10 @@ export default function Openlogbox() {
     return (
         <div className="flex flex-col">
           
-               <CheckboxTailwind checked={data1} onChange={(e)=>{onChangehandle(1,!data1,setData1)}}>
+               <CheckboxTailwind checked={data1} ids={1} onChange={(e)=>{onChangehandle(1,!data1,setData1)}}>
                 เปิดบันทึกระบบlogตรวจสอบออโต้ (id=1)
                </CheckboxTailwind>
-               <CheckboxTailwind checked={data2} onChange={(e)=>{onChangehandle(2,!data2,setData2)}}>
+               <CheckboxTailwind checked={data2} ids={2} onChange={(e)=>{onChangehandle(2,!data2,setData2)}}>
                 เปิดบันทึกระบบlogตั้งค่า database (id=2)
                </CheckboxTailwind>
           

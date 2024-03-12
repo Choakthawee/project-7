@@ -100,7 +100,7 @@ export default function Tableaddeditdelete({ geturl, table, foredeleteurl, title
                                     <tr key={i} className=" bg-slate-100 hover:bg-slate-200">
                                         <td className=" text-center p-2 ">{v.id}</td>
                                         <td className=" text-center p-2 ">{v.name}</td>
-                                        <td className=" text-center p-2 hover:bg-slate-400 cursor-pointer " onClick={() => openInputAlert("แก้ชื่อ" + title, "กรอกชื่อใหม่ที่จะแก้ไข", v.name, v.id, table, renameurl)}>เปลี่ยนชื่อ</td>
+                                        <td className=" text-center p-2 hover:bg-slate-400 cursor-pointer " onClick={() => openInputAlert("แก้ชื่อ" + title, "กรอกชื่อใหม่ที่จะแก้ไข", v.name, v.id, table, renameurl,setReload)}>เปลี่ยนชื่อ</td>
                                         <td className=" text-center p-2  hover:bg-slate-400 cursor-pointer" onClick={() => {
                                             Swal.fire({
                                                 icon: "info",
