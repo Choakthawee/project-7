@@ -18,12 +18,12 @@ const InsertUser = () => {
   const [status, setStatus] = useState(2);
   const [Sstatus, setSStatus] = useState(2);
   const [fileData, setFileData] = useState([]);
-
+  const [file ,setFile] = useState();
   const userRole = localStorage.getItem("role_id");
   const navigate = useNavigate();
 
   const [selectedFileName, setSelectedFileName] = useState(null);
-  const [datas,setData] = useState([]);
+  const [datas, setData] = useState([]);
 
   useEffect(() => {
     const getapi = async () => {
@@ -122,6 +122,7 @@ const InsertUser = () => {
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
+    setFile(event.target.files[0])
     if (selectedFile) {
       setSelectedFileName(selectedFile.name);
       console.log("Selected File:", selectedFile);
@@ -263,7 +264,7 @@ const InsertUser = () => {
                 value={status}
                 onChange={handleStatusChange}
               >
-                {datas.map((v,i)=>(
+                {datas.map((v, i) => (
                   <option value={v.id}>{v.name}</option>
                 ))}
               </select>
@@ -336,7 +337,11 @@ const InsertUser = () => {
                 icon={faArrowRight}
                 className="text-xl ml-3 mt-1"
               />
-              <p className="ml-3 ">{selectedFileName}</p>
+              <Link className="ml-3" target="_self"
+                to={"/ViewExcel"}
+                state={{ file: file, col: ["email", "ชื่อ", "role_id"],start:0 }} >
+                {selectedFileName}
+              </Link>
             </div>
             <div className="flex flex-row justify-start">
               <div className="text-inbox ">
