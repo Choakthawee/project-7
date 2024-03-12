@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { apiurl } from "../../../config";
 import openInputAlert from "./SwalInputeditname";
 import Swal from "sweetalert2";
-import { SlReload } from "react-icons/sl";
 import insertBox from "./insertDB";
 
 export default function Tableaddeditdelete({ geturl, table, foredeleteurl, title, inserturl = '/api/setting/insert', remainder = "", renameurl = "/api/setting/rename",
@@ -12,10 +11,11 @@ export default function Tableaddeditdelete({ geturl, table, foredeleteurl, title
     const [data, setData] = useState([{}]);
     const [Errormsg, setErrormsg] = useState();
     const deleteMode = async (id) => {
+        const email = await localStorage.getItem("email");
         try {
-            const dataResponse = await axios.delete(apiurl + deleteurl + "?id=" + id + "&table=" + table)
+            const dataResponse = await axios.delete(apiurl + deleteurl + "?id=" + id + "&table=" + table+"&email="+email)
             const data = dataResponse.data;
-            Swal.fire({ icon: "success", text: data.msg, showCloseButton: true, confirmButtonText: "หมุนเว็บ", preConfirm: () => { window.location.reload() } })
+            Swal.fire({ icon: "success", text: data.msg, showCloseButton: true, confirmButtonText: "ตกลง", preConfirm: () => {  setReload(!reload); } })
         } catch (error) {
             if (error.response.data.msgerror) {
                 if (foredeleteurl) {
@@ -26,9 +26,9 @@ export default function Tableaddeditdelete({ geturl, table, foredeleteurl, title
                         showCancelButton: true,
                         preConfirm: async () => {
                             try {
-                                const dataResponse = await axios.delete(apiurl + foredeleteurl + "/" + id)
+                                const dataResponse = await axios.delete(apiurl + foredeleteurl + "/" + id+"/"+email)
                                 const data = dataResponse.data;
-                                Swal.fire({ icon: "success", text: data.msg, showCloseButton: true, confirmButtonText: "หมุนเว็บ", preConfirm: () => { window.location.reload() } })
+                                Swal.fire({ icon: "success", text: data.msg, showCloseButton: true, confirmButtonText: "ตกลง", preConfirm: () => {  setReload(!reload); } })
                             } catch (error) {
                                 if (error.response.data.msgerror) {
 
@@ -42,6 +42,7 @@ export default function Tableaddeditdelete({ geturl, table, foredeleteurl, title
                                         text: error.response.data.msgerrorDB
                                     })
                                 }
+                                setReload(!reload);
 
                             }
                         }
@@ -99,7 +100,7 @@ export default function Tableaddeditdelete({ geturl, table, foredeleteurl, title
                                     <tr key={i} className=" bg-slate-100 hover:bg-slate-200">
                                         <td className=" text-center p-2 ">{v.id}</td>
                                         <td className=" text-center p-2 ">{v.name}</td>
-                                        <td className=" text-center p-2 hover:bg-slate-400 cursor-pointer " onClick={() => openInputAlert("แก้ชื่อ" + title, "กรอกชื่อใหม่ที่จะแก้ไข", v.name, v.id, table, renameurl)}>เปลี่ยนชื่อ</td>
+                                        <td className=" text-center p-2 hover:bg-slate-400 cursor-pointer " onClick={() => openInputAlert("แก้ชื่อ" + title, "กรอกชื่อใหม่ที่จะแก้ไข", v.name, v.id, table, renameurl,setReload)}>เปลี่ยนชื่อ</td>
                                         <td className=" text-center p-2  hover:bg-slate-400 cursor-pointer" onClick={() => {
                                             Swal.fire({
                                                 icon: "info",
@@ -118,7 +119,7 @@ export default function Tableaddeditdelete({ geturl, table, foredeleteurl, title
                         </table>
                         {Errormsg}
                     </div>
-                    <div> <button className="p-2 text-white rounded-lg min-w-36 w-full lg:w-fit bg-midgreen" onClick={() => insertBox(title, table, inserturl)}>เพิ่ม</button></div>
+                    <div> <button className="p-2 text-white rounded-lg min-w-36 w-full lg:w-fit bg-midgreen" onClick={() => insertBox(title, table, inserturl,setReload)}>เพิ่ม</button></div>
                 </div>
             }
 

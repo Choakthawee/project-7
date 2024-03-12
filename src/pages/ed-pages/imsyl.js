@@ -247,7 +247,7 @@ const ImportSyl = () => {
                 className=" underline text-blue-700 text-xl"
                 target="_self"
                 to={"/ViewExcel"}
-                state={{ file }}
+                state={{ file,col:["รหัสวิชา", "ชื่อวิชา", "หน่วยกิต","หมวด"],check:true,start:1}}
               >
                 {`${file.name} <--- กดเพื่อ View `}
               </Link>

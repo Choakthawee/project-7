@@ -1,14 +1,8 @@
 //ผลการลงทะเบียน (อาจารย์)
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FaCircleLeft, FaCircleRight } from "react-icons/fa6";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import React, { useState, useEffect } from "react";
-import SearchingBar from "../component/searchBar";
-import CourseYears from "../component/courseyear";
-import Category_sub from "../component/category_sub";
-import ButtonSeaching from "../component/buttonSearching";
 import SortBar from "../component/sortBar";
 import axios from "axios";
 import { apiurl } from "../../config";

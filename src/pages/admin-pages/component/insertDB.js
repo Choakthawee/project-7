@@ -2,18 +2,24 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { apiurl } from "../../../config";
 
-export default async function insertBox(title, table, url) {
+export default async function insertBox(title, table, url,setreload) {
     const getapi = async (id, name) => {
+        const email =await localStorage.getItem("email")
         try {
-            const dataresponse = await axios.post(apiurl + url, { id: id, name: name, table: table });
+            const dataresponse = await axios.post(apiurl + url, { id: id, name: name, table: table,email:email });
             const data = dataresponse.data;
             Swal.fire({
                 icon: "success",
                 text: data.msg,
                 showCancelButton: true,
-                confirmButtonText: "หมุนเว็บ",
+                confirmButtonText: setreload?"ตกลง":"หมุนเว็บ",
                 preConfirm: () => {
-                    window.location.reload();
+                    if(setreload){
+                        setreload((e)=>!e);
+                    }else{
+                        window.location.reload();
+                    }
+                    
                 }
             })
         } catch (error) {
