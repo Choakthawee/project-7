@@ -29,6 +29,8 @@ const Sidebar = () => {
     {icon:<FaBook size={24} />},
     {icon:<FaUnlockAlt size={24} />},
     {icon:<FaUsers size={24} />},
+    {icon:<FaClipboard size={24} />},
+    {icon: <FaList size={24} />}
 ]
   const sidebarItems = {
     admin: [
@@ -62,11 +64,11 @@ const Sidebar = () => {
       {
         path: "/regresults_t",
         label: "ผลการลงทะเบียน",
-        icon: listicon[3].icon,
+        icon: listicon[7].icon,
       },
     ],
     education: [
-      { path: "/imsyl", label: "นำเข้าหลักสูตร", icon: <FaList size={24} /> },
+      { path: "/imsyl", label: "นำเข้าหลักสูตร",icon: listicon[8].icon,},
       {
         path: "/imcourse",
         label: "เลือกรายวิชาที่เปิดสอน",
@@ -85,7 +87,7 @@ const Sidebar = () => {
       {
         path: "/regresults_ed",
         label: "ผลการลงทะเบียน",
-        icon: listicon[3].icon,
+        icon: listicon[7].icon,
       },
     ],
   };
