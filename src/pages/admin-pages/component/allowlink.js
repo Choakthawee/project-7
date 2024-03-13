@@ -100,11 +100,9 @@ export default function AllowlinkBox() {
                                     <label htmlFor={"main-link-check" + v.id}>
                                         เลือก
                                     </label>
-
                                 </td>
                             </tr>
                         ))}
-
                     </tbody>
                 </table>
             </div>
