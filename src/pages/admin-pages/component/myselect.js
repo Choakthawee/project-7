@@ -13,7 +13,7 @@ export default function MySelect({ data, value, onChange }) {
                     <SlArrowDown />
                 </div>
             </div>
-            <div className={`group-focus/a:flex group-focus/a:flex-col peer hidden absolute min-w-40 mt-8 bg-white shadow-lg`}>
+            <div className={`group-focus/a:flex group-focus/a:flex-col peer hidden absolute min-w-40 mt-8 bg-white shadow-[5px_10px_25px_-10px]`}>
                 {data.map((v, i) => (
                     <label key={i} className=" flex gap-2 hover:bg-slate-100 p-3 " onClick={() => {setValue(i);onChange(i)}}>
                         <input className="w-0" name="myselect" id="myselect"></input>

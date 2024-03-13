@@ -4,6 +4,8 @@ import MySelect from "./myselect";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { apiurl } from "../../../config";
+import Swal from "sweetalert2";
+import openInputAlert from "./SwalInputeditname";
 export default function UrlboxIcon() {
     const [data, setData] = useState([])
     const listicon = [
@@ -19,10 +21,27 @@ export default function UrlboxIcon() {
     ]
     const [reload, setReload] = useState(false)
     const [Errormsg, setErrormsg] = useState();
+    const savechange = async(id,v)=>{
+        const email = localStorage.getItem("email");
+        try {
+            const dataresponse = await axios.post(apiurl + "/api/setting/iconchange",{email:email,id:id,value:v});
+            const data = dataresponse.data;
+            Swal.fire({
+                icon:"success",
+                text:data.msg
+            })
+            setReload(!reload)
+        } catch (err) {
+            Swal.fire({
+                icon:"success",
+                text:err.response.data.msg
+            })
+         
+        }
+    }
     useEffect(() => {
         const getapi = async () => {
             try {
-
                 const dataresponse = await axios.get(apiurl + "/api/setting/allowlink");
                 const data = dataresponse.data;
                 setData(data);
@@ -32,7 +51,7 @@ export default function UrlboxIcon() {
             }
         }
         getapi();
-    }, [])
+    }, [reload])
     return (
         <div className=" overflow-x-auto shadow-2xl">
             <table className="border-separate w-full">
@@ -40,12 +59,13 @@ export default function UrlboxIcon() {
                     <tr>
                         <th className="p-2 w-3/12">url</th>
                         <th className="p-2 w-3/12">name</th>
-                        <th className="p-2 w-6/12">icon</th>
+                        <th className="p-2 w-1/12">เปลี่ยนชื่อ</th>
+                        <th className="p-2 w-5/12">icon</th>
                     </tr>
                 </thead>
                 <tbody>
                     {data.length > 0 && data.filter(v =>v.icon !== null).map((v, i) => (
-                        v.icon !== undefined && (
+                        
                             <tr key={i}>
                                 <td>
                                     {v.linkpath}
@@ -53,13 +73,20 @@ export default function UrlboxIcon() {
                                 <td>
                                     {v.pathname}
                                 </td>
+                                <td className=" hover:bg-slate-400 p-1 cursor-pointer" onClick={()=>{
+                                    openInputAlert("เปลี่ยนชื่อ","กรอกชื่อใหม่ที่จะแก้ไข",v.pathname,v.id,"","/api/setting/allowlinkrename",setReload)
+                                }}>
+                                
+                                        เปลี่ยนชื่อ
+                                   
+                                </td>
                                 <td>
-                                    <MySelect data={listicon} value={parseInt(v.icon)} onChange={(v) => {
-                                        // ทำสิ่งที่ต้องการเมื่อมีการเปลี่ยนแปลงค่า
+                                    <MySelect data={listicon} value={parseInt(v.icon)} onChange={(val) => {
+                                        savechange(v.id,val);
                                     }} />
                                 </td>
                             </tr>
-                        )
+                        
 
                     ))}
 

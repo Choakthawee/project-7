@@ -14,6 +14,7 @@ import axios from "axios";
 import { apiurl } from "../../config";
 import { icon } from "@fortawesome/fontawesome-svg-core";
 import UrlboxIcon from "./component/urlboxicon";
+import AllowlinkBox from "./component/allowlink";
 const TableEdit = () => {
     const navigate = useNavigate();
     const userRole = localStorage.getItem("role_id");
@@ -66,6 +67,7 @@ const TableEdit = () => {
                         />
                     </BoxSetDB>
                     <BoxSetDB title={"ตำแหน่งผู้ใช้ เข้าถึงลิ้งค์"} keys={"rolelink-set"}>
+                        <AllowlinkBox />
                     </BoxSetDB>
                     <BoxSetDB title={"หมวดเรียน (category)"} keys={"course-set"}>
                         <Onlyrename geturl={"/api/setting/category"} table={"category"} title={"หมวดเรียน"} />
