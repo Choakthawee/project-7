@@ -37,7 +37,7 @@ export default function Onlyrename({ geturl, table, title, renameurl = "/api/set
                                 <tr  key={i} className=" hover:bg-slate-200 bg-slate-100">
                                     <td className=" text-center p-2 ">{v.id}</td>
                                     <td className=" text-center p-2 ">{v.name}</td>
-                                    <td className=" text-center p-2 " onClick={() => openInputAlert("แก้ชื่อหมวดวิชา", "กรอกชื่อใหม่ที่จะแก้ไข", v.name, v.id, table, renameurl,setReload)}>แก้</td>
+                                    <td className=" text-center p-2 " onClick={() => openInputAlert("แก้ชื่อ"+title, "กรอกชื่อใหม่ที่จะแก้ไข", v.name, v.id, table, renameurl,setReload)}>เปลี่ยนชื่อ</td>
                                 </tr>
                             ))}
                         </tbody>

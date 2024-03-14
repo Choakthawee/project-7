@@ -13,6 +13,8 @@ import ViewTablelogbox from "./component/viewTablelogbox";
 import axios from "axios";
 import { apiurl } from "../../config";
 import { icon } from "@fortawesome/fontawesome-svg-core";
+import UrlboxIcon from "./component/urlboxicon";
+import AllowlinkBox from "./component/allowlink";
 const TableEdit = () => {
     const navigate = useNavigate();
     const userRole = localStorage.getItem("role_id");
@@ -60,18 +62,22 @@ const TableEdit = () => {
                         <Onlyrename geturl="/api/setting/status" table="status" title={"สถานะ"} />
                     </BoxSetDB>
                     <BoxSetDB title={"ตำแหน่งผู้ใช้ (role)"} keys={"role-set"}>
-                        <Tableaddeditdelete geturl={"/api/setting/role"} remainder="*ไม่สามารถลบตำแหน่งแอดมินได้ หรือ id 2 ได้" table="role"
+                        <Onlyrename geturl={"/api/setting/role"} table="role"
                             title="ตำแหน่งผู้ใช้"
                         />
                     </BoxSetDB>
-                    <BoxSetDB title={"ตำแหน่งผู้ใช้ เข้าถึงลิ้งค์"} keys={"rolelink-set"}>
-                    </BoxSetDB>
+                    {/* <BoxSetDB title={"ตำแหน่งผู้ใช้ เข้าถึงลิ้งค์"} keys={"rolelink-set"}>
+                        <AllowlinkBox />
+                    </BoxSetDB> */}
                     <BoxSetDB title={"หมวดเรียน (category)"} keys={"course-set"}>
                         <Onlyrename geturl={"/api/setting/category"} table={"category"} title={"หมวดเรียน"} />
                     </BoxSetDB>
                     <BoxSetDB title={"วัน (day)"} keys={"day-set"}>
                         <Tableaddeditdelete geturl={"/api/setting/day"} table={"day"} title={"วัน"} />
                     </BoxSetDB>
+                    {/* <BoxSetDB title={"ลิ้งไอคอน"} keys={"URL-ICON-set"}>
+                        <UrlboxIcon/>
+                    </BoxSetDB> */}
                 </BoxSetDB>
                 <BoxSetDB title={"ล้างและคืนค่าดาต้าเบส"} keys={"cleardb-set"}>
                     <BoxSetDB title={"ล้างวิชาที่ลงทะเบียน"} keys={"cleardbsubregit-set"}>
@@ -112,9 +118,9 @@ const TableEdit = () => {
                     <BoxSetDB title={"ข้อความการตั้งค่า database"} keys={"settingtable-msg"}>
                         <ViewTablelogbox table={"log_tablechange"} />
                     </BoxSetDB>
-                    <BoxSetDB title={"ข้อความการลงทะเบียน"} keys={"register-msg"}>
+                    {/* <BoxSetDB title={"ข้อความการลงทะเบียน"} keys={"register-msg"}>
 
-                    </BoxSetDB>
+                    </BoxSetDB> */}
 
                 </BoxSetDB>
                 <BoxSetDB title={"Backend Run"} keys={"Backend-set"}>
