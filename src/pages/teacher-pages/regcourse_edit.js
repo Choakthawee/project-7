@@ -90,10 +90,23 @@ const RegCourseEdit = () => {
       console.log(responseData);
       Swal.fire({
         icon: "success",
-        title: "ลงทะเบียนรายวิชาสำเร็จ",
+        title: "ยืนยันบันทึกการลงทะเบียน?",
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: "บันทึก",
+        confirmButtonColor: "green",
+        denyButtonText: `ไม่บันทึก`,
+        showCancelButton: false,
         text: responseData.msg,
-      }).then(() => {
-        window.location.href = "/regcourse";
+        color: "gray",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire("ลงทะเบียนรายวิชาสำเร็จ", "", "success").then(() => {
+            window.location.href = "/regcourse";
+          });
+        } else if (result.isDenied) {
+          Swal.fire("ข้อมูลยังไม่ถูกบันทึก", "", "error");
+        }
       });
     } catch (error) {
       console.log(error);
