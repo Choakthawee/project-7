@@ -50,33 +50,6 @@ const RegStatus = () => {
       });
   }, []);
 
-  const handleEdit2 = (subjectId) => {
-    const selectedSubject = subjectReg.find((sub) => sub.id === subjectId);
-
-    if (selectedSubject) {
-      Swal.fire({
-        title: `<span style="color: #246705;font-size: 20px;"> วิชา </span> <span style="color: red;font-size: 20px;">${selectedSubject.SUBJECTNAME}</span> <span style="color: #246705;font-size: 20px;"> รหัสวิชา </span> <span style="color: red;font-size: 20px;">${selectedSubject.Subjects_id}</span>`,
-        html: `
-          <div>
-            <p><strong>อาจารย์ผู้สอน :</strong> ${selectedSubject.USERNAME}</p>
-            <p><strong>หมู่เรียน :</strong> ${selectedSubject.sec}</p>
-            <p><strong>จำนวนหน่วยกิต :</strong> ${selectedSubject.credit}</p>  
-            <p><strong>จำนวนนิสิต :</strong> ${selectedSubject.N_people}</p>
-            <p><strong>สาขาที่เปิดรับ :</strong> ${selectedSubject.branch.t12
-              .map((branch) => `T12-${branch}`)
-              .join(", ")}</p>
-            <p><strong>สอนวัน :</strong> ${selectedSubject.DAYNAME}</p>
-            <p><strong>เวลา :</strong> ${selectedSubject.st} - ${
-          selectedSubject.et
-        }</p>
-          </div>
-        `,
-        confirmButtonText: "ตกลง",
-        confirmButtonColor: "#4C956C",
-      });
-    }
-  };
-
   const handleEdit = (subject) => {
     if (subject.status_id === 2) {
       const branchNames = subject.branch.t12
@@ -129,48 +102,37 @@ const RegStatus = () => {
         (sub) =>
           sub.st === subject.st &&
           sub.et === subject.et &&
-          sub.DAYNAME === subject.DAYNAME
+          sub.DAYNAME === subject.DAYNAME &&
+          sub.status_id === 3
       );
 
       const tableRows = subjectsWithSameDateTime
         .map(
           (sub) => `
             <tr style="font-size: 13px; border: 1px solid #000000;">
-              <td style="font-size: 13px; border: 1px solid #000000;">${
-                sub.idsubject
-              }-${sub.years.substring(2)}</td>
-              <td style="font-size: 13px; border: 1px solid #000000;">${
-                sub.SUBJECTNAME
-              }</td>
-              <td style="font-size: 13px; border: 1px solid #000000;">${
-                sub.credit
-              }</td>
-              <td style="font-size: 13px; border: 1px solid #000000;">${
-                sub.CATEGORYNAME
-              }</td>
-              <td style="font-size: 13px; border: 1px solid #000000;">${
-                sub.USERNAME
-              }</td>
-              <td style="font-size: 13px; border: 1px solid #000000;">${
-                sub.N_people
-              }</td>
+              <td style="font-size: 13px; border: 1px solid #000000;">${sub.idsubject
+            }-${sub.years.substring(2)}</td>
+              <td style="font-size: 13px; border: 1px solid #000000;">${sub.SUBJECTNAME
+            }</td>
+              <td style="font-size: 13px; border: 1px solid #000000;">${sub.credit
+            }</td>
+              <td style="font-size: 13px; border: 1px solid #000000;">${sub.CATEGORYNAME
+            }</td>
+              <td style="font-size: 13px; border: 1px solid #000000;">${sub.USERNAME
+            }</td>
+              <td style="font-size: 13px; border: 1px solid #000000;">${sub.N_people
+            }</td>
               <td style="font-size: 13px; border: 1px solid #000000;">${sub.branch.t12
-                .map((branch) => `T12-${branch}`)
-                .join(", ")}</td>
-              <td style="font-size: 13px; border: 1px solid #000000;">${
-                sub.DAYNAME
-              }</td>
+              .map((branch) => `T12-${branch}`)
+              .join(", ")}</td>
+              <td style="font-size: 13px; border: 1px solid #000000;">${sub.DAYNAME
+            }</td>
               <td style="font-size: 13px; border: 1px solid #000000;">${subject.st.substring(
-                0,
-                5
-              )}-${subject.et.substring(0, 5)} น.</td>
+              0,
+              5
+            )}-${subject.et.substring(0, 5)} น.</td>
               <td style="font-size: 13px; border: 1px solid #000000;">
-                <button
-                  class="edit-button"
-                  onclick="handleEdit2(${sub.id})"
-                >
-                  แก้ไข
-                </button>
+                <button class="edit-button" onclick="handleEdit2(${sub.id})">แก้ไข</button>
               </td>
             </tr>`
         )
@@ -223,6 +185,33 @@ const RegStatus = () => {
       });
     }
   };
+
+  const handleEdit2 = (subjectId) => {
+    const selectedSubject = subjectReg.find((sub) => sub.id === subjectId);
+
+    if (selectedSubject) {
+      Swal.fire({
+        title: `<span style="color: #246705;font-size: 20px;"> วิชา </span> <span style="color: red;font-size: 20px;">${selectedSubject.SUBJECTNAME}</span> <span style="color: #246705;font-size: 20px;"> รหัสวิชา </span> <span style="color: red;font-size: 20px;">${selectedSubject.Subjects_id}</span>`,
+        html: `
+          <div>
+            <p><strong>อาจารย์ผู้สอน :</strong> ${selectedSubject.USERNAME}</p>
+            <p><strong>หมู่เรียน :</strong> ${selectedSubject.sec}</p>
+            <p><strong>จำนวนหน่วยกิต :</strong> ${selectedSubject.credit}</p>  
+            <p><strong>จำนวนนิสิต :</strong> ${selectedSubject.N_people}</p>
+            <p><strong>สาขาที่เปิดรับ :</strong> ${selectedSubject.branch.t12
+            .map((branch) => `T12-${branch}`)
+            .join(", ")}</p>
+            <p><strong>สอนวัน :</strong> ${selectedSubject.DAYNAME}</p>
+            <p><strong>เวลา :</strong> ${selectedSubject.st} - ${selectedSubject.et
+          }</p>
+          </div>
+        `,
+        confirmButtonText: "ตกลง",
+        confirmButtonColor: "#4C956C",
+      });
+    }
+  };
+
 
   const showAlert = () => {
     Swal.fire({
@@ -416,13 +405,12 @@ const RegStatus = () => {
                           {subject.et.substring(0, 5)} น.
                         </td>
                         <td
-                          className={`py-2 font-normal text-sm text-center ${
-                            subject.STATUSNAME === "รอ"
-                              ? "text-orange-400"
-                              : subject.STATUSNAME === "ไม่ผ่าน"
+                          className={`py-2 font-normal text-sm text-center ${subject.STATUSNAME === "รอ"
+                            ? "text-orange-400"
+                            : subject.STATUSNAME === "ไม่ผ่าน"
                               ? "text-red-500"
                               : "text-green-400"
-                          }`}
+                            }`}
                         >
                           {subject.STATUSNAME}
                         </td>
@@ -430,11 +418,10 @@ const RegStatus = () => {
                           <td rowSpan={group.data.length}>
                             <EditIcon
                               size={24}
-                              className={`cursor-pointer self-center ${
-                                subject.status_id === 1
-                                  ? "opacity-0 cursor-default"
-                                  : ""
-                              }`}
+                              className={`cursor-pointer self-center ${subject.status_id === 1
+                                ? "opacity-0 cursor-default"
+                                : ""
+                                }`}
                               onClick={() => handleEdit(subject)}
                             />
                           </td>
