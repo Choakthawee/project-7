@@ -24,10 +24,13 @@ const RegCourseEdit = () => {
   const [errormsg, setErrorMsg] = useState({});
   const [collectData, setCollectData] = useState({});
   const [grayBoxData, setGrayBoxData] = useState([]);
+
   useEffect(() => {
     const getdataApi = async () => {
       try {
-        const dataRespone = await axios.get(apiurl + "/api/teacher/subject/" + id);
+        const dataRespone = await axios.get(
+          apiurl + "/api/teacher/subject/" + id
+        );
         const data = dataRespone.data;
         setSubject(data[0]);
         console.log(data);
@@ -41,10 +44,12 @@ const RegCourseEdit = () => {
   }, []);
   useEffect(() => {
     console.log(grayBoxData);
-  }, [grayBoxData])
+  }, [grayBoxData]);
   const showAlert = () => {
     Swal.fire({
-      icon: "error", title: "ข้อผิดพลาด", text: "คุณไม่มีสิทธิ์เข้าถึงหน้านี้",
+      icon: "error",
+      title: "ข้อผิดพลาด",
+      text: "คุณไม่มีสิทธิ์เข้าถึงหน้านี้",
       confirmButtonColor: "#3085d6",
       confirmButtonText: "ตกลง",
     }).then((result) => {
@@ -58,11 +63,17 @@ const RegCourseEdit = () => {
     });
   };
 
-
-
   const updateData = async () => {
-    if (grayBoxData.some(item => Object.values(item).some(value => value === null || value === undefined || value === "")) ||
-      grayBoxData.some(item => !item.branch || Object.keys(item.branch).length === 0)) {
+    if (
+      grayBoxData.some((item) =>
+        Object.values(item).some(
+          (value) => value === null || value === undefined || value === ""
+        )
+      ) ||
+      grayBoxData.some(
+        (item) => !item.branch || Object.keys(item.branch).length === 0
+      )
+    ) {
       Swal.fire({
         icon: "error",
         title: "ไม่สำเร็จ",
@@ -71,10 +82,19 @@ const RegCourseEdit = () => {
       return;
     }
     try {
-      const getdata = await axios.post(apiurl + "/api/teacher/registersubject", { subjects: grayBoxData });
+      const getdata = await axios.post(
+        apiurl + "/api/teacher/registersubject",
+        { subjects: grayBoxData }
+      );
       const responseData = getdata.data;
       console.log(responseData);
-      Swal.fire({ icon: "success", title: "สำเร็จ", text: responseData.msg, });
+      Swal.fire({
+        icon: "success",
+        title: "สำเร็จ",
+        text: responseData.msg,
+      }).then(() => {
+        window.location.href = "/regcourse";
+      });
     } catch (error) {
       console.log(error);
       Swal.fire({
@@ -116,19 +136,22 @@ const RegCourseEdit = () => {
   const [genkey, setGenkey] = useState(Number);
   const addbox = () => {
     setGrayBoxData((prevData) => {
-      const newData = [...prevData, {
-        keys: genkey,
-        uid: localStorage.getItem("userid"),
-        st: null,
-        et: null,
-        day_id: null,
-        status_id: 2,
-        N_people: null,
-        branch: null,
-        category_id: null,
-        Subjects_id: id,
-        realcredit: null
-      }];
+      const newData = [
+        ...prevData,
+        {
+          keys: genkey,
+          uid: localStorage.getItem("userid"),
+          st: null,
+          et: null,
+          day_id: null,
+          status_id: 2,
+          N_people: null,
+          branch: null,
+          category_id: null,
+          Subjects_id: id,
+          realcredit: null,
+        },
+      ];
 
       return newData;
     });
