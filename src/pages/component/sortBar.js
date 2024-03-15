@@ -17,9 +17,23 @@ export default function SortBar({ setCurrent, url, type = 1, url1 }) {
             setReset(true)
         }
     }, [years, subject_category, searchInput])
-    const resetSort = () => {
+    const resetSort =async () => {
         if (isSearch) {
-            window.location.reload();
+            setIsSearch(false)
+            try {
+                let queryString = apiurl + url1 + "?type=" + type;
+                const dataresponse = await axios.get(queryString);
+                const data = dataresponse.data;
+                setCurrent(data);
+            } catch (err) {
+                console.log(err);
+            } finally {
+                setSearching([]);
+            }
+            setYears("")
+            setSubject_category("")
+            setSearchInput("")
+            setReset(false)
         } else {
             setYears("")
             setSubject_category("")
@@ -41,10 +55,8 @@ export default function SortBar({ setCurrent, url, type = 1, url1 }) {
             if (subject_category !== "") {
                 queryString += "&category_id=" + subject_category;
             }
-            console.log(queryString);
             const dataresponse = await axios.get(queryString);
             const data = dataresponse.data;
-            console.log(queryString);
             setCurrent(data);
         } catch (err) {
             console.log(err);

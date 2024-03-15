@@ -113,7 +113,7 @@ const RegCourse = () => {
                     }
                   >
                     <tr>
-                      <td className="py-2 font-light text-lg text-center">{i + 1}</td>
+                      <td className="py-2 font-light text-lg text-center">{startIndex + i + 1}</td>
                       <td className="py-2 font-light text-lg text-center">
                         {v.idsubject}
                       </td>
