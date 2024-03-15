@@ -10,14 +10,32 @@ const RegResultT = () => {
   const userRole = localStorage.getItem("role_id");
   const userID = localStorage.getItem("userid");
   const navigate = useNavigate();
-  const [subjects, setSubjects] = useState([{}]);
   const [showsubject, setShowsubject] = useState([{}]);
   const [noneSubject, setNoneSubject] = useState();
-  const [changed, setChanged] = useState("");
-  const [changest, setChangest] = useState("");
-  const [changeet, setChangeet] = useState("");
-  const [id, setid] = useState();
   const [correctsubject, setCorrectsubject] = useState([{}]);
+  //next and prev
+  const [currentPage, setCurrentPage] = useState(1);
+  const subjectsPage = 6;
+  const totalPages = showsubject
+    ? Math.ceil(showsubject.length / subjectsPage)
+    : 1;
+  const startIndex = (currentPage - 1) * subjectsPage;
+  const endIndex = startIndex + subjectsPage;
+  const currentsubjects = showsubject
+    ? showsubject.slice(startIndex, endIndex)
+    : [];
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prevPage) => prevPage - 1);
+    }
+  };
 
   const showAlert = () => {
     Swal.fire({
@@ -195,10 +213,10 @@ const RegResultT = () => {
                     </thead>
 
                     <tbody>
-                      {showsubject.map((value, index) => (
+                      {currentsubjects.map((value, index) => (
                         <tr>
                           <td className="py-2 font-light text-lg text-center">
-                            {index + 1}
+                            {startIndex + index + 1}
                           </td>
                           <td className="py-2 font-light text-lg text-center">
                             {value.SUBJECT}
@@ -248,13 +266,13 @@ const RegResultT = () => {
         </div>
         <div className=" flex h-full items-end">
           <div className="flex flex-1 justify-center">
-            <button>
+            <button onClick={handlePrevPage}>
               <FaCircleLeft size={21} color="#0a6765" className="mr-3 mt-8" />
             </button>
             <p className="text-lg font-semibold text-midgreen  mt-8">
-              หน้า 1 จาก 1
+              หน้า {currentPage} จาก {totalPages}
             </p>
-            <button>
+            <button onClick={handleNextPage}>
               <FaCircleRight size={21} color="#0a6765" className="ml-3 mt-8" />
             </button>
           </div>
