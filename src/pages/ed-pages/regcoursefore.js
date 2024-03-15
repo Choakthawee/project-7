@@ -44,6 +44,7 @@ const RegCourseEditFore = () => {
       }
     };
     getdataApi();
+    localStorage.removeItem("user_idfore");
   }, []);
   useEffect(() => {
     console.log(grayBoxData);
@@ -66,44 +67,63 @@ const RegCourseEditFore = () => {
     });
   };
   const updateData = async () => {
-    if (
-      grayBoxData.some((item) =>
-        Object.values(item).some(
-          (value) => value === null || value === undefined || value === ""
-        )
-      ) ||
-      grayBoxData.some(
-        (item) => !item.branch || Object.keys(item.branch).length === 0
-      )
-    ) {
+    const userId = localStorage.getItem("user_idfore");
+    if (genkey <= 0) {
       Swal.fire({
         icon: "error",
-        title: "ไม่สำเร็จ",
-        text: "กรุณากรอกข้อมูลให้ครบถ้วน",
+        title: "กรุณาเพิ่มหมู่เรียน",
+        text: "กรุณาเพิ่มหมู่เรียนอย่างน้อย 1 หมู่เรียน",
       });
-      return;
     }
-    try {
-      const getdata = await axios.post(
-        apiurl + "/api/teacher/registersubject",
-        { subjects: grayBoxData }
-      );
-      const responseData = getdata.data;
-      console.log(responseData);
-      Swal.fire({
-        icon: "success",
-        title: "สำเร็จ",
-        text: responseData.msg,
-      }).then(() => {
-        window.location.href = "/regcourse";
-      });
-    } catch (error) {
-      console.log(error);
+    console.log(userId);
+    if (!userId) {
       Swal.fire({
         icon: "error",
-        title: "ไม่สำเร็จ",
-        text: error.response.data.msgerror,
+        title: "กรุณากรอกชื่ออาจารย์",
+        text: "กรุณากรอกชื่ออาจารย์ผู้สอน",
       });
+    } else {
+      if (
+        grayBoxData.some((item) =>
+          Object.values(item).some(
+            (value) => value === null || value === undefined || value === ""
+          )
+        ) ||
+        grayBoxData.some(
+          (item) => !item.branch || Object.keys(item.branch).length === 0
+        )
+      ) {
+        Swal.fire({
+          icon: "error",
+          title: "ไม่สำเร็จ",
+          text: "กรุณากรอกข้อมูลให้ครบถ้วน",
+        });
+        return;
+      }
+
+      try {
+        const getdata = await axios.post(
+          apiurl + "/api/teacher/registersubject",
+          { subjects: grayBoxData }
+        );
+        const responseData = getdata.data;
+        console.log(responseData);
+
+        Swal.fire({
+          icon: "success",
+          title: "สำเร็จ",
+          text: "ลงทะเบียนสำเร็จ",
+        }).then(() => {
+          window.location.href = "/regresults_ed";
+        });
+      } catch (error) {
+        console.log(error);
+        Swal.fire({
+          icon: "error",
+          title: "ไม่สำเร็จ",
+          text: error.response.data.msgerror,
+        });
+      }
     }
   };
 
@@ -227,7 +247,7 @@ const RegCourseEditFore = () => {
                 searchInput={searchInput}
                 setSearchInput={setSearchInput}
                 url={"/api/searchingnameteacher/"}
-                title="กรอกชื่ออาจารย์หรือemail"
+                title="กรอกชื่ออาจารย์ หรือ email"
                 placeholder="ชื่อหรือemail"
               ></SearchingBar>
               <div className="gap-3 flex flex-col text-lightgreen">
