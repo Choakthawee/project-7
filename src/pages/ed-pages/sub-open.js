@@ -26,7 +26,7 @@ const SubOpen = () => {
   const startIndex = (currentPage - 1) * subjectsPage;
   const endIndex = startIndex + subjectsPage;
   const [searchInput, setSearchInput] = useState('');
-
+  const [reload,setReload] = useState(false);
   const currentsubjects =
     (subjects.msg || subjects.msgerr) ? [] :subjects.results? subjects.results.slice(startIndex, endIndex):[];
   useEffect(() => {
@@ -41,7 +41,7 @@ const SubOpen = () => {
       }
     };
     getapi();
-  }, []);
+  }, [reload]);
   useEffect(() => {
     const showAlert = () => {
       Swal.fire({
@@ -84,6 +84,7 @@ const SubOpen = () => {
       );
       const dataDelete = dataResponse.data;
       console.log(dataDelete.message);
+      setReload(!reload);
     } catch (err) {
       if (err.response.data.error) {
         console.log(err.response.data.error);
@@ -159,9 +160,7 @@ const SubOpen = () => {
                           }).then((result) => {
                             if (result.isConfirmed) {
                               unOpenSubject(v.id);
-                              setSubjects(
-                                subjects.filter((item) => item.id !== v.id)
-                              );
+                              
                               Swal.fire("Deleted!", "ลบสำเร็จ!", "success");
                             }
                           });
