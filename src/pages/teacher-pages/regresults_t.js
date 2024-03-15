@@ -15,7 +15,7 @@ const RegResultT = () => {
   const [correctsubject, setCorrectsubject] = useState([{}]);
   //next and prev
   const [currentPage, setCurrentPage] = useState(1);
-  const subjectsPage = 6;
+  const subjectsPage = 8;
   const totalPages = showsubject
     ? Math.ceil(showsubject.length / subjectsPage)
     : 1;
