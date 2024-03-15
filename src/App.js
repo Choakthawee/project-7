@@ -28,6 +28,8 @@ import Viewpage from "./pages/xlsxView/Viewpage";
 import Viewxlsx from "./pages/xlsxView/Viewpage";
 import User_edit from "./pages/admin-pages/user_edit";
 import RegResultED_Regis from "./pages/ed-pages/regresults_ed_regis";
+import RegStatusEdit from "./pages/ed-pages/regstatus_ed";
+
 function App() {
   return (
     <Router>
@@ -67,6 +69,7 @@ function App() {
                   element={<RegResultED_Regis />}
                 />
                 <Route path="/ViewExcel/" element={<Viewxlsx />} />
+                <Route path="/regstatus_edit" element={<RegStatusEdit />} />
               </Routes>
             </div>
           }
