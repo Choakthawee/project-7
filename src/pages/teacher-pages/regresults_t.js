@@ -227,9 +227,9 @@ const RegResultT = () => {
                           <td className="py-2 font-light text-lg text-center">
                             {value.st && value.et
                               ? `${value.st.slice(0, -3)}-${value.et.slice(
-                                  0,
-                                  -3
-                                )}`
+                                0,
+                                -3
+                              )}`
                               : ""}
                           </td>
                           <td className="py-2 font-light text-lg text-center">
