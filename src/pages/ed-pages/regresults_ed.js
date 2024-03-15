@@ -42,10 +42,10 @@ const RegResultED = () => {
   useEffect(() => {
     const show_regresult = async () => {
       try {
-        const Data = await axios.get(apiurl + "/api/eu/allRegister");
+        const Data = await axios.get(apiurl + "/api/edu/subjectReg");
         const subjectssuccess = Data.data;
-        console.log(subjectssuccess.message);
-        setSubjectssuccess(subjectssuccess.message);
+        console.log(subjectssuccess);
+        setSubjectssuccess(subjectssuccess);
       } catch (error) {
         setSubjectnotssuccess(error);
       }
@@ -190,10 +190,10 @@ const RegResultED = () => {
                             {startIndex + index + 1}
                           </td>
                           <td className="py-2 font-light text-lg text-center">
-                            {value.idsubject}
+                            {value.idSubject}
                           </td>
                           <td className="py-2 font-light text-lg text-center">
-                            {value.SUBJECTNAME}
+                            {value.SUBJECT}
                           </td>
                           <td className="py-2 font-light text-lg text-center">
                             {value.credit}
@@ -202,12 +202,12 @@ const RegResultED = () => {
                             {value.sec}
                           </td>
                           <td className="py-2 font-light text-lg text-center">
-                            {value.USERNAME}
+                            {value.NAME}
                           </td>
                           <td className="py-2 font-light text-lg text-center">
                             {value.N_people}
                           </td>
-                          <td className="py-2 font-light text-lg text-center flex gap-1">
+                          <td className="py-2 font-light text-lg  justify-center flex gap-1">
                             <div
                               onClick={() => {
                                 let stringdata = "";
@@ -273,7 +273,7 @@ const RegResultED = () => {
                             </div>
                           </td>
                           <td className="py-2 font-light text-lg text-center">
-                            {value.DAYNAME}
+                            {value.day}
                           </td>
                           <td className="py-2 font-light text-lg text-center">
                             {value.st && value.et
