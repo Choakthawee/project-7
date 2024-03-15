@@ -39,9 +39,9 @@ const RegCourseEdit = () => {
     };
     getdataApi();
   }, []);
-  useEffect(()=>{
+  useEffect(() => {
     console.log(grayBoxData);
-  },[grayBoxData])
+  }, [grayBoxData])
   const showAlert = () => {
     Swal.fire({
       icon: "error", title: "ข้อผิดพลาด", text: "คุณไม่มีสิทธิ์เข้าถึงหน้านี้",
@@ -58,46 +58,25 @@ const RegCourseEdit = () => {
     });
   };
 
-  // const updateData = async () => {
-  //   try {
-  //     const getdata = await axios.post(
-  //       apiurl + "/api/teacher/subjectsRegister",
-  //       {
-  //         id: ID,
-  //         User_id: uid,
-  //         st: st,
-  //         et: et,
-  //         day_id: day,
-  //         sec: sec,
-  //         status_id: status_id,
-  //         N_people: N_people,
-  //         branch: branch,
-  //         category_id: category_id,
-  //         Subjects_id: Subjects_id,
-  //         realcredit: realcredit,
-  //       }
-  //     );
-  //     const data = getdata.data;
-  //     Swal.fire({
-  //       icon: "success",
-  //       title: "สำเร็จ",
-  //       text: data.msg,
-  //     });
-  //   } catch (error) {
-  //     Swal.fire({
-  //       icon: "error",
-  //       title: "ไม่สำเร็จ",
-  //       text: error.response.data.msgerror,
-  //     });
-  //   }
-  // };
 
-  const updateData = async (data) => {
+
+  const updateData = async () => {
+    if (grayBoxData.some(item => Object.values(item).some(value => value === null || value === undefined || value === "")) ||
+      grayBoxData.some(item => !item.branch || Object.keys(item.branch).length === 0)) {
+      Swal.fire({
+        icon: "error",
+        title: "ไม่สำเร็จ",
+        text: "กรุณากรอกข้อมูลให้ครบถ้วน",
+      });
+      return;
+    }
     try {
-      const getdata = await axios.post(apiurl + "/api/teacher/subjectsRegister", data);
+      const getdata = await axios.post(apiurl + "/api/teacher/registersubject", { subjects: grayBoxData });
       const responseData = getdata.data;
+      console.log(responseData);
       Swal.fire({ icon: "success", title: "สำเร็จ", text: responseData.msg, });
     } catch (error) {
+      console.log(error);
       Swal.fire({
         icon: "error",
         title: "ไม่สำเร็จ",
@@ -134,25 +113,26 @@ const RegCourseEdit = () => {
   useEffect(() => {
     console.log(data);
   }, [data]);
-  const [genkey,setGenkey] = useState(Number);
+  const [genkey, setGenkey] = useState(Number);
   const addbox = () => {
     setGrayBoxData((prevData) => {
       const newData = [...prevData, {
-        keys:genkey,
+        keys: genkey,
         uid: localStorage.getItem("userid"),
         st: null,
         et: null,
         day_id: null,
         status_id: 2,
         N_people: null,
-        branch:null,
+        branch: null,
         category_id: null,
         Subjects_id: id,
+        realcredit: null
       }];
-      
+
       return newData;
     });
-    setGenkey(genkey+1);
+    setGenkey(genkey + 1);
   };
 
   if (userRole !== "1") {
