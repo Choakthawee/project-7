@@ -111,10 +111,23 @@ const RegCourseEditFore = () => {
 
         Swal.fire({
           icon: "success",
-          title: "สำเร็จ",
-          text: "ลงทะเบียนสำเร็จ",
-        }).then(() => {
-          window.location.href = "/regresults_ed";
+          title: "ยืนยันบันทึกการลงทะเบียน?",
+          showDenyButton: true,
+          showCancelButton: true,
+          confirmButtonText: "บันทึก",
+          confirmButtonColor: "green",
+          denyButtonText: `ไม่บันทึก`,
+          showCancelButton: false,
+          text: responseData.msg,
+          color: "gray",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire("ลงทะเบียนรายวิชาสำเร็จ", "", "success").then(() => {
+              window.location.href = "/regresults_ed";
+            });
+          } else if (result.isDenied) {
+            Swal.fire("ข้อมูลยังไม่ถูกบันทึก", "", "error");
+          }
         });
       } catch (error) {
         console.log(error);
