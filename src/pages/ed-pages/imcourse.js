@@ -153,7 +153,7 @@ const ImportCourse = () => {
                 </tr>
               </thead>
               {currentsubjects.map((v, i) => (
-                <tbody key={startIndex + i} className={` ${i % 2 == 0 ? " bg-slate-100" : " bg-white"}`}>
+                <tbody key={v.id} className={` ${i % 2 == 0 ? " bg-slate-100" : " bg-white"}`}>
                   <tr>
                     <td className="py-2 font-light text-lg text-center">
                     <InlineCheckbox index={startIndex + i}
