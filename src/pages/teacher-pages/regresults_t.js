@@ -1,14 +1,8 @@
 //ผลการลงทะเบียน (อาจารย์)
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FaCircleLeft, FaCircleRight } from "react-icons/fa6";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import React, { useState, useEffect } from "react";
-import SearchingBar from "../component/searchBar";
-import CourseYears from "../component/courseyear";
-import Category_sub from "../component/category_sub";
-import ButtonSeaching from "../component/buttonSearching";
 import SortBar from "../component/sortBar";
 import axios from "axios";
 import { apiurl } from "../../config";
@@ -169,14 +163,14 @@ const RegResultT = () => {
             ผลการลงทะเบียน
           </p>
         </div>
-        <div className="flex flex-col lg:flex-row gap-3">
+        {/* <div className="flex flex-col lg:flex-row gap-3">
           <SortBar
             url="/api/Searchsubjectopen/"
             url1="/api/searchingbar"
             setCurrent={setSubjects}
             data={subjects}
           />
-        </div>
+        </div> */}
 
         <div className="flex flex-col">
           <div className="flex items-center justify-center content-center">
@@ -228,14 +222,18 @@ const RegResultT = () => {
                           </td>
                           <td className="py-2 font-light text-lg text-center">
                             <div className="flex items-center me-4 justify-center">
-                              <button
-                                className="bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded ml-3"
-                                onClick={() =>
-                                  showSweetAlertWithInput(value.id)
-                                }
-                              >
-                                แก้ไขข้อมูล
-                              </button>
+                              {value.status_id !== 1 ? (
+                                <button
+                                  className="bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded ml-3"
+                                  onClick={() =>
+                                    showSweetAlertWithInput(value.id)
+                                  }
+                                >
+                                  แก้ไขข้อมูล
+                                </button>
+                              ) : (
+                                ""
+                              )}
                             </div>
                           </td>
                         </tr>

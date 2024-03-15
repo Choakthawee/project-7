@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./insertuser.css";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -18,11 +18,26 @@ const InsertUser = () => {
   const [status, setStatus] = useState(2);
   const [Sstatus, setSStatus] = useState(2);
   const [fileData, setFileData] = useState([]);
-
+  const [file ,setFile] = useState();
   const userRole = localStorage.getItem("role_id");
   const navigate = useNavigate();
 
   const [selectedFileName, setSelectedFileName] = useState(null);
+  const [datas, setData] = useState([]);
+
+  useEffect(() => {
+    const getapi = async () => {
+      try {
+        const getdata1 = await axios.get(apiurl + "/api/setting/role");
+        const data1 = getdata1.data;
+        console.log(data1);
+        setData(data1);
+      } catch (error) {
+        setData(error.response.data.msg);
+      }
+    }
+    getapi();
+  }, [])
   const showAlert = () => {
     Swal.fire({
       icon: "error",
@@ -62,7 +77,7 @@ const InsertUser = () => {
       const responsedata = await axios.post(apiurl + "/api/user1", {
         email: email,
         name: name,
-        id: Sstatus,
+        id: status,
       });
       const data = responsedata.data;
 
@@ -107,6 +122,7 @@ const InsertUser = () => {
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
+    setFile(event.target.files[0])
     if (selectedFile) {
       setSelectedFileName(selectedFile.name);
       console.log("Selected File:", selectedFile);
@@ -248,9 +264,9 @@ const InsertUser = () => {
                 value={status}
                 onChange={handleStatusChange}
               >
-                <option>แอดมิน</option>
-                <option>ฝ่ายการศึกษา</option>
-                <option>อาจารย์</option>
+                {datas.map((v, i) => (
+                  <option value={v.id}>{v.name}</option>
+                ))}
               </select>
               <FontAwesomeIcon
                 icon={faArrowAltCircleDown}
@@ -321,7 +337,11 @@ const InsertUser = () => {
                 icon={faArrowRight}
                 className="text-xl ml-3 mt-1"
               />
-              <p className="ml-3 ">{selectedFileName}</p>
+              <Link className="ml-3" target="_self"
+                to={"/ViewExcel"}
+                state={{ file: file, col: ["email", "ชื่อ", "role_id"],start:0 }} >
+                {selectedFileName}
+              </Link>
             </div>
             <div className="flex flex-row justify-start">
               <div className="text-inbox ">
