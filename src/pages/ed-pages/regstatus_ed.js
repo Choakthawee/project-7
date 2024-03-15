@@ -41,9 +41,142 @@ const RegStatusEdit = (props) => {
         return null;
     }
 
+    const changeSubject = async (subjectid, input) => {
+        try {
+            const response = await axios.post(apiurl + "/api/eu/ubdatestatusregister", {
+                st: input.startTime,
+                et: input.endTime,
+                day_id: input.day,
+                id: subjectid,
+            });
+            console.log(response);
+        } catch (error) {
+            console.error("Error fetching schedule data: ", error);
+        }
+    };
+
     const handleBack = () => {
         navigate("/regstatus");
     };
+
+    const handleEditSubject = async (subject) => {
+        const result = await Swal.fire({
+            title: `<span style="color: #246705;font-size: 20px;"> วิชา </span> <span style="color: red;font-size: 20px;">${subject.SUBJECTNAME}</span> <span style="color: #246705;font-size: 20px;"> รหัสวิชา </span> <span style="color: red;font-size: 20px;">${subject.idsubject}-${subject.years.substring(2)}</span> <span style="color: #246705;font-size: 20px;"> หมู่เรียน </span> <span style="color: red;font-size: 20px;">${subject.sec}</span>`,
+            html: `
+            <div>
+              <div>
+                <input type="radio" id="confirmOldTime" name="action" value="confirmOldTime">
+                <label for="confirmOldTime">ยืนยันเวลาเดิม</label><br>
+                <input type="radio" id="notifyChange" name="action" value="notifyChange">
+                <label for="notifyChange">แจ้งเปลี่ยนวันเวลา</label><br>
+              </div>
+            </div>
+          `,
+            showCancelButton: true,
+            confirmButtonText: "ยืนยัน",
+            cancelButtonText: "ยกเลิก",
+            confirmButtonColor: "#4C956C",
+            cancelButtonColor: "#d33",
+        });
+
+        if (result.isConfirmed) {
+            const action = document.querySelector('input[name="action"]:checked').value;
+            if (action === "confirmOldTime") {
+                try {
+                    const response = await axios.post(apiurl + "/api/eu/ubdatestatusregister", {
+                        id: subject.id,
+                    });
+                    console.log(response.data);
+                    Swal.fire({
+                        icon: "success",
+                        title: "ยืนยันสำเร็จ",
+                        confirmButtonColor: "#4C956C",
+                        confirmButtonText: "ตกลง",
+                    });
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
+                } catch (error) {
+                    console.error("Error updating subject register: ", error);
+                }
+            } else if (action === "notifyChange") {
+                const { value: userInput } = await Swal.fire({
+                    title: "เปลี่ยนแปลงวันและเวลาสอน",
+                    html: `
+                    <label for="day">เลือกวันที่จะสอน:</label>
+                    <select id="day" class="swal2-input">
+                      <option value="1">จันทร์</option>
+                      <option value="2">อังคาร</option>
+                      <option value="3">พุธ</option>
+                      <option value="4">พฤหัสบดี</option>
+                      <option value="5">ศุกร์</option>
+                      <option value="6">เสาร์</option>
+                      <option value="7">อาทิตย์</option>
+                    </select><br>
+                    <label for="startTime">เลือกเวลาเริ่มสอน:</label>
+                    <input id="startTime" class="swal2-input" type="time" placeholder="Select a time"><br>
+                    <label for="endTime">เลือกเวลาสิ้นสุดการสอน:</label>
+                    <input id="endTime" class="swal2-input" type="time" placeholder="Select a time">
+                  `,
+                    focusConfirm: true,
+                    confirmButtonColor: "green",
+                    confirmButtonText: "ยืนยัน",
+                    cancelButtonText: "ยกเลิก",
+                    cancelButtonColor: "red",
+                    showCancelButton: true,
+                    focusCancel: true,
+                    preConfirm: () => {
+                        const day = document.getElementById("day").value;
+                        const startTime = document.getElementById("startTime").value;
+                        const endTime = document.getElementById("endTime").value;
+
+                        if (!day || !startTime || !endTime) {
+                            Swal.showValidationMessage("กรุณากรอกข้อมูลให้ครบ");
+                        }
+                        return { day, startTime, endTime };
+                    },
+                });
+
+                if (userInput) {
+                    console.log(userInput);
+                    const { day, startTime, endTime } = userInput;
+                    const dayNames = {
+                        1: "จันทร์",
+                        2: "อังคาร",
+                        3: "พุธ",
+                        4: "พฤหัสบดี",
+                        5: "ศุกร์",
+                        6: "เสาร์",
+                        7: "อาทิตย์",
+                    };
+
+                    const selectedDayName = dayNames[day];
+
+                    const message = `วันที่สอน: ${selectedDayName} 
+                    <br>เวลาเริ่มสอน: ${startTime} นาฬิกา
+                    <br>เวลาสิ้นสุดการสอน: ${endTime} นาฬิกา
+                    <br>`;
+
+                    Swal.fire({
+                        title: "สรุปการเปลี่ยนวันเวลา",
+                        html: message,
+                        timer: 2000,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                    });
+
+                    try {
+                        await changeSubject(subject.id, userInput);
+                    } catch (error) {
+                        console.error("Error changing subject: ", error);
+                    }
+                }
+            }
+        }
+    };
+
+
+
 
     return (
         <div
@@ -131,7 +264,7 @@ const RegStatusEdit = (props) => {
                                         {subject.st.substring(0, 5)}-{subject.et.substring(0, 5)} น.
                                     </td>
                                     <td className="py-2 font-normal text-sm text-center">
-                                        <button className="bg-orange-400 rounded-lg text-white py-2 px-2"> แก้ไข </button>
+                                        <button className="bg-orange-400 rounded-lg text-white py-2 px-2" onClick={() => { handleEditSubject(subject) }}> แก้ไข </button>
                                     </td>
                                 </tr>
                             ))}
