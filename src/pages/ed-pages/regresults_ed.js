@@ -10,21 +10,47 @@ import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { apiurl } from "../../config";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 const RegResultED = () => {
   const userRole = localStorage.getItem("role_id");
   const navigate = useNavigate();
+  const [subjectssuccess, setSubjectssuccess] = useState();
+  const [subjectsnotsuccess, setSubjectnotssuccess] = useState();
+  //next and prev
+  const [currentPage, setCurrentPage] = useState(1);
+  const subjectsPage = 6;
+  const totalPages = subjectssuccess
+    ? Math.ceil(subjectssuccess.length / subjectsPage)
+    : 1;
+  const startIndex = (currentPage - 1) * subjectsPage;
+  const endIndex = startIndex + subjectsPage;
+  const currentsubjects = subjectssuccess
+    ? subjectssuccess.slice(startIndex, endIndex)
+    : [];
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prevPage) => prevPage - 1);
+    }
+  };
   useEffect(() => {
     const show_regresult = async () => {
-      const Data = await axios.get(
-        apiurl + "/api/statusRegistered/" + localStorage.getItem("userid")
-      );
+      try {
+        const Data = await axios.get(apiurl + "/api/edu/subjectReg");
+        const subjectssuccess = Data.data;
+        console.log(subjectssuccess);
+        setSubjectssuccess(subjectssuccess);
+      } catch (error) {
+        setSubjectnotssuccess(error);
+      }
     };
-    try {
-      show_regresult();
-    } catch (error) {
-      console.log(error);
-    }
+    show_regresult();
   }, []);
   const showAlert = () => {
     Swal.fire({
@@ -129,95 +155,152 @@ const RegResultED = () => {
         </div>
 
         <div className="flex flex-7 flex-col mt-5">
-          <div className="flex flex-4">
-            <div className="flex flex-1 ml-10 mr-5 bg-slate-200 rounded-lg overflow-x-auto shadow-xl h-full overflow-y-auto">
-              <table className=" w-full">
-                <thead>
-                  <tr className="column-color1 text-white">
-                    <th className="py-2 font-light text-xl">#</th>
-                    <th className="py-2 font-light text-xl">รหัสวิชา</th>
-                    <th className="py-2 font-light text-xl">ชื่อวิชา</th>
-                    <th className="py-2 font-light text-xl">หน่วยกิต</th>
-                    <th className="py-2 font-light text-xl">หมู่เรียน</th>
-                    <th className="py-2 font-light text-xl">อาจารย์ผู้สอน</th>
-                    <th className="py-2 font-light text-xl">จำนวนนิสิต</th>
-                    <th className="py-2 font-light text-xl">
-                      สาขาชั้นปีที่เปิดรับ
-                    </th>
-                    <th className="py-2 font-light text-xl">วันที่สอน</th>
-                    <th className="py-2 font-light text-xl">เวลาที่สอน</th>
-                  </tr>
-                </thead>
+          <div className="flex flex-4 items-center justify-center content-center">
+            {subjectssuccess &&
+              (subjectsnotsuccess ? (
+                <p className="text-2xl text-red-700 text-center  underline">
+                  ไม่พบข้อมูลในระบบ
+                </p>
+              ) : subjectssuccess.length > 0 ? (
+                <div className="flex flex-1 ml-10 mr-5 bg-slate-200 rounded-lg overflow-x-auto shadow-xl h-full overflow-y-auto">
+                  <table className=" w-full">
+                    <thead>
+                      <tr className="column-color1 text-white">
+                        <th className="py-2 font-light text-xl">#</th>
+                        <th className="py-2 font-light text-xl">รหัสวิชา</th>
+                        <th className="py-2 font-light text-xl">ชื่อวิชา</th>
+                        <th className="py-2 font-light text-xl">หน่วยกิต</th>
+                        <th className="py-2 font-light text-xl">หมู่เรียน</th>
+                        <th className="py-2 font-light text-xl">
+                          อาจารย์ผู้สอน
+                        </th>
+                        <th className="py-2 font-light text-xl">จำนวนนิสิต</th>
+                        <th className="py-2 font-light text-xl">
+                          สาขาชั้นปีที่เปิดรับ
+                        </th>
+                        <th className="py-2 font-light text-xl">วันที่สอน</th>
+                        <th className="py-2 font-light text-xl">เวลาที่สอน</th>
+                      </tr>
+                    </thead>
 
-                <tbody>
-                  <td className="py-2 font-light text-lg text-center">{"1"}</td>
-                  <td className="py-2 font-light text-lg text-center">
-                    {"03603423"}
-                  </td>
-                  <td className="py-2 font-light text-lg text-center">
-                    {"Network Programming"}
-                  </td>
-                  <td className="py-2 font-light text-lg text-center">{"3"}</td>
-                  <td className="py-2 font-light text-lg text-center">
-                    {"800"}
-                  </td>
-                  <td className="py-2 font-light text-lg text-center">
-                    {"ยงเกียรติ แสวงสุข"}
-                  </td>
-                  <td className="py-2 font-light text-lg text-center">
-                    {"1 คน"}
-                  </td>
-                  <td className="py-2 font-light text-lg text-center">
-                    {"T-all"}
-                  </td>
-                  <td className="py-2 font-light text-lg text-center">
-                    {"อังคาร"}
-                  </td>
-                  <td className="py-2 font-light text-lg text-center">
-                    {"21.00-24.00"}
-                  </td>
-                </tbody>
-
-                <tbody>
-                  <td className="py-2 font-light text-lg text-center">{"2"}</td>
-                  <td className="py-2 font-light text-lg text-center">
-                    {"03603423"}
-                  </td>
-                  <td className="py-2 font-light text-lg text-center">
-                    {"Network Programming"}
-                  </td>
-                  <td className="py-2 font-light text-lg text-center">{"3"}</td>
-                  <td className="py-2 font-light text-lg text-center">
-                    {"801"}
-                  </td>
-                  <td className="py-2 font-light text-lg text-center">
-                    {"ยงเกียรติ แสวงสุข"}
-                  </td>
-                  <td className="py-2 font-light text-lg text-center">
-                    {"1 คน"}
-                  </td>
-                  <td className="py-2 font-light text-lg text-center">
-                    {"T-all"}
-                  </td>
-                  <td className="py-2 font-light text-lg text-center">
-                    {"เสาร์"}
-                  </td>
-                  <td className="py-2 font-light text-lg text-center">
-                    {"21.00-24.00"}
-                  </td>
-                </tbody>
-              </table>
-            </div>
+                    <tbody>
+                      {currentsubjects.map((value, index) => (
+                        <tr>
+                          <td className="py-2 font-light text-lg text-center">
+                            {startIndex + index + 1}
+                          </td>
+                          <td className="py-2 font-light text-lg text-center">
+                            {value.idSubject}
+                          </td>
+                          <td className="py-2 font-light text-lg text-center">
+                            {value.SUBJECT}
+                          </td>
+                          <td className="py-2 font-light text-lg text-center">
+                            {value.credit}
+                          </td>
+                          <td className="py-2 font-light text-lg text-center">
+                            {value.sec}
+                          </td>
+                          <td className="py-2 font-light text-lg text-center">
+                            {value.NAME}
+                          </td>
+                          <td className="py-2 font-light text-lg text-center">
+                            {value.N_people}
+                          </td>
+                          <td className="py-2 font-light text-lg  justify-center flex gap-1">
+                            <div
+                              onClick={() => {
+                                let stringdata = "";
+                                Object.keys(value.branch).forEach(
+                                  (key, keyIndex) => {
+                                    const items = value.branch[key];
+                                    items.forEach((item, index) => {
+                                      stringdata += `${key}-${index + 1}`;
+                                      if (index !== items.length - 1) {
+                                        stringdata += ", ";
+                                      } else if (
+                                        keyIndex !==
+                                        Object.keys(value.branch).length - 1
+                                      ) {
+                                        stringdata += "\n";
+                                      }
+                                    });
+                                  }
+                                );
+                                Swal.fire({
+                                  title: "สาขาชั้นปีที่เปิดรับ",
+                                  text: stringdata,
+                                  showCloseButton: true,
+                                });
+                              }}
+                            >
+                              {Object.keys(value.branch)
+                                .map((key) => {
+                                  const items = value.branch[key];
+                                  if (items.length <= 2) {
+                                    return items.map((item, index) => (
+                                      <span
+                                        key={key + "-" + (index + 1)}
+                                        className="py-2 font-light text-lg text-center"
+                                      >
+                                        {key}-{index + 1}
+                                      </span>
+                                    ));
+                                  } else {
+                                    return [
+                                      <span
+                                        key={key + "-1"}
+                                        className="py-2 font-light text-lg text-center"
+                                      >
+                                        {key}-1
+                                      </span>,
+                                      <span
+                                        key={key + "-2"}
+                                        className="py-2 font-light text-lg text-center"
+                                      >
+                                        {key}-2
+                                      </span>,
+                                      <span
+                                        key={key + "-more"}
+                                        className="py-2 font-light text-lg text-center"
+                                      >
+                                        ...
+                                      </span>,
+                                    ];
+                                  }
+                                })
+                                .flat()}
+                            </div>
+                          </td>
+                          <td className="py-2 font-light text-lg text-center">
+                            {value.day}
+                          </td>
+                          <td className="py-2 font-light text-lg text-center">
+                            {value.st && value.et
+                              ? `${value.st.slice(0, -3)}-${value.et.slice(
+                                  0,
+                                  -3
+                                )}`
+                              : ""}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                ""
+              ))}
           </div>
 
           <div className="flex flex-1 justify-center">
-            <button>
+            <button onClick={handlePrevPage}>
               <FaCircleLeft size={21} color="#0a6765" className="mr-3 mt-8" />
             </button>
             <p className="text-lg font-semibold text-midgreen  mt-8">
-              หน้า 1 จาก 1
+              หน้า {currentPage} จาก {totalPages}
             </p>
-            <button>
+            <button onClick={handleNextPage}>
               <FaCircleRight size={21} color="#0a6765" className="ml-3 mt-8" />
             </button>
           </div>
