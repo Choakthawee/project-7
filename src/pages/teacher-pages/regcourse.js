@@ -41,14 +41,16 @@ const RegCourse = () => {
   const [noneSubject, setNoneSubject] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const subjectsPage = 10;
-  const totalPages = subjects.results ? Math.ceil(subjects.results.length / subjectsPage) : 1;
+  const totalPages = subjects.results
+    ? Math.ceil(subjects.results.length / subjectsPage)
+    : 1;
   const startIndex = (currentPage - 1) * subjectsPage;
   const endIndex = startIndex + subjectsPage;
-  const [subject_category, setSubject_category] = useState([])
+  const [subject_category, setSubject_category] = useState([]);
   useEffect(() => {
     async function getSubject() {
       try {
-        const responseData = await axios.get(apiurl + "/api/teacher/subjects")
+        const responseData = await axios.get(apiurl + "/api/teacher/subjects");
         const data = responseData.data;
         setSubjects(data);
       } catch (err) {
@@ -56,10 +58,12 @@ const RegCourse = () => {
       }
     }
     getSubject();
-  }, [])
+  }, []);
   const currentsubjects = subjects.msg
     ? []
-    : subjects.results ? subjects.results.slice(startIndex, endIndex) : [];
+    : subjects.results
+    ? subjects.results.slice(startIndex, endIndex)
+    : [];
   const handleNextPage = () => {
     if (currentPage < totalPages) {
       setCurrentPage((prevPage) => prevPage + 1);
@@ -74,24 +78,33 @@ const RegCourse = () => {
   const handleSwab = (v) => {
     navigate("/regcourse_edit/" + v.id);
   };
- 
+
   if (userRole !== "1") {
     showAlert();
     return null;
   }
- 
+
   return (
     <div className="flex flex-auto h-full min-h-screen  background21  w-full">
       <div className="flex flex-col p-2 md:p-10 gap-5 w-full">
         <h1 className="flex font-family font-bold text-4xl size-30 text-midgreen h1text-shadow">
           ลงทะเบียนรายวิชา
         </h1>
-          {/* <HeaderSort_pre/> */}
-        <SortBar url="/api/Searchsubjectopen/" url1="/api/searchingbar" setCurrent={setSubjects}/>
-        {noneSubject.msgerrortime ?
-          <div className=" text-2xl text-red-700 text-center underline">{noneSubject.msgerrortime}</div> :
+        {/* <HeaderSort_pre/> */}
+        <SortBar
+          url="/api/Searchsubjectopen/"
+          url1="/api/searchingbar"
+          setCurrent={setSubjects}
+        />
+        {noneSubject.msgerrortime ? (
+          <div className=" text-2xl text-red-700 text-center underline">
+            {noneSubject.msgerrortime}
+          </div>
+        ) : (
           <div className="flex flex-col gap-2">
-            <h1 className=" h1text-shadow text-xl">{subjects.msgtime && `*${subjects.msgtime}`}</h1>
+            <h1 className=" h1text-shadow text-xl">
+              {subjects.msgtime && `*${subjects.msgtime}`}
+            </h1>
             <div className="flex flex-1 bg-slate-200 rounded-lg overflow-x-auto shadow-xl">
               <table className="h-full w-full">
                 <thead>
@@ -105,15 +118,16 @@ const RegCourse = () => {
                   </tr>
                 </thead>
                 {currentsubjects.map((v, i) => (
-                  <tbody key={startIndex + i}
+                  <tbody
+                    key={startIndex + i}
                     className={
-                      (startIndex + i) % 2 === 0
-                        ? "bg-gray-100"
-                        : "bg-white"
+                      (startIndex + i) % 2 === 0 ? "bg-gray-100" : "bg-white"
                     }
                   >
                     <tr>
-                      <td className="py-2 font-light text-lg text-center">{i + 1}</td>
+                      <td className="py-2 font-light text-lg text-center">
+                        {startIndex + i + 1}
+                      </td>
                       <td className="py-2 font-light text-lg text-center">
                         {v.idsubject}
                       </td>
@@ -130,25 +144,35 @@ const RegCourse = () => {
                         <button
                           className="text-green-950 py-1 px-2 rounded-md font-light"
                           onClick={() => {
-                            subjects.msgtime ? Swal.fire({
-                              icon: "warning", "text": subjects.msgtime, title: "ข้อผิดพลาด",
-                              confirmButtonColor: "#3085d6",
-                              confirmButtonText: "ตกลง",
-                            }) : handleSwab(v)
+                            subjects.msgtime
+                              ? Swal.fire({
+                                  icon: "warning",
+                                  text: subjects.msgtime,
+                                  title: "ข้อผิดพลาด",
+                                  confirmButtonColor: "#3085d6",
+                                  confirmButtonText: "ตกลง",
+                                })
+                              : handleSwab(v);
                           }}
                         >
-                          {subjects.msgtime ? <LockIcon></LockIcon> : <RiEdit2Fill size={20} />}
+                          {subjects.msgtime ? (
+                            <LockIcon></LockIcon>
+                          ) : (
+                            <RiEdit2Fill size={20} />
+                          )}
                         </button>
                       </td>
                     </tr>
-
                   </tbody>
                 ))}
               </table>
             </div>
-            <h1 className="text-center text-xl">{subjects.msg}{noneSubject.msgerror}</h1>
+            <h1 className="text-center text-xl">
+              {subjects.msg}
+              {noneSubject.msgerror}
+            </h1>
           </div>
-        }
+        )}
         <div className="flex h-full justify-center items-end">
           <div className="flex justify-center items-center gap-3">
             <button onClick={handlePrevPage}>
@@ -163,7 +187,6 @@ const RegCourse = () => {
           </div>
         </div>
       </div>
-
     </div>
   );
 };
