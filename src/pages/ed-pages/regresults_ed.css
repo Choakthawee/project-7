@@ -67,3 +67,13 @@
   border-style: solid;
   border-color: red; */
 }
+
+.edit-button {
+  background-color: #e3883d;
+  font-size: 10px;
+  color: #fff;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
