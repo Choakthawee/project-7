@@ -77,7 +77,7 @@ const RegResultED = () => {
 
   return (
     <div className="bged">
-      <div className="flex flex-1 flex-col">
+      <div className="flex flex-1 flex-col ">
         <div className="flex relative">
           <p className="flex font-family font-bold text-4xl size-30  text-midgreen h1text-shadow mt-10 ml-10">
             ผลการลงทะเบียน
@@ -207,7 +207,7 @@ const RegResultED = () => {
                           <td className="py-2 font-light text-lg text-center">
                             {value.N_people}
                           </td>
-                          <td className="py-2 font-light text-lg  justify-center flex gap-1">
+                          <td className="py-2 font-light text-lg  justify-center flex gap-1 hover:text-green-600 transition-all underline  cursor-pointer">
                             <div
                               onClick={() => {
                                 let stringdata = "";
