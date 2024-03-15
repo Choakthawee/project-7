@@ -40,6 +40,16 @@ const Schedule = () => {
   }, []);
 
   useEffect(() => {
+    const tbodyCells = document.querySelectorAll('.flex table tbody td');
+    tbodyCells.forEach(cell => {
+      const colspan = cell.getAttribute('colspan');
+      if (colspan) {
+        cell.style.width = `${100 / parseInt(colspan)}%`;
+      }
+    });
+  }, [filteredSubjects]);
+
+  useEffect(() => {
     const fetchScheduleData = async () => {
       try {
         let response;
@@ -348,112 +358,117 @@ const Schedule = () => {
       </div>
 
       <div className="flex">
-        {filteredSubjects.length === 0 ? (
-          <table className="mt-0 border-collapse border border-gray-400 shadow-md">
-            <thead>
-              <tr className="bg-gray-200">
-                <th className="border border-gray-400 py-2 px-4"></th>
-                {times.map((time, index) => (
-                  <th key={index} className="border border-gray-400 py-2 px-2">
-                    <div className="text-xs">{`${time.start}-${time.end}`}</div>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {days.map((day, dayIndex) => (
-                <tr key={dayIndex} className="bg-white">
-                  <td className="border border-gray-400 py-2 px-4 font-semibold">
-                    {day.name}
-                  </td>
-                  {times.map((time, timeIndex) => (
-                    <td
-                      key={timeIndex}
-                      className="border border-gray-400 py-2 px-2 bg-white"
-                    ></td>
+        {isTeacher ? (
+          filteredSubjects.length === 0 ? (
+            <table className="mt-0 border-collapse border border-gray-400 shadow-md">
+              {/* Table Header */}
+              <thead>
+                <tr className="bg-gray-200">
+                  <th className="border border-gray-400 py-2 px-4"></th>
+                  {times.map((time, index) => (
+                    <th key={index} className="border border-gray-400 py-2 px-2">
+                      <div className="text-xs">{`${time.start}-${time.end}`}</div>
+                    </th>
                   ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <table className="mt-0 border-collapse border border-gray-400 shadow-md">
-            <thead>
-              <tr className="bg-gray-200">
-                <th className="border border-gray-400 py-2 px-4"></th>
-                {times.map((time, index) => (
-                  <th key={index} className="border border-gray-400 py-2 px-2">
-                    <div className="text-xs">{`${time.start}-${time.end}`}</div>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {days.map((day, dayIndex) => (
-                <tr key={dayIndex} className="bg-white">
-                  <td className="border border-gray-400 py-2 px-4 font-semibold">
-                    {day.name}
-                  </td>
-                  {times.map((time, timeIndex) => {
-                    const subject = filteredSubjects.find(
-                      (sub) =>
-                        sub.day_id === day.id &&
-                        sub.st <= time.end &&
-                        sub.et >= time.start &&
-                        sub.et >= time.end
-                    );
-                    let colorClass = "";
-                    if (!isTeacher && subject) {
-                      switch (subject.subject_category) {
-                        case "วิชาบังคับ":
-                          colorClass = "bg-pink-400";
-                          break;
-                        case "วิชาเอก":
-                          colorClass = "bg-yellow-400";
-                          break;
-                        case "วิชาเลือก":
-                          colorClass = "bg-cyan-400";
-                          break;
-                        default:
-                          colorClass = "bg-white";
-                          break;
-                      }
-                    } else if (isTeacher && subject) {
-                      switch (subject.status_id) {
-                        case 2:
-                          colorClass = "bg-orange-500";
-                          break;
-                        case 1:
-                          colorClass = "bg-green-400";
-                          break;
-                        case 3:
-                          colorClass = "bg-red-500";
-                          break;
-                        default:
-                          colorClass = "bg-white";
-                          break;
-                      }
-                    }
-                    return (
+              </thead>
+              {/* Table Body */}
+              <tbody>
+                {days.map((day, dayIndex) => (
+                  <tr key={dayIndex} className="bg-white">
+                    <td className="border border-gray-400 py-2 px-4 font-semibold">
+                      {day.name}
+                    </td>
+                    {times.map((time, timeIndex) => (
                       <td
                         key={timeIndex}
-                        className={`border border-gray-400 py-2 px-2 text-xs ${subject ? "border-0 cursor-pointer" : "border"
-                          } ${colorClass}`}
-                        onClick={() => subject && showAlert(subject)}
-                      >
-                        {subject
-                          ? `${subject.id_subject}-${subject.ySubject.substring(
-                            2
-                          )}`
-                          : ""}
-                      </td>
-                    );
-                  })}
+                        className="border border-gray-400 py-2 px-2 bg-white"
+                      ></td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <table className="mt-0 border-collapse border border-gray-400 shadow-md">
+              {/* Table Header */}
+              <thead>
+                <tr className="bg-gray-200">
+                  <th className="border border-gray-400 py-2 px-4"></th>
+                  {times.map((time, index) => (
+                    <th key={index} className="border border-gray-400 py-2 px-2">
+                      <div className="text-xs">{`${time.start}-${time.end}`}</div>
+                    </th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+              </thead>
+              {/* Table Body */}
+              <tbody>
+                {days.map((day, dayIndex) => (
+                  <tr key={dayIndex} className="bg-white">
+                    <td className="border border-gray-400 py-2 px-4 font-semibold">
+                      {day.name}
+                    </td>
+                    {times.map((time, timeIndex) => {
+                      const subject = filteredSubjects.find(
+                        (sub) =>
+                          sub.day_id === day.id &&
+                          sub.st <= time.end &&
+                          sub.et >= time.start &&
+                          sub.et > time.end
+                      );
+                      let colorClass = "";
+                      if (!isTeacher && subject) {
+                        switch (subject.subject_category) {
+                          case "วิชาบังคับ":
+                            colorClass = "bg-pink-400";
+                            break;
+                          case "วิชาเอก":
+                            colorClass = "bg-yellow-400";
+                            break;
+                          case "วิชาเลือก":
+                            colorClass = "bg-cyan-400";
+                            break;
+                          default:
+                            colorClass = "bg-white";
+                            break;
+                        }
+                      } else if (isTeacher && subject) {
+                        switch (subject.status_id) {
+                          case 2:
+                            colorClass = "bg-orange-500";
+                            break;
+                          case 1:
+                            colorClass = "bg-green-400";
+                            break;
+                          case 3:
+                            colorClass = "bg-red-500";
+                            break;
+                          default:
+                            colorClass = "bg-white";
+                            break;
+                        }
+                      }
+                      return (
+                        <td
+                          key={timeIndex}
+                          className={`border border-gray-400 py-2 px-2 text-xs ${subject ? "border-0 cursor-pointer" : "border"
+                            } ${colorClass}`}
+                          onClick={() => subject && showAlert(subject)}
+                          colSpan={subject ? (subject.et.substring(0, 2) - subject.st.substring(0, 2)) * 2 : 1} // คำนวณ colspan ตามเวลาที่กิน
+                        >
+                          {subject
+                            ? `${subject.id_subject}-${subject.ySubject.substring(2)}`
+                            : ""}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )
+        ) : null}
       </div>
 
       <div className="flex bg-slate-200 mt-10 rounded-lg overflow-x-auto shadow-xl text-center">
@@ -540,7 +555,7 @@ const Schedule = () => {
                     ))}
                   </td>
                   <td className="border border-gray-400 py-2 px-4 border-opacity-10">
-                    {subject.day}
+                    {subject.day_id}
                   </td>
                   <td className="border border-gray-400 py-2 px-4 border-opacity-10">
                     {subject.st.substring(0, 5)}-{subject.et.substring(0, 5)} น.
