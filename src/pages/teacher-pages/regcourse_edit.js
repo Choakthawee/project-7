@@ -90,7 +90,7 @@ const RegCourseEdit = () => {
       console.log(responseData);
       Swal.fire({
         icon: "success",
-        title: "สำเร็จ",
+        title: "ลงทะเบียนรายวิชาสำเร็จ",
         text: responseData.msg,
       }).then(() => {
         window.location.href = "/regcourse";
@@ -99,7 +99,7 @@ const RegCourseEdit = () => {
       console.log(error);
       Swal.fire({
         icon: "error",
-        title: "ไม่สำเร็จ",
+        title: "ลงทะเบียนรายวิชาไม่สำเร็จ",
         text: error.response.data.msgerror,
       });
     }
