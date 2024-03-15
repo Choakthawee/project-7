@@ -1,70 +1,66 @@
 .bged {
-    display: flex;
-    flex: 1;
-    background-color: #cce3de;
-    overflow: hidden;
-    height: 100vh;
+  background-color: #cce3de;
 }
 
 .ABox {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    /* border-width: 5px; */
-    /* border-style: solid;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  /* border-width: 5px; */
+  /* border-style: solid;
   border-color: red; */
 }
 .BBox {
-    display: flex;
-    flex: 1;
-    position: relative;
-    /* border-width: 5px; */
-    /* border-style: solid;
+  display: flex;
+  flex: 1;
+  position: relative;
+  /* border-width: 5px; */
+  /* border-style: solid;
   border-color: blue; */
 }
 .CBox {
-    display: flex;
-    flex: 1;
-    position: relative;
-    /* border-width: 5px; */
-    /* border-style: solid;
+  display: flex;
+  flex: 1;
+  position: relative;
+  /* border-width: 5px; */
+  /* border-style: solid;
   border-color: green; */
 }
 .inCBox {
-    display: flex;
-    flex-direction: row;
-    flex: 1;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  align-items: center;
 }
 .DBox {
-    display: flex;
-    flex: 7;
-    /* border-width: 5px; */
-    /* border-style: solid;
+  display: flex;
+  flex: 7;
+  /* border-width: 5px; */
+  /* border-style: solid;
   border-color: yellow; */
-    flex-direction: column;
+  flex-direction: column;
 }
 .inDBox {
-    display: flex;
-    flex: 4;
-    /* border-width: 5px;
+  display: flex;
+  flex: 4;
+  /* border-width: 5px;
   border-style: solid;
   border-color: red; */
 }
 .inDBox2 {
-    display: flex;
-    flex: 1;
-    justify-content: center;
-    /* border-width: 5px;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  /* border-width: 5px;
   border-style: solid;
   border-color: red; */
 }
 .edit-button {
-    background-color: #e3883d;
-    font-size: 10px;
-    color: #fff;
-    padding: 5px 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+  background-color: #e3883d;
+  font-size: 10px;
+  color: #fff;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }

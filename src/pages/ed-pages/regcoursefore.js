@@ -2,7 +2,7 @@ import { useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import React, { useEffect, useState } from "react";
-import "./reg-set.css";
+import "../teacher-pages/reg-set.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { faArrowAltCircleDown } from "@fortawesome/free-solid-svg-icons";
@@ -14,10 +14,13 @@ import { TiDelete } from "react-icons/ti";
 import { TiDeleteOutline } from "react-icons/ti";
 import axios from "axios";
 import { apiurl } from "../../config";
-import GrayBox from "./regcourse_edit-component/GrayBox";
+import GrayBox from "../teacher-pages/regcourse_edit-component/GrayBox";
+import SearchingBar from "../component/searchBar";
 
-const RegCourseEdit = () => {
+const RegCourseEditFore = () => {
   const userRole = localStorage.getItem("role_id");
+  const [searching, setSearching] = useState([]);
+  const [searchInput, setSearchInput] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
   const [subject, setSubject] = useState({});
@@ -41,6 +44,7 @@ const RegCourseEdit = () => {
       }
     };
     getdataApi();
+    localStorage.removeItem("user_idfore");
   }, []);
   useEffect(() => {
     console.log(grayBoxData);
@@ -62,13 +66,21 @@ const RegCourseEdit = () => {
       }
     });
   };
-
   const updateData = async () => {
+    const userId = localStorage.getItem("user_idfore");
     if (genkey <= 0) {
       Swal.fire({
         icon: "error",
-        title: "ไม่สำเร็จ",
+        title: "กรุณาเพิ่มหมู่เรียน",
         text: "กรุณาเพิ่มหมู่เรียนอย่างน้อย 1 หมู่เรียน",
+      });
+    }
+    console.log(userId);
+    if (!userId) {
+      Swal.fire({
+        icon: "error",
+        title: "กรุณากรอกชื่ออาจารย์",
+        text: "กรุณากรอกชื่ออาจารย์ผู้สอน",
       });
     } else {
       if (
@@ -88,6 +100,7 @@ const RegCourseEdit = () => {
         });
         return;
       }
+
       try {
         const getdata = await axios.post(
           apiurl + "/api/teacher/registersubject",
@@ -95,6 +108,7 @@ const RegCourseEdit = () => {
         );
         const responseData = getdata.data;
         console.log(responseData);
+
         Swal.fire({
           icon: "success",
           title: "ยืนยันบันทึกการลงทะเบียน?",
@@ -109,7 +123,7 @@ const RegCourseEdit = () => {
         }).then((result) => {
           if (result.isConfirmed) {
             Swal.fire("ลงทะเบียนรายวิชาสำเร็จ", "", "success").then(() => {
-              window.location.href = "/regcourse";
+              window.location.href = "/regresults_ed";
             });
           } else if (result.isDenied) {
             Swal.fire("ข้อมูลยังไม่ถูกบันทึก", "", "error");
@@ -119,7 +133,7 @@ const RegCourseEdit = () => {
         console.log(error);
         Swal.fire({
           icon: "error",
-          title: "ลงทะเบียนรายวิชาไม่สำเร็จ",
+          title: "ไม่สำเร็จ",
           text: error.response.data.msgerror,
         });
       }
@@ -127,11 +141,10 @@ const RegCourseEdit = () => {
   };
 
   const handleSwab = () => {
-    navigate("/regcourse");
+    navigate("/regresults_ed");
   };
 
   const handleDelete = (i) => {
-    setGenkey(genkey - 1);
     setGrayBoxData((prevData) => {
       const newData = [...prevData];
       newData.splice(i, 1);
@@ -155,9 +168,7 @@ const RegCourseEdit = () => {
   useEffect(() => {
     console.log(data);
   }, [data]);
-
   const [genkey, setGenkey] = useState(Number);
-
   const addbox = () => {
     setGrayBoxData((prevData) => {
       const newData = [
@@ -183,8 +194,10 @@ const RegCourseEdit = () => {
   };
 
   if (userRole !== "1") {
-    showAlert();
-    return null;
+    if (userRole !== "3") {
+      showAlert();
+      return null;
+    }
   }
 
   return (
@@ -241,6 +254,15 @@ const RegCourseEdit = () => {
                     : "Error"}
                 </p>
               </div>
+              <SearchingBar
+                searching={searching}
+                setSearching={setSearching}
+                searchInput={searchInput}
+                setSearchInput={setSearchInput}
+                url={"/api/searchingnameteacher/"}
+                title="กรอกชื่ออาจารย์ หรือ email"
+                placeholder="ชื่อหรือemail"
+              ></SearchingBar>
               <div className="gap-3 flex flex-col text-lightgreen">
                 <label htmlFor="add" for="add">
                   เพิ่มหมู่เรียน <span style={{ color: "red" }}>*</span>
@@ -276,4 +298,4 @@ const RegCourseEdit = () => {
     </div>
   );
 };
-export default RegCourseEdit;
+export default RegCourseEditFore;

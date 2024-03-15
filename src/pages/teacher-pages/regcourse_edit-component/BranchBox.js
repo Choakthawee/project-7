@@ -3,18 +3,28 @@ import BranchCheckbox from "./BranchCheckbox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FaTimes } from "react-icons/fa";
 import { faArrowAltCircleDown } from "@fortawesome/free-solid-svg-icons";
-export default function BranchBox({ setall }) {
+export default function BranchBox({
+  setall,
+  textColor,
+  all,
+  select = [],
+  children,
+}) {
   //เลือกสาขา
-  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [selectedOptions, setSelectedOptions] = useState(select);
   const [selectedBranch, setSelectedBranch] = useState("");
   const [selectedYears, setSelectedYears] = useState([]);
-  const [selectedAll, setSelectedAll] = useState({});
+  const [selectedAll, setSelectedAll] = useState({ l: [1] });
 
   const handleBranchChange = (event) => {
     setSelectedBranch(event.target.value);
     setSelectedYears([]);
   };
-
+  useEffect(() => {
+    if (all) {
+      Object.entries();
+    }
+  }, []);
   const handleYearChange = (event, year) => {
     const isChecked = event.target.checked;
     if (isChecked) {
@@ -26,9 +36,7 @@ export default function BranchBox({ setall }) {
 
   const handleConfirm = () => {
     if (selectedBranch && selectedYears.length > 0) {
-      const options = selectedYears.map(
-        (year) => `${selectedBranch}-${year}`
-      );
+      const options = selectedYears.map((year) => `${selectedBranch}-${year}`);
       const options1 = selectedYears.map((year) => Number(year));
       const newData = {
         [selectedBranch]: options1,
@@ -83,7 +91,6 @@ export default function BranchBox({ setall }) {
     });
   };
 
-
   const handleClearAll = () => {
     setSelectedOptions([]);
     setall((prevData) => {
@@ -92,10 +99,9 @@ export default function BranchBox({ setall }) {
     });
   };
 
-
   return (
-
-    <div className="box-gray mt-1 mb-3">
+    <div className={"box-gray mt-1 mb-3 " + textColor}>
+      {children}
       <div className="flex flex-col mt-2">
         <div>
           <label class="block mb-2 ">
@@ -145,7 +151,6 @@ export default function BranchBox({ setall }) {
           <div className="flex flex-row">
             <div className="mt-2">
               <div className="flex flex-row mb-1">
-
                 <BranchCheckbox
                   id={`bcb1`}
                   checked={selectedYears.includes("1")}
@@ -242,4 +247,4 @@ export default function BranchBox({ setall }) {
       )}
     </div>
   );
-};
+}

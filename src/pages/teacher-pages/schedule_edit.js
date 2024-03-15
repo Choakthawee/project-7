@@ -6,13 +6,20 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import Secadd from "./secadd";
 import axios from "axios";
 import { apiurl } from "../../config";
+import BranchBox from "./regcourse_edit-component/BranchBox";
+import GrayBox from "./regcourse_edit-component/GrayBox";
 
 const ScheduleEdit = () => {
   const userRole = localStorage.getItem("role_id");
   const navigate = useNavigate();
   const { idreg } = useParams();
   const [subject, setSubject] = useState({});
-
+  const [all, setall] = useState({});
+  const [N_people, setNPeople] = useState(Number);
+  const [ListSelect, setListSelect] = useState([]);
+  const [selectedRadio, setSelectedRadio] = useState();
+  const [select, setSelect] = useState([]);
+  const [id_category, setCategory] = useState();
   useEffect(() => {
     const getapi = async () => {
       const userid = localStorage.getItem("userid");
@@ -27,11 +34,31 @@ const ScheduleEdit = () => {
         const data = dataRespone.data;
         console.log(data);
         setSubject(data);
+        setNPeople(data.N_people);
+        console.log(data.branch);
+        setall(data.branch);
+        setSelectedRadio(data.categoty_id);
+        Object.keys(data.branch).map((key) => {
+          data.branch[key].map((v, i) => {
+            setSelect((data) => [...data, `${key}-${v}`]);
+            console.log(`${key}-${v}`);
+          });
+        });
       } catch (err) {
         alert(err.response.data.msg);
       }
     };
     getapi();
+  }, []);
+  useEffect(() => {
+    axios
+      .get(apiurl + "/api/category")
+      .then((response) => {
+        setListSelect(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+      });
   }, []);
 
   const handleSwab = () => {
@@ -65,9 +92,9 @@ const ScheduleEdit = () => {
     <div className="flex w-full h-full min-h-screen background21">
       <div className="flex w-full items-center overflow-y-scroll justify-center p-2 lg:p-10">
         <div className="flex w-full md:w-3/4 rounded-3xl bg-white h-full p-5 sm:p-10  ">
-          <div className="flex flex-col lg:flex-col w-full">
+          <div className="flex flex-col  lg:flex-col w-full">
             <div className="flex">
-              <div className="">
+              <div className="flex w-full">
                 <button
                   type="button"
                   className="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-4 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
@@ -87,11 +114,11 @@ const ScheduleEdit = () => {
               </div>
             </div>
             <div className="w-full flex">
-              <div>
+              <div className="flex flex-col w-full">
                 <p className="text-2xl font-bold text-midgreen mt-2 p-2">
                   แก้ไขรายวิชา
                 </p>
-                <div className="flex flex-col ">
+                <div className="flex flex-col w-2/4 ">
                   <label className="text-midgreen mb-1">
                     ชื่อรายวิชาที่สอน *
                   </label>
@@ -116,7 +143,64 @@ const ScheduleEdit = () => {
                     จำนวนชั่วโมง : {subject.lecture_t}
                   </label>
                 </div>
-                <Secadd />
+                {/* <Secadd /> */}
+                {/* <GrayBox></GrayBox> */}
+                <div className=" w-2/4">
+                  {select.length > 0 && (
+                    <BranchBox
+                      setall={setall}
+                      select={select}
+                      textColor=" text-midgreen"
+                    >
+                      <div className="flex">
+                        <p>
+                          หมู่เรียน <span style={{ color: "red" }}>*</span> :
+                        </p>
+                        <fieldset className="flex flex-row">
+                          <div className="ml-2">
+                            {ListSelect.map((item, index) => (
+                              <React.Fragment key={index}>
+                                <input
+                                  className="mr-2"
+                                  type="radio"
+                                  name={"Section_radio"}
+                                  value={item.id}
+                                  checked={selectedRadio == item.id}
+                                  id={index + "x" + item.id}
+                                  onChange={(e) =>
+                                    setSelectedRadio(e.target.value)
+                                  }
+                                />
+                                <label
+                                  className="mr-2"
+                                  htmlFor={index + "x" + item.id}
+                                >
+                                  {item.name}
+                                </label>
+                              </React.Fragment>
+                            ))}
+                          </div>
+                        </fieldset>
+                      </div>
+                      <div className="mt-2">
+                        <label className="block mb-2 ">
+                          จำนวนนิสิตที่เปิดรับ
+                          <span style={{ color: "red" }}>*</span>
+                        </label>
+                        <input
+                          type="text"
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-400 dark:placeholder-gray-200 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          placeholder="โปรดระบุจำนวนนิสิตที่ต้องการเปิดรับ"
+                          value={N_people ? N_people : ""}
+                          required
+                          onChange={(e) => {
+                            setNPeople(e.target.value);
+                          }}
+                        />
+                      </div>
+                    </BranchBox>
+                  )}
+                </div>
                 <div className="flex items-center mt-4">
                   <button
                     type="button"
