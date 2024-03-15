@@ -92,33 +92,33 @@ const Schedule = () => {
     if (!input.trim()) {
       return isTeacher
         ? subjectUser.filter(
-            (subject) =>
-              (!category || subject.subject_category === category) &&
-              (!year || subject.branch.t12.includes(Number(year)))
-          )
+          (subject) =>
+            (!category || subject.subject_category === category) &&
+            (!year || subject.branch.t12.includes(Number(year)))
+        )
         : subjectAll.filter(
-            (subject) =>
-              (!category || subject.subject_category === category) &&
-              (!year || subject.branch.t12.includes(Number(year)))
-          );
+          (subject) =>
+            (!category || subject.subject_category === category) &&
+            (!year || subject.branch.t12.includes(Number(year)))
+        );
     } else {
       const filtered = isTeacher
         ? subjectUser.filter(
-            (subject) =>
-              (subject.id_subject.includes(input) ||
-                subject.SUBJECT.includes(input) ||
-                subject.NAME.includes(input)) &&
-              (!category || subject.subject_category === category) &&
-              (!year || subject.branch.t12.includes(Number(year)))
-          )
+          (subject) =>
+            (subject.id_subject.includes(input) ||
+              subject.SUBJECT.includes(input) ||
+              subject.NAME.includes(input)) &&
+            (!category || subject.subject_category === category) &&
+            (!year || subject.branch.t12.includes(Number(year)))
+        )
         : subjectAll.filter(
-            (subject) =>
-              (subject.id_subject.includes(input) ||
-                subject.SUBJECT.includes(input) ||
-                subject.NAME.includes(input)) &&
-              (!category || subject.subject_category === category) &&
-              (!year || subject.branch.t12.includes(Number(year)))
-          );
+          (subject) =>
+            (subject.id_subject.includes(input) ||
+              subject.SUBJECT.includes(input) ||
+              subject.NAME.includes(input)) &&
+            (!category || subject.subject_category === category) &&
+            (!year || subject.branch.t12.includes(Number(year)))
+        );
       return filtered;
     }
   };
@@ -208,14 +208,15 @@ const Schedule = () => {
   ];
 
   const days = [
-    "วันจันทร์",
-    "วันอังคาร",
-    "วันพุธ",
-    "วันพฤหัสบดี",
-    "วันศุกร์",
-    "วันเสาร์",
-    "วันอาทิตย์",
+    { id: 1, name: "วันจันทร์" },
+    { id: 2, name: "วันอังคาร" },
+    { id: 3, name: "วันพุธ" },
+    { id: 4, name: "วันพฤหัสบดี" },
+    { id: 5, name: "วันศุกร์" },
+    { id: 6, name: "วันเสาร์" },
+    { id: 7, name: "วันอาทิตย์" },
   ];
+
   return (
     <div
       className="flex-col flex py-10 px-10 bg-white flex-1 h-screen"
@@ -302,9 +303,8 @@ const Schedule = () => {
 
         <div className="flex-row flex mt-2 ml-2 items-end">
           <div
-            className={`transition-all w-8 h-8 mr-2 ${
-              isTeacher ? "bg-green-400" : "bg-pink-400"
-            }`}
+            className={`transition-all w-8 h-8 mr-2 ${isTeacher ? "bg-green-400" : "bg-pink-400"
+              }`}
           ></div>
           <label className="ptext-shadow mb-1">
             {isTeacher ? "ผ่าน" : "บังคับ"}
@@ -313,9 +313,8 @@ const Schedule = () => {
 
         <div className="flex flex-row ml-2 items-end">
           <div
-            className={`transition-all w-8 h-8 mr-2 ${
-              isTeacher ? "bg-red-500" : "bg-yellow-400"
-            }`}
+            className={`transition-all w-8 h-8 mr-2 ${isTeacher ? "bg-red-500" : "bg-yellow-400"
+              }`}
           ></div>
           <label className="ptext-shadow mb-1">
             {isTeacher ? "ไม่ผ่าน" : "เฉพาะเลือก"}
@@ -324,9 +323,8 @@ const Schedule = () => {
 
         <div className="flex flex-row ml-2 items-end">
           <div
-            className={`transition-all w-8 h-8 mr-2 ${
-              isTeacher ? "bg-orange-500" : "bg-cyan-400"
-            }`}
+            className={`transition-all w-8 h-8 mr-2 ${isTeacher ? "bg-orange-500" : "bg-cyan-400"
+              }`}
           ></div>
           <label className="ptext-shadow mb-1">
             {isTeacher ? "รอ" : "เลือก"}
@@ -366,7 +364,7 @@ const Schedule = () => {
               {days.map((day, dayIndex) => (
                 <tr key={dayIndex} className="bg-white">
                   <td className="border border-gray-400 py-2 px-4 font-semibold">
-                    {day}
+                    {day.name}
                   </td>
                   {times.map((time, timeIndex) => (
                     <td
@@ -394,12 +392,12 @@ const Schedule = () => {
               {days.map((day, dayIndex) => (
                 <tr key={dayIndex} className="bg-white">
                   <td className="border border-gray-400 py-2 px-4 font-semibold">
-                    {day}
+                    {day.name}
                   </td>
                   {times.map((time, timeIndex) => {
                     const subject = filteredSubjects.find(
                       (sub) =>
-                        sub.day === day &&
+                        sub.day_id === day.id &&
                         sub.st <= time.end &&
                         sub.et >= time.start &&
                         sub.et >= time.end
@@ -421,14 +419,14 @@ const Schedule = () => {
                           break;
                       }
                     } else if (isTeacher && subject) {
-                      switch (subject.status) {
-                        case "รอ":
+                      switch (subject.status_id) {
+                        case 2:
                           colorClass = "bg-orange-500";
                           break;
-                        case "ผ่าน":
+                        case 1:
                           colorClass = "bg-green-400";
                           break;
-                        case "ไม่ผ่าน":
+                        case 3:
                           colorClass = "bg-red-500";
                           break;
                         default:
@@ -439,15 +437,14 @@ const Schedule = () => {
                     return (
                       <td
                         key={timeIndex}
-                        className={`border border-gray-400 py-2 px-2 text-xs ${
-                          subject ? "border-0 cursor-pointer" : "border"
-                        } ${colorClass}`}
+                        className={`border border-gray-400 py-2 px-2 text-xs ${subject ? "border-0 cursor-pointer" : "border"
+                          } ${colorClass}`}
                         onClick={() => subject && showAlert(subject)}
                       >
                         {subject
                           ? `${subject.id_subject}-${subject.ySubject.substring(
-                              2
-                            )}`
+                            2
+                          )}`
                           : ""}
                       </td>
                     );
@@ -551,11 +548,10 @@ const Schedule = () => {
                   <td className="border border-gray-400 py-2 px-4 border-opacity-10">
                     <Link to={"/schedule_edit/" + subject.idre}>
                       <button
-                        className={`bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded ml-3 ${
-                          subject.NAME !== userName
-                            ? "hidden opacity-0 cursor-default"
-                            : ""
-                        }`}
+                        className={`bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded ml-3 ${subject.NAME !== userName
+                          ? "hidden opacity-0 cursor-default"
+                          : ""
+                          }`}
                       >
                         Edit
                       </button>
