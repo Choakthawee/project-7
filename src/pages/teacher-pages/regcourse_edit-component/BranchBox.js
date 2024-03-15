@@ -3,18 +3,28 @@ import BranchCheckbox from "./BranchCheckbox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FaTimes } from "react-icons/fa";
 import { faArrowAltCircleDown } from "@fortawesome/free-solid-svg-icons";
-export default function BranchBox({ setall, textColor, children }) {
+export default function BranchBox({
+  setall,
+  textColor,
+  all,
+  select = [],
+  children,
+}) {
   //เลือกสาขา
-  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [selectedOptions, setSelectedOptions] = useState(select);
   const [selectedBranch, setSelectedBranch] = useState("");
   const [selectedYears, setSelectedYears] = useState([]);
-  const [selectedAll, setSelectedAll] = useState({});
+  const [selectedAll, setSelectedAll] = useState({ l: [1] });
 
   const handleBranchChange = (event) => {
     setSelectedBranch(event.target.value);
     setSelectedYears([]);
   };
-
+  useEffect(() => {
+    if (all) {
+      Object.entries();
+    }
+  }, []);
   const handleYearChange = (event, year) => {
     const isChecked = event.target.checked;
     if (isChecked) {
