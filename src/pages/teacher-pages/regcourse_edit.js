@@ -58,39 +58,7 @@ const RegCourseEdit = () => {
     });
   };
 
-  // const updateData = async () => {
-  //   try {
-  //     const getdata = await axios.post(
-  //       apiurl + "/api/teacher/subjectsRegister",
-  //       {
-  //         id: ID,
-  //         User_id: uid,
-  //         st: st,
-  //         et: et,
-  //         day_id: day,
-  //         sec: sec,
-  //         status_id: status_id,
-  //         N_people: N_people,
-  //         branch: branch,
-  //         category_id: category_id,
-  //         Subjects_id: Subjects_id,
-  //         realcredit: realcredit,
-  //       }
-  //     );
-  //     const data = getdata.data;
-  //     Swal.fire({
-  //       icon: "success",
-  //       title: "สำเร็จ",
-  //       text: data.msg,
-  //     });
-  //   } catch (error) {
-  //     Swal.fire({
-  //       icon: "error",
-  //       title: "ไม่สำเร็จ",
-  //       text: error.response.data.msgerror,
-  //     });
-  //   }
-  // };
+
 
   const updateData = async (data) => {
     try {
@@ -148,6 +116,7 @@ const RegCourseEdit = () => {
         branch:null,
         category_id: null,
         Subjects_id: id,
+        realcredit:null
       }];
       
       return newData;

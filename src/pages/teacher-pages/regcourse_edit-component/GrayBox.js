@@ -6,17 +6,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowAltCircleDown } from "@fortawesome/free-solid-svg-icons";
 import { TiDelete } from "react-icons/ti";
 
-export default function GrayBox({ data,keys, i, practice_t, lecture_t, exsub, sub_id, setGrayBoxData, handleDelete }) {
+export default function GrayBox({ data, keys, i, practice_t, lecture_t, exsub, sub_id, setGrayBoxData, handleDelete }) {
 
     const [ListSelect, setListSelect] = useState([]);
     const [selectedRadio, setSelectedRadio] = useState(Number);
     const [all, setall] = useState({});
-
+    const [realcredit,setRealCredit] = useState(exsub?exsub===0?exsub:data.realcredit?data.realcredit:Number:Number);
     const [st, setSt] = useState(data.st);
     const [et, setEt] = useState(data.et);
     const [day, setDay] = useState(data.day);
     const [status_id, setStatusId] = useState(2);
-    const [N_people, setNPeople] = useState(data.N_people?data.N_people:Number);
+    const [N_people, setNPeople] = useState(data.N_people ? data.N_people : Number);
     useEffect(() => {
         axios
             .get(apiurl + "/api/category")
@@ -56,7 +56,7 @@ export default function GrayBox({ data,keys, i, practice_t, lecture_t, exsub, su
 
     const handleUpdateData = () => {
         const data = {
-            keys:keys,
+            keys: keys,
             uid: localStorage.getItem("userid"),
             st: st,
             et: et,
@@ -79,7 +79,35 @@ export default function GrayBox({ data,keys, i, practice_t, lecture_t, exsub, su
         });
 
     };
+    useEffect(() => {
+        const handleUpdateData = () => {
+            const data = {
+                keys: keys,
+                uid: localStorage.getItem("userid"),
+                st: st,
+                et: et,
+                day_id: day,
+                status_id: status_id,
+                N_people: N_people,
+                branch: all,
+                category_id: selectedRadio,
+                Subjects_id: sub_id,
+                realcredit:exsub===0?exsub:realcredit
+            };
+            console.log(data);
+            setGrayBoxData((prevData) => {
+                return prevData.map((item, index) => {
+                    if (index === i) {
+                        return data; // เพิ่มข้อมูลที่ต้องการที่ index 3
+                    } else {
+                        return item; // ใช้ข้อมูลเดิมในกรณีอื่น
+                    }
+                });
+            });
 
+        };
+        handleUpdateData();
+    }, [st,et,day,status_id,N_people,all,selectedRadio,realcredit])
     return (
         <div className="box-gray p-2">
             <div className="flex flex-col gap-3">
@@ -96,7 +124,7 @@ export default function GrayBox({ data,keys, i, practice_t, lecture_t, exsub, su
                             หน่วยกิต <span style={{ color: "red" }}>*</span>
                         </p>
                         <input
-                            placeholder="กรอกหน่วยกิตที่ต้องการ"
+                            placeholder="กรอกหน่วยกิตที่ต้องการ" value={realcredit===0?"":realcredit} onChange={(e)=>setRealCredit(e.target.value)}
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-400 dark:placeholder-gray-200 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             required
                         ></input>
@@ -124,19 +152,6 @@ export default function GrayBox({ data,keys, i, practice_t, lecture_t, exsub, su
                             ))}
                         </div>
                     </fieldset>
-                </div>
-                <div>
-                    <label className="block mb-2 ">
-                        จำนวนชั่วโมง <span style={{ color: "red" }}>*</span>
-                    </label>
-                    <input
-                        type="text"
-                        id="sub_hour"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-400 dark:placeholder-gray-200 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder={`โปรดระบุจำนวนชั่วโมงที่ใช้สอน ${lecture_t !== 0 ? "บรรยาย " + lecture_t + " ชั่วโมง" : ""
-                            } ${practice_t !== 0 ? "ปฏิบัติ " + practice_t : ""}`}
-                        required
-                    />
                 </div>
                 <div className="mt-2">
                     <label className="block mb-2 ">
@@ -213,7 +228,7 @@ export default function GrayBox({ data,keys, i, practice_t, lecture_t, exsub, su
                         type="text"
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-400 dark:placeholder-gray-200 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="โปรดระบุจำนวนนิสิตที่ต้องการเปิดรับ"
-                        value={N_people}
+                        value={N_people ? N_people : ""}
                         required
                         onChange={(e) => {
                             setNPeople(e.target.value);
@@ -222,9 +237,6 @@ export default function GrayBox({ data,keys, i, practice_t, lecture_t, exsub, su
                 </div>
                 <div className="flex flex-col">
                     <BranchBox setall={setall} />
-                </div>
-                <div>
-                    <button onClick={handleUpdateData}>Test</button>
                 </div>
             </div>
         </div>
