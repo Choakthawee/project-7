@@ -9,9 +9,9 @@ import { TiDelete } from "react-icons/ti";
 export default function GrayBox({ data, keys, i, practice_t, lecture_t, exsub, sub_id, setGrayBoxData, handleDelete }) {
 
     const [ListSelect, setListSelect] = useState([]);
-    const [selectedRadio, setSelectedRadio] = useState(Number);
+    const [selectedRadio, setSelectedRadio] = useState(data.category_id ? data.category_id : undefined);
     const [all, setall] = useState({});
-    const [realcredit,setRealCredit] = useState(exsub?exsub===0?exsub:data.realcredit?data.realcredit:Number:Number);
+    const [realcredit, setRealCredit] = useState(exsub ? exsub === 0 ? exsub : data.realcredit ? data.realcredit : Number : Number);
     const [st, setSt] = useState(data.st);
     const [et, setEt] = useState(data.et);
     const [day, setDay] = useState(data.day);
@@ -54,31 +54,7 @@ export default function GrayBox({ data, keys, i, practice_t, lecture_t, exsub, s
     //   fetchData();
     // }, []);
 
-    const handleUpdateData = () => {
-        const data = {
-            keys: keys,
-            uid: localStorage.getItem("userid"),
-            st: st,
-            et: et,
-            day_id: day,
-            status_id: status_id,
-            N_people: N_people,
-            branch: all,
-            category_id: selectedRadio,
-            Subjects_id: sub_id,
-        };
-        console.log(data);
-        setGrayBoxData((prevData) => {
-            return prevData.map((item, index) => {
-                if (index === i) {
-                    return data; // เพิ่มข้อมูลที่ต้องการที่ index 3
-                } else {
-                    return item; // ใช้ข้อมูลเดิมในกรณีอื่น
-                }
-            });
-        });
-
-    };
+ 
     useEffect(() => {
         const handleUpdateData = () => {
             const data = {
@@ -92,7 +68,7 @@ export default function GrayBox({ data, keys, i, practice_t, lecture_t, exsub, s
                 branch: all,
                 category_id: selectedRadio,
                 Subjects_id: sub_id,
-                realcredit:exsub===0?exsub:realcredit
+                realcredit: exsub === 0 ? exsub : realcredit
             };
             console.log(data);
             setGrayBoxData((prevData) => {
@@ -107,7 +83,7 @@ export default function GrayBox({ data, keys, i, practice_t, lecture_t, exsub, s
 
         };
         handleUpdateData();
-    }, [st,et,day,status_id,N_people,all,selectedRadio,realcredit])
+    }, [st, et, day, status_id, N_people, all, selectedRadio, realcredit])
     return (
         <div className="box-gray p-2">
             <div className="flex flex-col gap-3">
@@ -124,7 +100,7 @@ export default function GrayBox({ data, keys, i, practice_t, lecture_t, exsub, s
                             หน่วยกิต <span style={{ color: "red" }}>*</span>
                         </p>
                         <input
-                            placeholder="กรอกหน่วยกิตที่ต้องการ" value={realcredit===0?"":realcredit} onChange={(e)=>setRealCredit(e.target.value)}
+                            placeholder="กรอกหน่วยกิตที่ต้องการ" value={realcredit === 0 ? "" : realcredit} onChange={(e) => setRealCredit(e.target.value)}
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-400 dark:placeholder-gray-200 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             required
                         ></input>
@@ -143,9 +119,10 @@ export default function GrayBox({ data, keys, i, practice_t, lecture_t, exsub, s
                                         type="radio"
                                         name={i}
                                         value={item.id}
+                                        id={i + "x" + item.id}
                                         onChange={(e) => setSelectedRadio(e.target.value)}
                                     />
-                                    <label className="mr-2" htmlFor={item.id}>
+                                    <label className="mr-2" htmlFor={i + "x" + item.id}>
                                         {item.name}
                                     </label>
                                 </React.Fragment>
