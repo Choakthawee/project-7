@@ -29,7 +29,7 @@ import Viewxlsx from "./pages/xlsxView/Viewpage";
 import User_edit from "./pages/admin-pages/user_edit";
 import RegResultED_Regis from "./pages/ed-pages/regresults_ed_regis";
 import RegStatusEdit from "./pages/ed-pages/regstatus_ed";
-
+import RegCourseEditFore from "./pages/ed-pages/regcoursefore";
 function App() {
   return (
     <Router>
@@ -64,6 +64,10 @@ function App() {
                 <Route path="/regresults_ed" element={<RegResultED />} />
                 <Route path="/regstatus" element={<RegStatus />} />
                 <Route path="/sub-open" element={<SubOpen />} />
+                <Route
+                  path="/regcoursefore/:id"
+                  element={<RegCourseEditFore />}
+                />
                 <Route
                   path="/regresults_ed_regis"
                   element={<RegResultED_Regis />}
