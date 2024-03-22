@@ -100,7 +100,7 @@ const SubOpen = () => {
           รายวิชาที่เปิดสอน
         </h1>
         {/* <HeaderSort_pre/> */}
-        <SortBar url="/api/Searchsubjectopen/" type={3} url1="/api/searchingbar" setCurrent={setSubjects}/>
+        <SortBar url="/api/Searchsubjectopen/" type={3} url1="/api/searchingbar" setCurrent={setSubjects} setCurrentPage={setCurrentPage}/>
         <div className=" flex flex-1">
           <div className="flex w-full bg-slate-200  rounded-lg overflow-x-auto shadow-xl">
             <table className=" w-full">

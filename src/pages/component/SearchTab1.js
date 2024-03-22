@@ -9,21 +9,21 @@ export default function SearchTab1({
       <button
         type="button"
         key={index}
-        className="flex p-2 justify-start gap-2 peer bg-white"
+        className="p-2 cursor-pointer flex justify-start gap-2 peer bg-white"
         value={name}
+        id={index}
         onClick={(e) => {
           if (id) {
             setSearchInput(e.target.value);
             localStorage.setItem("user_idfore", id);
-            setSearching(null);
+            setSearching([])
           } else {
             setSearchInput(e.target.value);
-            setSearching(null);
           }
         }}
       >
         {email}
-        <label className=" text-gray-400">{idsubject}</label>
+        <label  className=" text-gray-400">{idsubject}</label>
         {name}
       </button>
     );
@@ -31,7 +31,8 @@ export default function SearchTab1({
   return (
     <div
       style={{ marginTop: 72 }}
-      className=" rounded-lg bg-white w-fit max-h-44 absolute hidden peer-focus:flex hover:flex flex-col overflow-y-auto"
+      id="peer-focus:flex group/search hover:flex hidden "
+      className=" rounded-lg bg-white w-fit max-h-44 peer-focus:flex group/search hover:flex hidden absolute  flex-col overflow-y-auto"
     >
       {searching.length > 0 ? (
         searching.map((v, i) => (

@@ -5,19 +5,20 @@ import ButtonSeaching from "../component/buttonSearching";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { apiurl } from "../../config";
-export default function SortBar({ setCurrent, url, type = 1, url1 }) {
+export default function SortBar({ setCurrent, url, type = 1, url1, ...props }) {
     const [searching, setSearching] = useState([]);
     const [searchInput, setSearchInput] = useState('');
     const [years, setYears] = useState("");
     const [subject_category, setSubject_category] = useState("");
     const [reset, setReset] = useState(false);
     const [isSearch, setIsSearch] = useState(false);
+
     useEffect(() => {
         if ((years || searchInput || subject_category) && !reset) {
             setReset(true)
         }
     }, [years, subject_category, searchInput])
-    const resetSort =async () => {
+    const resetSort = async () => {
         if (isSearch) {
             setIsSearch(false)
             try {
@@ -70,7 +71,7 @@ export default function SortBar({ setCurrent, url, type = 1, url1 }) {
             <div className="flex flex-col gap-3 w-full md:flex-row">
                 <CourseYears value={years} setYears={setYears} />
                 <Category_sub value={subject_category} setSort={setSubject_category} />
-                <ButtonSeaching onClick={() => { OnSearching(); }} />
+                <ButtonSeaching onClick={() => { OnSearching(); if (props.setCurrentPage) { props.setCurrentPage(1) } }} />
                 {reset === true && <div className=" flex items-end">
                     <button className=" bg-slate-500 rounded-lg text-white  mb-1" onClick={() => { resetSort() }}
                         style={{

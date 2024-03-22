@@ -137,7 +137,7 @@ const ImportCourse = () => {
 
           {/* <HeaderSort_pre/> */}
           
-          <SortBar url="/api/Searchsubject/" url1="/api/searchingbar" type={2} setCurrent={setSubjects}/>
+          <SortBar url="/api/Searchsubject/" url1="/api/searchingbar" type={2} setCurrent={setSubjects} setCurrentPage={setCurrentPage}/>
         </div>
         <div className="flex flex-1">
           <div className="flex w-full bg-slate-200 rounded-lg overflow-x-auto shadow-xl h-full overflow-y-auto">

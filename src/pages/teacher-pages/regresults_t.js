@@ -173,6 +173,44 @@ const RegResultT = () => {
     showAlert();
     return null;
   }
+  function Accident({ id }) {
+    const [strdata, setStrdata] = useState("")
+    const [data, setdata] = useState([])
+    useEffect(() => {
+      const getapi = async () => {
+        try {
+          const response = await axios.get(apiurl + "/api//teacher/f/" + id);
+          console.log(response.data);
+          setdata(response.data.data)
+        } catch (error) {
+
+        }
+      }
+      getapi();
+    }, [])
+    const getswal = () => {
+      const formattedData = data.map(entry => `${entry.subject_name} ${entry.name} ${entry.st}-${entry.et}`);
+      const result = formattedData.join(",");
+
+      Swal.fire({text:result})
+    }
+    useEffect(() => {
+      if (data.length > 0) {
+        data.map((v, i) => {
+          setStrdata((data) => data + v.subject_name + " ")
+        })
+      } else {
+        setStrdata("loading");
+      }
+
+    }, [data])
+    return (
+      <div className=" underline text-red-500 cursor-pointer font-[700]" onClick={getswal}>
+        ซ้ำ {strdata.length > 20 ? strdata.slice(0, 20) + "..." : strdata}
+      </div>
+    )
+  }
+
   return (
     <div className="flex w-full h-full min-h-screen background21">
       <div className="flex w-full flex-col p-2 md:p-10 gap-3">
@@ -236,7 +274,7 @@ const RegResultT = () => {
                             {value.status_name}
                           </td>
                           <td className="py-2 font-light text-lg text-center">
-                            {value.status_id === 3 ? "" : "-"}
+                            {value.status_id === 3 ? <Accident id={value.id} /> : "-"}
                           </td>
                           <td className="py-2 font-light text-lg text-center">
                             <div className="flex items-center me-4 justify-center">

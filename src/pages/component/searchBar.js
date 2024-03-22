@@ -33,8 +33,6 @@ export default function SearchingBar({
       };
       if (searchInput && searching) {
         getapiSearch();
-      } else {
-        setSearching([]);
       }
     }, 800); // 500 milliseconds delay
 
