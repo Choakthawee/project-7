@@ -361,7 +361,6 @@ const Schedule = () => {
         {isTeacher ? (
           filteredSubjects.length === 0 ? (
             <table className="mt-0 border-collapse border border-gray-400 shadow-md">
-              {/* Table Header */}
               <thead>
                 <tr className="bg-gray-200">
                   <th className="border border-gray-400 py-2 px-4"></th>
@@ -372,7 +371,6 @@ const Schedule = () => {
                   ))}
                 </tr>
               </thead>
-              {/* Table Body */}
               <tbody>
                 {days.map((day, dayIndex) => (
                   <tr key={dayIndex} className="bg-white">
@@ -391,7 +389,6 @@ const Schedule = () => {
             </table>
           ) : (
             <table className="mt-0 border-collapse border border-gray-400 shadow-md">
-              {/* Table Header */}
               <thead>
                 <tr className="bg-gray-200">
                   <th className="border border-gray-400 py-2 px-4"></th>
@@ -402,7 +399,6 @@ const Schedule = () => {
                   ))}
                 </tr>
               </thead>
-              {/* Table Body */}
               <tbody>
                 {days.map((day, dayIndex) => (
                   <tr key={dayIndex} className="bg-white">
@@ -547,11 +543,16 @@ const Schedule = () => {
                     {subject.N_people}
                   </td>
                   <td className="border border-gray-400 py-2 px-4 border-opacity-10">
-                    {subject.branch.t12.map((item, index) => (
-                      <span key={index}>
-                        {index > 0 && ", "}
-                        ชั้นปี {item}
-                      </span>
+                    {Object.keys(subject.branch).map((branchKey) => (
+                      <div key={branchKey}>
+                        <span>{branchKey} : </span>
+                        {subject.branch[branchKey].map((item, idx) => (
+                          <span key={idx}>
+                            {idx > 0 && ", "}
+                            ชั้นปี {item}
+                          </span>
+                        ))}
+                      </div>
                     ))}
                   </td>
                   <td className="border border-gray-400 py-2 px-4 border-opacity-10">
@@ -581,6 +582,5 @@ const Schedule = () => {
     </div>
   );
 };
-// แก้ไขแล้ว
 
 export default Schedule;
