@@ -96,7 +96,7 @@ const RegCourseEdit = () => {
         const responseData = getdata.data;
         console.log(responseData);
         Swal.fire({
-          icon: "success",
+          icon: "warning",
           title: "ยืนยันบันทึกการลงทะเบียน?",
           showDenyButton: true,
           showCancelButton: true,
@@ -230,7 +230,11 @@ const RegCourseEdit = () => {
               <div className="flex ">
                 <p className="mr-3">จำนวนหน่วยกิต :</p>
                 <p className="text-gray-300">
-                  {subject.credit ? subject.exsub === 0 ? `${subject.credit} (${subject.lecture_t}-${subject.practice_t}-${subject.m_t})` : subject.credit : "Error"}
+                  {subject.credit
+                    ? subject.exsub === 0
+                      ? `${subject.credit} (${subject.lecture_t}-${subject.practice_t}-${subject.m_t})`
+                      : subject.credit
+                    : "Error"}
                 </p>
               </div>
               <div className="flex ">

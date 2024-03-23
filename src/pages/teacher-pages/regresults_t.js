@@ -190,12 +190,13 @@ const RegResultT = () => {
     }, [])
     const getswal = () => {
       const formattedData = data.map(entry => `${entry.subject_name} ${entry.name} ${entry.st}-${entry.et}`);
-      const result = formattedData.join(",");
+      const result = formattedData.join(", ");
 
-      Swal.fire({text:result})
+      Swal.fire({ text: result })
     }
     useEffect(() => {
       if (data.length > 0) {
+        setStrdata("");
         data.map((v, i) => {
           setStrdata((data) => data + v.subject_name + " ")
         })
@@ -204,6 +205,15 @@ const RegResultT = () => {
       }
 
     }, [data])
+    if (strdata === 'loading') {
+      return (
+        <div>
+          <div className=" underline text-red-500 cursor-pointer font-[700]" onClick={getswal}>
+            กำลังโหลดข้อมูล
+          </div>
+        </div>
+      )
+    }
     return (
       <div className=" underline text-red-500 cursor-pointer font-[700]" onClick={getswal}>
         ซ้ำ {strdata.length > 20 ? strdata.slice(0, 20) + "..." : strdata}
