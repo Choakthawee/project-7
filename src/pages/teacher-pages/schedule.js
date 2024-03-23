@@ -31,6 +31,7 @@ const Schedule = () => {
       try {
         const response = await axios.get(apiurl + "/api/subject_category");
         setSubjectCategories(response.data);
+        console.log(response.data)
       } catch (error) {
         console.error("Error fetching subject categories: ", error);
       }
@@ -92,7 +93,8 @@ const Schedule = () => {
   };
 
   const handleCategoryChange = (e) => {
-    setSelectedCategory(e.target.value);
+    const selectedId = parseInt(e.target.value);
+    setSelectedCategory(selectedId);
   };
 
   const handleInputChange = (e) => {
@@ -114,13 +116,13 @@ const Schedule = () => {
       return isTeacher
         ? subjectUser.filter(
           (subject) =>
-            (!category || subject.subject_category === category) &&
-            (!year || subject.branch.t12.includes(Number(year)))
+            (!category || subject.subject_category_id === category) &&
+            (!year || Object.values(subject.branch).some(branchArray => branchArray.includes(Number(year))))
         )
         : subjectAll.filter(
           (subject) =>
-            (!category || subject.subject_category === category) &&
-            (!year || subject.branch.t12.includes(Number(year)))
+            (!category || subject.subject_category_id === category) &&
+            (!year || Object.values(subject.branch).some(branchArray => branchArray.includes(Number(year))))
         );
     } else {
       const filtered = isTeacher
@@ -129,16 +131,16 @@ const Schedule = () => {
             (subject.id_subject.includes(input) ||
               subject.SUBJECT.includes(input) ||
               subject.NAME.includes(input)) &&
-            (!category || subject.subject_category === category) &&
-            (!year || subject.branch.t12.includes(Number(year)))
+            (!category || subject.subject_category_id === category) &&
+            (!year || Object.values(subject.branch).some(branchArray => branchArray.includes(Number(year))))
         )
         : subjectAll.filter(
           (subject) =>
             (subject.id_subject.includes(input) ||
               subject.SUBJECT.includes(input) ||
               subject.NAME.includes(input)) &&
-            (!category || subject.subject_category === category) &&
-            (!year || subject.branch.t12.includes(Number(year)))
+            (!category || subject.subject_category_id === category) &&
+            (!year || Object.values(subject.branch).some(branchArray => branchArray.includes(Number(year))))
         );
       return filtered;
     }
@@ -291,12 +293,11 @@ const Schedule = () => {
           <label className="text-midgreen mb-1">หมวดวิชา</label>
           <select
             className="focus:outline-none rounded-sm h-8 w-36"
-            value={selectedCategory}
             onChange={handleCategoryChange}
           >
             <option value="">เลือกหมวดวิชา</option>
             {subjectCategories.map((category, index) => (
-              <option key={index} value={category.name}>
+              <option key={index} value={category.id}>
                 {category.name}
               </option>
             ))}
