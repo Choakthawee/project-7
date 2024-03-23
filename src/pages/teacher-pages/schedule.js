@@ -577,7 +577,7 @@ const Schedule = () => {
                     ))}
                   </td>
                   <td className="border border-gray-400 py-2 px-4 border-opacity-10">
-                    {subject.day_id}
+                    {subject.day}
                   </td>
                   <td className="border border-gray-400 py-2 px-4 border-opacity-10">
                     {subject.st.substring(0, 5)}-{subject.et.substring(0, 5)} น.
