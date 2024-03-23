@@ -106,7 +106,7 @@ const RegResultED = () => {
         const data = data1.data;
         setCountsub(data[0]);
         console.log(data);
-      } catch (err) { }
+      } catch (err) {}
     };
     getapi();
   }, []);
@@ -179,152 +179,152 @@ const RegResultED = () => {
         </div>
 
         <div className="flex flex-7 flex-col">
-          {selectedOption === "registered" &&
+          {selectedOption === "registered" && (
             <div className="flex flex-4 items-center justify-center content-center">
-              {
-                subjectsnotsuccess ?
+              {subjectsnotsuccess ? (
+                <p className="text-2xl text-red-700 text-center  underline">
+                  ไม่พบข้อมูลในระบบ
+                </p>
+              ) : subjectssuccess ? (
+                subjectssuccess.length > 0 ? (
+                  <div className="flex flex-1 bg-slate-200 rounded-lg overflow-x-auto shadow-xl h-full overflow-y-auto">
+                    <table className=" w-full">
+                      <thead>
+                        <tr className="column-color1 text-white">
+                          <th className="py-2 font-light text-xl">#</th>
+                          <th className="py-2 font-light text-xl">รหัสวิชา</th>
+                          <th className="py-2 font-light text-xl">ชื่อวิชา</th>
+                          <th className="py-2 font-light text-xl">หน่วยกิต</th>
+                          <th className="py-2 font-light text-xl">หมู่เรียน</th>
+                          <th className="py-2 font-light text-xl">
+                            อาจารย์ผู้สอน
+                          </th>
+                          <th className="py-2 font-light text-xl">
+                            จำนวนนิสิต
+                          </th>
+                          <th className="py-2 font-light text-xl">
+                            สาขาชั้นปีที่เปิดรับ
+                          </th>
+                          <th className="py-2 font-light text-xl">วันที่สอน</th>
+                          <th className="py-2 font-light text-xl">
+                            เวลาที่สอน
+                          </th>
+                        </tr>
+                      </thead>
 
-                  <p className="text-2xl text-red-700 text-center  underline">
-                    ไม่พบข้อมูลในระบบ
-                  </p>
-                  :
-                  subjectssuccess ?
-                    subjectssuccess.length > 0 ?
-                      <div className="flex flex-1 bg-slate-200 rounded-lg overflow-x-auto shadow-xl h-full overflow-y-auto">
-                        <table className=" w-full">
-                          <thead>
-                            <tr className="column-color1 text-white">
-                              <th className="py-2 font-light text-xl">#</th>
-                              <th className="py-2 font-light text-xl">รหัสวิชา</th>
-                              <th className="py-2 font-light text-xl">ชื่อวิชา</th>
-                              <th className="py-2 font-light text-xl">หน่วยกิต</th>
-                              <th className="py-2 font-light text-xl">หมู่เรียน</th>
-                              <th className="py-2 font-light text-xl">
-                                อาจารย์ผู้สอน
-                              </th>
-                              <th className="py-2 font-light text-xl">
-                                จำนวนนิสิต
-                              </th>
-                              <th className="py-2 font-light text-xl">
-                                สาขาชั้นปีที่เปิดรับ
-                              </th>
-                              <th className="py-2 font-light text-xl">วันที่สอน</th>
-                              <th className="py-2 font-light text-xl">
-                                เวลาที่สอน
-                              </th>
-                            </tr>
-                          </thead>
-
-                          <tbody>
-                            {currentsubjects.map((value, index) => (
-                              <tr>
-                                <td className="py-2 font-light text-lg text-center">
-                                  {startIndex + index + 1}
-                                </td>
-                                <td className="py-2 font-light text-lg text-center">
-                                  {value.idSubject}
-                                </td>
-                                <td className="py-2 font-light text-lg text-center">
-                                  {value.SUBJECT}
-                                </td>
-                                <td className="py-2 font-light text-lg text-center">
-                                  {value.credit}
-                                </td>
-                                <td className="py-2 font-light text-lg text-center">
-                                  {value.sec}
-                                </td>
-                                <td className="py-2 font-light text-lg text-center">
-                                  {value.NAME}
-                                </td>
-                                <td className="py-2 font-light text-lg text-center">
-                                  {value.N_people}
-                                </td>
-                                <td className="py-2 font-light text-lg  justify-center flex gap-1 hover:text-green-600 transition-all underline  cursor-pointer">
-                                  <div
-                                    onClick={() => {
-                                      let stringdata = "";
-                                      Object.keys(value.branch).forEach(
-                                        (key, keyIndex) => {
-                                          const items = value.branch[key];
-                                          items.forEach((item, index) => {
-                                            stringdata += `${key}-${index + 1}`;
-                                            if (index !== items.length - 1) {
-                                              stringdata += ", ";
-                                            } else if (
-                                              keyIndex !==
-                                              Object.keys(value.branch).length - 1
-                                            ) {
-                                              stringdata += "\n";
-                                            }
-                                          });
+                      <tbody>
+                        {currentsubjects.map((value, index) => (
+                          <tr>
+                            <td className="py-2 font-light text-lg text-center">
+                              {startIndex + index + 1}
+                            </td>
+                            <td className="py-2 font-light text-lg text-center">
+                              {value.idSubject}
+                            </td>
+                            <td className="py-2 font-light text-lg text-center">
+                              {value.SUBJECT}
+                            </td>
+                            <td className="py-2 font-light text-lg text-center">
+                              {value.credit}
+                            </td>
+                            <td className="py-2 font-light text-lg text-center">
+                              {value.sec}
+                            </td>
+                            <td className="py-2 font-light text-lg text-center">
+                              {value.NAME}
+                            </td>
+                            <td className="py-2 font-light text-lg text-center">
+                              {value.N_people}
+                            </td>
+                            <td className="py-2 font-light text-lg  justify-center flex gap-1 hover:text-green-600 transition-all underline  cursor-pointer">
+                              <div
+                                onClick={() => {
+                                  let stringdata = "";
+                                  Object.keys(value.branch).forEach(
+                                    (key, keyIndex) => {
+                                      const items = value.branch[key];
+                                      items.forEach((item, index) => {
+                                        stringdata += `${key}-${index + 1}`;
+                                        if (index !== items.length - 1) {
+                                          stringdata += ", ";
+                                        } else if (
+                                          keyIndex !==
+                                          Object.keys(value.branch).length - 1
+                                        ) {
+                                          stringdata += "\n";
                                         }
-                                      );
-                                      Swal.fire({
-                                        title: "สาขาชั้นปีที่เปิดรับ",
-                                        text: stringdata,
-                                        showCloseButton: true,
                                       });
-                                    }}
-                                  >
-                                    {Object.keys(value.branch)
-                                      .map((key) => {
-                                        const items = value.branch[key];
-                                        if (items.length <= 2) {
-                                          return items.map((item, index) => (
-                                            <span
-                                              key={key + "-" + (index + 1)}
-                                              className="py-2 font-light text-lg text-center"
-                                            >
-                                              {key}-{index + 1}
-                                            </span>
-                                          ));
-                                        } else {
-                                          return [
-                                            <span
-                                              key={key + "-1"}
-                                              className="py-2 font-light text-lg text-center"
-                                            >
-                                              {key}-1
-                                            </span>,
-                                            <span
-                                              key={key + "-2"}
-                                              className="py-2 font-light text-lg text-center"
-                                            >
-                                              {key}-2
-                                            </span>,
-                                            <span
-                                              key={key + "-more"}
-                                              className="py-2 font-light text-lg text-center"
-                                            >
-                                              ...
-                                            </span>,
-                                          ];
-                                        }
-                                      })
-                                      .flat()}
-                                  </div>
-                                </td>
-                                <td className="py-2 font-light text-lg text-center">
-                                  {value.day}
-                                </td>
-                                <td className="py-2 font-light text-lg text-center">
-                                  {value.st && value.et
-                                    ? `${value.st.slice(0, -3)}-${value.et.slice(
-                                      0,
-                                      -3
-                                    )}`
-                                    : ""}
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                      : "ไม่พบข้อมูลในระบบ" : (
-                      "ไม่พบข้อมูลในระบบ"
-                    )}
+                                    }
+                                  );
+                                  Swal.fire({
+                                    title: "สาขาชั้นปีที่เปิดรับ",
+                                    text: stringdata,
+                                    showCloseButton: true,
+                                  });
+                                }}
+                              >
+                                {Object.keys(value.branch)
+                                  .map((key) => {
+                                    const items = value.branch[key];
+                                    if (items.length <= 2) {
+                                      return items.map((item, index) => (
+                                        <span
+                                          key={key + "-" + (index + 1)}
+                                          className="py-2 font-light text-lg text-center"
+                                        >
+                                          {key}-{index + 1}
+                                        </span>
+                                      ));
+                                    } else {
+                                      return [
+                                        <span
+                                          key={key + "-1"}
+                                          className="py-2 font-light text-lg text-center"
+                                        >
+                                          {key}-1
+                                        </span>,
+                                        <span
+                                          key={key + "-2"}
+                                          className="py-2 font-light text-lg text-center"
+                                        >
+                                          {key}-2
+                                        </span>,
+                                        <span
+                                          key={key + "-more"}
+                                          className="py-2 font-light text-lg text-center"
+                                        >
+                                          ...
+                                        </span>,
+                                      ];
+                                    }
+                                  })
+                                  .flat()}
+                              </div>
+                            </td>
+                            <td className="py-2 font-light text-lg text-center">
+                              {value.day}
+                            </td>
+                            <td className="py-2 font-light text-lg text-center">
+                              {value.st && value.et
+                                ? `${value.st.slice(0, -3)}-${value.et.slice(
+                                    0,
+                                    -3
+                                  )}`
+                                : ""}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : (
+                  "ไม่พบข้อมูลในระบบ"
+                )
+              ) : (
+                "ไม่พบข้อมูลในระบบ"
+              )}
             </div>
-          }
+          )}
 
           {selectedOption === "unregistered" && (
             <div className="flex flex-4 items-center justify-center content-center">
@@ -360,7 +360,9 @@ const RegResultED = () => {
                             <td className="py-2 font-light text-lg text-center">
                               {value.credit}
                             </td>
-                            <td>{value.category_name}</td>
+                            <td className="py-2 font-light text-lg text-center">
+                              {value.category_name}
+                            </td>
                             <td className=" underline hover:bg-slate-300 text-center">
                               <Link to={"/regcoursefore/" + value.id}>
                                 ลงทะเบียน

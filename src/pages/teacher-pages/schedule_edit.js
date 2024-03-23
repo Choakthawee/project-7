@@ -20,6 +20,7 @@ const ScheduleEdit = () => {
   const [selectedRadio, setSelectedRadio] = useState();
   const [select, setSelect] = useState([]);
   const [id_category, setCategory] = useState();
+
   useEffect(() => {
     const getapi = async () => {
       const userid = localStorage.getItem("userid");
@@ -50,6 +51,7 @@ const ScheduleEdit = () => {
     };
     getapi();
   }, []);
+
   useEffect(() => {
     axios
       .get(apiurl + "/api/category")
@@ -60,6 +62,59 @@ const ScheduleEdit = () => {
         console.error("Error fetching data: ", error);
       });
   }, []);
+
+  useEffect(() => {
+    const handleUpdateData = () => {
+      const data = {
+        id: idreg,
+        uid: localStorage.getItem("userid"),
+        N_people: N_people,
+        branch: all,
+      };
+      console.log(data);
+    };
+    handleUpdateData();
+  }, [idreg, N_people, all, selectedRadio]);
+
+  const updateData = async () => {
+    try {
+      const getdata = await axios.put(apiurl + "/api/teacher/update_data", {
+        idSubject: idreg,
+        N_people: N_people,
+        branch: all,
+      });
+      const responseData = getdata.data;
+      console.log(responseData);
+      console.log(subject);
+      Swal.fire({
+        icon: "warning",
+        title: "ยืนยันแก้ไขรายวิชา?",
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: "บันทึก",
+        confirmButtonColor: "green",
+        denyButtonText: `ไม่บันทึก`,
+        showCancelButton: false,
+        text: responseData.msg,
+        color: "gray",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire("แก้ไขรายวิชาสำเร็จ", "", "success").then(() => {
+            window.location.href = "/schedule";
+          });
+        } else if (result.isDenied) {
+          Swal.fire("ข้อมูลยังไม่ถูกบันทึก", "", "error");
+        }
+      });
+    } catch (error) {
+      console.log(error);
+      Swal.fire({
+        icon: "error",
+        title: "แก้ไขรายวิชาไม่สำเร็จ",
+        text: error.response.data.msgerror,
+      });
+    }
+  };
 
   const handleSwab = () => {
     navigate("/schedule");
@@ -152,36 +207,6 @@ const ScheduleEdit = () => {
                       select={select}
                       textColor=" text-midgreen"
                     >
-                      <div className="flex">
-                        <p>
-                          หมู่เรียน <span style={{ color: "red" }}>*</span> :
-                        </p>
-                        <fieldset className="flex flex-row">
-                          <div className="ml-2">
-                            {ListSelect.map((item, index) => (
-                              <React.Fragment key={index}>
-                                <input
-                                  className="mr-2"
-                                  type="radio"
-                                  name={"Section_radio"}
-                                  value={item.id}
-                                  checked={selectedRadio == item.id}
-                                  id={index + "x" + item.id}
-                                  onChange={(e) =>
-                                    setSelectedRadio(e.target.value)
-                                  }
-                                />
-                                <label
-                                  className="mr-2"
-                                  htmlFor={index + "x" + item.id}
-                                >
-                                  {item.name}
-                                </label>
-                              </React.Fragment>
-                            ))}
-                          </div>
-                        </fieldset>
-                      </div>
                       <div className="mt-2">
                         <label className="block mb-2 ">
                           จำนวนนิสิตที่เปิดรับ
@@ -209,7 +234,7 @@ const ScheduleEdit = () => {
                       backgroundColor: "#134e4a",
                       width: 80,
                     }}
-                    onClick={handleSwab}
+                    onClick={updateData}
                   >
                     <p className="text-lg text-center"> ตกลง </p>
                   </button>

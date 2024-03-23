@@ -277,11 +277,16 @@ const RegStatus = () => {
                           {subject.N_people}
                         </td>
                         <td className="py-2 font-normal text-sm text-center">
-                          {subject.branch.t12.map((item, index) => (
-                            <span key={index}>
-                              {index > 0 && ", "}
-                              T12-{item}
-                            </span>
+                          {Object.keys(subject.branch).map((branchKey) => (
+                            <div key={branchKey}>
+                              <span>{branchKey} : </span>
+                              {subject.branch[branchKey].map((item, idx) => (
+                                <span key={idx}>
+                                  {idx > 0 && ", "}
+                                  ชั้นปี {item}
+                                </span>
+                              ))}
+                            </div>
                           ))}
                         </td>
                         <td className="py-2 font-normal text-sm text-center">
@@ -331,4 +336,6 @@ const RegStatus = () => {
     </div>
   );
 };
+
+// แก้ไขแล้ว
 export default RegStatus;
