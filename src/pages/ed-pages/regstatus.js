@@ -331,4 +331,6 @@ const RegStatus = () => {
     </div>
   );
 };
+
+// แก้ไขแล้ว
 export default RegStatus;
