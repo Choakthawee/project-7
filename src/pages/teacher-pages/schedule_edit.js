@@ -24,6 +24,7 @@ const ScheduleEdit = () => {
   useEffect(() => {
     const getapi = async () => {
       const userid = localStorage.getItem("userid");
+      console.log(all);
       try {
         const dataRespone = await axios.get(
           apiurl +
@@ -75,17 +76,34 @@ const ScheduleEdit = () => {
     };
     handleUpdateData();
   }, [idreg, N_people, all, selectedRadio]);
-
+  const dochangeapi = async () => {
+    if (Object.keys(all).length === 0) {
+      Swal.fire({
+        icon: "error",
+        title: "แก้ไขรายวิชาไม่สำเร็จ",
+        text: "กรุณาเลือกสาขาที่จะสอน",
+      });
+    } else {
+      try {
+        const getdata = await axios.put(apiurl + "/api/teacher/update_data", {
+          idSubject: idreg,
+          N_people: N_people,
+          branch: all,
+        });
+        Swal.fire("แก้ไขรายวิชาสำเร็จ", "", "success").then(() => {
+          window.location.href = "/schedule";
+        });
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: "แก้ไขรายวิชาไม่สำเร็จ",
+          text: error.response.data.msgerror,
+        });
+      }
+    }
+  };
   const updateData = async () => {
     try {
-      const getdata = await axios.put(apiurl + "/api/teacher/update_data", {
-        idSubject: idreg,
-        N_people: N_people,
-        branch: all,
-      });
-      const responseData = getdata.data;
-      console.log(responseData);
-      console.log(subject);
       Swal.fire({
         icon: "warning",
         title: "ยืนยันแก้ไขรายวิชา?",
@@ -95,24 +113,17 @@ const ScheduleEdit = () => {
         confirmButtonColor: "green",
         denyButtonText: `ไม่บันทึก`,
         showCancelButton: false,
-        text: responseData.msg,
+        text: "ยืนยันที่จะแก้ไข",
         color: "gray",
       }).then((result) => {
         if (result.isConfirmed) {
-          Swal.fire("แก้ไขรายวิชาสำเร็จ", "", "success").then(() => {
-            window.location.href = "/schedule";
-          });
+          dochangeapi();
         } else if (result.isDenied) {
           Swal.fire("ข้อมูลยังไม่ถูกบันทึก", "", "error");
         }
       });
     } catch (error) {
       console.log(error);
-      Swal.fire({
-        icon: "error",
-        title: "แก้ไขรายวิชาไม่สำเร็จ",
-        text: error.response.data.msgerror,
-      });
     }
   };
 
@@ -229,14 +240,10 @@ const ScheduleEdit = () => {
                 <div className="flex items-center mt-4">
                   <button
                     type="button"
-                    className="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-4 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-                    style={{
-                      backgroundColor: "#134e4a",
-                      width: 80,
-                    }}
+                    className="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 bg-gradient-to-tr from-green-600  via-black  to-green-950 p-2 rounded-lg"
                     onClick={updateData}
                   >
-                    <p className="text-lg text-center"> ตกลง </p>
+                    <p className="text-lg text-center"> ยืนยันแก้ไขรายวิชา </p>
                   </button>
                 </div>
               </div>

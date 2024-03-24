@@ -209,9 +209,7 @@ const ImportSyl = () => {
               style={{ width: 90, height: 35 }}
               ref={selection_year}
             >
-              <option value={null} disabled selected hidden>
-                ---
-              </option>
+              <option value={null}>---</option>
 
               {[...Array(10 + 1).keys()].map((index) => {
                 const year = new Date().getFullYear() + 544 - index;
@@ -236,7 +234,7 @@ const ImportSyl = () => {
             <input
               type="file"
               onChange={handleFileChange}
-              class="file:bg-transparent file:border-0 file:text-sm file:font-medium file:p-2 file:w-full file:outline-none file:cursor-pointer"
+              className="file:bg-transparent file:border-0 file:text-sm file:font-medium file:p-2 file:w-full file:outline-none file:cursor-pointer"
             />
           </div>
 
@@ -247,7 +245,12 @@ const ImportSyl = () => {
                 className=" underline text-blue-700 text-xl"
                 target="_self"
                 to={"/ViewExcel"}
-                state={{ file,col:["รหัสวิชา", "ชื่อวิชา", "หน่วยกิต","หมวด"],check:true,start:1}}
+                state={{
+                  file,
+                  col: ["รหัสวิชา", "ชื่อวิชา", "หน่วยกิต", "หมวด"],
+                  check: true,
+                  start: 1,
+                }}
               >
                 {`${file.name} <--- กดเพื่อ View `}
               </Link>
@@ -266,16 +269,17 @@ const ImportSyl = () => {
         <div className="flex ">
           <button
             type="button"
-            class="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-5 py-2.5  dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 "
+            className="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-5 py-2.5  dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 "
             style={{
               backgroundColor: "#134e4a",
               width: 77,
               height: 25,
             }}
+            onClick={() => {
+              uploadFiles();
+            }}
           >
-            <button className="text-mb" onClick={uploadFiles}>
-              บันทึก
-            </button>
+            บันทึก
           </button>
         </div>
 
@@ -298,25 +302,25 @@ const ImportSyl = () => {
                     </td>
                   </tbody>
                 ) : (
-                  files.map((v, i) => (
-                    <tbody>
-                      <td className="p-3 font-light text-base text-center">
-                        <a href={apiurl + v.link}>{v.years}</a>
-                      </td>
-                      <td className="py-2 font-light text-base text-center">
-                        <a href={apiurl + v.link}>{v.filename}</a>
-                      </td>
-                      <td className="py-2 font-light text-base text-center">
-                        {" "}
-                        {/* เพิ่มส่วนของปุ่มลบที่นี่ */}
-                        <button onClick={() => deleteFiles(v.years)}>
-                          <p>
-                            <FontAwesomeIcon icon={faTrash} />
-                          </p>
-                        </button>
-                      </td>
-                    </tbody>
-                  ))
+                  <tbody>
+                    {files.map((v, i) => (
+                      <tr key={i}>
+                        <td className="p-3 font-light text-base text-center">
+                          <a href={apiurl + v.link}>{v.years}</a>
+                        </td>
+                        <td className="py-2 font-light text-base text-center">
+                          <a href={apiurl + v.link}>{v.filename}</a>
+                        </td>
+                        <td className="py-2 font-light text-base text-center">
+                          <button onClick={() => deleteFiles(v.years)}>
+                            <p>
+                              <FontAwesomeIcon icon={faTrash} />
+                            </p>
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
                 )
               ) : (
                 <tbody>
