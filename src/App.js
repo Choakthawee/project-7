@@ -30,6 +30,7 @@ import User_edit from "./pages/admin-pages/user_edit";
 import RegResultED_Regis from "./pages/ed-pages/regresults_ed_regis";
 import RegStatusEdit from "./pages/ed-pages/regstatus_ed";
 import RegCourseEditFore from "./pages/ed-pages/regcoursefore";
+import TableSchedule from "./pages/teacher-pages/table-schedule/table-schedule-test-page";
 function App() {
   return (
     <Router>
@@ -58,6 +59,7 @@ function App() {
                   path="/schedule_edit/:idreg"
                   element={<ScheduleEdit />}
                 />
+                <Route path="/test/table" element={<TableSchedule/>}/>
                 {/* Education Pages */}
                 <Route path="/imcourse" element={<ImportCourse />} />
                 <Route path="/imsyl" element={<ImportSyl />} />

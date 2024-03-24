@@ -1,0 +1,8 @@
+
+.table-w {
+	min-width: 1000px;
+}
+.custom-grid-table {
+	display: grid;
+	grid-template-columns: repeat(102, minmax(0, 1fr));
+  }
