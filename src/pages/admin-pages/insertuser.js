@@ -18,7 +18,7 @@ const InsertUser = () => {
   const [status, setStatus] = useState(2);
   const [Sstatus, setSStatus] = useState(2);
   const [fileData, setFileData] = useState([]);
-  const [file ,setFile] = useState();
+  const [file, setFile] = useState();
   const userRole = localStorage.getItem("role_id");
   const navigate = useNavigate();
 
@@ -35,9 +35,9 @@ const InsertUser = () => {
       } catch (error) {
         setData(error.response.data.msg);
       }
-    }
+    };
     getapi();
-  }, [])
+  }, []);
   const showAlert = () => {
     Swal.fire({
       icon: "error",
@@ -122,7 +122,7 @@ const InsertUser = () => {
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
-    setFile(event.target.files[0])
+    setFile(event.target.files[0]);
     if (selectedFile) {
       setSelectedFileName(selectedFile.name);
       console.log("Selected File:", selectedFile);
@@ -265,7 +265,9 @@ const InsertUser = () => {
                 onChange={handleStatusChange}
               >
                 {datas.map((v, i) => (
-                  <option value={v.id}>{v.name}</option>
+                  <option key={i} value={v.id}>
+                    {v.name}
+                  </option>
                 ))}
               </select>
               <FontAwesomeIcon
@@ -337,9 +339,16 @@ const InsertUser = () => {
                 icon={faArrowRight}
                 className="text-xl ml-3 mt-1"
               />
-              <Link className="ml-3" target="_self"
+              <Link
+                className="ml-3"
+                target="_self"
                 to={"/ViewExcel"}
-                state={{ file: file, col: ["email", "ชื่อ", "role_id"],start:0 }} >
+                state={{
+                  file: file,
+                  col: ["email", "ชื่อ", "role_id"],
+                  start: 0,
+                }}
+              >
                 {selectedFileName}
               </Link>
             </div>
