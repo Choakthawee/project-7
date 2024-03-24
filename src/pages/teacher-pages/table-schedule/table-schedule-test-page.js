@@ -6,12 +6,15 @@ export default function TableSchedule() {
     const [isCheck, setIsCheck] = useState(false);
     const [periodDate, setPeriodDate] = useState(''); // ต้องกำหนดค่าให้ period_date ใน Vue.js ด้วยนะครับ
     const [courses, setCourses] = useState([
-        {day_w:"MON",subject_code:"0123213",time_from:"12:00",time_to:"15:00",section_code:"800"}
+        { day_w: "MON", subject_code: "0123213", time_from: "09:10", time_to: "12:00", section_code: "800" },
+        { day_w: "MON", subject_code: "0123213", time_from: "12:30", time_to: "15:00", section_code: "800" },
+        { day_w: "TUE", subject_code: "0123213", time_from: "09:30", time_to: "15:00", section_code: "800" },
+        
     ]);
-    // สร้างฟังก์ชัน getColorByDate และ mappedCourses ตามที่ต้องการ
-
     const headers = [
         'Day/Time',
+        '6:00',
+        '7:00',
         '8:00',
         '9:00',
         '10:00',
@@ -24,14 +27,13 @@ export default function TableSchedule() {
         '17:00',
         '18:00',
         '19:00',
+        '20:00',
+        '21:00',
     ];
-
     const orderedDate = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
-
     useEffect(() => {
         getSchedule();
     }, []);
-
     const getSchedule = () => {
         setLoading(true);
         axios
@@ -53,13 +55,16 @@ export default function TableSchedule() {
                 setLoading(false);
             });
     };
-    const timeToCol = (timeString) => {
+    const timeToCol = (timeString,d) => {
         const time = timeString?.split(':') || [];
         if (time.length !== 2) {
             return 0;
         }
+        
         const remainder = +time[1] / 60;
-        return (+time[0] + remainder) * 2 - 13;
+        console.log((+time[0] + remainder) * 6 - 29);
+        const timer = (+time[0] + remainder) * 6 - 29;
+        return timer;
     };
 
     const getColorByDate = (date) => {
@@ -74,45 +79,29 @@ export default function TableSchedule() {
         };
         return color[date];
     };
-
-    const logout = () => {
-        localStorage.removeItem('accesstoken');
-        localStorage.removeItem('stdId');
-        // Navigate to login page
-    };
-    const download = () => {
-
-    }
     return (
         <div>
-            {loading && <div>Loading...</div>}
-            <div className="mx-auto container pt-7 pb-10 bg-black ">
-                <div>
-                    <h1 class="text-4xl font-bold mb-2 md:mb-0 mr-5 inline-block align-top dark:text-white">
-                        Schedule
-                        <p class="md:text-xl text-sm font-normal text-gray-600 dark:text-white">
-                            Period:
-                        </p>
-                    </h1>
-                </div>
-                <div className="overflow-x-auto border mx-1 rounded-lg" id="printcontent">
-                    <div className="overflow-x-hidden table-w " id="table">
-                        <div className="grid grid-cols-[26]">
+            <div className=" bg-white">
+                <div className=" rounded-lg overflow-x-auto">
+                    <div className="grid ">
+                        <div className="grid custom-grid-table ">
                             {headers.map((header, index) => (
-                                <div key={`header-${index}`} className="border py-1 pl-1  dark:text-white">
+                                <div key={`header-${index}`} className="border col-span-6  text-black">
                                     {header}
                                 </div>
                             ))}
                         </div>
                         {orderedDate.map((date, dateIndex) => (
-                            <div key={`date-${dateIndex}`} className="grid grid-cols-26 min-h-16 md:min-h-24 border dark:border-gray-700">
-                                <div className={`p-1 md:p-3 col-span-2 border-r-2 dark:border-gray-700 ${getColorByDate(date)}`}>
-                                    <span className="font-bold dark:text-gray-900">{date}</span>
+                            <div key={`date-${dateIndex}`} className="grid custom-grid-table ">
+                                <div className={`col-span-6 min-h-16 p-2 ${getColorByDate(date)}`}>
+                                    {date}
                                 </div>
                                 {courses.map((course, courseIndex) => {
                                     if (course.day_w.trim() === date) {
                                         return (
-                                            <div key={`course-${courseIndex}`} className={`border p-2 md:px-3 md:py-2 rounded text-xs md:text-sm bg-opacity-60 flex flex-col justify-between hover:bg-opacity-70 overflow-hidden cursor-pointer dark:bg-opacity-100 dark:border-gray-700 ${getColorByDate(date)} col-start-${timeToCol(course.time_from)} col-end-${timeToCol(course.time_to)}`}>
+                                            <div key={`course-${courseIndex}`} className={`border p-2 md:px-3 md:py-2 rounded text-xs md:text-sm bg-opacity-60 flex flex-col justify-between hover:bg-opacity-70 overflow-hidden cursor-pointer dark:bg-opacity-100 dark:border-gray-700 ${getColorByDate(date)}`}
+                                                style={{gridColumnStart:timeToCol(course.time_from),gridColumnEnd:timeToCol(course.time_to)}}
+                                            >
                                                 <p className="flex flex-wrap justify-between mb-2">
                                                     <span>{course.subject_code}</span>
                                                     <span>[{course.time_from} - {course.time_to}]</span>
