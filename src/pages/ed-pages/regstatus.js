@@ -321,7 +321,7 @@ const RegStatus = () => {
                                 onClick={() => navtoStatusEdit(subject)}
                               />
                             )}
-                            {subject.status_id === 1 && (
+                            {subject.status_id === 1 || subject.status_id === 2 && (
                               <span className="opacity-0 cursor-default visible"></span>
                             )}
                           </td>
