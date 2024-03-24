@@ -106,7 +106,7 @@ const RegResultED = () => {
         const data = data1.data;
         setCountsub(data[0]);
         console.log(data);
-      } catch (err) { }
+      } catch (err) {}
     };
     getapi();
   }, []);
@@ -127,7 +127,7 @@ const RegResultED = () => {
       }
     });
   };
-  const [redirectUrl, setRedirectUrl] = useState('');
+  const [redirectUrl, setRedirectUrl] = useState("");
   if (userRole !== "3") {
     showAlert();
     return null;
@@ -136,15 +136,15 @@ const RegResultED = () => {
     if (countsub) {
       if (countsub.subjectcont === countsub.allopen) {
         try {
-          const data = await axios.get(apiurl + "/api/export/file")
+          const data = await axios.get(apiurl + "/api/export/file");
           const redirectUrl = data.request.responseURL;
           // อัพเดท state ให้มีค่า URL สำหรับ redirect
           window.location.href = redirectUrl;
         } catch (error) {
-          Swal.fire({ icon: "error", text: error.response.data.msgerror })
+          Swal.fire({ icon: "error", text: error.response.data.msgerror });
         }
       } else {
-        Swal.fire({ icon: "error", text: "คนลงทะเบียนไม่คบ" })
+        Swal.fire({ icon: "error", text: "คนลงทะเบียนไม่คบ" });
       }
     }
   }
@@ -229,7 +229,7 @@ const RegResultED = () => {
 
                       <tbody>
                         {currentsubjects.map((value, index) => (
-                          <tr>
+                          <tr key={index}>
                             <td className="py-2 font-light text-lg text-center">
                               {startIndex + index + 1}
                             </td>
@@ -322,9 +322,9 @@ const RegResultED = () => {
                             <td className="py-2 font-light text-lg text-center">
                               {value.st && value.et
                                 ? `${value.st.slice(0, -3)}-${value.et.slice(
-                                  0,
-                                  -3
-                                )}`
+                                    0,
+                                    -3
+                                  )}`
                                 : ""}
                             </td>
                           </tr>
@@ -434,13 +434,15 @@ const RegResultED = () => {
             <div className="flex relative ml-5 mt-5 mr-10">
               <button
                 type="button"
-                class="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                className="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                 style={{
                   backgroundColor: "#134e4a",
                   width: 190,
                   height: 45,
                 }}
-                onClick={() => { exportfiles() }}
+                onClick={() => {
+                  exportfiles();
+                }}
               >
                 <p className="text-lg mr-2">นำออกไฟล์ xlsx</p>
                 <FontAwesomeIcon
