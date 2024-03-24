@@ -8,6 +8,7 @@ import axios from "axios";
 import { apiurl } from "../../config";
 import SearchTab from "./searchtab";
 import { TimerResetIcon } from "lucide-react";
+import { InfoIcon } from "lucide-react";
 
 const Schedule = () => {
   const userRole = localStorage.getItem("role_id");
@@ -24,6 +25,7 @@ const Schedule = () => {
   const [filteredSubjects, setFilteredSubjects] = useState([]);
   const [searching, setSearching] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [teacherSchedule, setTeacherSchedule] = useState([]);
   const [years, setYears] = useState(["1", "2", "3", "4", "5"]);
 
   useEffect(() => {
@@ -31,7 +33,7 @@ const Schedule = () => {
       try {
         const response = await axios.get(apiurl + "/api/subject_category");
         setSubjectCategories(response.data);
-        console.log(response.data)
+        console.log(response.data);
       } catch (error) {
         console.error("Error fetching subject categories: ", error);
       }
@@ -67,6 +69,7 @@ const Schedule = () => {
           if (isTeacher) {
             setSubjectUser(data);
             setFilteredSubjects(data);
+            setTeacherSchedule(data);
           } else {
             setSubjectAll(data);
             setFilteredSubjects(data);
@@ -109,39 +112,54 @@ const Schedule = () => {
       isTeacher
     );
     setFilteredSubjects(filteredSubjects);
+    if (isTeacher) {
+      setTeacherSchedule(filteredSubjects);
+    }
   };
 
   const searchAndFilterSubjects = (input, category, year, isTeacher) => {
     if (!input.trim()) {
       return isTeacher
         ? subjectUser.filter(
-          (subject) =>
-            (!category || subject.subject_category_id === category) &&
-            (!year || Object.values(subject.branch).some(branchArray => branchArray.includes(Number(year))))
-        )
+            (subject) =>
+              (!category || subject.subject_category_id === category) &&
+              (!year ||
+                Object.values(subject.branch).some((branchArray) =>
+                  branchArray.includes(Number(year))
+                ))
+          )
         : subjectAll.filter(
-          (subject) =>
-            (!category || subject.subject_category_id === category) &&
-            (!year || Object.values(subject.branch).some(branchArray => branchArray.includes(Number(year))))
-        );
+            (subject) =>
+              (!category || subject.subject_category_id === category) &&
+              (!year ||
+                Object.values(subject.branch).some((branchArray) =>
+                  branchArray.includes(Number(year))
+                ))
+          );
     } else {
       const filtered = isTeacher
         ? subjectUser.filter(
-          (subject) =>
-            (subject.id_subject.includes(input) ||
-              subject.SUBJECT.includes(input) ||
-              subject.NAME.includes(input)) &&
-            (!category || subject.subject_category_id === category) &&
-            (!year || Object.values(subject.branch).some(branchArray => branchArray.includes(Number(year))))
-        )
+            (subject) =>
+              (subject.id_subject.includes(input) ||
+                subject.SUBJECT.includes(input) ||
+                subject.NAME.includes(input)) &&
+              (!category || subject.subject_category_id === category) &&
+              (!year ||
+                Object.values(subject.branch).some((branchArray) =>
+                  branchArray.includes(Number(year))
+                ))
+          )
         : subjectAll.filter(
-          (subject) =>
-            (subject.id_subject.includes(input) ||
-              subject.SUBJECT.includes(input) ||
-              subject.NAME.includes(input)) &&
-            (!category || subject.subject_category_id === category) &&
-            (!year || Object.values(subject.branch).some(branchArray => branchArray.includes(Number(year))))
-        );
+            (subject) =>
+              (subject.id_subject.includes(input) ||
+                subject.SUBJECT.includes(input) ||
+                subject.NAME.includes(input)) &&
+              (!category || subject.subject_category_id === category) &&
+              (!year ||
+                Object.values(subject.branch).some((branchArray) =>
+                  branchArray.includes(Number(year))
+                ))
+          );
       return filtered;
     }
   };
@@ -157,19 +175,27 @@ const Schedule = () => {
     Swal.fire({
       title: subject.SUBJECT,
       html: `
-        <div>รหัสวิชา: ${subject.id_subject}-${subject.ySubject.substring(2)}</div>
+        <div>รหัสวิชา: ${subject.id_subject}-${subject.ySubject.substring(
+        2
+      )}</div>
         <div>หน่วยกิต: ${subject.credit}</div>
         <div>อาจารย์ผู้สอน: ${subject.NAME}</div>
         <div>จำนวนนิสิต: ${subject.N_people}</div>
-        ${Object.keys(subject.branch).map(
-        (branchKey) =>
-          `<div>ชั้นปีที่เปิดรับ ${branchKey}: ${subject.branch[branchKey]
-            ? subject.branch[branchKey].join(", ")
-            : "ไม่มีข้อมูล"
-          }</div>`
-      ).join("")}
+        ${Object.keys(subject.branch)
+          .map(
+            (branchKey) =>
+              `<div>ชั้นปีที่เปิดรับ ${branchKey}: ${
+                subject.branch[branchKey]
+                  ? subject.branch[branchKey].join(", ")
+                  : "ไม่มีข้อมูล"
+              }</div>`
+          )
+          .join("")}
         <div>วัน: ${subject.day}</div>
-        <div>เวลา: ${subject.st.substring(0, 5)}-${subject.et.substring(0, 5)} น.</div>
+        <div>เวลา: ${subject.st.substring(0, 5)}-${subject.et.substring(
+        0,
+        5
+      )} น.</div>
       `,
       icon: "info",
       confirmButtonColor: "#3085d6",
@@ -201,12 +227,12 @@ const Schedule = () => {
   }
 
   const times = [
-    { start: "7:00", end: "7:30" },
-    { start: "7:30", end: "8:00" },
-    { start: "8:00", end: "8:30" },
-    { start: "8:30", end: "9:00" },
-    { start: "9:00", end: "9:30" },
-    { start: "9:30", end: "10:00" },
+    { start: "07:00", end: "07:30" },
+    { start: "07:30", end: "08:00" },
+    { start: "08:00", end: "08:30" },
+    { start: "08:30", end: "09:00" },
+    { start: "09:00", end: "09:30" },
+    { start: "09:30", end: "10:00" },
     { start: "10:00", end: "10:30" },
     { start: "10:30", end: "11:00" },
     { start: "11:00", end: "11:30" },
@@ -242,6 +268,68 @@ const Schedule = () => {
     { id: 6, name: "วันเสาร์" },
     { id: 7, name: "วันอาทิตย์" },
   ];
+
+  const getMergedCells = (day, teacherSchedule) => {
+    const mergedCells = [];
+    let currentSubject = null;
+    let currentStart = null;
+    let currentEnd = null;
+
+    for (let i = 0; i < times.length; i++) {
+      const { start, end } = times[i];
+      const subjectsInRange = teacherSchedule.filter(
+        (subject) =>
+          subject.day_id === day.id &&
+          subject.st <= end &&
+          subject.et >= start &&
+          subject.et > end
+      );
+
+      if (subjectsInRange.length > 0) {
+        if (!currentSubject) {
+          currentSubject = subjectsInRange[0];
+          currentStart = start;
+          currentEnd = end;
+        } else if (
+          subjectsInRange.some(
+            (subject) => subject.id_subject !== currentSubject.id_subject
+          )
+        ) {
+          mergedCells.push({
+            start: currentStart,
+            end: currentEnd,
+            subjects: [currentSubject],
+          });
+          currentSubject = subjectsInRange[0];
+          currentStart = start;
+          currentEnd = end;
+        } else {
+          currentEnd = end;
+        }
+      } else {
+        if (currentSubject) {
+          mergedCells.push({
+            start: currentStart,
+            end: currentEnd,
+            subjects: [currentSubject],
+          });
+          currentSubject = null;
+          currentStart = null;
+          currentEnd = null;
+        }
+      }
+    }
+
+    if (currentSubject) {
+      mergedCells.push({
+        start: currentStart,
+        end: currentEnd,
+        subjects: [currentSubject],
+      });
+    }
+
+    return mergedCells;
+  };
 
   return (
     <div
@@ -328,31 +416,38 @@ const Schedule = () => {
 
         <div className="flex-row flex mt-2 ml-2 items-end">
           <div
-            className={`transition-all w-8 h-8 mr-2 ${isTeacher ? "bg-green-400" : "bg-pink-400"
-              }`}
+            className={`transition-all w-8 h-8 mr-2 ${
+              isTeacher ? "bg-green-400" : "hidden"
+            }`}
           ></div>
-          <label className="ptext-shadow mb-1">
-            {isTeacher ? "ผ่าน" : "บังคับ"}
+          <label className={`ptext-shadow mb-1 ${isTeacher ? "" : "hidden"}`}>
+            {isTeacher ? "ผ่าน" : ""}
           </label>
         </div>
 
         <div className="flex flex-row ml-2 items-end">
           <div
-            className={`transition-all w-8 h-8 mr-2 ${isTeacher ? "bg-red-500" : "bg-yellow-400"
-              }`}
+            className={`transition-all w-8 h-8 mr-2 ${
+              isTeacher ? "bg-red-500" : "hidden"
+            }`}
           ></div>
-          <label className="ptext-shadow mb-1">
-            {isTeacher ? "ไม่ผ่าน" : "เฉพาะเลือก"}
+          <label
+            className={`ptext-shadow mb-1 ${isTeacher ? "" : "text-red-600"}`}
+          >
+            {isTeacher
+              ? "ไม่ผ่าน"
+              : "*แสดงเฉพาะวิชาที่ลงทะเบียนผ่านแล้วเท่านั้น*"}
           </label>
         </div>
 
         <div className="flex flex-row ml-2 items-end">
           <div
-            className={`transition-all w-8 h-8 mr-2 ${isTeacher ? "bg-orange-500" : "bg-cyan-400"
-              }`}
+            className={`transition-all w-8 h-8 mr-2 ${
+              isTeacher ? "bg-orange-500" : "hidden"
+            }`}
           ></div>
-          <label className="ptext-shadow mb-1">
-            {isTeacher ? "รอ" : "เลือก"}
+          <label className={`ptext-shadow mb-1 ${isTeacher ? "" : "hidden"}`}>
+            {isTeacher ? "รอ" : ""}
           </label>
         </div>
 
@@ -374,7 +469,7 @@ const Schedule = () => {
 
       <div className="flex">
         {isTeacher ? (
-          filteredSubjects.length === 0 ? (
+          teacherSchedule.length === 0 ? (
             <table className="mt-0 border-collapse border border-gray-400 shadow-md">
               {/* Table Header */}
               <thead>
@@ -411,12 +506,12 @@ const Schedule = () => {
             <table className="mt-0 border-collapse border border-gray-400 shadow-md">
               {/* Table Header */}
               <thead>
-                <tr className="bg-gray-200">
-                  <th className="border border-gray-400 py-2 px-4"></th>
+                <tr className="column-color1">
+                  <th className="border border-gray-600 border-opacity-25 text-white font-thin py-2 px-4"></th>
                   {times.map((time, index) => (
                     <th
                       key={index}
-                      className="border border-gray-400 py-2 px-2"
+                      className="border border-gray-600 border-opacity-25 font-normal text-white py-2 px-2"
                     >
                       <div className="text-xs">{`${time.start}-${time.end}`}</div>
                     </th>
@@ -431,55 +526,74 @@ const Schedule = () => {
                       {day.name}
                     </td>
                     {times.map((time, timeIndex) => {
-                      const subjectsInCell = filteredSubjects.filter(
-                        (sub) =>
-                          sub.day_id === day.id &&
-                          sub.st <= time.end &&
-                          sub.et >= time.start &&
-                          sub.et > time.end
+                      const mergedCell = getMergedCells(
+                        day,
+                        teacherSchedule
+                      ).find(
+                        (cell) =>
+                          cell.start <= time.end &&
+                          cell.end >= time.start &&
+                          cell.end > time.end
                       );
-
-                      if (subjectsInCell.length === 0) {
+                      if (mergedCell) {
+                        if (mergedCell.start === time.start) {
+                          return (
+                            <td
+                              key={`${dayIndex}-${timeIndex}`}
+                              className={`border border-gray-400 py-2 px-2 text-center ${
+                                mergedCell.subjects.some(
+                                  (subject) => subject.status_id === 1
+                                )
+                                  ? "bg-green-500"
+                                  : mergedCell.subjects.some(
+                                      (subject) => subject.status_id === 2
+                                    )
+                                  ? "bg-orange-500"
+                                  : mergedCell.subjects.some(
+                                      (subject) => subject.status_id === 3
+                                    )
+                                  ? "bg-red-500"
+                                  : "bg-white"
+                              }`}
+                              colSpan={
+                                times.findIndex(
+                                  (t) => t.end === mergedCell.end
+                                ) -
+                                times.findIndex(
+                                  (t) => t.start === mergedCell.start
+                                ) +
+                                1
+                              }
+                            >
+                              {mergedCell.subjects.map(
+                                (subject, subjectIndex) => (
+                                  <div
+                                    key={subjectIndex}
+                                    className="ptext-shadow text-white flex flex-row justify-center"
+                                  >
+                                    {subject.id_subject}-
+                                    {subject.ySubject.substring(2)}
+                                    <InfoIcon
+                                      size={20}
+                                      color="white"
+                                      className="self-center ml-2"
+                                    ></InfoIcon>
+                                  </div>
+                                )
+                              )}
+                            </td>
+                          );
+                        } else {
+                          return null;
+                        }
+                      } else {
                         return (
                           <td
-                            key={timeIndex}
-                            className="border border-gray-400 py-2 px-2 text-xs bg-white"
+                            key={`${dayIndex}-${timeIndex}`}
+                            className="border border-gray-400 py-2 px-2 bg-white"
                           ></td>
                         );
                       }
-
-                      const cellContent = subjectsInCell.map((subject) => (
-                        <div
-                          key={subject.idre}
-                          onClick={() => showAlert(subject)}
-                        >
-                          {`${subject.id_subject}-${subject.ySubject.substring(
-                            2
-                          )}`}
-                        </div>
-                      ));
-
-                      let colorClass;
-                      if (subjectsInCell.every((sub) => sub.status_id === 1)) {
-                        colorClass = "bg-green-400";
-                      } else if (
-                        subjectsInCell.every((sub) => sub.status_id === 2)
-                      ) {
-                        colorClass = "bg-red-500";
-                      } else {
-                        colorClass = "bg-yellow-400";
-                      }
-
-                      return (
-                        <td
-                          key={timeIndex}
-                          className={`py-2 px-2 text-xs ${colorClass}`}
-                          colSpan={subjectsInCell.length}
-                          style={{ border: "none" }}
-                        >
-                          {cellContent}
-                        </td>
-                      );
                     })}
                   </tr>
                 ))}
@@ -586,10 +700,11 @@ const Schedule = () => {
                   <td className="border border-gray-400 py-2 px-4 border-opacity-10">
                     <Link to={"/schedule_edit/" + subject.idre}>
                       <button
-                        className={`bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded ml-3 ${subject.NAME !== userName
-                          ? "hidden opacity-0 cursor-default"
-                          : ""
-                          }`}
+                        className={`bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded ml-3 ${
+                          subject.NAME !== userName
+                            ? "hidden opacity-0 cursor-default"
+                            : ""
+                        }`}
                       >
                         Edit
                       </button>
