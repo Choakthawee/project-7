@@ -209,9 +209,7 @@ const ImportSyl = () => {
               style={{ width: 90, height: 35 }}
               ref={selection_year}
             >
-              <option value={null} disabled selected hidden>
-                ---
-              </option>
+              <option value={null}>---</option>
 
               {[...Array(10 + 1).keys()].map((index) => {
                 const year = new Date().getFullYear() + 544 - index;
@@ -277,10 +275,11 @@ const ImportSyl = () => {
               width: 77,
               height: 25,
             }}
+            onClick={() => {
+              uploadFiles();
+            }}
           >
-            <button className="text-mb" onClick={uploadFiles}>
-              บันทึก
-            </button>
+            บันทึก
           </button>
         </div>
 
@@ -303,25 +302,25 @@ const ImportSyl = () => {
                     </td>
                   </tbody>
                 ) : (
-                  files.map((v, i) => (
-                    <tbody>
-                      <td className="p-3 font-light text-base text-center">
-                        <a href={apiurl + v.link}>{v.years}</a>
-                      </td>
-                      <td className="py-2 font-light text-base text-center">
-                        <a href={apiurl + v.link}>{v.filename}</a>
-                      </td>
-                      <td className="py-2 font-light text-base text-center">
-                        {" "}
-                        {/* เพิ่มส่วนของปุ่มลบที่นี่ */}
-                        <button onClick={() => deleteFiles(v.years)}>
-                          <p>
-                            <FontAwesomeIcon icon={faTrash} />
-                          </p>
-                        </button>
-                      </td>
-                    </tbody>
-                  ))
+                  <tbody>
+                    {files.map((v, i) => (
+                      <tr key={i}>
+                        <td className="p-3 font-light text-base text-center">
+                          <a href={apiurl + v.link}>{v.years}</a>
+                        </td>
+                        <td className="py-2 font-light text-base text-center">
+                          <a href={apiurl + v.link}>{v.filename}</a>
+                        </td>
+                        <td className="py-2 font-light text-base text-center">
+                          <button onClick={() => deleteFiles(v.years)}>
+                            <p>
+                              <FontAwesomeIcon icon={faTrash} />
+                            </p>
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
                 )
               ) : (
                 <tbody>

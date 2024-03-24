@@ -17,9 +17,9 @@ const User_edit = () => {
   const { id } = useParams();
   const userRole = localStorage.getItem("role_id");
   const navigate = useNavigate();
-  const Nev = useNavigate()
-  const [Lock,setLock] = useState(0);
-  const [datas,setData] = useState([]);
+  const Nev = useNavigate();
+  const [Lock, setLock] = useState(0);
+  const [datas, setData] = useState([]);
   useEffect(() => {
     const getapi = async () => {
       try {
@@ -28,9 +28,9 @@ const User_edit = () => {
         setName(data.name);
         setEmail(data.email);
         setStatus(data.role_id);
-        if(localStorage.getItem("email")===data.email){
+        if (localStorage.getItem("email") === data.email) {
           setLock(1);
-          alert("ไม่สามารถแก้ไขตัวเองได้")
+          alert("ไม่สามารถแก้ไขตัวเองได้");
         }
         const getdata1 = await axios.get(apiurl + "/api/setting/role");
         const data1 = getdata1.data;
@@ -44,13 +44,13 @@ const User_edit = () => {
           timer: 2000,
           timerProgressBar: true,
         }).then(() => {
-          alert(error.response.data.msgerror)
+          alert(error.response.data.msgerror);
           Nev(-1);
-        })
+        });
       }
-    }
+    };
     getapi();
-  }, [Nev,id])
+  }, [Nev, id]);
   const showAlert = () => {
     Swal.fire({
       icon: "error",
@@ -76,23 +76,28 @@ const User_edit = () => {
 
   const updateData = async () => {
     try {
-      const getdate = await axios.post(apiurl + "/api/admin/userupdate", { id: id, email: email, name: name, role_id: status })
+      const getdate = await axios.post(apiurl + "/api/admin/userupdate", {
+        id: id,
+        email: email,
+        name: name,
+        role_id: status,
+      });
       const data = getdate.data;
       Swal.fire({
         icon: "success",
         title: "สำเร็จ",
-        text: data.msg
-      })
+        text: data.msg,
+      }).then(() => {
+        navigate(-1);
+      });
     } catch (error) {
       Swal.fire({
         icon: "error",
         title: "ไม่สำเร็จ",
-        text: error.response.data.msgerror
-      })
+        text: error.response.data.msgerror,
+      });
     }
-
-  }
-
+  };
 
   const handleNameChange = (e) => {
     setName(e.target.value);
@@ -172,10 +177,11 @@ const User_edit = () => {
                 value={status}
                 onChange={handleStatusChange}
               >
-                {datas.map((v,i)=>(
-                  <option key={i} value={v.id}>{v.name}</option>
+                {datas.map((v, i) => (
+                  <option key={i} value={v.id}>
+                    {v.name}
+                  </option>
                 ))}
-               
               </select>
               <FontAwesomeIcon
                 icon={faArrowAltCircleDown}
@@ -198,19 +204,26 @@ const User_edit = () => {
                 width: 150,
                 justifyContent: "center",
               }}
-              onClick={() => {if(!Lock){updateData() }else{
-                alert("ห้ามแก้จ้า")
-              }}}
+              onClick={() => {
+                if (!Lock) {
+                  updateData();
+                } else {
+                  alert("ห้ามแก้จ้า");
+                }
+              }}
             >
               <p className="m-0 " style={{ marginRight: "10px" }}>
                 ยืนยัน
               </p>
-              {Lock===0? <FontAwesomeIcon
-                icon={faSave}
-                className="mr-2  "
-                style={{ fontSize: "24px" }}
-              /> : <LockIcon></LockIcon>}
-             
+              {Lock === 0 ? (
+                <FontAwesomeIcon
+                  icon={faSave}
+                  className="mr-2  "
+                  style={{ fontSize: "24px" }}
+                />
+              ) : (
+                <LockIcon></LockIcon>
+              )}
             </button>
           </div>
         </div>
