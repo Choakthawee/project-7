@@ -3,6 +3,8 @@ import BranchCheckbox from "./BranchCheckbox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FaTimes } from "react-icons/fa";
 import { faArrowAltCircleDown } from "@fortawesome/free-solid-svg-icons";
+import Swal from "sweetalert2";
+
 export default function BranchBox({
   setall,
   textColor,
@@ -65,7 +67,16 @@ export default function BranchBox({
         });
         setSelectedOptions([...selectedOptions, ...options]);
       } else {
-        alert("คุณได้เลือกสาขาและปีนี้ไว้แล้ว");
+        // alert("คุณได้เลือกสาขาและปีนี้ไว้แล้ว");
+        Swal.fire({
+          position: "top",
+          icon: "warning",
+          title: "คุณได้เลือกสาขาและชั้นปีนี้ไว้แล้ว",
+          showConfirmButton: false,
+          width: 550,
+          timer: 2000,
+          timerProgressBar: true,
+        });
       }
       setSelectedYears([]);
     }
