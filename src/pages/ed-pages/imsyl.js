@@ -236,7 +236,7 @@ const ImportSyl = () => {
             <input
               type="file"
               onChange={handleFileChange}
-              class="file:bg-transparent file:border-0 file:text-sm file:font-medium file:p-2 file:w-full file:outline-none file:cursor-pointer"
+              className="file:bg-transparent file:border-0 file:text-sm file:font-medium file:p-2 file:w-full file:outline-none file:cursor-pointer"
             />
           </div>
 
@@ -247,7 +247,12 @@ const ImportSyl = () => {
                 className=" underline text-blue-700 text-xl"
                 target="_self"
                 to={"/ViewExcel"}
-                state={{ file,col:["รหัสวิชา", "ชื่อวิชา", "หน่วยกิต","หมวด"],check:true,start:1}}
+                state={{
+                  file,
+                  col: ["รหัสวิชา", "ชื่อวิชา", "หน่วยกิต", "หมวด"],
+                  check: true,
+                  start: 1,
+                }}
               >
                 {`${file.name} <--- กดเพื่อ View `}
               </Link>
@@ -266,7 +271,7 @@ const ImportSyl = () => {
         <div className="flex ">
           <button
             type="button"
-            class="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-5 py-2.5  dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 "
+            className="flex items-center focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg px-5 py-2.5  dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 "
             style={{
               backgroundColor: "#134e4a",
               width: 77,

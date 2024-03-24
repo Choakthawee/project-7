@@ -21,15 +21,14 @@ const Time = () => {
       try {
         const responsedata = await axios.get(apiurl + "/api/admin/SystemGet");
         console.log(responsedata.data);
-        console.log("Kuy1");
         const data = responsedata.data[0];
         setStartDate(data.S_date);
         setEndDate(data.E_date);
         setStartTime(data.S_time);
         setEndTime(data.E_time);
         setIsChecked(data.status);
-        setModeTime(data.type)
-        setIsRadioSelected(data.type === 1 ? true : false)
+        setModeTime(data.type);
+        setIsRadioSelected(data.type === 1 ? true : false);
       } catch (error) {
         alert(error.response.data.msgerror);
       }
@@ -40,9 +39,11 @@ const Time = () => {
   const userRole = localStorage.getItem("role_id");
   const navigate = useNavigate();
   const reset = async () => {
-    const responseData = await axios.post(apiurl + "/api/admin/System", { systemstatus: 1 });
+    const responseData = await axios.post(apiurl + "/api/admin/System", {
+      systemstatus: 1,
+    });
     window.location.reload();
-  }
+  };
   const showAlert = () => {
     Swal.fire({
       icon: "error",
@@ -98,7 +99,8 @@ const Time = () => {
         E_time: endTime,
       };
 
-      axios.post(apiurl + "/api/admin/System", requestData)
+      axios
+        .post(apiurl + "/api/admin/System", requestData)
         .then((response) => {
           Swal.fire({
             title: "บันทึกสำเร็จ",
@@ -154,7 +156,7 @@ const Time = () => {
           }}
           className="flex flex-col font-family mt-10 ml-10 font-bold text-xl size-30 "
         >
-          <div class="flex items-center mb-4">
+          <div className="flex items-center mb-4">
             <input
               id="default-radio-1"
               type="radio"
@@ -164,7 +166,7 @@ const Time = () => {
               onChange={handleRadioChange}
               checked={!isRadioSelected}
             />
-            <p for="default-radio-1" class="ms-2 text-l font-medium">
+            <p htmlFor="default-radio-1" className="ms-2 text-l font-medium">
               ตั้งค่าระบบด้วยตนเอง
             </p>
           </div>
@@ -172,7 +174,7 @@ const Time = () => {
           {isRadioSelected ? null : (
             <div>
               <div>
-                <div class="flex mt-5 mb-8 ml-5">
+                <div className="flex mt-5 mb-8 ml-5">
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input
                       type="checkbox"
@@ -184,10 +186,11 @@ const Time = () => {
                       }}
                     />
                     <div
-                      className={`w-16 h-9 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-green-800 ${isChecked
-                        ? "peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full"
-                        : ""
-                        } peer-checked:after:border-white after:content-[''] after:absolute after:top-1 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-7 after:w-7 after:transition-all dark:border-gray-600 peer-checked:bg-green-600`}
+                      className={`w-16 h-9 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-green-800 ${
+                        isChecked
+                          ? "peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full"
+                          : ""
+                      } peer-checked:after:border-white after:content-[''] after:absolute after:top-1 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-7 after:w-7 after:transition-all dark:border-gray-600 peer-checked:bg-green-600`}
                     ></div>
                     <span className="ms-3 text-l font-medium text-gray-900 dark:text-green-800">
                       เปิด
@@ -218,7 +221,7 @@ const Time = () => {
 
           {isRadioSelected ? (
             <div>
-              <div class="flex mt-4 mb-8 ml-5">
+              <div className="flex mt-4 mb-8 ml-5">
                 <div>
                   <div
                     style={{
@@ -233,14 +236,14 @@ const Time = () => {
                         marginTop: 15,
                       }}
                     >
-                      <p for="setStartDate" class="ms-1 font-medium text18">
+                      <p for="setStartDate" className="ms-1 font-medium text18">
                         วันที่เปิด <span style={{ color: "red" }}>*</span>
                       </p>
-                      <div date-rangepicker class="flex items-center">
-                        <div class="relative">
-                          <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                      <div date-rangepicker className="flex items-center">
+                        <div className="relative">
+                          <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                             <svg
-                              class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                              className="w-4 h-4 text-gray-500 dark:text-gray-400"
                               aria-hidden="true"
                               xmlns="http://www.w3.org/2000/svg"
                               fill="currentColor"
@@ -260,14 +263,14 @@ const Time = () => {
                       </div>
                       <p
                         for="setStartDate"
-                        class="mt-7 ms-1 font-medium text18"
+                        className="mt-7 ms-1 font-medium text18"
                       >
                         วันที่ปิด <span style={{ color: "red" }}>*</span>
                       </p>
                       <div>
-                        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                        <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                           <svg
-                            class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                            className="w-4 h-4 text-gray-500 dark:text-gray-400"
                             aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg"
                             fill="currentColor"
@@ -295,7 +298,7 @@ const Time = () => {
                         marginTop: 15,
                       }}
                     >
-                      <p class="ms-1 font-medium text18">
+                      <p className="ms-1 font-medium text18">
                         เวลาที่เปิด <span style={{ color: "red" }}>*</span>
                       </p>
                       <input
@@ -308,7 +311,7 @@ const Time = () => {
                           console.log(startTime);
                         }}
                       />
-                      <p class="mt-8 ms-1 font-medium text18">
+                      <p className="mt-8 ms-1 font-medium text18">
                         เวลาที่ปิด <span style={{ color: "red" }}>*</span>
                       </p>
                       <input
@@ -325,11 +328,15 @@ const Time = () => {
                 </div>
               </div>
               <div className="flex mt-3 ml-5">
-                {modeTime===1 &&
-                 <button className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-                  onClick={()=>reset()}> ไม่ใช้เวลา
+                {modeTime === 1 && (
+                  <button
+                    className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                    onClick={() => reset()}
+                  >
+                    {" "}
+                    ไม่ใช้เวลา
                   </button>
-                  }
+                )}
                 <button
                   type="button"
                   className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
