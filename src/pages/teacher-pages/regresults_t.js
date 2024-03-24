@@ -100,6 +100,7 @@ const RegResultT = () => {
       html: `
         <label for="day">เลือกวันที่จะสอน:</label>
         <select id="day" class="swal2-input">
+          <option value="" disabled selected>โปรดเลือก</option>
           <option value="1">จันทร์</option>
           <option value="2">อังคาร</option>
           <option value="3">พุธ</option>
@@ -110,10 +111,12 @@ const RegResultT = () => {
         </select><br>
         <label for="startTime">เลือกเวลาเริ่มสอน:</label>
         <select id="startTime" class="swal2-input">
+          <option value="" disabled selected>---</option>
           ${generateTimeOptions(7, 22)}
         </select><br>
         <label for="endTime">เลือกเวลาสิ้นสุดการสอน:</label>
         <select id="endTime" class="swal2-input">
+          <option value="" disabled selected>---</option>
           ${generateTimeOptions(7, 22)}
         </select>
       `,
