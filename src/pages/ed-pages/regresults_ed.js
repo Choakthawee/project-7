@@ -362,7 +362,7 @@ const RegResultED = () => {
 
                       <tbody>
                         {currentsubjects2.map((value, index) => (
-                          <tr>
+                          <tr key={index}>
                             <td className="py-2 font-light text-lg text-center">
                               {startIndex2 + index + 1}
                             </td>

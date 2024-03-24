@@ -243,7 +243,11 @@ const RegCourseEditFore = () => {
               <div className="flex ">
                 <p className="mr-3">จำนวนหน่วยกิต :</p>
                 <p className="text-gray-300">
-                  {subject.credit ? subject.exsub===0?`${subject.credit} (${subject.lecture_t}-${subject.practice_t}-${subject.m_t})`:subject.credit : "Error"}
+                  {subject.credit
+                    ? subject.exsub === 0
+                      ? `${subject.credit} (${subject.lecture_t}-${subject.practice_t}-${subject.m_t})`
+                      : subject.credit
+                    : "Error"}
                 </p>
               </div>
               <div className="flex ">
@@ -264,7 +268,7 @@ const RegCourseEditFore = () => {
                 placeholder="ชื่อหรือemail"
               ></SearchingBar>
               <div className="gap-3 flex flex-col text-lightgreen">
-                <label htmlFor="add" for="add">
+                <label htmlFor="add">
                   เพิ่มหมู่เรียน <span style={{ color: "red" }}>*</span>
                 </label>
                 <button id="add" onClick={() => addbox()}>
