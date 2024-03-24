@@ -98,21 +98,25 @@ const RegResultT = () => {
     const { value: userInput } = await Swal.fire({
       title: "เปลี่ยนแปลงวันและเวลาสอน",
       html: `
-      <label for="day">เลือกวันที่จะสอน:</label>
-      <select id="day" class="swal2-input">
-        <option value="1">จันทร์</option>
-        <option value="2">อังคาร</option>
-        <option value="3">พุธ</option>
-        <option value="4">พฤหัสบดี</option>
-        <option value="5">ศุกร์</option>
-        <option value="6">เสาร์</option>
-        <option value="7">อาทิตย์</option>
-      </select><br>
-      <label for="startTime">เลือกเวลาเริ่มสอน:</label>
-      <input id="startTime" class="swal2-input" type="time" placeholder="Select a time"><br>
-      <label for="endTime">เลือกเวลาสิ้นสุดการสอน:</label>
-      <input id="endTime" class="swal2-input" type="time" placeholder="Select a time">
-    `,
+        <label for="day">เลือกวันที่จะสอน:</label>
+        <select id="day" class="swal2-input">
+          <option value="1">จันทร์</option>
+          <option value="2">อังคาร</option>
+          <option value="3">พุธ</option>
+          <option value="4">พฤหัสบดี</option>
+          <option value="5">ศุกร์</option>
+          <option value="6">เสาร์</option>
+          <option value="7">อาทิตย์</option>
+        </select><br>
+        <label for="startTime">เลือกเวลาเริ่มสอน:</label>
+        <select id="startTime" class="swal2-input">
+          ${generateTimeOptions(7, 22)}
+        </select><br>
+        <label for="endTime">เลือกเวลาสิ้นสุดการสอน:</label>
+        <select id="endTime" class="swal2-input">
+          ${generateTimeOptions(7, 22)}
+        </select>
+      `,
       focusConfirm: true,
       confirmButtonColor: "green",
       confirmButtonText: "ยืนยัน",
@@ -120,18 +124,67 @@ const RegResultT = () => {
       cancelButtonColor: "red",
       showCancelButton: true,
       focusCancel: true,
-      preConfirm: () => {
+      preConfirm: async () => {
         const day = document.getElementById("day").value;
         const startTime = document.getElementById("startTime").value;
         const endTime = document.getElementById("endTime").value;
 
         if (!day || !startTime || !endTime) {
-          Swal.showValidationMessage("กรุณากรอกข้อมูลให้ครบ");
+          await Swal.showValidationMessage("กรุณากรอกข้อมูลให้ครบ");
+          return false;
+        }
+
+        // เช็คว่าเวลาที่เลือกต้องอยู่ในช่วง 7:00 ถึง 22:00
+        const startHour = parseInt(startTime.split(":")[0]);
+        const endHour = parseInt(endTime.split(":")[0]);
+
+        if (startHour < 7 || endHour > 22) {
+          await Swal.showValidationMessage(
+            "กรุณาเลือกเวลาในช่วง 7:00 ถึง 22:00 เท่านั้น"
+          );
+          return false;
+        }
+
+        if (startTime === endTime) {
+          await Swal.showValidationMessage(
+            "เวลาเริ่มสอนและสิ้นสุดการสอนต้องไม่ใช่เวลาเดียวกัน"
+          );
+          return false;
+        }
+
+        if (startTime >= endTime) {
+          await Swal.showValidationMessage(
+            "เวลาเริ่มสอนต้องน้อยกว่าเวลาสิ้นสุดการสอน"
+          );
+          return false;
         }
 
         return { day, startTime, endTime };
       },
     });
+
+    function generateTimeOptions() {
+      let options = "";
+      for (let hour = 7; hour <= 22; hour++) {
+        // หยุดการสร้างตัวเลือกเวลาเมื่อชั่วโมงเกิน 22:00
+        if (hour === 22) {
+          options += `<option value="${padZero(hour)}:00">${padZero(
+            hour
+          )}:00</option>`;
+          break;
+        }
+        for (let minutes of ["00", "30"]) {
+          options += `<option value="${padZero(hour)}:${minutes}">${padZero(
+            hour
+          )}:${minutes}</option>`;
+        }
+      }
+      return options;
+    }
+
+    function padZero(num) {
+      return num.toString().padStart(2, "0");
+    }
 
     if (userInput) {
       console.log(userInput);
@@ -174,51 +227,56 @@ const RegResultT = () => {
     return null;
   }
   function Accident({ id }) {
-    const [strdata, setStrdata] = useState("")
-    const [data, setdata] = useState([])
+    const [strdata, setStrdata] = useState("");
+    const [data, setdata] = useState([]);
     useEffect(() => {
       const getapi = async () => {
         try {
           const response = await axios.get(apiurl + "/api//teacher/f/" + id);
           console.log(response.data);
-          setdata(response.data.data)
-        } catch (error) {
-
-        }
-      }
+          setdata(response.data.data);
+        } catch (error) {}
+      };
       getapi();
-    }, [])
+    }, []);
     const getswal = () => {
-      const formattedData = data.map(entry => `${entry.subject_name} ${entry.name} ${entry.st}-${entry.et}`);
+      const formattedData = data.map(
+        (entry) => `${entry.subject_name} ${entry.name} ${entry.st}-${entry.et}`
+      );
       const result = formattedData.join(", ");
 
-      Swal.fire({ text: result })
-    }
+      Swal.fire({ text: result });
+    };
     useEffect(() => {
       if (data.length > 0) {
         setStrdata("");
         data.map((v, i) => {
-          setStrdata((data) => data + v.subject_name + " ")
-        })
+          setStrdata((data) => data + v.subject_name + " ");
+        });
       } else {
         setStrdata("loading");
       }
-
-    }, [data])
-    if (strdata === 'loading') {
+    }, [data]);
+    if (strdata === "loading") {
       return (
         <div>
-          <div className=" underline text-red-500 cursor-pointer font-[700]" onClick={getswal}>
+          <div
+            className=" underline text-red-500 cursor-pointer font-[700]"
+            onClick={getswal}
+          >
             กำลังโหลดข้อมูล
           </div>
         </div>
-      )
+      );
     }
     return (
-      <div className=" underline text-red-500 cursor-pointer font-[700]" onClick={getswal}>
+      <div
+        className=" underline text-red-500 cursor-pointer font-[700]"
+        onClick={getswal}
+      >
         ซ้ำ {strdata.length > 20 ? strdata.slice(0, 20) + "..." : strdata}
       </div>
-    )
+    );
   }
 
   return (
@@ -275,16 +333,20 @@ const RegResultT = () => {
                           <td className="py-2 font-light text-lg text-center">
                             {value.st && value.et
                               ? `${value.st.slice(0, -3)}-${value.et.slice(
-                                0,
-                                -3
-                              )}`
+                                  0,
+                                  -3
+                                )}`
                               : ""}
                           </td>
                           <td className="py-2 font-light text-lg text-center">
                             {value.status_name}
                           </td>
                           <td className="py-2 font-light text-lg text-center">
-                            {value.status_id === 3 ? <Accident id={value.id} /> : "-"}
+                            {value.status_id === 3 ? (
+                              <Accident id={value.id} />
+                            ) : (
+                              "-"
+                            )}
                           </td>
                           <td className="py-2 font-light text-lg text-center">
                             <div className="flex items-center me-4 justify-center">
