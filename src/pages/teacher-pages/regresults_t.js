@@ -70,6 +70,7 @@ const RegResultT = () => {
     };
     showSubject();
   }, []);
+
   // useEffect(() => {
   //   console.log(id);
   //   console.log(changed);
@@ -88,7 +89,10 @@ const RegResultT = () => {
       console.log(response);
       setCorrectsubject(response);
     } catch (error) {
-      setCorrectsubject(error.message);
+      Swal.fire({
+        title: "มีวิชาที่ลงทะเบียนเวลานี้แล้ว",
+        text: error.response.data.error,
+      });
     }
   };
 
