@@ -307,13 +307,6 @@ const RegStatus = () => {
                         </td>
                         {subIndex === 0 && (
                           <td rowSpan={group.data.length}>
-                            {subject.status_id === 2 && (
-                              <EditIcon
-                                size={24}
-                                className="cursor-pointer self-center"
-                                onClick={() => handleEdit(subject)}
-                              />
-                            )}
                             {subject.status_id === 3 && (
                               <EditIcon
                                 size={24}
