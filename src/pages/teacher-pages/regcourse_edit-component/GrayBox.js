@@ -5,6 +5,7 @@ import BranchBox from "./BranchBox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowAltCircleDown } from "@fortawesome/free-solid-svg-icons";
 import { TiDelete } from "react-icons/ti";
+import TimePicker from "react-time-picker";
 
 export default function GrayBox({
   data,
@@ -17,6 +18,7 @@ export default function GrayBox({
   setGrayBoxData,
   handleDelete,
 }) {
+  const [selectedTime, setSelectedTime] = useState("07:00");
   const [ListSelect, setListSelect] = useState([]);
   const [selectedRadio, setSelectedRadio] = useState(
     data.category_id ? data.category_id : undefined
@@ -31,13 +33,14 @@ export default function GrayBox({
         : Number
       : Number
   );
-  const [st, setSt] = useState(data.st);
-  const [et, setEt] = useState(data.et);
+  const [st, setSt] = useState(data.st ? data.st : "");
+  const [et, setEt] = useState(data.et ? data.et : "");
   const [day, setDay] = useState(data.day);
   const [status_id, setStatusId] = useState(2);
   const [N_people, setNPeople] = useState(
     data.N_people ? data.N_people : Number
   );
+
   useEffect(() => {
     axios
       .get(apiurl + "/api/category")
@@ -49,34 +52,21 @@ export default function GrayBox({
       });
   }, []);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         apiurl + "/api/teacher/subjectsRegister" + id
-  //       );
-  //       const subjectData = response.data[0]; // สมมติว่าข้อมูลจาก API คือ object ของรายวิชาเดียว
-  //       setSubjectData({
-  //         credit: subjectData.credit,
-  //         lecture_t: subjectData.lecture_t,
-  //         practice_t: subjectData.practice_t,
-  //         exsub: subjectData.exsub,
-  //         sub_hour: "", // ต้องเพิ่มข้อมูลจำนวนชั่วโมงที่ต้องการเรียน
-  //         selectedBranch: "", // ต้องเพิ่มข้อมูลสาขาที่เลือก
-  //         selectedYears: [], // ต้องเพิ่มข้อมูลชั้นปีที่เลือก
-  //         selectedOptions: [], // ต้องเพิ่มข้อมูลหมู่เรียนที่เลือก
-  //         teachingSchedule: [], // ต้องเพิ่มข้อมูลตารางสอน
-  //       });
-  //     } catch (error) {
-  //       console.error("Error fetching subject data: ", error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
-
   useEffect(() => {
     const handleUpdateData = () => {
+      if (!st || !et) {
+        // ถ้า st หรือ et ยังไม่ถูกกรอกให้ไม่ทำอะไรเลย
+        return;
+      }
+
+      if (st >= et) {
+        const initialTime = "--:--";
+        alert("เวลาเริ่มสอนต้องน้อยกว่าเวลาสิ้นสุดการสอน");
+        setSt("");
+        setEt("");
+        return;
+      }
+
       const data = {
         keys: keys,
         uid: localStorage.getItem("userid"),
@@ -103,6 +93,7 @@ export default function GrayBox({
     };
     handleUpdateData();
   }, [st, et, day, status_id, N_people, all, selectedRadio, realcredit]);
+
   return (
     <div className="box-gray p-2">
       <div className="flex flex-col gap-3 ml-3 mr-3 mt-3">
@@ -162,12 +153,12 @@ export default function GrayBox({
               <select
                 className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                 style={{ width: 120, height: 40 }}
-                // value={statusSem}
+                value={day}
                 onChange={(e) => {
                   setDay(e.target.value);
                 }}
               >
-                <option value="" disabled selected hidden>
+                <option value="" disabled hidden>
                   ---
                 </option>
                 <option value={7}>อาทิตย์</option>
@@ -189,33 +180,135 @@ export default function GrayBox({
           </div>
         </div>
 
-        <div className="flex flex-row mt-2">
-          <div>
-            <p>
+        <div className="flex flex-row mt-2 mb-3">
+          <div className="flex flex-col">
+            <p className="mb-2">
               เวลาเริ่มสอน <span style={{ color: "red" }}>*</span>
             </p>
-            <input
-              className="w-32 p-1 rounded-md font-medium"
-              type="time"
+            <select
+              className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+              style={{ width: 120, height: 40 }}
               value={st}
               onChange={(e) => {
                 setSt(e.target.value);
               }}
-            ></input>
+            >
+              <option value="" disabled hidden>
+                ---
+              </option>
+              <option>07:00</option>
+              <option>07:30</option>
+              <option>08:00</option>
+              <option>08:30</option>
+              <option>09:00</option>
+              <option>09:30</option>
+              <option>10:00</option>
+              <option>10:30</option>
+              <option>11:00</option>
+              <option>11:30</option>
+              <option>12:00</option>
+              <option>12:30</option>
+              <option>13:00</option>
+              <option>13:30</option>
+              <option>14:00</option>
+              <option>14:30</option>
+              <option>15:00</option>
+              <option>15:30</option>
+              <option>16:00</option>
+              <option>16:30</option>
+              <option>17:00</option>
+              <option>17:30</option>
+              <option>18:00</option>
+              <option>18:30</option>
+              <option>19:00</option>
+              <option>19:30</option>
+              <option>20:00</option>
+              <option>20:30</option>
+              <option>21:00</option>
+              <option>21:30</option>
+              <option>22:00</option>
+            </select>
+            <FontAwesomeIcon
+              icon={faArrowAltCircleDown}
+              style={{
+                pointerEvents: "none",
+                marginLeft: 80,
+                marginTop: -27,
+              }}
+            />
+            {/* <input
+              className="w-32 p-1 rounded-md font-medium"
+              type="time"
+              value={st}
+              min="07:00"
+              max="22:00"
+              onChange={handleTimeChange}
+            ></input> */}
           </div>
-          <div className="ml-5">
-            <p>
+          <div className="flex flex-col ml-5">
+            <p className="mb-2">
               เวลาสิ้นสุดการสอน
               <span style={{ color: "red" }}>*</span>
             </p>
-            <input
+            <select
+              className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+              style={{ width: 120, height: 40 }}
+              value={et}
+              onChange={(e) => {
+                setEt(e.target.value);
+              }}
+            >
+              <option value="" disabled hidden>
+                ---
+              </option>
+              <option>07:00</option>
+              <option>07:30</option>
+              <option>08:00</option>
+              <option>08:30</option>
+              <option>09:00</option>
+              <option>09:30</option>
+              <option>10:00</option>
+              <option>10:30</option>
+              <option>11:00</option>
+              <option>11:30</option>
+              <option>12:00</option>
+              <option>12:30</option>
+              <option>13:00</option>
+              <option>13:30</option>
+              <option>14:00</option>
+              <option>14:30</option>
+              <option>15:00</option>
+              <option>15:30</option>
+              <option>16:00</option>
+              <option>16:30</option>
+              <option>17:00</option>
+              <option>17:30</option>
+              <option>18:00</option>
+              <option>18:30</option>
+              <option>19:00</option>
+              <option>19:30</option>
+              <option>20:00</option>
+              <option>20:30</option>
+              <option>21:00</option>
+              <option>21:30</option>
+              <option>22:00</option>
+            </select>
+            <FontAwesomeIcon
+              icon={faArrowAltCircleDown}
+              style={{
+                pointerEvents: "none",
+                marginLeft: 80,
+                marginTop: -27,
+              }}
+            />
+            {/* <input
               className="w-32 p-1 rounded-md font-medium"
               type="time"
               value={et}
               onChange={(e) => {
                 setEt(e.target.value);
               }}
-            ></input>
+            ></input> */}
           </div>
         </div>
         <div className="mt-2">
