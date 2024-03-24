@@ -123,8 +123,13 @@ const RegCourseEdit = () => {
         Swal.fire({
           icon: "error",
           title: "ลงทะเบียนรายวิชาไม่สำเร็จ",
-          text: error.response.data.msgerror,
+          text: error.response.data.error,
         });
+        if(error.response.data.success?.length>0){
+          error.response.data.success.map((v)=>{
+            handleDelete(v)
+          })
+        }
       }
     }
   };
