@@ -104,7 +104,7 @@ export default function BranchBox({
       {children}
       <div className="flex flex-col mt-2">
         <div>
-          <label class="block mb-2 ">
+          <label className="block mb-2 ">
             สาขาที่เปิดสอน <span style={{ color: "red" }}>*</span>
           </label>
           <div className="flex">
@@ -118,7 +118,7 @@ export default function BranchBox({
                 // }}
                 onChange={handleBranchChange}
               >
-                <option value="" disabled selected hidden>
+                <option value="" disabled hidden>
                   ---
                 </option>
                 <option>T05</option>

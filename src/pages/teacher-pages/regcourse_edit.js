@@ -42,9 +42,11 @@ const RegCourseEdit = () => {
     };
     getdataApi();
   }, []);
+
   useEffect(() => {
     console.log(grayBoxData);
   }, [grayBoxData]);
+
   const showAlert = () => {
     Swal.fire({
       icon: "error",
@@ -88,6 +90,7 @@ const RegCourseEdit = () => {
         });
         return;
       }
+
       try {
         const getdata = await axios.post(
           apiurl + "/api/teacher/registersubject",
@@ -246,7 +249,7 @@ const RegCourseEdit = () => {
                 </p>
               </div>
               <div className="gap-3 flex flex-col text-lightgreen">
-                <label htmlFor="add" for="add">
+                <label htmlFor="add">
                   เพิ่มหมู่เรียน <span style={{ color: "red" }}>*</span>
                 </label>
                 <button id="add" onClick={() => addbox()}>
