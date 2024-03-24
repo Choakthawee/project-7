@@ -106,7 +106,7 @@ const RegResultED = () => {
         const data = data1.data;
         setCountsub(data[0]);
         console.log(data);
-      } catch (err) {}
+      } catch (err) { }
     };
     getapi();
   }, []);
@@ -127,12 +127,27 @@ const RegResultED = () => {
       }
     });
   };
-
+  const [redirectUrl, setRedirectUrl] = useState('');
   if (userRole !== "3") {
     showAlert();
     return null;
   }
-
+  async function exportfiles() {
+    if (countsub) {
+      if (countsub.subjectcont === countsub.allopen) {
+        try {
+          const data = await axios.get(apiurl + "/api/export/file")
+          const redirectUrl = data.request.responseURL;
+          // อัพเดท state ให้มีค่า URL สำหรับ redirect
+          window.location.href = redirectUrl;
+        } catch (error) {
+          Swal.fire({ icon: "error", text: error.response.data.msgerror })
+        }
+      } else {
+        Swal.fire({ icon: "error", text: "คนลงทะเบียนไม่คบ" })
+      }
+    }
+  }
   return (
     <div className="flex w-full bged p-2 md:p-5 lg:p-10 min-h-screen">
       <div className="flex flex-1 flex-col gap-2">
@@ -307,9 +322,9 @@ const RegResultED = () => {
                             <td className="py-2 font-light text-lg text-center">
                               {value.st && value.et
                                 ? `${value.st.slice(0, -3)}-${value.et.slice(
-                                    0,
-                                    -3
-                                  )}`
+                                  0,
+                                  -3
+                                )}`
                                 : ""}
                             </td>
                           </tr>
@@ -425,6 +440,7 @@ const RegResultED = () => {
                   width: 190,
                   height: 45,
                 }}
+                onClick={() => { exportfiles() }}
               >
                 <p className="text-lg mr-2">นำออกไฟล์ xlsx</p>
                 <FontAwesomeIcon
