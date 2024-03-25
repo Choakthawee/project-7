@@ -5,13 +5,7 @@ import React, { useEffect, useState } from "react";
 import "./reg-set.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { faArrowAltCircleDown } from "@fortawesome/free-solid-svg-icons";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { FaTimes } from "react-icons/fa";
 import { FaCirclePlus } from "react-icons/fa6";
-import { FiPlusCircle } from "react-icons/fi";
-import { TiDelete } from "react-icons/ti";
-import { TiDeleteOutline } from "react-icons/ti";
 import axios from "axios";
 import { apiurl } from "../../config";
 import GrayBox from "./regcourse_edit-component/GrayBox";
@@ -21,10 +15,7 @@ const RegCourseEdit = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [subject, setSubject] = useState({});
-  const [errormsg, setErrorMsg] = useState({});
-  const [collectData, setCollectData] = useState({});
   const [grayBoxData, setGrayBoxData] = useState([]);
-
   useEffect(() => {
     const getdataApi = async () => {
       try {
@@ -72,6 +63,7 @@ const RegCourseEdit = () => {
         title: "ไม่สำเร็จ",
         text: "กรุณาเพิ่มหมู่เรียนอย่างน้อย 1 หมู่เรียน",
       });
+
     } else {
       if (
         grayBoxData.some((item) =>
@@ -90,47 +82,50 @@ const RegCourseEdit = () => {
         });
         return;
       }
-
-      try {
-        const getdata = await axios.post(
-          apiurl + "/api/teacher/registersubject",
-          { subjects: grayBoxData }
-        );
-        const responseData = getdata.data;
-        console.log(responseData);
-        Swal.fire({
-          icon: "warning",
-          title: "ยืนยันบันทึกการลงทะเบียน?",
-          showDenyButton: true,
-          showCancelButton: true,
-          confirmButtonText: "บันทึก",
-          confirmButtonColor: "green",
-          denyButtonText: `ไม่บันทึก`,
-          showCancelButton: false,
-          text: responseData.msg,
-          color: "gray",
-        }).then((result) => {
-          if (result.isConfirmed) {
+      Swal.fire({
+        icon: "warning",
+        title: "ยืนยันบันทึกการลงทะเบียน?",
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: "บันทึก",
+        confirmButtonColor: "green",
+        denyButtonText: `ไม่บันทึก`,
+        showCancelButton: false,
+        color: "gray",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            const getdata = await axios.post(
+              apiurl + "/api/teacher/registersubject",
+              { subjects: grayBoxData }
+            );
+            const responseData = getdata.data;
+            console.log(responseData);
             Swal.fire("ลงทะเบียนรายวิชาสำเร็จ", "", "success").then(() => {
               window.location.href = "/regcourse";
             });
-          } else if (result.isDenied) {
-            Swal.fire("ข้อมูลยังไม่ถูกบันทึก", "", "error");
+          } catch (error) {
+            console.log(error);
+            Swal.fire({
+              icon: "error",
+              title: "ลงทะเบียนรายวิชาไม่สำเร็จ",
+              text: error.response.data.error,
+            });
+
+            if (error.response.data.success?.length > 0) {
+              error.response.data.success.map((v) => {
+                handleDelete(v)
+              })
+            }
           }
-        });
-      } catch (error) {
-        console.log(error);
-        Swal.fire({
-          icon: "error",
-          title: "ลงทะเบียนรายวิชาไม่สำเร็จ",
-          text: error.response.data.error,
-        });
-        if(error.response.data.success?.length>0){
-          error.response.data.success.map((v)=>{
-            handleDelete(v)
-          })
+        } else if (result.isDenied) {
+
+          Swal.fire("ข้อมูลยังไม่ถูกบันทึก", "", "error");
         }
-      }
+      }).catch(() => {
+
+      });
+
     }
   };
 
@@ -160,12 +155,7 @@ const RegCourseEdit = () => {
   };
 
   const [data, setData] = useState([1]);
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
   const [genkey, setGenkey] = useState(Number);
-
   const addbox = () => {
     setGrayBoxData((prevData) => {
       const newData = [
@@ -276,7 +266,9 @@ const RegCourseEdit = () => {
               <div className="flex flex-col items-center">
                 <button
                   className="bg-lightgreen text-xl text-white hover:bg-white hover:text-gray-300 font-bold py-3 px-10 rounded mt-3 items-center"
-                  onClick={updateData}
+                  onClick={(e) => {
+                    updateData()
+                  }}
                 >
                   บันทึก
                 </button>
