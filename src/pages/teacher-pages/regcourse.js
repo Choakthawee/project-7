@@ -95,6 +95,7 @@ const RegCourse = () => {
           url="/api/Searchsubjectopen/"
           url1="/api/searchingbar"
           setCurrent={setSubjects}
+          setCurrentPage={setCurrentPage}
         />
         {noneSubject.msgerrortime ? (
           <div className=" text-2xl text-red-700 text-center underline">
