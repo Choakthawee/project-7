@@ -5,7 +5,9 @@ import { FaCircleLeft, FaCircleRight } from "react-icons/fa6";
 import React, { useState, useEffect } from "react";
 import SortBar from "../component/sortBar";
 import axios from "axios";
+import { RiDeleteBin5Fill } from "react-icons/ri";
 import { apiurl } from "../../config";
+import { RiEdit2Fill } from "react-icons/ri";
 const RegResultT = () => {
   const userRole = localStorage.getItem("role_id");
   const userID = localStorage.getItem("userid");
@@ -347,7 +349,7 @@ const RegResultT = () => {
                         <th className="py-2 font-light text-xl">หมายเหตุ</th>
                         <th className="py-2 font-light text-xl">แก้ไข</th>
                         <th className="py-2 font-light text-xl">
-                          ลบวิชาที่ทะเบียน
+                          ลบวิชารายวิชา
                         </th>
                       </tr>
                     </thead>
@@ -391,7 +393,7 @@ const RegResultT = () => {
                                     showSweetAlertWithInput(value.id)
                                   }
                                 >
-                                  แก้ไขข้อมูล
+                                  <RiEdit2Fill size={20} />
                                 </button>
                               ) : (
                                 ""
@@ -423,6 +425,7 @@ const RegResultT = () => {
                                         showConfirmButton: false,
                                         timer: 1000,
                                         timerProgressBar: true,
+                                        allowOutsideClick: false,
                                       });
                                       setTimeout(() => {
                                         window.location.reload();
@@ -431,7 +434,7 @@ const RegResultT = () => {
                                   });
                                 }}
                               >
-                                ลบวิชาที่ทะเบียน
+                                <RiDeleteBin5Fill size={20} />
                               </button>
                             </div>
                           </td>

@@ -118,7 +118,7 @@ const ImportSyl = () => {
               confirmButtonColor: "#3085d6",
               confirmButtonText: "ตกลง",
             });
-            setWarn(error.response.data.warning.data);
+            setWarn(error.response.data.warning?.data);
           }
         });
         setErr(error.response.data.error);
@@ -343,7 +343,7 @@ const ImportSyl = () => {
           </p>
         </div>
         <div className=" overflow-y-auto">
-          {errors.length > 0 && (
+          {errors?.length > 0 && (
             <div className="">
               <p>Error</p>
               <div className=" bg-red-600 p-3 rounded-lg ">
@@ -360,7 +360,7 @@ const ImportSyl = () => {
             <div className="">
               <p>Warning</p>
               <div className=" bg-yellow-400 p-3 rounded-lg ">
-                {warn.map((v, i) => (
+                {warn?.map((v, i) => (
                   <div>{`${v.Message}${v.value.name} ${v.value.years}`}</div>
                 ))}
               </div>
