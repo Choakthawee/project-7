@@ -44,7 +44,7 @@ const Login = () => {
 
       setTimeout(() => {
         if (responseData.data.role_id === 3) {
-          navigate("/imcourse");
+          navigate("/imsyl");
         } else if (responseData.data.role_id === 2) {
           navigate("/userinfo");
         } else if (responseData.data.role_id === 1) {
