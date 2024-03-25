@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FaCirclePlus } from "react-icons/fa6";
 import axios from "axios";
-import { apiurl } from "../../config";
+import { apiurl, headers, headersforngrok } from "../../config";
 import GrayBox from "./regcourse_edit-component/GrayBox";
 
 const RegCourseEdit = () => {
@@ -20,7 +20,7 @@ const RegCourseEdit = () => {
     const getdataApi = async () => {
       try {
         const dataRespone = await axios.get(
-          apiurl + "/api/teacher/subject/" + id
+          apiurl + "/api/teacher/subject/" + id,headersforngrok
         );
         const data = dataRespone.data;
         setSubject(data[0]);
@@ -97,7 +97,7 @@ const RegCourseEdit = () => {
           try {
             const getdata = await axios.post(
               apiurl + "/api/teacher/registersubject",
-              { subjects: grayBoxData }
+              { subjects: grayBoxData,headers }
             );
             const responseData = getdata.data;
             console.log(responseData);

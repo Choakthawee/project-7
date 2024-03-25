@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { apiurl } from "../../../config";
+import { apiurl, headersforngrok } from "../../../config";
 
 export default function ViewTablelogbox({ table,geturl="/api/setting/tablesettingdb" }) {
     const [data, setData] = useState([]);
@@ -12,7 +12,7 @@ export default function ViewTablelogbox({ table,geturl="/api/setting/tablesettin
     useEffect(() => {
         const getapi = async () => {
             try {
-                const dataresponse = await axios.get(apiurl + geturl+"?sd="+firstdate+"&ed="+enddate+"&table="+table);
+                const dataresponse = await axios.get(apiurl + geturl+"?sd="+firstdate+"&ed="+enddate+"&table="+table,headersforngrok);
                 const data = dataresponse.data;
                 setData(data)
                 setDataerror();

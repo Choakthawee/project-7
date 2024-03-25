@@ -11,7 +11,7 @@ import {
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { IoMdUndo } from "react-icons/io";
 import axios from "axios";
-import { apiurl } from "../../config";
+import { apiurl, headers, headersforngrok } from "../../config";
 import InlineCheckbox from "./imcoursetab";
 import SearchingBar from "../component/searchBar";
 import HeaderSort_pre from "../component/headSort_pre";
@@ -49,7 +49,7 @@ const ImportCourse = () => {
     const getdataSubject = async () => {
       try {
         const responsedata = await axios.get(
-          apiurl + "/api/education/getallsubjects"
+          apiurl + "/api/education/getallsubjects",headersforngrok
         );
         const data = responsedata.data;
         setSubjects(data);
@@ -90,8 +90,9 @@ const ImportCourse = () => {
 
   }, [subjects]);
   const addSubjects = async (sendApi) => {
+    
     try {
-      const responseData = await axios.post(apiurl + "/api/education/subjectOpen", { subjects: sendApi });
+      const responseData = await axios.post(apiurl + "/api/education/subjectOpen", { subjects: sendApi,headers });
       const data = responseData.data;
       sendApi.forEach((v) => {
         localStorage.removeItem("ch-" + v.id)

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import CheckboxTailwind from "./checkboxtailwind";
 import axios from "axios";
-import { apiurl } from "../../../config";
+import { apiurl, headers, headersforngrok } from "../../../config";
 import Swal from "sweetalert2";
 
 export default function Openlogbox() {
@@ -10,7 +10,7 @@ export default function Openlogbox() {
     useEffect(()=>{
         const getapi=async(setdata,url)=>{
             try{
-                const dataresponse = await axios.get(apiurl+url);
+                const dataresponse = await axios.get(apiurl+url,headersforngrok);
                 const data = dataresponse.data;
                 console.log(data);
                 setdata(data.statuslog);
@@ -27,7 +27,8 @@ export default function Openlogbox() {
         setdata(value);
         try{
             const email = await localStorage.getItem("email")
-            const dataresponse = await axios.post(apiurl+url,{id:id,value:value,email:email});
+            
+            const dataresponse = await axios.post(apiurl+url,{id:id,value:value,email:email,headers});
             const data = dataresponse.data;
             Swal.fire({
                 icon:"success",

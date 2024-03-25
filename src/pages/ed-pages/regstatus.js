@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { EditIcon } from "lucide-react";
 import axios from "axios";
 import React from "react";
-import { apiurl } from "../../config";
+import { apiurl, headers, headersforngrok } from "../../config";
 import { Link } from "react-router-dom";
 
 const RegStatus = () => {
@@ -19,7 +19,7 @@ const RegStatus = () => {
 
   useEffect(() => {
     axios
-      .get(apiurl + "/api/eu/allRegister")
+      .get(apiurl + "/api/eu/allRegister",headersforngrok)
       .then((response) => {
         setSubjectReg(response.data.message);
       })
@@ -30,7 +30,7 @@ const RegStatus = () => {
 
   useEffect(() => {
     axios
-      .get(apiurl + "/api/all/status")
+      .get(apiurl + "/api/all/status",headersforngrok)
       .then((response) => {
         setchStatus(response.data.message);
       })
@@ -41,7 +41,7 @@ const RegStatus = () => {
 
   useEffect(() => {
     axios
-      .get(apiurl + "/api/subject_category")
+      .get(apiurl + "/api/subject_category",headersforngrok)
       .then((response) => {
         console.log(response.data);
         setCategory(response.data);
@@ -84,11 +84,13 @@ const RegStatus = () => {
         confirmButtonColor: "#4C956C",
         cancelButtonColor: "#d33",
       }).then((result) => {
+        
         if (result.isConfirmed) {
           axios
             .post(apiurl + "/api/eu/ubdatestatusregister", {
               id: subject.id,
               status_id: 1,
+              headers
             })
             .then((response) => {
               console.log(response.data);
@@ -154,7 +156,7 @@ const RegStatus = () => {
           checked={selectedCategory === "all"}
           onChange={() => setSelectedCategory("all")}
         />
-        {category.map((item, index) => (
+        {category?.map((item, index) => (
           <React.Fragment key={index}>
             <label className="mr-2" htmlFor={`category_${item.id}`}>
               {item.name}

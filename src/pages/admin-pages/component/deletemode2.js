@@ -1,10 +1,10 @@
 import axios from "axios";
-import { apiurl } from "../../../config";
+import { apiurl, headersforngrok } from "../../../config";
 import Swal from "sweetalert2";
 export default async function DeleteMode2(id,table,reload,foredeleteurl,deleteurl = '/api/setting/deleteall'){
     const email = await localStorage.getItem("email");
     try {
-        const dataResponse = await axios.delete(apiurl + deleteurl + "?id=" + id + "&table=" + table+"&email="+email)
+        const dataResponse = await axios.delete(apiurl + deleteurl + "?id=" + id + "&table=" + table+"&email="+email,headersforngrok)
         const data = dataResponse.data;
         Swal.fire({ icon: "success", text: data.msg,preConfirm:()=>{
             if(reload){
@@ -21,7 +21,7 @@ export default async function DeleteMode2(id,table,reload,foredeleteurl,deleteur
                     showCancelButton: true,
                     preConfirm: async () => {
                         try {
-                            const dataResponse = await axios.delete(apiurl + foredeleteurl + "/" + id)
+                            const dataResponse = await axios.delete(apiurl + foredeleteurl + "/" + id,headersforngrok)
                             const data = dataResponse.data;
                             Swal.fire({ icon: "success", text: data.msg})
                         } catch (error) {

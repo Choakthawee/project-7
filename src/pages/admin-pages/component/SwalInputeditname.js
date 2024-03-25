@@ -1,12 +1,13 @@
 import axios from "axios";
 import Swal from "sweetalert2";
-import { apiurl } from "../../../config";
+import { apiurl, headers } from "../../../config";
 
 export default async function openInputAlert(title = "", lable = "", data = "", id, table, url,setReload) {
   const email = await localStorage.getItem("email")
   const getapi = async (input) => {
     try {
-      const dataresponse = await axios.post(apiurl + url, { table: table, newname: input, id: id,email:email });
+      
+      const dataresponse = await axios.post(apiurl + url, { table: table, newname: input, id: id,email:email,headers });
       const data = dataresponse.data;
       Swal.fire({icon:"success",text:data.msg,showCancelButton:true,confirmButtonText:setReload?"ตกลง":"หมุนเว็บ",preConfirm:()=>{if(setReload){setReload((e)=>!e)}else{window.location.reload()}}});
     } catch (error) {

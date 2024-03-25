@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { apiurl } from "../../../config";
+import { apiurl, headersforngrok } from "../../../config";
 import BranchBox from "./BranchBox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowAltCircleDown } from "@fortawesome/free-solid-svg-icons";
@@ -43,7 +43,7 @@ export default function GrayBox({
 
   useEffect(() => {
     axios
-      .get(apiurl + "/api/category")
+      .get(apiurl + "/api/category",headersforngrok)
       .then((response) => {
         setListSelect(response.data);
       })

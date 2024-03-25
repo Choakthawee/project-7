@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
-import { apiurl } from "../../config";
+import { apiurl, headers, headersforngrok } from "../../config";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
@@ -19,7 +19,7 @@ const Time = () => {
   useEffect(() => {
     const getSystem = async () => {
       try {
-        const responsedata = await axios.get(apiurl + "/api/admin/SystemGet");
+        const responsedata = await axios.get(apiurl + "/api/admin/SystemGet",headersforngrok);
         console.log(responsedata.data);
         const data = responsedata.data[0];
         setStartDate(data.S_date);
@@ -39,8 +39,9 @@ const Time = () => {
   const userRole = localStorage.getItem("role_id");
   const navigate = useNavigate();
   const reset = async () => {
+    
     const responseData = await axios.post(apiurl + "/api/admin/System", {
-      systemstatus: 1,
+      systemstatus: 1,headers
     });
     window.location.reload();
   };
@@ -71,7 +72,7 @@ const Time = () => {
     setIsChecked(e.target.checked);
     axios
       .post(apiurl + "/api/admin/System", {
-        systemstatus: e.target.checked ? 1 : 0,
+        systemstatus: e.target.checked ? 1 : 0,headers
       })
       .then((response) => {
         console.log(response.data);
@@ -97,6 +98,7 @@ const Time = () => {
         E_date: time(endDate).slice(0, 10),
         S_time: startTime,
         E_time: endTime,
+        headers
       };
 
       axios

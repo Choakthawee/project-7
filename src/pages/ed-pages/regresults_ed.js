@@ -9,7 +9,7 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import axios from "axios";
-import { apiurl } from "../../config";
+import { apiurl, headersforngrok } from "../../config";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 const RegResultED = () => {
@@ -75,7 +75,7 @@ const RegResultED = () => {
     const show_regresult = async () => {
       try {
         const Data = await axios.get(
-          apiurl + "/api/education/noneRegisterSubject"
+          apiurl + "/api/education/noneRegisterSubject",headersforngrok
         );
         const data1 = Data.data;
         console.log(data1);
@@ -89,7 +89,7 @@ const RegResultED = () => {
   useEffect(() => {
     const show_regresult = async () => {
       try {
-        const Data = await axios.get(apiurl + "/api/edu/subjectReg");
+        const Data = await axios.get(apiurl + "/api/edu/subjectReg",headersforngrok);
         const subjectssuccess = Data.data;
         console.log(subjectssuccess);
         setSubjectssuccess(subjectssuccess);
@@ -102,7 +102,7 @@ const RegResultED = () => {
   useEffect(() => {
     const getapi = async () => {
       try {
-        const data1 = await axios.get(apiurl + "/api/subjecthasregiscount");
+        const data1 = await axios.get(apiurl + "/api/subjecthasregiscount",headersforngrok);
         const data = data1.data;
         setCountsub(data[0]);
         console.log(data);
@@ -136,7 +136,7 @@ const RegResultED = () => {
     if (countsub) {
       if (countsub.subjectcont === countsub.allopen) {
         try {
-          const data = await axios.get(apiurl + "/api/export/file");
+          const data = await axios.get(apiurl + "/api/export/file",headersforngrok);
           const redirectUrl = data.request.responseURL;
           // อัพเดท state ให้มีค่า URL สำหรับ redirect
           window.location.href = redirectUrl;

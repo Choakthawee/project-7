@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import Secadd from "./secadd";
 import axios from "axios";
-import { apiurl } from "../../config";
+import { apiurl, headers, headersforngrok } from "../../config";
 import BranchBox from "./regcourse_edit-component/BranchBox";
 import GrayBox from "./regcourse_edit-component/GrayBox";
 
@@ -31,7 +31,7 @@ const ScheduleEdit = () => {
             "/api/teacher/schedule_edit?user_id=" +
             userid +
             "&idreg=" +
-            idreg
+            idreg,headersforngrok
         );
         const data = dataRespone.data;
         console.log(data);
@@ -55,7 +55,7 @@ const ScheduleEdit = () => {
 
   useEffect(() => {
     axios
-      .get(apiurl + "/api/category")
+      .get(apiurl + "/api/category",headersforngrok)
       .then((response) => {
         setListSelect(response.data);
       })
@@ -84,11 +84,13 @@ const ScheduleEdit = () => {
         text: "กรุณาเลือกสาขาที่จะสอน",
       });
     } else {
+      
       try {
         const getdata = await axios.put(apiurl + "/api/teacher/update_data", {
           idSubject: idreg,
           N_people: N_people,
           branch: all,
+          headers
         });
         Swal.fire("แก้ไขรายวิชาสำเร็จ", "", "success").then(() => {
           window.location.href = "/schedule";

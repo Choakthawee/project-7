@@ -9,7 +9,7 @@ import React, { useEffect, useState } from "react";
 import { FaCircleLeft, FaCircleRight } from "react-icons/fa6";
 import "./reg-set.css";
 import axios from "axios";
-import { apiurl } from "../../config";
+import { apiurl, headersforngrok } from "../../config";
 import { LockIcon } from "lucide-react";
 
 import HeaderSort_pre from "../component/headSort_pre";
@@ -50,7 +50,7 @@ const RegCourse = () => {
   useEffect(() => {
     async function getSubject() {
       try {
-        const responseData = await axios.get(apiurl + "/api/teacher/subjects");
+        const responseData = await axios.get(apiurl + "/api/teacher/subjects",headersforngrok);
         const data = responseData.data;
         setSubjects(data);
       } catch (err) {

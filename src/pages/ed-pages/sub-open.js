@@ -6,7 +6,7 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { faArrowAltCircleDown } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { FaCircleLeft, FaCircleRight } from "react-icons/fa6";
-import { apiurl } from "../../config";
+import { apiurl, headersforngrok } from "../../config";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import SearchingBar from "../component/searchBar";
@@ -32,7 +32,7 @@ const SubOpen = () => {
   useEffect(() => {
     const getapi = async () => {
       try {
-        const database = await axios.get(apiurl + "/api/opensubject");
+        const database = await axios.get(apiurl + "/api/opensubject",headersforngrok);
         const data = database.data;
         setSubjects(data);
       } catch (error) {
@@ -80,7 +80,7 @@ const SubOpen = () => {
   const unOpenSubject = async (id) => {
     try {
       const dataResponse = await axios.put(
-        apiurl + "/api/edu/delete_subjectsIsopen/" + id
+        apiurl + "/api/edu/delete_subjectsIsopen/" + id,headersforngrok
       );
       const dataDelete = dataResponse.data;
       console.log(dataDelete.message);

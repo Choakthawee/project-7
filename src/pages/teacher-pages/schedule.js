@@ -5,7 +5,7 @@ import { Search } from "lucide-react";
 import { CalendarClockIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { apiurl } from "../../config";
+import { apiurl, headersforngrok } from "../../config";
 import SearchTab from "./searchtab";
 import { TimerResetIcon } from "lucide-react";
 import { InfoIcon } from "lucide-react";
@@ -32,7 +32,7 @@ const Schedule = () => {
   useEffect(() => {
     const fetchSubjectCategories = async () => {
       try {
-        const response = await axios.get(apiurl + "/api/subject_category");
+        const response = await axios.get(apiurl + "/api/subject_category",headersforngrok);
         setSubjectCategories(response.data);
         console.log(response.data);
       } catch (error) {
@@ -59,10 +59,10 @@ const Schedule = () => {
         let response;
         if (isTeacher) {
           response = await axios.get(
-            apiurl + "/api/teacher/schedule_single/" + userID
+            apiurl + "/api/teacher/schedule_single/" + userID,headersforngrok
           );
         } else {
-          response = await axios.get(apiurl + "/api/teacher/schedule");
+          response = await axios.get(apiurl + "/api/teacher/schedule",headersforngrok);
         }
 
         if (response.status === 200) {

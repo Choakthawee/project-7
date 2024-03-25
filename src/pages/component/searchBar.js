@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import SearchTab1 from "./SearchTab1";
-import { apiurl } from "../../config";
+import { apiurl, headersforngrok } from "../../config";
 import axios from "axios";
 
 export default function SearchingBar({
@@ -22,7 +22,7 @@ export default function SearchingBar({
     const delaySearch = setTimeout(() => {
       const getapiSearch = async () => {
         try {
-          const dataresponse = await axios.get(apiurl + url + searchInput);
+          const dataresponse = await axios.get(apiurl + url + searchInput,headersforngrok);
           const data = dataresponse.data;
           setSearching(data.data);
         } catch (err) {

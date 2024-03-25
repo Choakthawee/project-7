@@ -16,7 +16,7 @@ import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { apiurl } from "../../config";
+import { apiurl, headersforngrok } from "../../config";
 import { Link } from "react-router-dom";
 const ImportSyl = () => {
   const userRole = localStorage.getItem("role_id");
@@ -33,7 +33,7 @@ const ImportSyl = () => {
     const getDownloadfile = async () => {
       try {
         const responseData = await axios.get(
-          apiurl + "/api/education/downloadlist"
+          apiurl + "/api/education/downloadlist",headersforngrok
         );
         const data = responseData.data;
         setFileUnload(data);
@@ -68,6 +68,7 @@ const ImportSyl = () => {
           {
             headers: {
               "Content-Type": "multipart/form-data",
+              "ngrok-skip-browser-warning": "123",
             },
             onUploadProgress: (progressEvent) => {
               const { loaded, total } = progressEvent;

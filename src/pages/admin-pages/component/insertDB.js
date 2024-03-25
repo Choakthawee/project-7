@@ -1,12 +1,13 @@
 import axios from "axios";
 import Swal from "sweetalert2";
-import { apiurl } from "../../../config";
+import { apiurl, headers } from "../../../config";
 
 export default async function insertBox(title, table, url,setreload) {
     const getapi = async (id, name) => {
         const email =await localStorage.getItem("email")
+        
         try {
-            const dataresponse = await axios.post(apiurl + url, { id: id, name: name, table: table,email:email });
+            const dataresponse = await axios.post(apiurl + url, { id: id, name: name, table: table,email:email,headers });
             const data = dataresponse.data;
             Swal.fire({
                 icon: "success",
