@@ -77,17 +77,17 @@ const ImportSyl = () => {
           }
         );
 
-        if (response.data.warning.warnmsg !== null) {
+        if (response.data.warning?.warnmsg !== null) {
           Swal.fire({
             icon: "warning",
             title: "",
-            text: response.data.warning.warnmsg,
+            text: response.data.warning?.warnmsg,
             confirmButtonColor: "#3085d6",
             confirmButtonText: "ตกลง",
           }).then(()=>{
             setLoading((e)=>!e);
           });
-          setWarn(response.data.warning.data);
+          setWarn(response.data.warning?.data);
         } else {
           Swal.fire({
             icon: "success",
@@ -110,7 +110,7 @@ const ImportSyl = () => {
           confirmButtonColor: "#3085d6",
           confirmButtonText: "ตกลง",
         }).then(() => {
-          if (error.response.data.warning.warnmsg) {
+          if (error.response.data.warning?.warnmsg) {
             Swal.fire({
               icon: "warning",
               title: "Warning",
