@@ -198,12 +198,12 @@ const Schedule = () => {
               }</div>`
           )
           .join("")}
-          <div>วัน: ${subject.day}</div>
-          <div>เวลา: ${subject.st.substring(0, 5)}-${subject.et.substring(
+        <div>วัน: ${subject.day}</div>
+        <div>เวลา: ${subject.st.substring(0, 5)}-${subject.et.substring(
             0,
             5
           )} น.</div>
-        `,
+      `,
       icon: "info",
       confirmButtonColor: "#3085d6",
       confirmButtonText: "ตกลง",
@@ -285,9 +285,7 @@ const Schedule = () => {
       const { start, end } = times[i];
       const subjectsInRange = teacherSchedule.filter(
         (subject) =>
-          subject.day_id === day.id &&
-          subject.st <= end &&
-          subject.et > start
+          subject.day_id === day.id && subject.st <= end && subject.et > start
       );
       if (subjectsInRange.length > 0) {
         if (!currentSubject) {
@@ -557,16 +555,16 @@ const Schedule = () => {
                               className={`border border-gray-400 py-2 px-2 text-center ${mergedCell.subjects.some(
                                 (subject) => subject.status_id === 1
                               )
-                                ? "bg-green-500"
-                                : mergedCell.subjects.some(
-                                  (subject) => subject.status_id === 2
-                                )
-                                  ? "bg-orange-500"
+                                  ? "bg-green-500"
                                   : mergedCell.subjects.some(
-                                    (subject) => subject.status_id === 3
+                                    (subject) => subject.status_id === 2
                                   )
-                                    ? "bg-red-500"
-                                    : "bg-white"
+                                    ? "bg-orange-500"
+                                    : mergedCell.subjects.some(
+                                      (subject) => subject.status_id === 3
+                                    )
+                                      ? "bg-red-500"
+                                      : "bg-white"
                                 }`}
                               colSpan={
                                 times.findIndex(
@@ -594,14 +592,14 @@ const Schedule = () => {
                                     <br></br>
                                     {subject.SUBJECT}
                                     <br></br>
-                                    {subject.st.substring(0, 5)} - {subject.et.substring(0, 5)} น.
+                                    {subject.st.substring(0, 5)} -{" "}
+                                    {subject.et.substring(0, 5)} น.
                                     <InfoIcon
                                       size={20}
                                       color="white"
                                       className="self-center ml-2 cursor-pointer"
                                       onClick={() => showAlert(subject)}
                                     ></InfoIcon>
-
                                   </div>
                                 )
                               )}
@@ -705,11 +703,11 @@ const Schedule = () => {
                   <td className="border border-gray-400 py-2 px-4 border-opacity-10">
                     {Object.keys(subject.branch).map((branchKey) => (
                       <div key={branchKey}>
-                        <span>{branchKey} : </span>
-                        {subject.branch[branchKey].map((item, idx) => (
+                        <span>{branchKey} : ชั้นปี </span>
+                        {subject.branch[branchKey].sort().map((item, idx) => (
                           <span key={idx}>
                             {idx > 0 && ", "}
-                            ชั้นปี {item}
+                            {item}
                           </span>
                         ))}
                       </div>
@@ -725,8 +723,8 @@ const Schedule = () => {
                     <Link to={"/schedule_edit/" + subject.idre}>
                       <button
                         className={`bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded ml-3 ${subject.NAME !== userName
-                          ? "hidden opacity-0 cursor-default"
-                          : ""
+                            ? "hidden opacity-0 cursor-default"
+                            : ""
                           }`}
                       >
                         Edit

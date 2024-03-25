@@ -40,6 +40,7 @@ const Login = () => {
         showConfirmButton: false,
         timer: 2000,
         timerProgressBar: true,
+        allowOutsideClick: false,
       });
 
       setTimeout(() => {

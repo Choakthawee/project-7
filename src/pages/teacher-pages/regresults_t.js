@@ -87,10 +87,12 @@ const RegResultT = () => {
         st: input.startTime,
         et: input.endTime,
         day: input.day,
+        user_id: userID,
       });
       console.log(response);
       setCorrectsubject(response);
     } catch (error) {
+      console.log(error);
       const subjectNames = error.response.data.overlappingSubjects?.map(
         (subject) => subject.subject_name
       );
@@ -227,12 +229,13 @@ const RegResultT = () => {
         timer: 2000,
         timerProgressBar: true,
         showConfirmButton: false,
+        allowOutsideClick: false,
       });
 
       changeSubject(idd, userInput);
       setTimeout(() => {
         window.location.reload();
-      }, 2000);
+      }, 200000);
     }
   };
 
