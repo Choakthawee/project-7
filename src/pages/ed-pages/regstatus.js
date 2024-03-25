@@ -145,9 +145,18 @@ const RegStatus = () => {
       </div>
 
       <div className="flex flex-row justify-end">
+        <label className="mr-2">ทั้งหมด</label>
+        <input
+          className="mr-2"
+          type="radio"
+          name="category"
+          value="all"
+          checked={selectedCategory === "all"}
+          onChange={() => setSelectedCategory("all")}
+        />
         {category.map((item, index) => (
           <React.Fragment key={index}>
-            <label className="mr-2" htmlFor={item.id}>
+            <label className="mr-2" htmlFor={`category_${item.id}`}>
               {item.name}
             </label>
             <input
@@ -157,16 +166,27 @@ const RegStatus = () => {
               value={item.id}
               checked={selectedCategory === item.id}
               onChange={() => setSelectedCategory(item.id)}
-              id={item.id}
+              id={`category_${item.id}`}
             />
+
           </React.Fragment>
         ))}
       </div>
 
+
       <div className="flex flex-row justify-end">
+        <label className="mr-2">ทั้งหมด</label>
+        <input
+          className="mr-2"
+          type="radio"
+          name="status"
+          value="all"
+          checked={selectedStatus === "all"}
+          onChange={() => setSelectedStatus("all")}
+        />
         {chstatus.map((item, index) => (
           <React.Fragment key={index}>
-            <label className="mr-2" htmlFor={item.id}>
+            <label className="mr-2" htmlFor={`status_${item.id}`}>
               {item.name}
             </label>
             <input
@@ -176,11 +196,12 @@ const RegStatus = () => {
               value={item.id}
               checked={selectedStatus === item.id}
               onChange={() => setSelectedStatus(item.id)}
-              id={item.id}
+              id={`status_${item.id}`}
             />
           </React.Fragment>
         ))}
       </div>
+
 
       <div className="flex bg-slate-200 mt-5 rounded-lg overflow-x-auto shadow-xl">
         <table className="h-full w-full">
@@ -226,11 +247,20 @@ const RegStatus = () => {
             {subjectReg.length > 0 &&
               subjectReg
                 .filter(
-                  (subject) =>
-                    (selectedCategory === "" ||
-                      subject.category_id === selectedCategory) &&
-                    (selectedStatus === "" || subject.status_id === selectedStatus)
-                )
+                  (subject) => {
+                    if (selectedCategory === "all" && selectedStatus === "all") {
+                      return true; // ถ้าเลือก "ทั้งหมด" ให้แสดงทุกข้อมูล
+                    } else if (selectedCategory === "all") {
+                      return subject.status_id === selectedStatus; // ถ้าเลือก "ทั้งหมด" ของ category แต่ไม่เลือก "ทั้งหมด" ของ status ให้กรองเฉพาะ status
+                    } else if (selectedStatus === "all") {
+                      return subject.category_id === selectedCategory; // ถ้าเลือก "ทั้งหมด" ของ status แต่ไม่เลือก "ทั้งหมด" ของ category ให้กรองเฉพาะ category
+                    } else {
+                      return (
+                        subject.category_id === selectedCategory &&
+                        subject.status_id === selectedStatus
+                      ); // กรองตาม category และ status ที่เลือก
+                    }
+                  })
                 .reduce((acc, curr) => {
                   const isStatusThree = curr.status_id === 3;
                   const key = isStatusThree ? `${curr.st}-${curr.et}-${curr.DAYNAME}-${curr.status_id}` : `${curr.id}-${curr.status_id}`;
