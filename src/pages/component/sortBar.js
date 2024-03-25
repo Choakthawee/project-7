@@ -71,7 +71,7 @@ export default function SortBar({ setCurrent, url, type = 1, url1, ...props }) {
             <div className="flex flex-col gap-3 w-full md:flex-row">
                 <CourseYears value={years} setYears={setYears} />
                 <Category_sub value={subject_category} setSort={setSubject_category} />
-                <ButtonSeaching onClick={() => { OnSearching(); if (props.setCurrentPage) { props.setCurrentPage(1) } }} />
+                <ButtonSeaching onClick={() => { OnSearching(); props?.setCurrentPage(1) }} />
                 {reset === true && <div className=" flex items-end">
                     <button className=" bg-slate-500 rounded-lg text-white  mb-1" onClick={() => { resetSort() }}
                         style={{

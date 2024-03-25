@@ -144,7 +144,7 @@ const RegResultED = () => {
           Swal.fire({ icon: "error", text: error.response.data.msgerror });
         }
       } else {
-        Swal.fire({ icon: "error", text: "คนลงทะเบียนไม่คบ" });
+        Swal.fire({ icon: "error", text: "ยังมีจำนวนวิชาที่ยังไม่ได้ลงทะเบียนยังกรุณาลงให้หมดก่อน" });
       }
     }
   }
