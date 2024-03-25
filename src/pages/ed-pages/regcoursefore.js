@@ -45,6 +45,7 @@ const RegCourseEditFore = () => {
     };
     getdataApi();
     localStorage.removeItem("user_idfore");
+    setSearchInput("");
   }, []);
   useEffect(() => {
     console.log(grayBoxData);
@@ -75,7 +76,6 @@ const RegCourseEditFore = () => {
         text: "กรุณาเพิ่มหมู่เรียนอย่างน้อย 1 หมู่เรียน",
       });
     }
-    console.log(userId);
     if (!userId) {
       Swal.fire({
         icon: "error",
@@ -104,7 +104,7 @@ const RegCourseEditFore = () => {
       try {
         const getdata = await axios.post(
           apiurl + "/api/teacher/registersubject",
-          { subjects: grayBoxData }
+          { subjects: grayBoxData, m: 1 }
         );
         const responseData = getdata.data;
         console.log(responseData);
@@ -131,10 +131,11 @@ const RegCourseEditFore = () => {
         });
       } catch (error) {
         console.log(error);
+        const strdataerror = error.response.data.error?.join(", ");
         Swal.fire({
           icon: "error",
           title: "ไม่สำเร็จ",
-          text: error.response.data.msgerror,
+          text: strdataerror + "ของอาจารย์คุณลงให้",
         });
       }
     }
@@ -170,27 +171,31 @@ const RegCourseEditFore = () => {
   }, [data]);
   const [genkey, setGenkey] = useState(Number);
   const addbox = () => {
-    setGrayBoxData((prevData) => {
-      const newData = [
-        ...prevData,
-        {
-          keys: genkey,
-          uid: localStorage.getItem("userid"),
-          st: null,
-          et: null,
-          day_id: null,
-          status_id: 2,
-          N_people: null,
-          branch: null,
-          category_id: null,
-          Subjects_id: id,
-          realcredit: null,
-        },
-      ];
+    if (localStorage.getItem("user_idfore")) {
+      setGrayBoxData((prevData) => {
+        const newData = [
+          ...prevData,
+          {
+            keys: genkey,
+            uid: localStorage.getItem("user_idfore"),
+            st: null,
+            et: null,
+            day_id: null,
+            status_id: 2,
+            N_people: null,
+            branch: null,
+            category_id: null,
+            Subjects_id: id,
+            realcredit: null,
+          },
+        ];
 
-      return newData;
-    });
-    setGenkey(genkey + 1);
+        return newData;
+      });
+      setGenkey(genkey + 1);
+    } else {
+      Swal.fire("เลือกอาจารย์ด้วย");
+    }
   };
 
   if (userRole !== "1") {
