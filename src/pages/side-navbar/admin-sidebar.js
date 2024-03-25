@@ -120,6 +120,7 @@ const Sidebar = () => {
           timer: 2000,
           timerProgressBar: true,
           showConfirmButton: false,
+          allowOutsideClick: false,
         });
         Nav("/");
         localStorage.clear();
