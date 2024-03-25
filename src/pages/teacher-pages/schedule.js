@@ -121,45 +121,45 @@ const Schedule = () => {
     if (!input.trim()) {
       return isTeacher
         ? subjectUser.filter(
-            (subject) =>
-              (!category || subject.subject_category_id === category) &&
-              (!year ||
-                Object.values(subject.branch).some((branchArray) =>
-                  branchArray.includes(Number(year))
-                ))
-          )
+          (subject) =>
+            (!category || subject.subject_category_id === category) &&
+            (!year ||
+              Object.values(subject.branch).some((branchArray) =>
+                branchArray.includes(Number(year))
+              ))
+        )
         : subjectAll.filter(
-            (subject) =>
-              (!category || subject.subject_category_id === category) &&
-              (!year ||
-                Object.values(subject.branch).some((branchArray) =>
-                  branchArray.includes(Number(year))
-                ))
-          );
+          (subject) =>
+            (!category || subject.subject_category_id === category) &&
+            (!year ||
+              Object.values(subject.branch).some((branchArray) =>
+                branchArray.includes(Number(year))
+              ))
+        );
     } else {
       const filtered = isTeacher
         ? subjectUser.filter(
-            (subject) =>
-              (subject.id_subject.includes(input) ||
-                subject.SUBJECT.includes(input) ||
-                subject.NAME.includes(input)) &&
-              (!category || subject.subject_category_id === category) &&
-              (!year ||
-                Object.values(subject.branch).some((branchArray) =>
-                  branchArray.includes(Number(year))
-                ))
-          )
+          (subject) =>
+            (subject.id_subject.includes(input) ||
+              subject.SUBJECT.includes(input) ||
+              subject.NAME.includes(input)) &&
+            (!category || subject.subject_category_id === category) &&
+            (!year ||
+              Object.values(subject.branch).some((branchArray) =>
+                branchArray.includes(Number(year))
+              ))
+        )
         : subjectAll.filter(
-            (subject) =>
-              (subject.id_subject.includes(input) ||
-                subject.SUBJECT.includes(input) ||
-                subject.NAME.includes(input)) &&
-              (!category || subject.subject_category_id === category) &&
-              (!year ||
-                Object.values(subject.branch).some((branchArray) =>
-                  branchArray.includes(Number(year))
-                ))
-          );
+          (subject) =>
+            (subject.id_subject.includes(input) ||
+              subject.SUBJECT.includes(input) ||
+              subject.NAME.includes(input)) &&
+            (!category || subject.subject_category_id === category) &&
+            (!year ||
+              Object.values(subject.branch).some((branchArray) =>
+                branchArray.includes(Number(year))
+              ))
+        );
       return filtered;
     }
   };
@@ -184,18 +184,17 @@ const Schedule = () => {
         ${Object.keys(subject.branch)
           .map(
             (branchKey) =>
-              `<div>ชั้นปีที่เปิดรับ ${branchKey}: ${
-                subject.branch[branchKey]
-                  ? subject.branch[branchKey].join(", ")
-                  : "ไม่มีข้อมูล"
+              `<div>ชั้นปีที่เปิดรับ ${branchKey}: ${subject.branch[branchKey]
+                ? subject.branch[branchKey].join(", ")
+                : "ไม่มีข้อมูล"
               }</div>`
           )
           .join("")}
         <div>วัน: ${subject.day}</div>
         <div>เวลา: ${subject.st.substring(0, 5)}-${subject.et.substring(
-        0,
-        5
-      )} น.</div>
+            0,
+            5
+          )} น.</div>
       `,
       icon: "info",
       confirmButtonColor: "#3085d6",
@@ -271,49 +270,56 @@ const Schedule = () => {
 
   const getMergedCells = (day, teacherSchedule) => {
     const mergedCells = [];
-    let currentSubjects = [];
+    let currentSubject = null;
     let currentStart = null;
     let currentEnd = null;
     for (let i = 0; i < times.length; i++) {
       const { start, end } = times[i];
       const subjectsInRange = teacherSchedule.filter(
         (subject) =>
-          subject.day_id === day.id && subject.st <= end && subject.et > start
+          subject.day_id === day.id &&
+          subject.st <= end &&
+          subject.et > start
       );
       if (subjectsInRange.length > 0) {
-        if (currentSubjects.length === 0) {
-          currentSubjects = subjectsInRange;
+        if (!currentSubject) {
+          currentSubject = subjectsInRange[0];
           currentStart = end; // Start merging from the next time slot
           currentEnd = end;
-        } else {
-          const newSubjects = subjectsInRange.filter(
-            (subject) =>
-              !currentSubjects.some(
-                (currentSubject) =>
-                  currentSubject.id_subject === subject.id_subject
-              )
-          );
-          currentSubjects = [...currentSubjects, ...newSubjects];
-          currentEnd = end;
-        }
-      } else {
-        if (currentSubjects.length > 0) {
+        } else if (
+          subjectsInRange.some(
+            (subject) => subject.id_subject !== currentSubject.id_subject
+          )
+        ) {
           mergedCells.push({
             start: currentStart,
             end: currentEnd,
-            subjects: currentSubjects,
+            subjects: [currentSubject],
           });
-          currentSubjects = [];
+          currentSubject = subjectsInRange[0];
+          currentStart = end; // Start merging from the next time slot
+          currentEnd = end;
+        } else {
+          currentEnd = end;
+        }
+      } else {
+        if (currentSubject) {
+          mergedCells.push({
+            start: currentStart,
+            end: currentEnd,
+            subjects: [currentSubject],
+          });
+          currentSubject = null;
           currentStart = null;
           currentEnd = null;
         }
       }
     }
-    if (currentSubjects.length > 0) {
+    if (currentSubject) {
       mergedCells.push({
         start: currentStart,
         end: currentEnd,
-        subjects: currentSubjects,
+        subjects: [currentSubject],
       });
     }
     return mergedCells;
@@ -404,9 +410,8 @@ const Schedule = () => {
 
         <div className="flex-row flex mt-2 ml-2 items-end">
           <div
-            className={`transition-all w-8 h-8 mr-2 ${
-              isTeacher ? "bg-green-400" : "hidden"
-            }`}
+            className={`transition-all w-8 h-8 mr-2 ${isTeacher ? "bg-green-400" : "hidden"
+              }`}
           ></div>
           <label className={`ptext-shadow mb-1 ${isTeacher ? "" : "hidden"}`}>
             {isTeacher ? "ผ่าน" : ""}
@@ -415,9 +420,8 @@ const Schedule = () => {
 
         <div className="flex flex-row ml-2 items-end">
           <div
-            className={`transition-all w-8 h-8 mr-2 ${
-              isTeacher ? "bg-red-500" : "hidden"
-            }`}
+            className={`transition-all w-8 h-8 mr-2 ${isTeacher ? "bg-red-500" : "hidden"
+              }`}
           ></div>
           <label
             className={`ptext-shadow mb-1 ${isTeacher ? "" : "text-red-600"}`}
@@ -430,9 +434,8 @@ const Schedule = () => {
 
         <div className="flex flex-row ml-2 items-end">
           <div
-            className={`transition-all w-8 h-8 mr-2 ${
-              isTeacher ? "bg-orange-500" : "hidden"
-            }`}
+            className={`transition-all w-8 h-8 mr-2 ${isTeacher ? "bg-orange-500" : "hidden"
+              }`}
           ></div>
           <label className={`ptext-shadow mb-1 ${isTeacher ? "" : "hidden"}`}>
             {isTeacher ? "รอ" : ""}
@@ -528,21 +531,20 @@ const Schedule = () => {
                           return (
                             <td
                               key={`${dayIndex}-${timeIndex}`}
-                              className={`border border-gray-400 py-2 px-2 text-center ${
-                                mergedCell.subjects.some(
-                                  (subject) => subject.status_id === 1
+                              className={`border border-gray-400 py-2 px-2 text-center ${mergedCell.subjects.some(
+                                (subject) => subject.status_id === 1
+                              )
+                                ? "bg-green-500"
+                                : mergedCell.subjects.some(
+                                  (subject) => subject.status_id === 2
                                 )
-                                  ? "bg-green-500"
-                                  : mergedCell.subjects.some(
-                                      (subject) => subject.status_id === 2
-                                    )
                                   ? "bg-orange-500"
                                   : mergedCell.subjects.some(
-                                      (subject) => subject.status_id === 3
-                                    )
-                                  ? "bg-red-500"
-                                  : "bg-white"
-                              }`}
+                                    (subject) => subject.status_id === 3
+                                  )
+                                    ? "bg-red-500"
+                                    : "bg-white"
+                                }`}
                               colSpan={
                                 times.findIndex(
                                   (t) => t.end === mergedCell.end
@@ -566,12 +568,17 @@ const Schedule = () => {
                                   >
                                     {subject.id_subject}-
                                     {subject.ySubject.substring(2)}
+                                    <br></br>
+                                    {subject.SUBJECT}
+                                    <br></br>
+                                    {subject.st.substring(0, 5)} - {subject.et.substring(0, 5)} น.
                                     <InfoIcon
                                       size={20}
                                       color="white"
                                       className="self-center ml-2 cursor-pointer"
                                       onClick={() => showAlert(subject)}
                                     ></InfoIcon>
+
                                   </div>
                                 )
                               )}
@@ -694,11 +701,10 @@ const Schedule = () => {
                   <td className="border border-gray-400 py-2 px-4 border-opacity-10">
                     <Link to={"/schedule_edit/" + subject.idre}>
                       <button
-                        className={`bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded ml-3 ${
-                          subject.NAME !== userName
-                            ? "hidden opacity-0 cursor-default"
-                            : ""
-                        }`}
+                        className={`bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded ml-3 ${subject.NAME !== userName
+                          ? "hidden opacity-0 cursor-default"
+                          : ""
+                          }`}
                       >
                         Edit
                       </button>
