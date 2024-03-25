@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { apiurl } from "../../../config";
+import { apiurl, headersforngrok } from "../../../config";
 import axios from "axios";
 
 export default function PIDbox() {
@@ -10,7 +10,7 @@ export default function PIDbox() {
         const getapi = async () => {
             try {
 
-                const dataresponse = await axios.get(apiurl + "/pidprocess");
+                const dataresponse = await axios.get(apiurl + "/pidprocess",headersforngrok);
                 const data = dataresponse.data;
                 setData(data);
             } catch (err) {

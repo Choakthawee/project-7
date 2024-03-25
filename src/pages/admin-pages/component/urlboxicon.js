@@ -3,7 +3,7 @@ import { FaBars, FaUser, FaClock, FaInfo, FaBook, FaChalkboard, FaList, FaUnlock
 import MySelect from "./myselect";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { apiurl } from "../../../config";
+import { apiurl, headers } from "../../../config";
 import Swal from "sweetalert2";
 import openInputAlert from "./SwalInputeditname";
 export default function UrlboxIcon() {
@@ -24,7 +24,8 @@ export default function UrlboxIcon() {
     const savechange = async(id,v)=>{
         const email = localStorage.getItem("email");
         try {
-            const dataresponse = await axios.post(apiurl + "/api/setting/iconchange",{email:email,id:id,value:v});
+            
+            const dataresponse = await axios.post(apiurl + "/api/setting/iconchange",{email:email,id:id,value:v,headers});
             const data = dataresponse.data;
             Swal.fire({
                 icon:"success",

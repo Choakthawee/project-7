@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { apiurl } from "../../../config";
+import { apiurl, headersforngrok } from "../../../config";
 import axios from "axios";
 import openInputAlert from "./SwalInputeditname";
 
@@ -10,7 +10,7 @@ export default function Onlyrename({ geturl, table, title, renameurl = "/api/set
     useEffect(() => {
         const getapi = async () => {
             try {
-                const dataresponse = await axios.get(apiurl + geturl);
+                const dataresponse = await axios.get(apiurl + geturl,headersforngrok);
                 const data = dataresponse.data;
                 setData(data);
             } catch (err) {

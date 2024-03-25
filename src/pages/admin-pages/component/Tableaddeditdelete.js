@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { apiurl } from "../../../config";
+import { apiurl, headersforngrok } from "../../../config";
 import openInputAlert from "./SwalInputeditname";
 import Swal from "sweetalert2";
 import insertBox from "./insertDB";
@@ -13,7 +13,7 @@ export default function Tableaddeditdelete({ geturl, table, foredeleteurl, title
     const deleteMode = async (id) => {
         const email = await localStorage.getItem("email");
         try {
-            const dataResponse = await axios.delete(apiurl + deleteurl + "?id=" + id + "&table=" + table+"&email="+email)
+            const dataResponse = await axios.delete(apiurl + deleteurl + "?id=" + id + "&table=" + table+"&email="+email,headersforngrok)
             const data = dataResponse.data;
             Swal.fire({ icon: "success", text: data.msg, showCloseButton: true, confirmButtonText: "ตกลง", preConfirm: () => {  setReload(!reload); } })
         } catch (error) {
@@ -26,7 +26,7 @@ export default function Tableaddeditdelete({ geturl, table, foredeleteurl, title
                         showCancelButton: true,
                         preConfirm: async () => {
                             try {
-                                const dataResponse = await axios.delete(apiurl + foredeleteurl + "/" + id+"/"+email)
+                                const dataResponse = await axios.delete(apiurl + foredeleteurl + "/" + id+"/"+email,headersforngrok)
                                 const data = dataResponse.data;
                                 Swal.fire({ icon: "success", text: data.msg, showCloseButton: true, confirmButtonText: "ตกลง", preConfirm: () => {  setReload(!reload); } })
                             } catch (error) {
@@ -64,7 +64,7 @@ export default function Tableaddeditdelete({ geturl, table, foredeleteurl, title
     useEffect(() => {
         const getapi = async () => {
             try {
-                const dataresponse = await axios.get(apiurl + geturl);
+                const dataresponse = await axios.get(apiurl + geturl,headersforngrok);
                 const data = dataresponse.data;
                 setData(data);
             } catch (err) {

@@ -2,7 +2,7 @@ import axios from "axios";
 import DeleteMode2 from "./deletemode2";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import { apiurl } from "../../../config";
+import { apiurl, headers, headersforngrok } from "../../../config";
 
 export default function Selectboxtable({ geturl, table,remainder, title, col, geturlInsert, inserturl = "/api/setting/insertid" }) {
     const [data, setData] = useState([{}]);
@@ -15,7 +15,7 @@ export default function Selectboxtable({ geturl, table,remainder, title, col, ge
     useEffect(() => {
         const getapi = async () => {
             try {
-                const dataresponse = await axios.get(apiurl + geturl);
+                const dataresponse = await axios.get(apiurl + geturl,headersforngrok);
                 const data = dataresponse.data;
                 setData(data);
             } catch (err) {
@@ -26,7 +26,7 @@ export default function Selectboxtable({ geturl, table,remainder, title, col, ge
         getapi();
         const getapi2 = async () => {
             try {
-                const dataresponse = await axios.get(apiurl + geturlInsert);
+                const dataresponse = await axios.get(apiurl + geturlInsert,headersforngrok);
                 const data = dataresponse.data;
                 setData2(data);
                 setErrormsg2(undefined)
@@ -39,7 +39,8 @@ export default function Selectboxtable({ geturl, table,remainder, title, col, ge
     }, [reload, reload2,geturl,geturlInsert])
     const insertapi = async (id) => {
         try {
-            const dataresponse = await axios.post(apiurl + inserturl, { col: col, table: table, id: id })
+            
+            const dataresponse = await axios.post(apiurl + inserturl, { col: col, table: table, id: id,headers })
             const data = dataresponse.data;
             Swal.fire({ icon: "success", text: data.msg, preConfirm: () => { setReload(!reload) } })
         } catch (err) {

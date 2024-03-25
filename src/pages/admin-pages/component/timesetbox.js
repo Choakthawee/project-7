@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
-import { apiurl } from "../../../config";
+import { apiurl, headers, headersforngrok } from "../../../config";
 import Swal from "sweetalert2";
 
 export default function Timesetbox() {
@@ -8,7 +8,7 @@ export default function Timesetbox() {
     useEffect(() => {
         const getapi = async () => {
             try {
-                const dataresponse = await axios.get(apiurl + "/api/setting/timeauto");
+                const dataresponse = await axios.get(apiurl + "/api/setting/timeauto",headersforngrok);
                 const data = dataresponse.data;
                 setData(data.Timer);
             } catch (errror) {
@@ -22,7 +22,8 @@ export default function Timesetbox() {
     }
     const updateInsert =async () =>{
         try {
-            const dataresponse = await axios.post(apiurl + "/api/setting/timeautoChange",{timer:data});
+            
+            const dataresponse = await axios.post(apiurl + "/api/setting/timeautoChange",{timer:data,headers});
             const data1 = dataresponse.data;
             Swal.fire({
                 icon:"success",

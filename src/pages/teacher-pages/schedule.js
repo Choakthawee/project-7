@@ -32,7 +32,7 @@ const Schedule = () => {
   useEffect(() => {
     const fetchSubjectCategories = async () => {
       try {
-        const response = await axios.get(apiurl + "/api/subject_category");
+        const response = await axios.get(apiurl + "/api/subject_category",headersforngrok);
         setSubjectCategories(response.data);
         console.log(response.data);
       } catch (error) {

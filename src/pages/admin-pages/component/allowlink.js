@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react"
-import { apiurl } from "../../../config";
+import { apiurl, headers, headersforngrok } from "../../../config";
 import Swal from "sweetalert2";
 
 export default function AllowlinkBox() {
@@ -12,7 +12,7 @@ export default function AllowlinkBox() {
     useEffect(() => {
         const getapi = async () => {
             try {
-                const dataresponse = await axios.get(apiurl + "/api/setting/role");
+                const dataresponse = await axios.get(apiurl + "/api/setting/role",headersforngrok);
                 const data = dataresponse.data;
                 setData(data);
                 console.log(data);
@@ -26,7 +26,7 @@ export default function AllowlinkBox() {
     useEffect(() => {
         const getapi = async () => {
             try {
-                const dataresponse = await axios.get(apiurl + "/api/setting/allowlinkhasrole/" + selected);
+                const dataresponse = await axios.get(apiurl + "/api/setting/allowlinkhasrole/" + selected,headersforngrok);
                 const data = dataresponse.data;
                 setData2(data);
             } catch (err) {
@@ -36,8 +36,9 @@ export default function AllowlinkBox() {
         getapi();
     }, [reload, selected])
     const checkboxpostapi = async (do1, role, id) => {
+        
         try {
-            const dataresponse = await axios.post(apiurl + "/api/setting/allowlinkhasroleset/", { do1: do1, role_id: role, id: id });
+            const dataresponse = await axios.post(apiurl + "/api/setting/allowlinkhasroleset/", { do1: do1, role_id: role, id: id ,headers});
             const data = dataresponse.data;
             Swal.fire({ "icon": "success", text: data.msg })
             setReload(!reload)
@@ -47,7 +48,7 @@ export default function AllowlinkBox() {
     }
     const radiopostapi = async (role, id) => {
         try {
-            const dataresponse = await axios.post(apiurl + "/api/setting/allowlinkmainset/", { role_id: role, id: id });
+            const dataresponse = await axios.post(apiurl + "/api/setting/allowlinkmainset/", { role_id: role, id: id,headers });
             const data = dataresponse.data;
             Swal.fire({ "icon": "success", text: data.msg })
             setReload(!reload)
