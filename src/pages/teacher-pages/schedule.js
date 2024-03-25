@@ -271,63 +271,51 @@ const Schedule = () => {
 
   const getMergedCells = (day, teacherSchedule) => {
     const mergedCells = [];
-    let currentSubject = null;
+    let currentSubjects = [];
     let currentStart = null;
     let currentEnd = null;
-
     for (let i = 0; i < times.length; i++) {
       const { start, end } = times[i];
       const subjectsInRange = teacherSchedule.filter(
         (subject) =>
-          subject.day_id === day.id &&
-          subject.st <= end &&
-          subject.et >= start &&
-          subject.et > end
+          subject.day_id === day.id && subject.st <= end && subject.et > start
       );
-
       if (subjectsInRange.length > 0) {
-        if (!currentSubject) {
-          currentSubject = subjectsInRange[0];
-          currentStart = start;
-          currentEnd = end;
-        } else if (
-          subjectsInRange.some(
-            (subject) => subject.id_subject !== currentSubject.id_subject
-          )
-        ) {
-          mergedCells.push({
-            start: currentStart,
-            end: currentEnd,
-            subjects: [currentSubject],
-          });
-          currentSubject = subjectsInRange[0];
-          currentStart = start;
+        if (currentSubjects.length === 0) {
+          currentSubjects = subjectsInRange;
+          currentStart = end; // Start merging from the next time slot
           currentEnd = end;
         } else {
+          const newSubjects = subjectsInRange.filter(
+            (subject) =>
+              !currentSubjects.some(
+                (currentSubject) =>
+                  currentSubject.id_subject === subject.id_subject
+              )
+          );
+          currentSubjects = [...currentSubjects, ...newSubjects];
           currentEnd = end;
         }
       } else {
-        if (currentSubject) {
+        if (currentSubjects.length > 0) {
           mergedCells.push({
             start: currentStart,
             end: currentEnd,
-            subjects: [currentSubject],
+            subjects: currentSubjects,
           });
-          currentSubject = null;
+          currentSubjects = [];
           currentStart = null;
           currentEnd = null;
         }
       }
     }
-
-    if (currentSubject) {
+    if (currentSubjects.length > 0) {
       mergedCells.push({
         start: currentStart,
         end: currentEnd,
-        subjects: [currentSubject],
+        subjects: currentSubjects,
       });
     }
-
     return mergedCells;
   };
 
@@ -565,18 +553,24 @@ const Schedule = () => {
                                 1
                               }
                             >
+                              {mergedCell.subjects.length > 1 && (
+                                <div className="text-shadow text-white flex flex-row justify-center mb-2">
+                                  {mergedCell.subjects.length} วิชาในเวลานี้
+                                </div>
+                              )}
                               {mergedCell.subjects.map(
                                 (subject, subjectIndex) => (
                                   <div
                                     key={subjectIndex}
-                                    className="ptext-shadow text-white flex flex-row justify-center"
+                                    className="text-shadow text-white flex flex-row justify-center"
                                   >
                                     {subject.id_subject}-
                                     {subject.ySubject.substring(2)}
                                     <InfoIcon
                                       size={20}
                                       color="white"
-                                      className="self-center ml-2"
+                                      className="self-center ml-2 cursor-pointer"
+                                      onClick={() => showAlert(subject)}
                                     ></InfoIcon>
                                   </div>
                                 )
