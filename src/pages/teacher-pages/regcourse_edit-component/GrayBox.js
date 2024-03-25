@@ -167,9 +167,7 @@ export default function GrayBox({
                   setDay(e.target.value);
                 }}
               >
-                <option value="" disabled hidden>
-                  ---
-                </option>
+                <option value="">---</option>
                 <option value={7}>อาทิตย์</option>
                 <option value={1}>จันทร์</option>
                 <option value={2}>อังคาร</option>
