@@ -89,9 +89,15 @@ const RegResultT = () => {
       console.log(response);
       setCorrectsubject(response);
     } catch (error) {
+      const subjectNames = error.response.data.overlappingSubjects?.map(
+        (subject) => subject.subject_name
+      );
+
+      // ใช้ join() เพื่อรวม subject_name เป็น string โดยคั่นด้วย ', '
+      const combinedSubjectNames = subjectNames.join(", ");
       Swal.fire({
         title: "มีวิชาที่ลงทะเบียนเวลานี้แล้ว",
-        text: error.response.data.error,
+        text: "มีวิชาที่ลงทะเบียนก่อนแล้ว : " + combinedSubjectNames,
       });
     }
   };
@@ -264,6 +270,7 @@ const RegResultT = () => {
         setStrdata("loading");
       }
     }, [data]);
+
     if (strdata === "loading") {
       return (
         <div>
@@ -276,6 +283,7 @@ const RegResultT = () => {
         </div>
       );
     }
+
     return (
       <div
         className=" underline text-red-500 cursor-pointer font-[700]"
@@ -285,6 +293,22 @@ const RegResultT = () => {
       </div>
     );
   }
+
+  const deletesubjectcorrect = async (id) => {
+    try {
+      const response = await axios.delete(
+        apiurl + "/api/teacher/deleteReg/" + id
+      );
+      const deleteresponse = response.data;
+      console.log(deleteresponse);
+    } catch (error) {
+      Swal.fire({
+        title: "เกิดข้อผิดพลาดขณะลบรายวิชา",
+        text: "ไม่สามารถดำเนินการลบรายวิชาได้",
+        icon: "error",
+      });
+    }
+  };
 
   return (
     <div className="flex w-full h-full min-h-screen background21">
@@ -322,6 +346,9 @@ const RegResultT = () => {
                         <th className="py-2 font-light text-xl">สถานะ</th>
                         <th className="py-2 font-light text-xl">หมายเหตุ</th>
                         <th className="py-2 font-light text-xl">แก้ไข</th>
+                        <th className="py-2 font-light text-xl">
+                          ลบวิชาที่ทะเบียน
+                        </th>
                       </tr>
                     </thead>
 
@@ -369,6 +396,43 @@ const RegResultT = () => {
                               ) : (
                                 ""
                               )}
+                            </div>
+                          </td>
+                          <td className="py-2 font-light text-lg text-center">
+                            <div className="flex items-center me-4 justify-center">
+                              <button
+                                className="bg-red-700 hover:bg-red-900 text-white font-bold py-2 px-4 rounded ml-3"
+                                onClick={() => {
+                                  Swal.fire({
+                                    title: "คุณแน่ใจใช่ไหมที่จะลบ",
+                                    text: "ต้องการลบวิชานี้ใช่ไหม",
+                                    icon: "warning",
+                                    showCancelButton: true,
+                                    confirmButtonColor: "#0a6765",
+                                    cancelButtonColor: "#d33",
+                                    confirmButtonText: "ลบรายวิชา",
+                                    cancelButtonText: "ไม่ต้องการลบ",
+                                  }).then((result) => {
+                                    if (result.isConfirmed) {
+                                      deletesubjectcorrect(value.id);
+                                      Swal.fire({
+                                        title: "คุณได้ลบรายวิชานี้แล้ว!",
+                                        text: "ดำเนินการลบสำเร็จ!",
+                                        icon: "success",
+                                        showCancelButton: false,
+                                        showConfirmButton: false,
+                                        timer: 1000,
+                                        timerProgressBar: true,
+                                      });
+                                      setTimeout(() => {
+                                        window.location.reload();
+                                      }, 1000);
+                                    }
+                                  });
+                                }}
+                              >
+                                ลบวิชาที่ทะเบียน
+                              </button>
                             </div>
                           </td>
                         </tr>

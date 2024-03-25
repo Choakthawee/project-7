@@ -37,6 +37,10 @@ export default function BranchBox({
   };
 
   const handleConfirm = () => {
+    // เรียงลำดับ selectedYears จากน้อยไปมาก
+    selectedYears.sort((a, b) => parseInt(a) - parseInt(b));
+    // ทำสิ่งที่คุณต้องการกับ selectedYears ที่เรียงลำดับแล้ว
+    console.log(selectedYears);
     if (selectedBranch && selectedYears.length > 0) {
       const options = selectedYears.map((year) => `${selectedBranch}-${year}`);
       const options1 = selectedYears.map((year) => Number(year));

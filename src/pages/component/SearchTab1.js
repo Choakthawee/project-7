@@ -6,33 +6,30 @@ export default function SearchTab1({
 }) {
   function TabSubject({ index, name, idsubject, email, id }) {
     return (
-      <button
-        type="button"
+      <div
         key={index}
-        className="p-2 cursor-pointer flex justify-start gap-2 peer bg-white"
-        value={name}
+        className="p-2 h-20 md:h-fit cursor-pointer flex justify-start gap-2 group/tab transition-all duration-500 hover:bg-slate-100 hover:shadow-xl bg-white"
         id={index}
         onClick={(e) => {
           if (id) {
-            setSearchInput(e.target.value);
+            setSearchInput(name);
             localStorage.setItem("user_idfore", id);
             setSearching([])
           } else {
-            setSearchInput(e.target.value);
+            setSearchInput(name);
           }
         }}
       >
         {email}
-        <label  className=" text-gray-400">{idsubject}</label>
+        <label  className=" text-gray-400 cursor-pointer  group-hover/tab:text-gray-700  transition-all duration-700 ">{idsubject}</label>
         {name}
-      </button>
+      </div>
     );
   }
   return (
     <div
       style={{ marginTop: 72 }}
-      id="peer-focus:flex group/search hover:flex hidden "
-      className=" rounded-lg bg-white w-fit max-h-44 peer-focus:flex group/search hover:flex hidden absolute  flex-col overflow-y-auto"
+      className=" rounded-lg bg-white w-fit max-h-60  lg:max-h-44 peer-focus:flex group/search hover:flex hidden absolute  flex-col overflow-y-auto"
     >
       {searching.length > 0 ? (
         searching.map((v, i) => (
