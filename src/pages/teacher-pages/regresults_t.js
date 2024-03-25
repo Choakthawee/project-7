@@ -6,7 +6,7 @@ import React, { useState, useEffect } from "react";
 import SortBar from "../component/sortBar";
 import axios from "axios";
 import { RiDeleteBin5Fill } from "react-icons/ri";
-import { apiurl } from "../../config";
+import { apiurl, headers, headersforngrok } from "../../config";
 import { RiEdit2Fill } from "react-icons/ri";
 const RegResultT = () => {
   const userRole = localStorage.getItem("role_id");
@@ -60,7 +60,7 @@ const RegResultT = () => {
     const showSubject = async () => {
       try {
         const response = await axios.get(
-          apiurl + "/api/statusRegister/" + userID
+          apiurl + "/api/statusRegister/" + userID,headersforngrok
         );
         const datasubject = response.data;
         console.log(datasubject.message);
@@ -88,6 +88,7 @@ const RegResultT = () => {
         et: input.endTime,
         day: input.day,
         user_id: userID,
+        headers
       });
       console.log(response);
       setCorrectsubject(response);
@@ -250,7 +251,7 @@ const RegResultT = () => {
     useEffect(() => {
       const getapi = async () => {
         try {
-          const response = await axios.get(apiurl + "/api//teacher/f/" + id);
+          const response = await axios.get(apiurl + "/api//teacher/f/" + id,headersforngrok);
           console.log(response.data);
           setdata(response.data.data);
         } catch (error) {}
@@ -302,7 +303,7 @@ const RegResultT = () => {
   const deletesubjectcorrect = async (id) => {
     try {
       const response = await axios.delete(
-        apiurl + "/api/teacher/deleteReg/" + id
+        apiurl + "/api/teacher/deleteReg/" + id,headersforngrok
       );
       const deleteresponse = response.data;
       console.log(deleteresponse);

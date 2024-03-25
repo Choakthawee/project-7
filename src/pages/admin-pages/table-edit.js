@@ -11,7 +11,7 @@ import Timesetbox from "./component/timesetbox";
 import Openlogbox from "./component/openlogbox";
 import ViewTablelogbox from "./component/viewTablelogbox";
 import axios from "axios";
-import { apiurl } from "../../config";
+import { apiurl, headersforngrok } from "../../config";
 import { icon } from "@fortawesome/fontawesome-svg-core";
 import UrlboxIcon from "./component/urlboxicon";
 import AllowlinkBox from "./component/allowlink";
@@ -134,7 +134,7 @@ const TableEdit = () => {
                                <p>ถ้าเกิดระบบทำงานผิดพลาด</p>
                                <p>ให้adminทำการรันระบบด้วยตัวเอง</p>
                                <button className=" p-2 rounded-xl w-fit bg-gradient-to-tr transition-all from-red-500 group-hover/a:from-blue-100 hover:to-blue-500 active:bg-blue-600" onClick={()=>{
-                                axios.get(apiurl+"/restart-server").then((data)=>data.data)
+                                axios.get(apiurl+"/restart-server",headersforngrok).then((data)=>data.data)
                                 .then((data)=>{
                                     Swal.fire({icon:"info",text:data})
                                 })

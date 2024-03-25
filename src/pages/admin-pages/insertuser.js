@@ -8,7 +8,7 @@ import { faCircleArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { faArrowAltCircleDown } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { apiurl } from "../../config";
+import { apiurl, headers, headersforngrok } from "../../config";
 import * as XLSX from "xlsx";
 
 const InsertUser = () => {
@@ -28,7 +28,7 @@ const InsertUser = () => {
   useEffect(() => {
     const getapi = async () => {
       try {
-        const getdata1 = await axios.get(apiurl + "/api/setting/role");
+        const getdata1 = await axios.get(apiurl + "/api/setting/role",headersforngrok);
         const data1 = getdata1.data;
         console.log(data1);
         setData(data1);
@@ -73,11 +73,13 @@ const InsertUser = () => {
     }
 
     try {
+      
       console.log(Sstatus);
       const responsedata = await axios.post(apiurl + "/api/user1", {
         email: email,
         name: name,
         id: status,
+        headers
       });
       const data = responsedata.data;
 
@@ -155,7 +157,7 @@ const InsertUser = () => {
                 const [email, name, id] = row;
 
                 axios
-                  .post(apiurl + "/api/user1", { email, name, id })
+                  .post(apiurl + "/api/user1", { email, name, id,headers })
                   .then((response) => {
                     console.log("Data saved successfully:", response.data);
                     Swal.fire({

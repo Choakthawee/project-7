@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-import { apiurl } from "../../config";
+import { apiurl, headersforngrok } from "../../config";
 import "./user_edit";
 
 const UserInfo = () => {
@@ -16,7 +16,7 @@ const UserInfo = () => {
 
   useEffect(() => {
     axios
-      .get(apiurl + "/api/user")
+      .get(apiurl + "/api/user",headersforngrok)
       .then((response) => {
         setUsers(response.data.message);
       })
@@ -79,7 +79,7 @@ const UserInfo = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(apiurl+`/api/admin/delete_user/${id}`)
+          .delete(apiurl+`/api/admin/delete_user/${id}`,headersforngrok)
           .then((response) => {
             Swal.fire({
               title: "ลบผู้ใช้งานสำเร็จ",
@@ -88,7 +88,7 @@ const UserInfo = () => {
               confirmButtonText: "ตกลง",
             }).then(() => {
               axios
-                .get(apiurl+"/api/user")
+                .get(apiurl+"/api/user",headersforngrok)
                 .then((response) => {
                   setUsers(response.data.message);
                 })

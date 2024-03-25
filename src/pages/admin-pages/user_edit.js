@@ -7,7 +7,7 @@ import { faCircleArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { faArrowAltCircleDown } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { apiurl } from "../../config";
+import { apiurl, headers, headersforngrok } from "../../config";
 import { LockIcon } from "lucide-react";
 
 const User_edit = () => {
@@ -23,7 +23,7 @@ const User_edit = () => {
   useEffect(() => {
     const getapi = async () => {
       try {
-        const getdata = await axios.get(apiurl + "/api/admin/user/" + id);
+        const getdata = await axios.get(apiurl + "/api/admin/user/" + id,headersforngrok);
         const data = getdata.data[0];
         setName(data.name);
         setEmail(data.email);
@@ -32,7 +32,7 @@ const User_edit = () => {
           setLock(1);
           alert("ไม่สามารถแก้ไขตัวเองได้");
         }
-        const getdata1 = await axios.get(apiurl + "/api/setting/role");
+        const getdata1 = await axios.get(apiurl + "/api/setting/role",headersforngrok);
         const data1 = getdata1.data;
         console.log(data1);
         setData(data1);
@@ -81,6 +81,7 @@ const User_edit = () => {
         email: email,
         name: name,
         role_id: status,
+        headers
       });
       const data = getdate.data;
       Swal.fire({

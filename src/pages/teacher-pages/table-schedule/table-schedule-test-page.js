@@ -1,14 +1,14 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import "./tablesim.css";
-import { apiurl } from "../../../config";
+import { apiurl, headersforngrok,headers } from "../../../config";
 export default function TableSchedule() {
   const [loading, setLoading] = useState(true);
   const [isCheck, setIsCheck] = useState(false);
   const [periodDate, setPeriodDate] = useState(""); // ต้องกำหนดค่าให้ period_date ใน Vue.js ด้วยนะครับ
   const [courses, setCourses] = useState([]);
   const userID = localStorage.getItem("userid");
-  const headers = [
+  const headers1 = [
     "Day/Time",
     "6:00",
     "7:00",
@@ -32,7 +32,7 @@ export default function TableSchedule() {
     const fetchScheduleData = async () => {
       try {
         const response = await axios.get(
-          apiurl + "/api/teacher/schedule_single/" + userID
+          apiurl + "/api/teacher/schedule_single/" + userID,headersforngrok
         );
         const data = response.data;
         console.log(data);
@@ -44,11 +44,12 @@ export default function TableSchedule() {
   }, []);
   const getSchedule = () => {
     setLoading(true);
+    
     axios
       .get("/getSchedule", {
         params: {
           stdId: localStorage.getItem("stdId"),
-        },
+        },headers
       })
       .then((response) => {
         const { data } = response;
@@ -93,7 +94,7 @@ export default function TableSchedule() {
         <div className=" rounded-lg min-w-[1200px]">
           <div className="grid">
             <div className="grid custom-grid-table  ">
-              {headers.map((header, index) => (
+              {headers1.map((header, index) => (
                 <div
                   key={`header-${index}`}
                   className=" border pl-0 py-2 col-span-6  text-black"
