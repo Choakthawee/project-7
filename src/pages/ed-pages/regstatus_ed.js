@@ -80,29 +80,31 @@ const RegStatusEdit = (props) => {
         });
 
         if (result.isConfirmed) {
-            const action = document.querySelector('input[name="action"]:checked').value;
-            if (action === "confirmOldTime") {
-                try {
-                    const response = await axios.post(apiurl + "/api/eu/ubdatestatusregister", {
-                        id: subject.id,
-                    });
-                    console.log(response.data);
-                    Swal.fire({
-                        icon: "success",
-                        title: "ยืนยันสำเร็จ",
-                        confirmButtonColor: "#4C956C",
-                        confirmButtonText: "ตกลง",
-                    });
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 2000);
-                } catch (error) {
-                    console.error("Error updating subject register: ", error);
-                }
-            } else if (action === "notifyChange") {
-                const { value: userInput } = await Swal.fire({
-                    title: "เปลี่ยนแปลงวันและเวลาสอน",
-                    html: `
+            const checkedRadio = document.querySelector('input[name="action"]:checked');
+            if (checkedRadio) {
+                const action = checkedRadio.value;
+                if (action === "confirmOldTime") {
+                    try {
+                        const response = await axios.post(apiurl + "/api/eu/ubdatestatusregister", {
+                            id: subject.id,
+                        });
+                        console.log(response.data);
+                        Swal.fire({
+                            icon: "success",
+                            title: "ยืนยันสำเร็จ",
+                            confirmButtonColor: "#4C956C",
+                            confirmButtonText: "ตกลง",
+                        });
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 2000);
+                    } catch (error) {
+                        console.error("Error updating subject register: ", error);
+                    }
+                } else if (action === "notifyChange") {
+                    const { value: userInput } = await Swal.fire({
+                        title: "เปลี่ยนแปลงวันและเวลาสอน",
+                        html: `
                     <label for="day">เลือกวันที่จะสอน:</label>
                     <select id="day" class="swal2-input">
                       <option value="1">จันทร์</option>
@@ -124,106 +126,109 @@ const RegStatusEdit = (props) => {
                     ${generateTimeOptions(7, 22)}
                     </select>
                   `,
-                    focusConfirm: true,
-                    confirmButtonColor: "green",
-                    confirmButtonText: "ยืนยัน",
-                    cancelButtonText: "ยกเลิก",
-                    cancelButtonColor: "red",
-                    showCancelButton: true,
-                    focusCancel: true,
-                    preConfirm: () => {
-                        const day = document.getElementById("day").value;
-                        const startTime = document.getElementById("startTime").value;
-                        const endTime = document.getElementById("endTime").value;
+                        focusConfirm: true,
+                        confirmButtonColor: "green",
+                        confirmButtonText: "ยืนยัน",
+                        cancelButtonText: "ยกเลิก",
+                        cancelButtonColor: "red",
+                        showCancelButton: true,
+                        focusCancel: true,
+                        preConfirm: () => {
+                            const day = document.getElementById("day").value;
+                            const startTime = document.getElementById("startTime").value;
+                            const endTime = document.getElementById("endTime").value;
 
-                        if (!day || !startTime || !endTime) {
-                            Swal.showValidationMessage("กรุณากรอกข้อมูลให้ครบ");
-                        }
-                        // เช็คว่าเวลาที่เลือกต้องอยู่ในช่วง 7:00 ถึง 22:00
-                        const startHour = parseInt(startTime.split(":")[0]);
-                        const endHour = parseInt(endTime.split(":")[0]);
+                            if (!day || !startTime || !endTime) {
+                                Swal.showValidationMessage("กรุณากรอกข้อมูลให้ครบ");
+                            }
+                            // เช็คว่าเวลาที่เลือกต้องอยู่ในช่วง 7:00 ถึง 22:00
+                            const startHour = parseInt(startTime.split(":")[0]);
+                            const endHour = parseInt(endTime.split(":")[0]);
 
-                        if (startHour < 7 || endHour > 22) {
-                            Swal.showValidationMessage(
-                                "กรุณาเลือกเวลาในช่วง 7:00 ถึง 22:00 เท่านั้น"
-                            );
-                            return false;
-                        }
+                            if (startHour < 7 || endHour > 22) {
+                                Swal.showValidationMessage(
+                                    "กรุณาเลือกเวลาในช่วง 7:00 ถึง 22:00 เท่านั้น"
+                                );
+                                return false;
+                            }
 
-                        if (startTime === endTime) {
-                            Swal.showValidationMessage(
-                                "เวลาเริ่มสอนและสิ้นสุดการสอนต้องไม่ใช่เวลาเดียวกัน"
-                            );
-                            return false;
-                        }
+                            if (startTime === endTime) {
+                                Swal.showValidationMessage(
+                                    "เวลาเริ่มสอนและสิ้นสุดการสอนต้องไม่ใช่เวลาเดียวกัน"
+                                );
+                                return false;
+                            }
 
-                        if (startTime >= endTime) {
-                            Swal.showValidationMessage(
-                                "เวลาเริ่มสอนต้องน้อยกว่าเวลาสิ้นสุดการสอน"
-                            );
-                            return false;
-                        }
-                        return { day, startTime, endTime };
-                    },
-                });
+                            if (startTime >= endTime) {
+                                Swal.showValidationMessage(
+                                    "เวลาเริ่มสอนต้องน้อยกว่าเวลาสิ้นสุดการสอน"
+                                );
+                                return false;
+                            }
+                            return { day, startTime, endTime };
+                        },
+                    });
 
-                function generateTimeOptions() {
-                    let options = "";
-                    for (let hour = 7; hour <= 22; hour++) {
-                        // หยุดการสร้างตัวเลือกเวลาเมื่อชั่วโมงเกิน 22:00
-                        if (hour === 22) {
-                            options += `<option value="${padZero(hour)}:00">${padZero(
-                                hour
-                            )}:00</option>`;
-                            break;
+                    function generateTimeOptions() {
+                        let options = "";
+                        for (let hour = 7; hour <= 22; hour++) {
+                            // หยุดการสร้างตัวเลือกเวลาเมื่อชั่วโมงเกิน 22:00
+                            if (hour === 22) {
+                                options += `<option value="${padZero(hour)}:00">${padZero(
+                                    hour
+                                )}:00</option>`;
+                                break;
+                            }
+                            for (let minutes of ["00", "30"]) {
+                                options += `<option value="${padZero(hour)}:${minutes}">${padZero(
+                                    hour
+                                )}:${minutes}</option>`;
+                            }
                         }
-                        for (let minutes of ["00", "30"]) {
-                            options += `<option value="${padZero(hour)}:${minutes}">${padZero(
-                                hour
-                            )}:${minutes}</option>`;
-                        }
+                        return options;
                     }
-                    return options;
-                }
 
-                function padZero(num) {
-                    return num.toString().padStart(2, "0");
-                }
+                    function padZero(num) {
+                        return num.toString().padStart(2, "0");
+                    }
 
-                if (userInput) {
-                    console.log(userInput);
-                    const { day, startTime, endTime } = userInput;
-                    const dayNames = {
-                        1: "จันทร์",
-                        2: "อังคาร",
-                        3: "พุธ",
-                        4: "พฤหัสบดี",
-                        5: "ศุกร์",
-                        6: "เสาร์",
-                        7: "อาทิตย์",
-                    };
+                    if (userInput) {
+                        console.log(userInput);
+                        const { day, startTime, endTime } = userInput;
+                        const dayNames = {
+                            1: "จันทร์",
+                            2: "อังคาร",
+                            3: "พุธ",
+                            4: "พฤหัสบดี",
+                            5: "ศุกร์",
+                            6: "เสาร์",
+                            7: "อาทิตย์",
+                        };
 
-                    const selectedDayName = dayNames[day];
+                        const selectedDayName = dayNames[day];
 
-                    const message = `วันที่สอน: ${selectedDayName} 
+                        const message = `วันที่สอน: ${selectedDayName} 
                     <br>เวลาเริ่มสอน: ${startTime} นาฬิกา
                     <br>เวลาสิ้นสุดการสอน: ${endTime} นาฬิกา
                     <br>`;
 
-                    Swal.fire({
-                        title: "สรุปการเปลี่ยนวันเวลา",
-                        html: message,
-                        timer: 2000,
-                        timerProgressBar: true,
-                        showConfirmButton: false,
-                    });
+                        Swal.fire({
+                            title: "สรุปการเปลี่ยนวันเวลา",
+                            html: message,
+                            timer: 2000,
+                            timerProgressBar: true,
+                            showConfirmButton: false,
+                        });
 
-                    try {
-                        await changeSubject(subject.id, userInput);
-                    } catch (error) {
-                        console.error("Error changing subject: ", error);
+                        try {
+                            await changeSubject(subject.id, userInput);
+                        } catch (error) {
+                            console.error("Error changing subject: ", error);
+                        }
                     }
                 }
+            } else {
+
             }
         }
     };
