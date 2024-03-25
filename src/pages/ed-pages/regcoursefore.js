@@ -13,7 +13,7 @@ import { FiPlusCircle } from "react-icons/fi";
 import { TiDelete } from "react-icons/ti";
 import { TiDeleteOutline } from "react-icons/ti";
 import axios from "axios";
-import { apiurl, headersforngrok } from "../../config";
+import { apiurl, headers, headersforngrok } from "../../config";
 import GrayBox from "../teacher-pages/regcourse_edit-component/GrayBox";
 import SearchingBar from "../component/searchBar";
 
@@ -100,11 +100,11 @@ const RegCourseEditFore = () => {
         });
         return;
       }
-
+      
       try {
         const getdata = await axios.post(
           apiurl + "/api/teacher/registersubject",
-          { subjects: grayBoxData }
+          { subjects: grayBoxData,headers }
         );
         const responseData = getdata.data;
         console.log(responseData);

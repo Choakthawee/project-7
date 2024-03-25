@@ -68,6 +68,7 @@ const ImportSyl = () => {
           {
             headers: {
               "Content-Type": "multipart/form-data",
+              "ngrok-skip-browser-warning": "123",
             },
             onUploadProgress: (progressEvent) => {
               const { loaded, total } = progressEvent;
