@@ -4,7 +4,7 @@ import Category_sub from "../component/category_sub";
 import ButtonSeaching from "../component/buttonSearching";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { apiurl } from "../../config";
+import { apiurl, headersforngrok } from "../../config";
 export default function SortBar({ setCurrent, url, type = 1, url1, ...props }) {
     const [searching, setSearching] = useState([]);
     const [searchInput, setSearchInput] = useState('');
@@ -23,7 +23,7 @@ export default function SortBar({ setCurrent, url, type = 1, url1, ...props }) {
             setIsSearch(false)
             try {
                 let queryString = apiurl + url1 + "?type=" + type;
-                const dataresponse = await axios.get(queryString);
+                const dataresponse = await axios.get(queryString,headersforngrok);
                 const data = dataresponse.data;
                 setCurrent(data);
             } catch (err) {
@@ -56,7 +56,7 @@ export default function SortBar({ setCurrent, url, type = 1, url1, ...props }) {
             if (subject_category !== "") {
                 queryString += "&category_id=" + subject_category;
             }
-            const dataresponse = await axios.get(queryString);
+            const dataresponse = await axios.get(queryString,headersforngrok);
             const data = dataresponse.data;
             setCurrent(data);
         } catch (err) {

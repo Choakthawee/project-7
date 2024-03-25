@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 // import { GoogleLogin } from "react-google-login";
 import "./login.css";
 import axios from "axios";
-import { apiurl } from "../../config";
+import { apiurl, headersforngrok } from "../../config";
 import { useNavigate } from "react-router-dom";
 const Login = () => {
   const navigate = useNavigate();
@@ -26,8 +26,9 @@ const Login = () => {
 
     try {
       const responseData = await axios.get(
-        apiurl + "/api/admin/user/single/" + email
+        apiurl + "/api/admin/user/single/" + email,headersforngrok
       );
+      console.log(responseData);
       await localStorage.setItem("userid", responseData.data.id);
       await localStorage.setItem("email", responseData.data.email);
       await localStorage.setItem("name", responseData.data.name);

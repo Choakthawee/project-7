@@ -13,7 +13,7 @@ import { FiPlusCircle } from "react-icons/fi";
 import { TiDelete } from "react-icons/ti";
 import { TiDeleteOutline } from "react-icons/ti";
 import axios from "axios";
-import { apiurl } from "../../config";
+import { apiurl, headersforngrok } from "../../config";
 import GrayBox from "../teacher-pages/regcourse_edit-component/GrayBox";
 import SearchingBar from "../component/searchBar";
 
@@ -32,7 +32,7 @@ const RegCourseEditFore = () => {
     const getdataApi = async () => {
       try {
         const dataRespone = await axios.get(
-          apiurl + "/api/teacher/subject/" + id
+          apiurl + "/api/teacher/subject/" + id,headersforngrok
         );
         const data = dataRespone.data;
         setSubject(data[0]);

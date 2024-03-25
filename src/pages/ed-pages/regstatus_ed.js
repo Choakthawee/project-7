@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { EditIcon } from "lucide-react";
 import axios from "axios";
 import React from "react";
-import { apiurl } from "../../config";
+import { apiurl, headers, headersforngrok } from "../../config";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useLocation } from "react-router";
@@ -48,6 +48,7 @@ const RegStatusEdit = (props) => {
                 et: input.endTime,
                 day_id: input.day,
                 id: subjectid,
+                headers
             });
             console.log(response);
         } catch (error) {
@@ -85,6 +86,7 @@ const RegStatusEdit = (props) => {
                 try {
                     const response = await axios.post(apiurl + "/api/eu/ubdatestatusregister", {
                         id: subject.id,
+                        headers
                     });
                     console.log(response.data);
                     Swal.fire({

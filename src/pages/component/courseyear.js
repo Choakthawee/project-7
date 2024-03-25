@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { apiurl } from "../../config";
+import { apiurl, headersforngrok } from "../../config";
 import { faArrowAltCircleDown } from "@fortawesome/free-solid-svg-icons";
 
 export default function CourseYears({value, setYears }) {
@@ -10,7 +10,7 @@ export default function CourseYears({value, setYears }) {
     useEffect(() => {
         async function getYears() {
             try {
-                const dataresponse = await axios.get(apiurl + "/api/years")
+                const dataresponse = await axios.get(apiurl + "/api/years",headersforngrok)
                 const data = dataresponse.data;
                 setYearsopen(data.data)
             } catch (error) {

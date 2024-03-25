@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import axios from "axios"
 import { useEffect, useState } from "react"
-import { apiurl } from "../../config"
+import { apiurl, headersforngrok } from "../../config"
 import { faArrowAltCircleDown } from "@fortawesome/free-solid-svg-icons"
 
 export default function Category_sub({value, setSort }) {
@@ -10,7 +10,7 @@ export default function Category_sub({value, setSort }) {
     useEffect(() => {
         async function getapi() {
             try {
-                const dataresponse = await axios.get(apiurl + "/api/subject_category");
+                const dataresponse = await axios.get(apiurl + "/api/subject_category",headersforngrok);
                 const data = dataresponse.data;
                 setCategory(data)
             }catch (error){
