@@ -89,9 +89,15 @@ const RegResultT = () => {
       console.log(response);
       setCorrectsubject(response);
     } catch (error) {
+      const subjectNames = error.response.data.overlappingSubjects?.map(
+        (subject) => subject.subject_name
+      );
+
+      // ใช้ join() เพื่อรวม subject_name เป็น string โดยคั่นด้วย ', '
+      const combinedSubjectNames = subjectNames.join(", ");
       Swal.fire({
         title: "มีวิชาที่ลงทะเบียนเวลานี้แล้ว",
-        text: error.response.data.error,
+        text: "มีวิชาที่ลงทะเบียนก่อนแล้ว : " + combinedSubjectNames,
       });
     }
   };
