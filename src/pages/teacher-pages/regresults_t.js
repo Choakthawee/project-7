@@ -235,7 +235,7 @@ const RegResultT = () => {
       changeSubject(idd, userInput);
       setTimeout(() => {
         window.location.reload();
-      }, 200000);
+      }, 2000);
     }
   };
 
