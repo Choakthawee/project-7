@@ -249,16 +249,26 @@ const RegStatus = () => {
                 .filter(
                   (subject) => {
                     if (selectedCategory === "all" && selectedStatus === "all") {
-                      return true; // ถ้าเลือก "ทั้งหมด" ให้แสดงทุกข้อมูล
+                      return true;
+                    } else if (!selectedCategory && !selectedStatus) {
+                      return true; // แสดงทั้งหมดเมื่อไม่ได้เลือกหมวดหมู่และสถานะ
+                    } else if (selectedCategory === "all" && !selectedStatus) {
+                      return true; // แสดงทั้งหมดเมื่อเลือก "ทั้งหมด" ของหมวดหมู่และไม่ได้เลือกสถานะใดๆ
+                    } else if (!selectedCategory && selectedStatus === "all") {
+                      return true; // แสดงทั้งหมดเมื่อไม่ได้เลือกหมวดหมู่และเลือก "ทั้งหมด" ของสถานะ
+                    } else if (!selectedCategory) {
+                      return subject.status_id === selectedStatus; // กรองตามสถานะเมื่อไม่ได้เลือกหมวดหมู่
+                    } else if (!selectedStatus) {
+                      return subject.category_id === selectedCategory; // กรองตามหมวดหมู่เมื่อไม่ได้เลือกสถานะ
                     } else if (selectedCategory === "all") {
-                      return subject.status_id === selectedStatus; // ถ้าเลือก "ทั้งหมด" ของ category แต่ไม่เลือก "ทั้งหมด" ของ status ให้กรองเฉพาะ status
+                      return subject.status_id === selectedStatus; // แสดงทั้งหมดของสถานะที่เลือกเมื่อเลือก "ทั้งหมด" ของหมวดหมู่
                     } else if (selectedStatus === "all") {
-                      return subject.category_id === selectedCategory; // ถ้าเลือก "ทั้งหมด" ของ status แต่ไม่เลือก "ทั้งหมด" ของ category ให้กรองเฉพาะ category
+                      return subject.category_id === selectedCategory; // แสดงทั้งหมดของหมวดหมู่ที่เลือกเมื่อเลือก "ทั้งหมด" ของสถานะ
                     } else {
                       return (
                         subject.category_id === selectedCategory &&
                         subject.status_id === selectedStatus
-                      ); // กรองตาม category และ status ที่เลือก
+                      ); // กรองตามหมวดหมู่และสถานะที่เลือก
                     }
                   })
                 .reduce((acc, curr) => {

@@ -20,6 +20,7 @@ const Schedule = () => {
   const [subjectAll, setSubjectAll] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [subjectCategories, setSubjectCategories] = useState([]);
+  const [selectedDay, setSelectedDay] = useState("");
   const [selectedYear, setSelectedYear] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [filteredSubjects, setFilteredSubjects] = useState([]);
@@ -100,6 +101,11 @@ const Schedule = () => {
     setSelectedCategory(selectedId);
   };
 
+  const handleDayChange = (e) => {
+    const selectedDay = parseInt(e.target.value);
+    setSelectedDay(selectedDay);
+  }
+
   const handleInputChange = (e) => {
     setSearchInput(e.target.value);
   };
@@ -108,6 +114,7 @@ const Schedule = () => {
     const filteredSubjects = searchAndFilterSubjects(
       searchInput,
       selectedCategory,
+      selectedDay,
       selectedYear,
       isTeacher
     );
@@ -117,7 +124,7 @@ const Schedule = () => {
     }
   };
 
-  const searchAndFilterSubjects = (input, category, year, isTeacher) => {
+  const searchAndFilterSubjects = (input, category, day, year, isTeacher) => {
     if (!input.trim()) {
       return isTeacher
         ? subjectUser.filter(
@@ -126,7 +133,7 @@ const Schedule = () => {
             (!year ||
               Object.values(subject.branch).some((branchArray) =>
                 branchArray.includes(Number(year))
-              ))
+              )) && (!day || subject.day_id === day)
         )
         : subjectAll.filter(
           (subject) =>
@@ -134,7 +141,7 @@ const Schedule = () => {
             (!year ||
               Object.values(subject.branch).some((branchArray) =>
                 branchArray.includes(Number(year))
-              ))
+              )) && (!day || subject.day_id === day)
         );
     } else {
       const filtered = isTeacher
@@ -147,7 +154,7 @@ const Schedule = () => {
             (!year ||
               Object.values(subject.branch).some((branchArray) =>
                 branchArray.includes(Number(year))
-              ))
+              )) && (!day || subject.day_id === day)
         )
         : subjectAll.filter(
           (subject) =>
@@ -158,7 +165,7 @@ const Schedule = () => {
             (!year ||
               Object.values(subject.branch).some((branchArray) =>
                 branchArray.includes(Number(year))
-              ))
+              )) && (!day || subject.day_id === day)
         );
       return filtered;
     }
@@ -166,6 +173,7 @@ const Schedule = () => {
 
   const handleReset = () => {
     setSearchInput("");
+    setSelectedDay("");
     setSelectedYear("");
     setSelectedCategory("");
     setFilteredSubjects(isTeacher ? subjectUser : subjectAll);
@@ -175,13 +183,13 @@ const Schedule = () => {
     Swal.fire({
       title: subject.SUBJECT,
       html: `
-        <div>รหัสวิชา: ${subject.id_subject}-${subject.ySubject.substring(
+          <div>รหัสวิชา: ${subject.id_subject}-${subject.ySubject.substring(
         2
       )}</div>
-        <div>หน่วยกิต: ${subject.credit}</div>
-        <div>อาจารย์ผู้สอน: ${subject.NAME}</div>
-        <div>จำนวนนิสิต: ${subject.N_people}</div>
-        ${Object.keys(subject.branch)
+          <div>หน่วยกิต: ${subject.credit}</div>
+          <div>อาจารย์ผู้สอน: ${subject.NAME}</div>
+          <div>จำนวนนิสิต: ${subject.N_people}</div>
+          ${Object.keys(subject.branch)
           .map(
             (branchKey) =>
               `<div>ชั้นปีที่เปิดรับ ${branchKey}: ${subject.branch[branchKey]
@@ -190,12 +198,12 @@ const Schedule = () => {
               }</div>`
           )
           .join("")}
-        <div>วัน: ${subject.day}</div>
-        <div>เวลา: ${subject.st.substring(0, 5)}-${subject.et.substring(
+          <div>วัน: ${subject.day}</div>
+          <div>เวลา: ${subject.st.substring(0, 5)}-${subject.et.substring(
             0,
             5
           )} น.</div>
-      `,
+        `,
       icon: "info",
       confirmButtonColor: "#3085d6",
       confirmButtonText: "ตกลง",
@@ -379,6 +387,21 @@ const Schedule = () => {
           >
             <option value="">เลือกหมวดวิชา</option>
             {subjectCategories.map((category, index) => (
+              <option key={index} value={category.id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="flex flex-col mr-3">
+          <label className="text-midgreen mb-1">เลือกวันที่สอน</label>
+          <select
+            className="focus:outline-none rounded-sm h-8 w-36"
+            onChange={handleDayChange}
+          >
+            <option value="">เลือกวันที่สอน</option>
+            {days.map((category, index) => (
               <option key={index} value={category.id}>
                 {category.name}
               </option>

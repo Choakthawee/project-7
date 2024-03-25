@@ -114,9 +114,15 @@ const RegStatusEdit = (props) => {
                       <option value="7">อาทิตย์</option>
                     </select><br>
                     <label for="startTime">เลือกเวลาเริ่มสอน:</label>
-                    <input id="startTime" class="swal2-input" type="time" placeholder="Select a time"><br>
+                    <select id="startTime" class="swal2-input">
+                    <option value="" disabled selected>---</option>
+                    ${generateTimeOptions(7, 22)}
+                    </select><br>
                     <label for="endTime">เลือกเวลาสิ้นสุดการสอน:</label>
-                    <input id="endTime" class="swal2-input" type="time" placeholder="Select a time">
+                    <select id="endTime" class="swal2-input">
+                    <option value="" disabled selected>---</option>
+                    ${generateTimeOptions(7, 22)}
+                    </select>
                   `,
                     focusConfirm: true,
                     confirmButtonColor: "green",
@@ -133,9 +139,56 @@ const RegStatusEdit = (props) => {
                         if (!day || !startTime || !endTime) {
                             Swal.showValidationMessage("กรุณากรอกข้อมูลให้ครบ");
                         }
+                        // เช็คว่าเวลาที่เลือกต้องอยู่ในช่วง 7:00 ถึง 22:00
+                        const startHour = parseInt(startTime.split(":")[0]);
+                        const endHour = parseInt(endTime.split(":")[0]);
+
+                        if (startHour < 7 || endHour > 22) {
+                            Swal.showValidationMessage(
+                                "กรุณาเลือกเวลาในช่วง 7:00 ถึง 22:00 เท่านั้น"
+                            );
+                            return false;
+                        }
+
+                        if (startTime === endTime) {
+                            Swal.showValidationMessage(
+                                "เวลาเริ่มสอนและสิ้นสุดการสอนต้องไม่ใช่เวลาเดียวกัน"
+                            );
+                            return false;
+                        }
+
+                        if (startTime >= endTime) {
+                            Swal.showValidationMessage(
+                                "เวลาเริ่มสอนต้องน้อยกว่าเวลาสิ้นสุดการสอน"
+                            );
+                            return false;
+                        }
                         return { day, startTime, endTime };
                     },
                 });
+
+                function generateTimeOptions() {
+                    let options = "";
+                    for (let hour = 7; hour <= 22; hour++) {
+                        // หยุดการสร้างตัวเลือกเวลาเมื่อชั่วโมงเกิน 22:00
+                        if (hour === 22) {
+                            options += `<option value="${padZero(hour)}:00">${padZero(
+                                hour
+                            )}:00</option>`;
+                            break;
+                        }
+                        for (let minutes of ["00", "30"]) {
+                            options += `<option value="${padZero(hour)}:${minutes}">${padZero(
+                                hour
+                            )}:${minutes}</option>`;
+                        }
+                    }
+                    return options;
+                }
+
+                function padZero(num) {
+                    return num.toString().padStart(2, "0");
+                }
 
                 if (userInput) {
                     console.log(userInput);
@@ -274,7 +327,6 @@ const RegStatusEdit = (props) => {
                                 </tr>
                             ))}
                         </tbody>
-
                     </table>
                 </div>
             </div>
