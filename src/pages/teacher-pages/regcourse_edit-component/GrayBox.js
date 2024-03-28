@@ -17,6 +17,7 @@ export default function GrayBox({
   sub_id,
   setGrayBoxData,
   handleDelete,
+  uid
 }) {
   const [selectedTime, setSelectedTime] = useState("07:00");
   const [ListSelect, setListSelect] = useState([]);
@@ -78,7 +79,7 @@ export default function GrayBox({
 
       const data = {
         keys: keys,
-        uid: localStorage.getItem("userid"),
+        uid: uid?uid:localStorage.getItem("userid"),
         st: st,
         et: et,
         day_id: day,
