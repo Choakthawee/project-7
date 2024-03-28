@@ -10,6 +10,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { apiurl } from "../../config";
 import * as XLSX from "xlsx";
+import Readxlsx from "../xlsxView/readxlsxView";
 
 const InsertUser = () => {
   const fileInputRef = useRef(null);
@@ -136,6 +137,22 @@ const InsertUser = () => {
         setFileData(excelData);
       };
     }
+    const read = async () => {
+      try {
+        const data = await Readxlsx(selectedFile);
+        localStorage.setItem("Viewxlsx-data-filename", selectedFile?.name)
+        localStorage.setItem("Viewxlsx-data", JSON.stringify(data))
+        localStorage.setItem("Viewxlsx-data-config", JSON.stringify({
+          col: ["email", "ชื่อ", "role_id"],
+          start: 0,
+          link: "/imsyl"
+        }));
+      } catch (err) {
+        console.error("Error reading file:", err);
+        return ["ไม่สามารถอ่านไฟล์ได้"];
+      }
+    };
+    read();
   };
 
   const handleSaveToDatabase = () => {
@@ -341,7 +358,7 @@ const InsertUser = () => {
               />
               <Link
                 className="ml-3"
-                target="_self"
+                target="_blank"
                 to={"/ViewExcel"}
                 state={{
                   file: file,
