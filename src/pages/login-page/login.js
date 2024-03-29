@@ -49,7 +49,7 @@ const Login = () => {
         } else if (responseData.data.role_id === 2) {
           navigate("/userinfo");
         } else if (responseData.data.role_id === 1) {
-          navigate("/regcourse");
+          navigate("/schedule");
         }
       }, 2000);
     } catch (error) {

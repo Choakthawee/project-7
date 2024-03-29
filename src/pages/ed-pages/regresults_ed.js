@@ -232,7 +232,7 @@ const RegResultED = () => {
 
                       <tbody>
                         {currentsubjects.map((value, index) => (
-                          <tr key={index}>
+                          <tr key={index} className="text-nowrap">
                             <td className="py-2 font-light text-lg text-center">
                               {startIndex + index + 1}
                             </td>
@@ -295,24 +295,29 @@ const RegResultED = () => {
                                       ));
                                     } else {
                                       return [
-                                        <span
-                                          key={key + "-1"}
-                                          className="py-2 font-light text-lg text-center"
-                                        >
-                                          {key}-1
-                                        </span>,
-                                        <span
-                                          key={key + "-2"}
-                                          className="py-2 font-light text-lg text-center"
-                                        >
-                                          {key}-2
-                                        </span>,
-                                        <span
-                                          key={key + "-more"}
-                                          className="py-2 font-light text-lg text-center"
-                                        >
-                                          ...
-                                        </span>,
+                                        <div className="justify-center">
+                                          <span
+                                            key={key + "-1"}
+                                            className="py-2 font-light text-lg text-center"
+                                          >
+                                            {key}-1
+                                          </span>
+                                          ,
+                                          <span
+                                            key={key + "-2"}
+                                            className="py-2 font-light text-lg text-center"
+                                          >
+                                            {key}-2
+                                          </span>
+                                          ,
+                                          <span
+                                            key={key + "-more"}
+                                            className="py-2 font-light text-lg text-center"
+                                          >
+                                            ...
+                                          </span>
+                                          ,
+                                        </div>,
                                       ];
                                     }
                                   })
