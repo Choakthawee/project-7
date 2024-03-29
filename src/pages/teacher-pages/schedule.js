@@ -470,11 +470,11 @@ const Schedule = () => {
                 }`}
             ></div>
             <label
-              className={`ptext-shadow mb-1 ${isTeacher ? "" : "text-red-600"}`}
+              className={`ptext-shadow mb-1 ${isTeacher ? "" : "text-red-600"} text-sm mt-4 md:mt-0`}
             >
               {isTeacher
                 ? "ไม่ผ่าน"
-                : "*แสดงเฉพาะวิชาที่ลงทะเบียนผ่านแล้วเท่านั้น*"}
+                : "*แสดงเฉพาะวิชาที่ลงทะเบียนผ่านแล้ว*"}
             </label>
           </div>
 
