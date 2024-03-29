@@ -84,8 +84,8 @@ const ImportSyl = () => {
             text: response.data.warning?.warnmsg,
             confirmButtonColor: "#3085d6",
             confirmButtonText: "ตกลง",
-          }).then(()=>{
-            setLoading((e)=>!e);
+          }).then(() => {
+            setLoading((e) => !e);
           });
           setWarn(response.data.warning?.data);
         } else {
@@ -95,8 +95,9 @@ const ImportSyl = () => {
             text: response.data.msg,
             confirmButtonColor: "#3085d6",
             confirmButtonText: "ตกลง",
-          }).then(()=>{
-            setLoading((e)=>!e);
+          }).then(() => {
+            setLoading((e) => !e);
+            window.location.reload(true);
           });
         }
 
@@ -124,7 +125,6 @@ const ImportSyl = () => {
         setErr(error.response.data.error);
         setLoading(!loading);
       }
-
     }
   };
 
