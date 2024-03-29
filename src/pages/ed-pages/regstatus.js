@@ -53,12 +53,20 @@ const RegStatus = () => {
 
   const navtoStatusEdit = (subject) => {
     if (subject.status_id === 3) {
-      const duplicatedSubjects = subjectReg.filter(sub => sub.st === subject.st && sub.et === subject.et && sub.DAYNAME === subject.DAYNAME && sub.status_id === 3);
+      const duplicatedSubjects = subjectReg.filter(
+        (sub) =>
+          sub.st === subject.st &&
+          sub.et === subject.et &&
+          sub.DAYNAME === subject.DAYNAME &&
+          sub.status_id === 3
+      );
       if (duplicatedSubjects.length > 0) {
-        navigate("/regstatus_edit", { state: { subjects: duplicatedSubjects } });
+        navigate("/regstatus_edit", {
+          state: { subjects: duplicatedSubjects },
+        });
       }
     }
-  }
+  };
 
   const handleEdit = (subject) => {
     if (subject.status_id === 2) {
@@ -168,11 +176,9 @@ const RegStatus = () => {
               onChange={() => setSelectedCategory(item.id)}
               id={`category_${item.id}`}
             />
-
           </React.Fragment>
         ))}
       </div>
-
 
       <div className="flex flex-row justify-end">
         <label className="mr-2">ทั้งหมด</label>
@@ -201,7 +207,6 @@ const RegStatus = () => {
           </React.Fragment>
         ))}
       </div>
-
 
       <div className="flex bg-slate-200 mt-5 rounded-lg overflow-x-auto shadow-xl">
         <table className="h-full w-full">
@@ -246,36 +251,39 @@ const RegStatus = () => {
           <tbody>
             {subjectReg.length > 0 &&
               subjectReg
-                .filter(
-                  (subject) => {
-                    if (selectedCategory === "all" && selectedStatus === "all") {
-                      return true;
-                    } else if (!selectedCategory && !selectedStatus) {
-                      return true; // แสดงทั้งหมดเมื่อไม่ได้เลือกหมวดหมู่และสถานะ
-                    } else if (selectedCategory === "all" && !selectedStatus) {
-                      return true; // แสดงทั้งหมดเมื่อเลือก "ทั้งหมด" ของหมวดหมู่และไม่ได้เลือกสถานะใดๆ
-                    } else if (!selectedCategory && selectedStatus === "all") {
-                      return true; // แสดงทั้งหมดเมื่อไม่ได้เลือกหมวดหมู่และเลือก "ทั้งหมด" ของสถานะ
-                    } else if (!selectedCategory) {
-                      return subject.status_id === selectedStatus; // กรองตามสถานะเมื่อไม่ได้เลือกหมวดหมู่
-                    } else if (!selectedStatus) {
-                      return subject.category_id === selectedCategory; // กรองตามหมวดหมู่เมื่อไม่ได้เลือกสถานะ
-                    } else if (selectedCategory === "all") {
-                      return subject.status_id === selectedStatus; // แสดงทั้งหมดของสถานะที่เลือกเมื่อเลือก "ทั้งหมด" ของหมวดหมู่
-                    } else if (selectedStatus === "all") {
-                      return subject.category_id === selectedCategory; // แสดงทั้งหมดของหมวดหมู่ที่เลือกเมื่อเลือก "ทั้งหมด" ของสถานะ
-                    } else {
-                      return (
-                        subject.category_id === selectedCategory &&
-                        subject.status_id === selectedStatus
-                      ); // กรองตามหมวดหมู่และสถานะที่เลือก
-                    }
-                  })
+                .filter((subject) => {
+                  if (selectedCategory === "all" && selectedStatus === "all") {
+                    return true;
+                  } else if (!selectedCategory && !selectedStatus) {
+                    return true; // แสดงทั้งหมดเมื่อไม่ได้เลือกหมวดหมู่และสถานะ
+                  } else if (selectedCategory === "all" && !selectedStatus) {
+                    return true; // แสดงทั้งหมดเมื่อเลือก "ทั้งหมด" ของหมวดหมู่และไม่ได้เลือกสถานะใดๆ
+                  } else if (!selectedCategory && selectedStatus === "all") {
+                    return true; // แสดงทั้งหมดเมื่อไม่ได้เลือกหมวดหมู่และเลือก "ทั้งหมด" ของสถานะ
+                  } else if (!selectedCategory) {
+                    return subject.status_id === selectedStatus; // กรองตามสถานะเมื่อไม่ได้เลือกหมวดหมู่
+                  } else if (!selectedStatus) {
+                    return subject.category_id === selectedCategory; // กรองตามหมวดหมู่เมื่อไม่ได้เลือกสถานะ
+                  } else if (selectedCategory === "all") {
+                    return subject.status_id === selectedStatus; // แสดงทั้งหมดของสถานะที่เลือกเมื่อเลือก "ทั้งหมด" ของหมวดหมู่
+                  } else if (selectedStatus === "all") {
+                    return subject.category_id === selectedCategory; // แสดงทั้งหมดของหมวดหมู่ที่เลือกเมื่อเลือก "ทั้งหมด" ของสถานะ
+                  } else {
+                    return (
+                      subject.category_id === selectedCategory &&
+                      subject.status_id === selectedStatus
+                    ); // กรองตามหมวดหมู่และสถานะที่เลือก
+                  }
+                })
                 .reduce((acc, curr) => {
                   const isStatusThree = curr.status_id === 3;
-                  const key = isStatusThree ? `${curr.st}-${curr.et}-${curr.DAYNAME}-${curr.status_id}` : `${curr.id}-${curr.status_id}`;
+                  const key = isStatusThree
+                    ? `${curr.st}-${curr.et}-${curr.DAYNAME}-${curr.status_id}`
+                    : `${curr.id}-${curr.status_id}`;
 
-                  const existingGroupIndex = acc.findIndex(group => group.key === key);
+                  const existingGroupIndex = acc.findIndex(
+                    (group) => group.key === key
+                  );
 
                   if (existingGroupIndex !== -1) {
                     acc[existingGroupIndex].data.push(curr);
@@ -319,13 +327,15 @@ const RegStatus = () => {
                         <td className="py-2 font-normal text-sm text-center">
                           {Object.keys(subject.branch).map((branchKey) => (
                             <div key={branchKey}>
-                              <span>{branchKey} : </span>
-                              {subject.branch[branchKey].map((item, idx) => (
-                                <span key={idx}>
-                                  {idx > 0 && ", "}
-                                  ชั้นปี {item}
-                                </span>
-                              ))}
+                              <span>{branchKey} : ชั้นปี </span>
+                              {subject.branch[branchKey]
+                                .sort()
+                                .map((item, idx) => (
+                                  <span key={idx}>
+                                    {idx > 0 && ", "}
+                                    {item}
+                                  </span>
+                                ))}
                             </div>
                           ))}
                         </td>
@@ -333,15 +343,17 @@ const RegStatus = () => {
                           {subject.DAYNAME}
                         </td>
                         <td className="py-2 font-normal text-sm text-center">
-                          {subject.st.substring(0, 5)}-{subject.et.substring(0, 5)} น.
+                          {subject.st.substring(0, 5)}-
+                          {subject.et.substring(0, 5)} น.
                         </td>
                         <td
-                          className={`py-2 font-normal text-sm text-center ${subject.STATUSNAME === "รอ"
-                            ? "text-orange-400"
-                            : subject.STATUSNAME === "ไม่ผ่าน"
+                          className={`py-2 font-normal text-sm text-center ${
+                            subject.STATUSNAME === "รอ"
+                              ? "text-orange-400"
+                              : subject.STATUSNAME === "ไม่ผ่าน"
                               ? "text-red-500"
                               : "text-green-400"
-                            }`}
+                          }`}
                         >
                           {subject.STATUSNAME}
                         </td>
@@ -354,9 +366,10 @@ const RegStatus = () => {
                                 onClick={() => navtoStatusEdit(subject)}
                               />
                             )}
-                            {subject.status_id === 1 || subject.status_id === 2 && (
-                              <span className="opacity-0 cursor-default visible"></span>
-                            )}
+                            {subject.status_id === 1 ||
+                              (subject.status_id === 2 && (
+                                <span className="opacity-0 cursor-default visible"></span>
+                              ))}
                           </td>
                         )}
                       </tr>

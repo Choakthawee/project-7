@@ -81,13 +81,30 @@ const TableEdit = () => {
                 </BoxSetDB>
                 <BoxSetDB title={"ล้างและคืนค่าดาต้าเบส"} keys={"cleardb-set"}>
                     <BoxSetDB title={"ล้างวิชาที่ลงทะเบียน"} keys={"cleardbsubregit-set"}>
+                        <div className="flex">
+                            <div className="flex-col group/pp hover:bg-green-400 transition-all duration-700 hover:text-black flex bg-red-700 py-3 px-4 text-white rounded-md">
+                                <p className="underline text-xl">คำเตือน</p>
+                                <p>ระบบไม่ได้บันทึกไฟล์หลังจากทำการลบ</p>
+                                <p className=" underline">กรุณาบันทึกไฟล์ export เก็บไว้ก่อน</p>
+                                <div>
+                                    <button onClick={() => {
+                                        Swal.fire({ icon: "warning", title: "แน่ใจจริงหรือไม่", text: "ระบบไม่ได้บันทึกไฟล์หลังจากทำการลบ กรุณาบันทึกไฟล์ export เก็บไว้ก่อน ยืนยัน", confirmButtonText: "แน่ใจ", cancelButtonText: "ยกเลิก", showCancelButton: true })
+                                            .then((e) => {
+                                                if (e.isConfirmed) {
+                                                    axios.delete(apiurl + "/api/subjectRegister/all").then((data) => {
+                                                        console.log(data);
+                                                        Swal.fire({icon:"success",text:data.data.msg})
+                                                    }).catch((err) => {
+                                                        console.log(err);
+                                                        Swal.fire({icon:"error",text:err.response.data?.msgerror + "ลบ id" +err.response.data?.error?.join(", ")})
+                                                    })
+                                                }
+                                            })
+                                    }} className="group-hover/pp:bg-green-300 rounded-lg duration-1000  bg-red-500 py-2 px-6">ยืนยันลบ</button>
+                                </div>
 
-                    </BoxSetDB>
-                    <BoxSetDB title={"ล้างวิชา"} keys={"cleardbsubregit-set"}>
-
-                    </BoxSetDB>
-                    <BoxSetDB title={"คืนค่าจากโรงงาน"} keys={"cleardbsubregit-set"}>
-
+                            </div>
+                        </div>
                     </BoxSetDB>
                 </BoxSetDB>
                 <BoxSetDB title={"ออโต้ ตรวจสอบวิชา"} keys={"auto-set"}>
@@ -130,15 +147,15 @@ const TableEdit = () => {
                     <BoxSetDB title={"Restart Backend"} keys={"Restartb-set"}>
                         <div className=" flex">
                             <div className="flex flex-col bg-red-600 rounded-lg shadow-[5px_10px_25px_-10px]  p-2 transition-all duration-700 group/a text-white hover:bg-sky-400 hover:text-black">
-                               <p className=" underline text-xl">คำเตือน</p>
-                               <p>ถ้าเกิดระบบทำงานผิดพลาด</p>
-                               <p>ให้adminทำการรันระบบด้วยตัวเอง</p>
-                               <button className=" p-2 rounded-xl w-fit bg-gradient-to-tr transition-all from-red-500 group-hover/a:from-blue-100 hover:to-blue-500 active:bg-blue-600" onClick={()=>{
-                                axios.get(apiurl+"/restart-server").then((data)=>data.data)
-                                .then((data)=>{
-                                    Swal.fire({icon:"info",text:data})
-                                })
-                               }}>กดยืนยัน restart</button>
+                                <p className=" underline text-xl">คำเตือน</p>
+                                <p>ถ้าเกิดระบบทำงานผิดพลาด</p>
+                                <p>ให้adminทำการรันระบบด้วยตัวเอง</p>
+                                <button className=" p-2 rounded-xl w-fit bg-gradient-to-tr transition-all from-red-500 group-hover/a:from-blue-100 hover:to-blue-500 active:bg-blue-600" onClick={() => {
+                                    axios.get(apiurl + "/restart-server").then((data) => data.data)
+                                        .then((data) => {
+                                            Swal.fire({ icon: "info", text: data })
+                                        })
+                                }}>กดยืนยัน restart</button>
                             </div>
 
                         </div>

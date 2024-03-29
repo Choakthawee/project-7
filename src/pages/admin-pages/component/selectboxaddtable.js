@@ -20,7 +20,7 @@ export default function Selectboxtable({ geturl, table,remainder, title, col, ge
                 setData(data);
             } catch (err) {
                 console.log(err);
-                setErrormsg(err.response.data.msg);
+                setErrormsg(err.response.data?.msg);
             }
         }
         getapi();

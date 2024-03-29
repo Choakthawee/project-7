@@ -284,6 +284,7 @@ const RegCourseEditFore = () => {
                     key={val.keys}
                     keys={val.keys}
                     data={val}
+                    uid={val.uid}
                     i={i}
                     exsub={subject.exsub}
                     sub_id={id}
