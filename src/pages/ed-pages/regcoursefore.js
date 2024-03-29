@@ -99,45 +99,47 @@ const RegCourseEditFore = () => {
           text: "กรุณากรอกข้อมูลให้ครบถ้วน",
         });
         return;
+      } else {
+        try {
+          const getdata = await axios.post(
+            apiurl + "/api/teacher/registersubject",
+            { subjects: grayBoxData, m: 1,status:1 }
+          );
+          const responseData = getdata.data;
+          console.log(responseData);
+
+          Swal.fire({
+            icon: "success",
+            title: "ยืนยันบันทึกการลงทะเบียน?",
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: "บันทึก",
+            confirmButtonColor: "green",
+            denyButtonText: `ไม่บันทึก`,
+            showCancelButton: false,
+            text: responseData.msg,
+            color: "gray",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              Swal.fire("ลงทะเบียนรายวิชาสำเร็จ", "", "success").then(() => {
+                window.location.href = "/regresults_ed";
+              });
+            } else if (result.isDenied) {
+              Swal.fire("ข้อมูลยังไม่ถูกบันทึก", "", "error");
+            }
+          });
+        } catch (error) {
+          console.log(error);
+          const strdataerror = error.response.data.error?.join(", ");
+          Swal.fire({
+            icon: "error",
+            title: "ไม่สำเร็จ",
+            text: strdataerror + "ของอาจารย์คุณลงให้",
+          });
+        }
       }
 
-      try {
-        const getdata = await axios.post(
-          apiurl + "/api/teacher/registersubject",
-          { subjects: grayBoxData, m: 1 }
-        );
-        const responseData = getdata.data;
-        console.log(responseData);
 
-        Swal.fire({
-          icon: "success",
-          title: "ยืนยันบันทึกการลงทะเบียน?",
-          showDenyButton: true,
-          showCancelButton: true,
-          confirmButtonText: "บันทึก",
-          confirmButtonColor: "green",
-          denyButtonText: `ไม่บันทึก`,
-          showCancelButton: false,
-          text: responseData.msg,
-          color: "gray",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            Swal.fire("ลงทะเบียนรายวิชาสำเร็จ", "", "success").then(() => {
-              window.location.href = "/regresults_ed";
-            });
-          } else if (result.isDenied) {
-            Swal.fire("ข้อมูลยังไม่ถูกบันทึก", "", "error");
-          }
-        });
-      } catch (error) {
-        console.log(error);
-        const strdataerror = error.response.data.error?.join(", ");
-        Swal.fire({
-          icon: "error",
-          title: "ไม่สำเร็จ",
-          text: strdataerror + "ของอาจารย์คุณลงให้",
-        });
-      }
     }
   };
 
