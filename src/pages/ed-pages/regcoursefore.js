@@ -83,63 +83,65 @@ const RegCourseEditFore = () => {
         text: "กรุณากรอกชื่ออาจารย์ผู้สอน",
       });
     } else {
-      if (
-        grayBoxData.some((item) =>
-          Object.values(item).some(
-            (value) => value === null || value === undefined || value === ""
-          )
-        ) ||
-        grayBoxData.some(
-          (item) => !item.branch || Object.keys(item.branch).length === 0
-        )
-      ) {
-        Swal.fire({
-          icon: "error",
-          title: "ไม่สำเร็จ",
-          text: "กรุณากรอกข้อมูลให้ครบถ้วน",
-        });
-        return;
+      if (grayBoxData.length === 0) {
+        Swal.fire("กรุณาเพิ่มหมู่เรียนอย่างน้อย 1 หมู่");
       } else {
-        try {
-          const getdata = await axios.post(
-            apiurl + "/api/teacher/registersubject",
-            { subjects: grayBoxData, m: 1,status:1 }
-          );
-          const responseData = getdata.data;
-          console.log(responseData);
-
-          Swal.fire({
-            icon: "success",
-            title: "ยืนยันบันทึกการลงทะเบียน?",
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: "บันทึก",
-            confirmButtonColor: "green",
-            denyButtonText: `ไม่บันทึก`,
-            showCancelButton: false,
-            text: responseData.msg,
-            color: "gray",
-          }).then((result) => {
-            if (result.isConfirmed) {
-              Swal.fire("ลงทะเบียนรายวิชาสำเร็จ", "", "success").then(() => {
-                window.location.href = "/regresults_ed";
-              });
-            } else if (result.isDenied) {
-              Swal.fire("ข้อมูลยังไม่ถูกบันทึก", "", "error");
-            }
-          });
-        } catch (error) {
-          console.log(error);
-          const strdataerror = error.response.data.error?.join(", ");
+        if (
+          grayBoxData.some((item) =>
+            Object.values(item).some(
+              (value) => value === null || value === undefined || value === ""
+            )
+          ) ||
+          grayBoxData.some(
+            (item) => !item.branch || Object.keys(item.branch).length === 0
+          )
+        ) {
           Swal.fire({
             icon: "error",
             title: "ไม่สำเร็จ",
-            text: strdataerror + "ของอาจารย์คุณลงให้",
+            text: "กรุณากรอกข้อมูลให้ครบถ้วน",
           });
+          return;
+        } else {
+          try {
+            const getdata = await axios.post(
+              apiurl + "/api/teacher/registersubject",
+              { subjects: grayBoxData, m: 1, status: 1 }
+            );
+            const responseData = getdata.data;
+            console.log(responseData);
+
+            Swal.fire({
+              icon: "success",
+              title: "ยืนยันบันทึกการลงทะเบียน?",
+              showDenyButton: true,
+              showCancelButton: true,
+              confirmButtonText: "บันทึก",
+              confirmButtonColor: "green",
+              denyButtonText: `ไม่บันทึก`,
+              showCancelButton: false,
+              text: responseData.msg,
+              color: "gray",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                Swal.fire("ลงทะเบียนรายวิชาสำเร็จ", "", "success").then(() => {
+                  window.location.href = "/regresults_ed";
+                });
+              } else if (result.isDenied) {
+                Swal.fire("ข้อมูลยังไม่ถูกบันทึก", "", "error");
+              }
+            });
+          } catch (error) {
+            console.log(error);
+            const strdataerror = error.response.data.error?.join(", ");
+            Swal.fire({
+              icon: "error",
+              title: "ไม่สำเร็จ",
+              text: strdataerror + "ของอาจารย์คุณลงให้",
+            });
+          }
         }
       }
-
-
     }
   };
 
