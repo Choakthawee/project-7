@@ -8,21 +8,21 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowAltCircleDown,
-  faFileDownload,
 } from "@fortawesome/free-solid-svg-icons";
-import { FaCircleLeft, FaCircleRight } from "react-icons/fa6";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { apiurl } from "../../config";
 import { Link } from "react-router-dom";
+import Readxlsx from "../xlsxView/readxlsxView";
+import Viewxlsx from "../xlsxView/Viewpage";
 const ImportSyl = () => {
   const userRole = localStorage.getItem("role_id");
   const navigate = useNavigate();
   const selection_year = useRef(null);
-  const [file, setFile] = useState(null);
+  const savefile = useRef(null);
+  const [file, setFile] = useState(savefile?.current?.files[0]);
   const [errors, setErr] = useState([]);
   const [warn, setWarn] = useState([]);
   const [progress, setProgress] = useState(0);
@@ -105,7 +105,7 @@ const ImportSyl = () => {
             confirmButtonText: "ตกลง",
           }).then(() => {
             setLoading((e) => !e);
-            window.location.reload(true);
+
           });
         }
 
@@ -135,8 +135,24 @@ const ImportSyl = () => {
       }
     }
   };
-
   const handleFileChange = (e) => {
+    const read = async () => {
+      try {
+        const data = await Readxlsx(e.target.files[0]);
+        localStorage.setItem("Viewxlsx-data-filename", e.target.files[0]?.name)
+        localStorage.setItem("Viewxlsx-data", JSON.stringify(data))
+        localStorage.setItem("Viewxlsx-data-config", JSON.stringify({
+          col: ["รหัสวิชา", "ชื่อวิชา", "หน่วยกิต", "หมวด"],
+          check: true,
+          start: 1,
+          link: "/imsyl"
+        }));
+      } catch (err) {
+        console.error("Error reading file:", err);
+        return ["ไม่สามารถอ่านไฟล์ได้"];
+      }
+    };
+    read();
     setFile(e.target.files[0]);
   };
   const showAlert = () => {
@@ -245,6 +261,7 @@ const ImportSyl = () => {
             <FontAwesomeIcon icon={faFileImport} />
             <input
               type="file"
+              ref={savefile}
               onChange={handleFileChange}
               className="file:bg-transparent file:border-0 file:text-sm file:font-medium file:p-2 file:w-full file:outline-none file:cursor-pointer"
             />
@@ -252,23 +269,23 @@ const ImportSyl = () => {
 
           <div className="flex flex-row gap-10 justify-center">
             <FontAwesomeIcon icon={faArrowRight} />
-            {file ? (
-              <Link
-                className=" underline text-blue-700 text-xl"
-                target="_self"
-                to={"/ViewExcel"}
-                state={{
-                  file,
-                  col: ["รหัสวิชา", "ชื่อวิชา", "หน่วยกิต", "หมวด"],
-                  check: true,
-                  start: 1,
-                }}
-              >
-                {`${file.name} <--- กดเพื่อ View `}
-              </Link>
-            ) : (
-              ""
-            )}
+            {file ?
+              <div>
+                <Link
+                  className=" underline text-blue-700 text-xl"
+                  target="_blank"
+                  to={"/ViewExcel"}
+
+                >
+                  {`${file.name} <--- กดเพื่อ View `}
+                </Link>
+              </div>
+
+
+
+              : (
+                ""
+              )}
           </div>
         </div>
         {progress !== 0 && (
