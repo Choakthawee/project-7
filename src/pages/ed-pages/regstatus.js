@@ -56,12 +56,20 @@ const RegStatus = () => {
 
   const navtoStatusEdit = (subject) => {
     if (subject.status_id === 3) {
-      const duplicatedSubjects = subjectReg.filter(sub => sub.st === subject.st && sub.et === subject.et && sub.DAYNAME === subject.DAYNAME && sub.status_id === 3);
+      const duplicatedSubjects = subjectReg.filter(
+        (sub) =>
+          sub.st === subject.st &&
+          sub.et === subject.et &&
+          sub.DAYNAME === subject.DAYNAME &&
+          sub.status_id === 3
+      );
       if (duplicatedSubjects.length > 0) {
-        navigate("/regstatus_edit", { state: { subjects: duplicatedSubjects } });
+        navigate("/regstatus_edit", {
+          state: { subjects: duplicatedSubjects },
+        });
       }
     }
-  }
+  };
 
   const itemsPerPage = 5; // จำนวนรายการต่อหน้า
 
@@ -185,7 +193,6 @@ const RegStatus = () => {
               onChange={() => setSelectedCategory(item.id)}
               id={`category_${item.id}`}
             />
-
           </React.Fragment>
         ))}
       </div>
@@ -218,7 +225,6 @@ const RegStatus = () => {
           </React.Fragment>
         ))}
       </div>
-
 
       <div className="flex bg-slate-200 mt-5 rounded-lg overflow-x-auto shadow-xl">
         <table className="h-full w-full">
@@ -290,9 +296,13 @@ const RegStatus = () => {
                   })
                 .reduce((acc, curr) => {
                   const isStatusThree = curr.status_id === 3;
-                  const key = isStatusThree ? `${curr.st}-${curr.et}-${curr.DAYNAME}-${curr.status_id}` : `${curr.id}-${curr.status_id}`;
+                  const key = isStatusThree
+                    ? `${curr.st}-${curr.et}-${curr.DAYNAME}-${curr.status_id}`
+                    : `${curr.id}-${curr.status_id}`;
 
-                  const existingGroupIndex = acc.findIndex(group => group.key === key);
+                  const existingGroupIndex = acc.findIndex(
+                    (group) => group.key === key
+                  );
 
                   if (existingGroupIndex !== -1) {
                     acc[existingGroupIndex].data.push(curr);
@@ -336,13 +346,15 @@ const RegStatus = () => {
                         <td className="py-2 font-normal text-sm text-center">
                           {Object.keys(subject.branch).map((branchKey) => (
                             <div key={branchKey}>
-                              <span>{branchKey} : </span>
-                              {subject.branch[branchKey].map((item, idx) => (
-                                <span key={idx}>
-                                  {idx > 0 && ", "}
-                                  ชั้นปี {item}
-                                </span>
-                              ))}
+                              <span>{branchKey} : ชั้นปี </span>
+                              {subject.branch[branchKey]
+                                .sort()
+                                .map((item, idx) => (
+                                  <span key={idx}>
+                                    {idx > 0 && ", "}
+                                    {item}
+                                  </span>
+                                ))}
                             </div>
                           ))}
                         </td>
@@ -350,14 +362,15 @@ const RegStatus = () => {
                           {subject.DAYNAME}
                         </td>
                         <td className="py-2 font-normal text-sm text-center">
-                          {subject.st.substring(0, 5)}-{subject.et.substring(0, 5)} น.
+                          {subject.st.substring(0, 5)}-
+                          {subject.et.substring(0, 5)} น.
                         </td>
                         <td
                           className={`py-2 font-normal text-sm text-center ${subject.STATUSNAME === "รอ"
-                            ? "text-orange-400"
-                            : subject.STATUSNAME === "ไม่ผ่าน"
-                              ? "text-red-500"
-                              : "text-green-400"
+                              ? "text-orange-400"
+                              : subject.STATUSNAME === "ไม่ผ่าน"
+                                ? "text-red-500"
+                                : "text-green-400"
                             }`}
                         >
                           {subject.STATUSNAME}
@@ -371,9 +384,10 @@ const RegStatus = () => {
                                 onClick={() => navtoStatusEdit(subject)}
                               />
                             )}
-                            {subject.status_id === 1 || subject.status_id === 2 && (
-                              <span className="opacity-0 cursor-default visible"></span>
-                            )}
+                            {subject.status_id === 1 ||
+                              (subject.status_id === 2 && (
+                                <span className="opacity-0 cursor-default visible"></span>
+                              ))}
                           </td>
                         )}
                       </tr>

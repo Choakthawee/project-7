@@ -146,7 +146,7 @@ const RegResultED = () => {
       } else {
         Swal.fire({
           icon: "error",
-          text: "ยังมีจำนวนวิชาที่ยังไม่ได้ลงทะเบียนยังกรุณาลงให้หมดก่อน",
+          text: "มีวิชาที่ยังไม่ได้ลงทะเบียน กรุณาลงทะเบียนให้ครบถ้วน",
         });
       }
     }
@@ -205,7 +205,7 @@ const RegResultED = () => {
                 </p>
               ) : subjectssuccess ? (
                 subjectssuccess.length > 0 ? (
-                  <div className="flex flex-1 bg-slate-200 rounded-lg overflow-x-auto shadow-xl h-full overflow-y-auto">
+                  <div className="flex bg-slate-200 rounded-lg overflow-x-auto shadow-xl h-full overflow-y-auto">
                     <table className=" w-full">
                       <thead>
                         <tr className="column-color1 text-white">
@@ -236,7 +236,7 @@ const RegResultED = () => {
                             <td className="py-2 font-light text-lg text-center">
                               {startIndex + index + 1}
                             </td>
-                            <td className="py-2 font-light text-lg text-center">
+                            <td className="py-2 font-light text-lg text-center text-nowrap">
                               {value.idSubject}-{value.ySubject.substring(2)}
                             </td>
                             <td className="py-2 font-light text-lg text-center">
@@ -254,7 +254,7 @@ const RegResultED = () => {
                             <td className="py-2 font-light text-lg text-center">
                               {value.N_people}
                             </td>
-                            <td className="py-2 font-light text-lg  justify-center flex gap-1 hover:text-green-600 transition-all underline  cursor-pointer">
+                            <td className="py-2 font-light text-lg text-nowrap justify-center flex gap-1 hover:text-green-600 transition-all underline  cursor-pointer">
                               <div
                                 onClick={() => {
                                   let stringdata = "";
@@ -295,24 +295,29 @@ const RegResultED = () => {
                                       ));
                                     } else {
                                       return [
-                                        <span
-                                          key={key + "-1"}
-                                          className="py-2 font-light text-lg text-center"
-                                        >
-                                          {key}-1
-                                        </span>,
-                                        <span
-                                          key={key + "-2"}
-                                          className="py-2 font-light text-lg text-center"
-                                        >
-                                          {key}-2
-                                        </span>,
-                                        <span
-                                          key={key + "-more"}
-                                          className="py-2 font-light text-lg text-center"
-                                        >
-                                          ...
-                                        </span>,
+                                        <div className="justify-center">
+                                          <span
+                                            key={key + "-1"}
+                                            className="py-2 font-light text-lg text-center"
+                                          >
+                                            {key}-1
+                                          </span>
+                                          ,
+                                          <span
+                                            key={key + "-2"}
+                                            className="py-2 font-light text-lg text-center"
+                                          >
+                                            {key}-2
+                                          </span>
+                                          ,
+                                          <span
+                                            key={key + "-more"}
+                                            className="py-2 font-light text-lg text-center"
+                                          >
+                                            ...
+                                          </span>
+                                          ,
+                                        </div>,
                                       ];
                                     }
                                   })

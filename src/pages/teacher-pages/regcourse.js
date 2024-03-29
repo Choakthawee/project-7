@@ -40,7 +40,7 @@ const RegCourse = () => {
   const [subjects, setSubjects] = useState([]);
   const [noneSubject, setNoneSubject] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const subjectsPage = 10;
+  const subjectsPage = 8;
   const totalPages = subjects.results
     ? Math.ceil(subjects.results.length / subjectsPage)
     : 1;
@@ -126,7 +126,6 @@ const RegCourse = () => {
                     }
                   >
                     <tr>
-
                       <td className="py-2 font-light text-lg text-center">
                         {startIndex + i + 1}
                       </td>
