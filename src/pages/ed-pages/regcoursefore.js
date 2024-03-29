@@ -103,7 +103,7 @@ const RegCourseEditFore = () => {
         try {
           const getdata = await axios.post(
             apiurl + "/api/teacher/registersubject",
-            { subjects: grayBoxData, m: 1 }
+            { subjects: grayBoxData, m: 1,status:1 }
           );
           const responseData = getdata.data;
           console.log(responseData);
