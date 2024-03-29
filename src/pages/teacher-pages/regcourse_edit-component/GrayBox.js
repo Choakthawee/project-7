@@ -17,7 +17,7 @@ export default function GrayBox({
   sub_id,
   setGrayBoxData,
   handleDelete,
-  uid
+  uid,
 }) {
   const [selectedTime, setSelectedTime] = useState("07:00");
   const [ListSelect, setListSelect] = useState([]);
@@ -55,6 +55,20 @@ export default function GrayBox({
 
   useEffect(() => {
     const handleUpdateData = () => {
+      if (N_people && N_people <= 0) {
+        Swal.fire({
+          position: "top",
+          icon: "warning",
+          title: "จำนวนนิสิตที่เปิดรับต้องมากกว่า 0 คน",
+          showConfirmButton: false,
+          width: 650,
+          timer: 2000,
+          timerProgressBar: true,
+        });
+        setNPeople("");
+        return;
+      }
+
       if (!st || !et) {
         // ถ้า st หรือ et ยังไม่ถูกกรอกให้ไม่ทำอะไรเลย
         return;
@@ -79,7 +93,7 @@ export default function GrayBox({
 
       const data = {
         keys: keys,
-        uid: uid?uid:localStorage.getItem("userid"),
+        uid: uid ? uid : localStorage.getItem("userid"),
         st: st,
         et: et,
         day_id: day,
