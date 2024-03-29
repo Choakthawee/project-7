@@ -100,13 +100,11 @@ const Schedule = () => {
   };
 
   const handleCategoryChange = (e) => {
-    const selectedId = parseInt(e.target.value);
-    setSelectedCategory(selectedId);
+    setSelectedCategory(e.target.value);
   };
 
   const handleDayChange = (e) => {
-    const selectedDay = parseInt(e.target.value);
-    setSelectedDay(selectedDay);
+    setSelectedDay(e.target.value);
   }
 
   const handleInputChange = (e) => {
@@ -128,23 +126,26 @@ const Schedule = () => {
   };
 
   const searchAndFilterSubjects = (input, category, day, year, isTeacher) => {
+    const categoryId = category ? parseInt(category) : null;
+    const dayId = day ? parseInt(day) : null;
+
     if (!input.trim()) {
       return isTeacher
         ? subjectUser.filter(
           (subject) =>
-            (!category || subject.subject_category_id === category) &&
+            (!category || subject.subject_category_id === categoryId) &&
             (!year ||
               Object.values(subject.branch).some((branchArray) =>
                 branchArray.includes(Number(year))
-              )) && (!day || subject.day_id === day)
+              )) && (!day || subject.day_id === dayId)
         )
         : subjectAll.filter(
           (subject) =>
-            (!category || subject.subject_category_id === category) &&
+            (!category || subject.subject_category_id === categoryId) &&
             (!year ||
               Object.values(subject.branch).some((branchArray) =>
                 branchArray.includes(Number(year))
-              )) && (!day || subject.day_id === day)
+              )) && (!day || subject.day_id === dayId)
         );
     } else {
       const filtered = isTeacher
@@ -153,22 +154,22 @@ const Schedule = () => {
             (subject.id_subject.includes(input) ||
               subject.SUBJECT.includes(input) ||
               subject.NAME.includes(input)) &&
-            (!category || subject.subject_category_id === category) &&
+            (!category || subject.subject_category_id === categoryId) &&
             (!year ||
               Object.values(subject.branch).some((branchArray) =>
                 branchArray.includes(Number(year))
-              )) && (!day || subject.day_id === day)
+              )) && (!day || subject.day_id === dayId)
         )
         : subjectAll.filter(
           (subject) =>
             (subject.id_subject.includes(input) ||
               subject.SUBJECT.includes(input) ||
               subject.NAME.includes(input)) &&
-            (!category || subject.subject_category_id === category) &&
+            (!category || subject.subject_category_id === categoryId) &&
             (!year ||
               Object.values(subject.branch).some((branchArray) =>
                 branchArray.includes(Number(year))
-              )) && (!day || subject.day_id === day)
+              )) && (!day || subject.day_id === dayId)
         );
       return filtered;
     }
@@ -401,8 +402,9 @@ const Schedule = () => {
           <select
             className="focus:outline-none rounded-sm md:h-8 h-10 md:w-full w-72"
             onChange={handleCategoryChange}
+            value={selectedCategory}
           >
-            <option value="">เลือกหมวดวิชา</option>
+            <option value="" >เลือกหมวดวิชา</option>
             {subjectCategories.map((category, index) => (
               <option key={index} value={category.id}>
                 {category.name}
@@ -416,8 +418,9 @@ const Schedule = () => {
           <select
             className="focus:outline-none rounded-sm md:h-8 h-10 md:w-full w-72"
             onChange={handleDayChange}
+            value={selectedDay}
           >
-            <option value="">เลือกวันที่สอน</option>
+            <option value="" >เลือกวันที่สอน</option>
             {days.map((category, index) => (
               <option key={index} value={category.id}>
                 {category.name}
@@ -778,7 +781,7 @@ const Schedule = () => {
           <FaCircleRight size={21} color="#0a6765" />
         </button>
       </div>
-    </div>
+    </div >
   );
 };
 
