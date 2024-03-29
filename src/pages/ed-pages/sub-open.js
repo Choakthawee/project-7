@@ -15,6 +15,7 @@ import Category_sub from "../component/category_sub";
 import CourseYears from "../component/courseyear";
 import ButtonSeaching from "../component/buttonSearching";
 import SortBar from "../component/sortBar";
+import { icon, text } from "@fortawesome/fontawesome-svg-core";
 
 const SubOpen = () => {
   const userRole = localStorage.getItem("role_id");
@@ -86,8 +87,8 @@ const SubOpen = () => {
       console.log(dataDelete.message);
       setReload(!reload);
     } catch (err) {
-      if (err.response.data.error) {
-        console.log(err.response.data.error);
+      if (err.response.data?.error) {
+        Swal.fire({icon:"error",text:err.response.data?.error});
       } else {
         console.log(err);
       }
@@ -161,7 +162,7 @@ const SubOpen = () => {
                             if (result.isConfirmed) {
                               unOpenSubject(v.id);
                               
-                              Swal.fire("Deleted!", "ลบสำเร็จ!", "success");
+                              
                             }
                           });
                         }}
