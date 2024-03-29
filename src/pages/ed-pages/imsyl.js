@@ -56,6 +56,14 @@ const ImportSyl = () => {
         confirmButtonColor: "#3085d6",
         confirmButtonText: "ตกลง",
       });
+    } else if (file === null) {
+      Swal.fire({
+        icon: "error",
+        title: "ข้อผิดพลาด",
+        text: "เลือกไฟล์ก่อนครับ",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "ตกลง",
+      });
     } else {
       const formData = new FormData();
       formData.append("file", file);
