@@ -357,8 +357,11 @@ const Schedule = () => {
     >
       <div className="flex">
         <p className="text-4xl font-bold h1text-shadow text-midgreen">
-          ตารางสอน
+          {isTeacher ? "ตารางสอนของ" : "ตารางสอน "}
         </p>
+        <p className="text-4xl font-bold h1text-shadow text-yellow-500 ml-2">
+          {isTeacher ? `${userName}` : "ทั้งหมด"}
+        </p>'
       </div>
 
       <div className="flex flex-col mt-10 mb-5 md:flex-row">
@@ -384,7 +387,7 @@ const Schedule = () => {
         <div className="flex flex-col w-14 mr-3 mt-3 md:mt-0">
           <label className="text-midgreen mb-1">ชั้นปี</label>
           <select
-            className="focus:outline-none rounded-sm md:h-8 h-10 md:w-full w-72"
+            className="focus:outline-none rounded-sm md:h-8 h-10 md:w-24 w-72"
             value={selectedYear}
             onChange={handleYearChange}
           >
@@ -397,7 +400,7 @@ const Schedule = () => {
           </select>
         </div>
 
-        <div className="flex flex-col mr-3 mt-3 md:mt-0">
+        <div className="flex flex-col mr-3 mt-3 md:mt-0 md:ml-10 ml-0">
           <label className="text-midgreen mb-1">หมวดวิชา</label>
           <select
             className="focus:outline-none rounded-sm md:h-8 h-10 md:w-full w-72"
@@ -414,7 +417,7 @@ const Schedule = () => {
         </div>
 
         <div className="flex flex-col mr-3 mt-3 md:mt-0">
-          <label className="text-midgreen mb-1">เลือกวันที่สอน</label>
+          <label className="text-midgreen mb-1">วันที่สอน</label>
           <select
             className="focus:outline-none rounded-sm md:h-8 h-10 md:w-full w-72"
             onChange={handleDayChange}
@@ -499,8 +502,8 @@ const Schedule = () => {
             size={21}
             className="border-white cursor-pointer"
           />
-          <label className="ml-2 font-bold ptext-shadow cursor-pointer transition-all">
-            {isTeacher ? "MY SCHEDULE" : "GLOBAL SCHEDULE"}
+          <label className="ml-2 font-bold ptext-shadow cursor-pointer transition-all underline">
+            {isTeacher ? "CHANGE TO GLOBAL SCHEDULE" : "CHANGE TO MY SCHEDULE"}
           </label>
         </div>
       </div>
