@@ -144,7 +144,10 @@ const RegResultED = () => {
           Swal.fire({ icon: "error", text: error.response.data.msgerror });
         }
       } else {
-        Swal.fire({ icon: "error", text: "ยังมีจำนวนวิชาที่ยังไม่ได้ลงทะเบียนยังกรุณาลงให้หมดก่อน" });
+        Swal.fire({
+          icon: "error",
+          text: "ยังมีจำนวนวิชาที่ยังไม่ได้ลงทะเบียนยังกรุณาลงให้หมดก่อน",
+        });
       }
     }
   }
@@ -234,7 +237,7 @@ const RegResultED = () => {
                               {startIndex + index + 1}
                             </td>
                             <td className="py-2 font-light text-lg text-center">
-                              {value.idSubject}
+                              {value.idSubject}-{value.ySubject.substring(2)}
                             </td>
                             <td className="py-2 font-light text-lg text-center">
                               {value.SUBJECT}
