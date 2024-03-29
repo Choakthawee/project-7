@@ -238,7 +238,7 @@ const RegStatusEdit = (props) => {
 
     return (
         <div
-            className="flex-col flex py-10 px-10 bg-white flex-1 h-screen"
+            className="flex-col flex py-10 px-10 bg-white flex-1 min-h-screen"
             style={{ backgroundColor: "#cce3de" }}
         >
             <div className="flex bg-white rounded-2xl h-full w-full flex-col py-10 px-10">

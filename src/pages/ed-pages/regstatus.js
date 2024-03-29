@@ -6,6 +6,8 @@ import axios from "axios";
 import React from "react";
 import { apiurl } from "../../config";
 import { Link } from "react-router-dom";
+import { FaCircleLeft } from "react-icons/fa6";
+import { FaCircleRight } from "react-icons/fa6";
 
 const RegStatus = () => {
   const userRole = localStorage.getItem("role_id");
@@ -16,6 +18,7 @@ const RegStatus = () => {
   const [subjectReg, setSubjectReg] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     axios
@@ -59,6 +62,20 @@ const RegStatus = () => {
       }
     }
   }
+
+  const itemsPerPage = 5; // จำนวนรายการต่อหน้า
+
+  const handlePageChange = (page) => {
+    if (page > 0 && page <= totalPages && currentSubjects.length > 0) {
+      setCurrentPage(page);
+    }
+  };
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentSubjects = subjectReg.slice(startIndex, endIndex);
+
+  const totalPages = Math.ceil(subjectReg.length / itemsPerPage);
 
   const handleEdit = (subject) => {
     if (subject.status_id === 2) {
@@ -135,7 +152,7 @@ const RegStatus = () => {
 
   return (
     <div
-      className="flex-col flex py-10 px-10 bg-white flex-1 h-screen"
+      className="flex-col flex py-10 px-10 bg-white min-h-screen flex-1"
       style={{ backgroundColor: "#cce3de" }}
     >
       <div className="flex">
@@ -144,7 +161,7 @@ const RegStatus = () => {
         </p>
       </div>
 
-      <div className="flex flex-row justify-end">
+      <div className="flex flex-row justify-start md:justify-end mt-4 md:mt-2">
         <label className="mr-2">ทั้งหมด</label>
         <input
           className="mr-2"
@@ -174,7 +191,7 @@ const RegStatus = () => {
       </div>
 
 
-      <div className="flex flex-row justify-end">
+      <div className="flex flex-row justify-start md:justify-end mt-4 md:mt-2">
         <label className="mr-2">ทั้งหมด</label>
         <input
           className="mr-2"
@@ -244,8 +261,8 @@ const RegStatus = () => {
             </tr>
           </thead>
           <tbody>
-            {subjectReg.length > 0 &&
-              subjectReg
+            {currentSubjects.length > 0 &&
+              currentSubjects
                 .filter(
                   (subject) => {
                     if (selectedCategory === "all" && selectedStatus === "all") {
@@ -365,6 +382,24 @@ const RegStatus = () => {
                 ))}
           </tbody>
         </table>
+      </div>
+
+      <div className="flex flex-2 mt-10 justify-center items-center">
+        <button
+          disabled={currentPage === 1}
+          onClick={() => handlePageChange(currentPage - 1)}
+        >
+          <FaCircleLeft size={21} color="#0a6765" className="mr-1" />
+        </button>
+        <p className="text-lg font-semibold text-midgreen mx-4">
+          หน้า {currentPage} จาก {totalPages}
+        </p>
+        <button
+          disabled={currentPage === totalPages}
+          onClick={() => handlePageChange(currentPage + 1)}
+        >
+          <FaCircleRight size={21} color="#0a6765" />
+        </button>
       </div>
     </div>
   );

@@ -9,13 +9,15 @@ import { apiurl } from "../../config";
 import SearchTab from "./searchtab";
 import { TimerResetIcon } from "lucide-react";
 import { InfoIcon } from "lucide-react";
+import { FaCircleLeft } from "react-icons/fa6";
+import { FaCircleRight } from "react-icons/fa6";
 
 const Schedule = () => {
   const userRole = localStorage.getItem("role_id");
   const userName = localStorage.getItem("name");
   const userID = localStorage.getItem("userid");
   const navigate = useNavigate();
-  const [isTeacher, setIsTeacher] = useState(false);
+  const [isTeacher, setIsTeacher] = useState(true);
   const [subjectUser, setSubjectUser] = useState([]);
   const [subjectAll, setSubjectAll] = useState([]);
   const [searchInput, setSearchInput] = useState("");
@@ -28,6 +30,7 @@ const Schedule = () => {
   const [loading, setLoading] = useState(false);
   const [teacherSchedule, setTeacherSchedule] = useState([]);
   const [years, setYears] = useState(["1", "2", "3", "4", "5"]);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const fetchSubjectCategories = async () => {
@@ -276,6 +279,21 @@ const Schedule = () => {
     { id: 7, name: "วันอาทิตย์" },
   ];
 
+  const itemsPerPage = 5; // จำนวนรายการต่อหน้า
+
+  const handlePageChange = (page) => {
+    if (page > 0 && page <= totalPages && currentSubjects.length > 0) {
+      setCurrentPage(page);
+    }
+  };
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentSubjects = filteredSubjects.slice(startIndex, endIndex);
+
+  const totalPages = Math.ceil(filteredSubjects.length / itemsPerPage);
+
+
   const getMergedCells = (day, teacherSchedule) => {
     const mergedCells = [];
     let currentSubject = null;
@@ -333,7 +351,7 @@ const Schedule = () => {
 
   return (
     <div
-      className="flex-col flex py-10 px-10 bg-white flex-1 h-screen"
+      className="flex-col flex py-10 px-10 bg-white flex-1 min-h-screen"
       style={{ backgroundColor: "#cce3de" }}
     >
       <div className="flex">
@@ -342,12 +360,13 @@ const Schedule = () => {
         </p>
       </div>
 
-      <div className="flex flex-row mt-10 mb-5">
-        <div className="flex flex-col mr-3 w-48">
+      <div className="flex flex-col mt-10 mb-5 md:flex-row">
+
+        <div className="flex mr-3 flex-col w-48">
           <label className="text-midgreen mb-1">รหัส/วิชา/ผู้สอน</label>
           <input
             type="search"
-            className="focus:outline-none rounded-sm h-8"
+            className="focus:outline-none rounded-sm md:h-8 h-10 md:w-full w-72"
             value={searchInput}
             onChange={handleInputChange}
           ></input>
@@ -361,10 +380,10 @@ const Schedule = () => {
           )}
         </div>
 
-        <div className="flex flex-col w-14 mr-3">
+        <div className="flex flex-col w-14 mr-3 mt-3 md:mt-0">
           <label className="text-midgreen mb-1">ชั้นปี</label>
           <select
-            className="focus:outline-none rounded-sm h-8"
+            className="focus:outline-none rounded-sm md:h-8 h-10 md:w-full w-72"
             value={selectedYear}
             onChange={handleYearChange}
           >
@@ -377,10 +396,10 @@ const Schedule = () => {
           </select>
         </div>
 
-        <div className="flex flex-col mr-3">
+        <div className="flex flex-col mr-3 mt-3 md:mt-0">
           <label className="text-midgreen mb-1">หมวดวิชา</label>
           <select
-            className="focus:outline-none rounded-sm h-8 w-36"
+            className="focus:outline-none rounded-sm md:h-8 h-10 md:w-full w-72"
             onChange={handleCategoryChange}
           >
             <option value="">เลือกหมวดวิชา</option>
@@ -392,10 +411,10 @@ const Schedule = () => {
           </select>
         </div>
 
-        <div className="flex flex-col mr-3">
+        <div className="flex flex-col mr-3 mt-3 md:mt-0">
           <label className="text-midgreen mb-1">เลือกวันที่สอน</label>
           <select
-            className="focus:outline-none rounded-sm h-8 w-36"
+            className="focus:outline-none rounded-sm md:h-8 h-10 md:w-full w-72"
             onChange={handleDayChange}
           >
             <option value="">เลือกวันที่สอน</option>
@@ -407,64 +426,68 @@ const Schedule = () => {
           </select>
         </div>
 
-        <div className="flex mt-2 items-end cursor-pointer ml-1">
-          <button
-            className="transition-all bg-green-600 rounded-3xl w-24 h-10 justify-center items-center flex flex-row shadow-lg"
-            onClick={handleSearch}
-          >
-            <label className="text-white text-base cursor-pointer">ค้นหา</label>
-            <Search size={21} color="white" className="ml-1" />
-          </button>
+        <div className="flex flex-row md:mt-0 mt-3">
+          <div className="flex mt-2 items-end cursor-pointer ml-0 md:ml-2">
+            <button
+              className="transition-all bg-green-600 rounded-3xl w-24 h-10 justify-center items-center flex flex-row shadow-lg"
+              onClick={handleSearch}
+            >
+              <label className="text-white text-base cursor-pointer">ค้นหา</label>
+              <Search size={21} color="white" className="ml-1" />
+            </button>
+          </div>
+
+          <div className="flex mt-2 items-end cursor-pointer ml-2 mr-2">
+            <button
+              className="transition-all bg-yellow-400 rounded-3xl w-24 h-10 justify-center items-center flex flex-row shadow-lg"
+              onClick={handleReset}
+            >
+              <label className="text-white text-base cursor-pointer">
+                รีเซ็ต
+              </label>
+              <TimerResetIcon size={21} color="white" className="ml-1" />
+            </button>
+          </div>
         </div>
 
-        <div className="flex mt-2 items-end cursor-pointer ml-2 mr-2">
-          <button
-            className="transition-all bg-yellow-400 rounded-3xl w-24 h-10 justify-center items-center flex flex-row shadow-lg"
-            onClick={handleReset}
-          >
-            <label className="text-white text-base cursor-pointer">
-              รีเซ็ต
+        <div className="flex flex-row">
+          <div className="flex-row flex mt-5 ml-0 items-end  md:ml-2 md:mt-2">
+            <div
+              className={`transition-all w-8 h-8 mr-2 ${isTeacher ? "bg-green-400" : "hidden"
+                }`}
+            ></div>
+            <label className={`ptext-shadow mb-1 ${isTeacher ? "" : "hidden"}`}>
+              {isTeacher ? "ผ่าน" : ""}
             </label>
-            <TimerResetIcon size={21} color="white" className="ml-1" />
-          </button>
-        </div>
+          </div>
 
-        <div className="flex-row flex mt-2 ml-2 items-end">
-          <div
-            className={`transition-all w-8 h-8 mr-2 ${isTeacher ? "bg-green-400" : "hidden"
-              }`}
-          ></div>
-          <label className={`ptext-shadow mb-1 ${isTeacher ? "" : "hidden"}`}>
-            {isTeacher ? "ผ่าน" : ""}
-          </label>
-        </div>
+          <div className="flex flex-row ml-2 items-end">
+            <div
+              className={`transition-all w-8 h-8 mr-2 ${isTeacher ? "bg-red-500" : "hidden"
+                }`}
+            ></div>
+            <label
+              className={`ptext-shadow mb-1 ${isTeacher ? "" : "text-red-600"}`}
+            >
+              {isTeacher
+                ? "ไม่ผ่าน"
+                : "*แสดงเฉพาะวิชาที่ลงทะเบียนผ่านแล้วเท่านั้น*"}
+            </label>
+          </div>
 
-        <div className="flex flex-row ml-2 items-end">
-          <div
-            className={`transition-all w-8 h-8 mr-2 ${isTeacher ? "bg-red-500" : "hidden"
-              }`}
-          ></div>
-          <label
-            className={`ptext-shadow mb-1 ${isTeacher ? "" : "text-red-600"}`}
-          >
-            {isTeacher
-              ? "ไม่ผ่าน"
-              : "*แสดงเฉพาะวิชาที่ลงทะเบียนผ่านแล้วเท่านั้น*"}
-          </label>
-        </div>
-
-        <div className="flex flex-row ml-2 items-end">
-          <div
-            className={`transition-all w-8 h-8 mr-2 ${isTeacher ? "bg-orange-500" : "hidden"
-              }`}
-          ></div>
-          <label className={`ptext-shadow mb-1 ${isTeacher ? "" : "hidden"}`}>
-            {isTeacher ? "รอ" : ""}
-          </label>
+          <div className="flex flex-row ml-2 items-end">
+            <div
+              className={`transition-all w-8 h-8 mr-2 ${isTeacher ? "bg-orange-500" : "hidden"
+                }`}
+            ></div>
+            <label className={`ptext-shadow mb-1 ${isTeacher ? "" : "hidden"}`}>
+              {isTeacher ? "รอ" : ""}
+            </label>
+          </div>
         </div>
 
         <div
-          className="flex flex-row ml-10 items-end mb-1"
+          className="flex flex-row -ml-0 items-end mb-1 md:mt-0 mt-4 md:ml-8"
           onClick={() => {
             setIsTeacher(!isTeacher);
           }}
@@ -555,16 +578,16 @@ const Schedule = () => {
                               className={`border border-gray-400 py-2 px-2 text-center ${mergedCell.subjects.some(
                                 (subject) => subject.status_id === 1
                               )
-                                  ? "bg-green-500"
+                                ? "bg-green-500"
+                                : mergedCell.subjects.some(
+                                  (subject) => subject.status_id === 2
+                                )
+                                  ? "bg-orange-500"
                                   : mergedCell.subjects.some(
-                                    (subject) => subject.status_id === 2
+                                    (subject) => subject.status_id === 3
                                   )
-                                    ? "bg-orange-500"
-                                    : mergedCell.subjects.some(
-                                      (subject) => subject.status_id === 3
-                                    )
-                                      ? "bg-red-500"
-                                      : "bg-white"
+                                    ? "bg-red-500"
+                                    : "bg-white"
                                 }`}
                               colSpan={
                                 times.findIndex(
@@ -625,7 +648,7 @@ const Schedule = () => {
         ) : null}
       </div>
 
-      <div className="flex bg-slate-200 mt-10 rounded-lg overflow-x-auto shadow-xl text-center">
+      <div className={`flex bg-slate-200 mt-10 rounded-lg shadow-xl text-center ${isTeacher ? "" : "-mt-2"}`}>
         <table className="h-full w-full">
           <thead>
             <tr className="column-color1 text-white">
@@ -667,7 +690,7 @@ const Schedule = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredSubjects.length === 0 ? (
+            {currentSubjects.length === 0 ? (
               <tr>
                 <td
                   className="border border-gray-400 py-2 px-4 text-red-600"
@@ -677,7 +700,7 @@ const Schedule = () => {
                 </td>
               </tr>
             ) : (
-              filteredSubjects.map((subject, index) => (
+              currentSubjects.map((subject, index) => (
                 <tr key={index} className="bg-white ptext-shadow">
                   <td className="border border-gray-400 py-2 px-4 border-opacity-10">
                     {index + 1}
@@ -723,8 +746,8 @@ const Schedule = () => {
                     <Link to={"/schedule_edit/" + subject.idre}>
                       <button
                         className={`bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded ml-3 ${subject.NAME !== userName
-                            ? "hidden opacity-0 cursor-default"
-                            : ""
+                          ? "hidden opacity-0 cursor-default"
+                          : ""
                           }`}
                       >
                         Edit
@@ -736,6 +759,24 @@ const Schedule = () => {
             )}
           </tbody>
         </table>
+      </div>
+
+      <div className="flex flex-2 mt-10 justify-center items-center">
+        <button
+          disabled={currentPage === 1}
+          onClick={() => handlePageChange(currentPage - 1)}
+        >
+          <FaCircleLeft size={21} color="#0a6765" className="mr-1" />
+        </button>
+        <p className="text-lg font-semibold text-midgreen mx-4">
+          หน้า {currentPage} จาก {totalPages}
+        </p>
+        <button
+          disabled={currentPage === totalPages}
+          onClick={() => handlePageChange(currentPage + 1)}
+        >
+          <FaCircleRight size={21} color="#0a6765" />
+        </button>
       </div>
     </div>
   );
